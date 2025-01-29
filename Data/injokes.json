@@ -1,0 +1,93 @@
+{
+    "MrBlonde": {
+        "context": "MrBlonde is always suspected of being Mafia.",
+        "jokes": [
+            "Is {player} acting sus? Probably Mafia, just like MrBlonde always is.",
+            "Don't trust {player}, they're giving me major MrBlonde vibes."
+        ]
+    },
+    "genesis": {
+        "context": "Genesis is always suspected of being the Godfather.",
+        "jokes": [
+            "{player} for GF! Lynch them day 1, just like we should with genesis!",
+            "If {player} is the Godfather, I wouldn't be surprised. It's always genesis."
+        ]
+    },
+    "TBO": {
+        "context": "TBO or TheBigOne likes goats and is a goat farmer.",
+        "jokes": [
+            "The night was quiet, except for the distant bleating of a goat...probably belonging to {player}.",
+            "I bet {player} is out tending to their goat farm right now."
+        ]
+    },
+    "TheBigOne": {
+        "context": "TBO or TheBigOne likes goats and is a goat farmer.",
+        "jokes": [
+            "The night was quiet, except for the distant bleating of a goat...probably belonging to {player}.",
+            "I bet {player} is out tending to their goat farm right now."
+        ]
+    },
+    "ordos": {
+        "context": "Ordos and the_unknown (or tu or tutu) dislike each other.",
+        "jokes": [
+            "I wouldn't trust {player} as far as I could throw them, especially not near ordos.",
+            "Did you see {player} and ordos arguing again? Classic."
+        ]
+    },
+    "the_unknown": {
+        "context": "Ordos and the_unknown (or tu or tutu) dislike each other.",
+        "jokes": [
+            "I wouldn't trust {player} as far as I could throw them, especially not near the_unknown.",
+            "Did you see {player} and the_unknown arguing again? Classic."
+        ]
+    },
+    "tu": {
+        "context": "Ordos and the_unknown (or tu or tutu) dislike each other.",
+        "jokes": [
+            "I wouldn't trust {player} as far as I could throw them, especially not near tu.",
+            "Did you see {player} and tu arguing again? Classic."
+        ]
+    },
+    "tutu": {
+        "context": "Ordos and the_unknown (or tu or tutu) dislike each other.",
+        "jokes": [
+            "I wouldn't trust {player} as far as I could throw them, especially not near tutu.",
+            "Did you see {player} and tutu arguing again? Classic."
+        ]
+    },
+    "goddess": {
+        "context": "Goddess is extra sneaky and is known to win as SK (most wins as SK).",
+        "jokes": [
+            "Watch out for {player}, they're as sneaky as goddess when they're the SK.",
+            "{player} is the SK? Not surprised, it's probably goddess again."
+        ]
+    },
+    "HydroP": {
+        "context": "HydroP is considered a strong player.",
+        "jokes": [
+            "{player} is making some big brain moves. Are they the next HydroP?",
+            "If anyone can pull this off, it's {player}, they're a strong player like HydroP."
+        ]
+    },
+    "cxris": {
+        "context": "cxris is considered weak and a liability, esp if mob.",
+        "jokes": [
+            "Oh no, {player} is making a decision... This can't be good, they're like cxris if they were mob.",
+            "Don't let {player} near the strategy, they'll mess it up like cxris always does."
+        ]
+    },
+    "jets": {
+        "context": "jets is known to throw games, and the term 'to pull a jets' or 'go full jets' means to start aggressively defending yourself over any perceived accusation, making yourself seem more suspicious in the process.",
+        "jokes": [
+            "{player} is pulling a jets! They're way too defensive.",
+            "Did {player} just go full jets? They're throwing harder than jets in that one game."
+        ]
+    },
+    "rizzy": {
+        "context": "rizzy is known to have prematurely celebrated a mob win whilst drunk, causing them to lose.",
+        "jokes": [
+            "Don't celebrate too early, {player}, you might pull a rizzy.",
+            "{player} is already celebrating? Did they learn nothing from rizzy's mistake?"
+        ]
+    }
+}

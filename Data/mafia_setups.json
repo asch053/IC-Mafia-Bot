@@ -1,0 +1,73 @@
+{
+    "7": [
+      {
+        "id": "7_players_setup_1",
+        "roles": [
+          { "name": "Godfather", "alignment": "Mafia", "description": "Immune to night kills and investigations. Chooses the Mafia's target each night.", "quantity": 1 },
+          { "name": "Mob Goon", "alignment": "Mafia", "description": "A member of the Mafia.", "quantity": 1 },
+          { "name": "Town Cop", "alignment": "Town", "description": "Investigates one player each night to learn their alignment.", "quantity": 1 },
+          { "name": "Doctor", "alignment": "Town", "description": "Protects one player each night from being killed.", "quantity": 1 },
+          { "name": "Plain Townie", "alignment": "Town", "description": "A regular member of the town.", "quantity": 2 },
+          { "name": "Serial Killer", "alignment": "Neutral", "description": "Immune to night kills and investigations. Kills one player each night.", "quantity": 1 }
+        ]
+      }
+    ],
+    "8": [
+      {
+        "id": "8_players_setup_1",
+        "roles": [
+          { "name": "Godfather", "alignment": "Mafia", "description": "Chooses the Mafia's target each night.", "quantity": 1 },
+          { "name": "Mob Goon", "alignment": "Mafia", "description": "A member of the Mafia.", "quantity": 1 },
+          { "name": "Town Cop", "alignment": "Town", "description": "Investigates one player each night to learn their alignment.", "quantity": 1 },
+          { "name": "Doctor", "alignment": "Town", "description": "Protects one player each night from being killed.", "quantity": 1 },
+          { "name": "Plain Townie", "alignment": "Town", "description": "A regular member of the town.", "quantity": 3 },
+          { "name": "Serial Killer", "alignment": "Neutral", "description": "Kills one player each night.", "quantity": 1 }
+        ]
+      }
+    ],
+    "9": [
+      {
+        "id": "9_players_setup_1",
+        "roles": [
+          { "name": "Godfather", "alignment": "Mafia", "description": "Immune to night kills and investigations. Chooses the Mafia's target each night.", "quantity": 1 },
+          { "name": "Mob Goon", "alignment": "Mafia", "description": "A member of the Mafia.", "quantity": 1 },
+          { "name": "Town Cop", "alignment": "Town", "description": "Investigates one player each night to learn their alignment.", "quantity": 1 },
+          { "name": "Doctor", "alignment": "Town", "description": "Protects one player each night from being killed.", "quantity": 1 },
+          { "name": "Town Role Blocker", "alignment": "Town", "description": "Prevents one player from performing their night action.", "quantity": 1 },
+          { "name": "Plain Townie", "alignment": "Town", "description": "A regular member of the town.", "quantity": 3 },
+          { "name": "Serial Killer", "alignment": "Neutral", "description": "Immune to night kills and investigations. Kills one player each night.", "quantity": 1 }
+        ]
+      }
+    ],
+    "10": [
+      {
+        "id": "10_players_setup_1",
+        "roles": [
+          { "name": "Godfather", "alignment": "Mafia", "description": "Immune to night kills and investigations. Chooses the Mafia's target each night.", "quantity": 1 },
+          { "name": "Mob Role Blocker", "alignment": "Mafia", "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row.", "quantity": 1 },
+          { "name": "Mob Goon", "alignment": "Mafia", "description": "A member of the Mafia.", "quantity": 1 },
+          { "name": "Town Cop", "alignment": "Town", "description": "Investigates one player each night to learn their alignment.", "quantity": 1 },
+          { "name": "Doctor", "alignment": "Town", "description": "Protects one player each night from being killed.", "quantity": 1 },
+          { "name": "Town Role Blocker", "alignment": "Town", "description": "Prevents one player from performing their night action.", "quantity": 1 },
+          { "name": "Plain Townie", "alignment": "Town", "description": "A regular member of the town.", "quantity": 3 },
+          { "name": "Serial Killer", "alignment": "Neutral", "description": "Immune to night kills and investigations. Kills one player each night.", "quantity": 1 }
+        ]
+      }
+    ],
+    "11": [
+      {
+        "id": "11_players_setup_1",
+        "roles": [
+          { "name": "Godfather", "alignment": "Mafia", "description": "Immune to night kills and investigations. Chooses the Mafia's target each night.", "quantity": 1 },
+          { "name": "Mob Role Blocker", "alignment": "Mafia", "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row.", "quantity": 1 },
+          { "name": "Mob Goon", "alignment": "Mafia", "description": "A member of the Mafia.", "quantity": 1 },
+          { "name": "Town Cop", "alignment": "Town", "description": "Investigates one player each night to learn their alignment.", "quantity": 1 },
+          { "name": "Doctor", "alignment": "Town", "description": "Protects one player each night from being killed.", "quantity": 1 },
+          { "name": "Town Role Blocker", "alignment": "Town", "description": "Prevents one player from performing their night action.", "quantity": 1 },
+          { "name": "Vigilante", "alignment": "Town", "description": "May kill one player during the night. Limited to 1 kill for the whole game", "uses": 1, "quantity": 1 },
+          { "name": "Plain Townie", "alignment": "Town", "description": "A regular member of the town.", "quantity": 3 },
+          { "name": "Serial Killer", "alignment": "Neutral", "description": "Immune to night kills and investigations. Kills one player each night.", "quantity": 1 }
+        ]
+      }
+    ]
+  }
