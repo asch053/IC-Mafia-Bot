@@ -450,6 +450,9 @@ async def process_lynch_vote(ctx, voter_id, lynch_target):
     global lynch_votes
     print(f"DEBUG: Target is {lynch_target}")
     lynch_target_id = await get_player_id_by_name(lynch_target)
+    if not target_id:
+        await ctx.send(f"Player {lynch_target} is not in the game")
+        return
     target_alive = await is_player_alive(lynch_target_id)
     print(f"DEBUG: target {lynch_target_id} alive => {target_alive}")
     if not target_alive:
@@ -479,7 +482,7 @@ async def process_lynch_vote(ctx, voter_id, lynch_target):
     await channel.send(f"{ctx.author.mention} voted for {lynch_target} who now has {lynch_votes[lynch_target_id]["total_votes"]}")
     print(f"DEBUG: Lynch votes after /vote -> {lynch_votes}")
 
-async def countlynchvotes(bot, ctx, players, game_roles):
+async def countlynchvotes(bot, players):
     global lynch_votes, current_phase, phase_number
     lynched_players = []
     max_votes = 0
@@ -502,6 +505,7 @@ async def countlynchvotes(bot, ctx, players, game_roles):
     story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
     if max_votes == 0:
         await voting_channel.send("No votes were cast.")
+        await story_channel.send("Everyone stood around and looked at each other. Shrugging they went back to their houses.\n **No one was lynched**")
     else:
         status_message = "**Voting Results:**\n"
         for player_id, vote_data in lynch_votes.items():
@@ -530,7 +534,7 @@ async def countlynchvotes(bot, ctx, players, game_roles):
             "voters": f"{voter_list}"
                 }
             # Announce the player's role
-            if lynched_player_id > 0:  # only show role for non-npc
+            if lynched_player_id > 0 and lynched_player_data["role"]:  # only show role for non-npc and they have a role
                 lynched_player_role = lynched_player_data["role"].name
                 await voting_channel.send(f"{lynched_player_name}'s role was: {lynched_player_role}")
     else:
@@ -942,25 +946,28 @@ async def join_game(ctx,*,game_name: str):
         await ctx.send("You have already joined the game!")
         return
     # Add player to the game
-    players[player_id] = {
-        "name": ctx.author.name,
-        "display_name": game_name,
-        "role": None,
-        "alive": True,
-        "votes": 0,
-        "action_target": None,
-    }
-    # Update discord roles
-    guild = ctx.guild
-    await update_player_discord_roles(bot, guild, players, discord_role_data)
-    print(f"DEBUG: Player joined: {ctx.author.name} (ID: {player_id}). Players: {players}")
-    await ctx.send(
-        f"{ctx.author.mention} has joined the game!"
-    )
-    # If we have reached 7 players, start the game
-    if len(players) >= 7:
-        await ctx.send("We have reached 7 players! The game will start in advance to the end of the signup phase.")
-        await prepare_game_start(ctx, bot, npc_names, mafia_setups)
+    if current_phase == "":
+        players[player_id] = {
+            "name": ctx.author.name,
+            "display_name": game_name,
+            "role": None,
+            "alive": True,
+            "votes": 0,
+            "action_target": None,
+        }
+        # Update discord roles
+        guild = ctx.guild
+        await update_player_discord_roles(bot, guild, players, discord_role_data)
+        print(f"DEBUG: Player joined: {ctx.author.name} (ID: {player_id}). Players: {players}")
+        await ctx.send(
+            f"{ctx.author.mention} has joined the game!"
+        )
+        # If we have reached 7 players, start the game
+        if len(players) >= 7:
+            await ctx.send("We have reached 7 players! The game will start in advance to the end of the signup phase.")
+            await prepare_game_start(ctx, bot, npc_names, mafia_setups)
+    else:
+       await ctx.author.send("You cannot join an active game, please wait for the game to finish and join the next game!")  
 @join_game.error
 async def join_game_error(ctx, error):
     if isinstance(error, commands.PrivateMessageOnly):
@@ -1024,10 +1031,15 @@ async def vote(ctx, *, lynch_target):
         await ctx.send("Not currently Day Phase")
         return
     player_id = ctx.author.id
+    target_id = get_player_id_by_name(lynch_target)
     if player_id not in players:
         channel = bot.get_channel(config.VOTING_CHANNEL_ID)
         await channel.send("You are not in this game")
-        return  
+        return 
+    if target_id not in players:
+        channel = bot.get_channel(config.VOTING_CHANNEL_ID)
+        await channel.send("Lynch target is not in this game")
+        return 
     await process_lynch_vote(ctx, player_id, lynch_target)
     await send_vote_update(bot, players)  # Send vote update after each vote
 
