@@ -1,5 +1,6 @@
 import discord
 import json
+import asyncio
 from discord.ext import commands
 from datetime import datetime, timedelta, timezone
 
@@ -35,7 +36,7 @@ except FileNotFoundError:
     print("ERROR: mafia_setups.json not found!")
     mafia_setups = {}
 
-# --- Roles ---
+#--- Roles ---
 class GameRole:
     def __init__(self, name, alignment, description, night_action=None, uses=None):
         self.name = name
@@ -65,37 +66,7 @@ def is_owner_or_mod(bot):
         return False
     return commands.check(predicate)
 
-    # --- Helper Functions ---
-async def update_player_discord_roles(bot, guild, players, discord_role_data):
-    """Updates player roles in Discord based on their status."""
-    living_role_id = discord_role_data.get("living", {}).get("id")
-    dead_role_id = discord_role_data.get("dead", {}).get("id")
-    spectator_role_id = discord_role_data.get("spectator", {}).get("id")
-
-    living_role = discord.utils.get(guild.roles, id=living_role_id)
-    dead_role = discord.utils.get(guild.roles, id=dead_role_id)
-    spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
-
-    if not living_role or not dead_role or not spectator_role:
-        print("ERROR: Could not find 'Living Players', 'Dead Players', or 'Spectator' role.")
-        return
-
-    for player_id, player_data in players.items():
-        if player_id > 0:  # Check if it's not an NPC
-            member = guild.get_member(player_id)
-            if member:
-                if player_data["alive"]:
-                    await member.add_roles(living_role)
-                    await member.remove_roles(dead_role, spectator_role)
-                else:
-                    await member.add_roles(dead_role)
-                    await member.remove_roles(living_role, spectator_role)
-
-    for member in guild.members:
-        if member.id not in players and not member.bot:
-            await member.add_roles(spectator_role)
-            await member.remove_roles(living_role, dead_role)
-
+#--- Game Functions ---
 def get_time_left_string(end_time):
     """
     Calculates the time remaining until the given end_time.
@@ -112,21 +83,7 @@ def get_time_left_string(end_time):
 
     minutes = int(time_left.total_seconds() // 60)
     return f"{minutes} minutes"
-
-async def is_player_alive(player_id):
-    """Checks if a player is alive and returns the player data if so."""
-    global players
-
-    if player_id in players:
-        if players[player_id]["alive"]:
-            return players[player_id]  # Return the player's data
-        else:
-            return "Dead"  # Player is dead
-    else:
-        return None  # Player not found
-    
-
-#helpers
+ 
 async def is_player_alive(players, player_id):
     """Checks if a player is alive and returns the player data if so."""
     if player_id in players:
@@ -151,19 +108,75 @@ async def get_player_id_by_name(players, player_name):
     return None  # Player not found
 
 
-async def send_role_dm(bot,player_id, role):
+def get_specific_player_id(players,specific_role):
+    """
+    Finds the ID of the living Serial Killer player, if any.
+
+    Args:
+        players (dict): The dictionary containing player information.
+
+    Returns:
+        int or None: The ID of the living Serial Killer player, or None if no such player is found.
+    """
+    for player_id, player_data in players.items():
+        if (
+            player_data["alive"]
+            and player_data["role"]
+            and player_data["role"].name == specific_role
+        ):
+            return player_id
+    return None
+
+def create_godfather_role():
+    """Creates a new Godfather role object."""
+    return GameRole(
+        name="Godfather",
+        alignment="Mafia",
+        description="Chooses the Mafia's target each night.",
+        night_action="Choose a target to kill. Use `/kill @player` in the Mafia chat.",
+    )
+
+async def send_role_dm(bot, player_id, role):
     """Sends a DM to the player with their role information."""
     print(f"DEBUG: PLayer ID = {player_id} Ready to send role")
     print("-------------------------------")
     try:
         player = await bot.fetch_user(player_id)
-        print(f"DEBUG: Player details: {player}")
-        print(f"DEBUG: Role Details: {role} // {role.name}")
+        await asyncio.sleep(30)
+        print("DEBUG: sent role")
         print("-------------------------------")
         await player.send(f"You are a {role.name}. {role.description}")
     except discord.Forbidden:
         print(f"Could not send role information to {player.name} due to their privacy settings.")
     except Exception as e:
         print(f"An error occurred while sending role information to {player.name}: {e}")
+
+async def send_mafia_info_dm(bot, players):
+    """Sends DMs to Mafia players with a list of other Mafia members."""
+    print("DEBUG: Calling send_mafia_info_dm")
+    for player_id, player_data in players.items():
+        if player_data["alive"] and player_data["role"].alignment == "Mafia":
+            mafia_members = [
+                p_data["name"]
+                for p_id, p_data in players.items()
+                if p_id != player_id and p_data["alive"] and p_data["role"].alignment == "Mafia"
+            ]
+            if mafia_members:
+                mafia_list = ", ".join(mafia_members)
+                message = f"The other living Mafia members are: {mafia_list}"
+                print("Sent mafia list to all mafia alligned players")
+            else:
+                message = "You are the only remaining Mafia member."
+            try:
+                player = await bot.fetch_user(player_id)
+                await asyncio.sleep(30)
+                await player.send(message)
+            except discord.Forbidden:
+                print(f"Could not send Mafia info DM to {player_data['name']} due to their privacy settings.")
+            except Exception as e:
+                print(f"An error occurred while sending Mafia info DM to {player_data['name']}: {e}")
+
+
+
 
 
