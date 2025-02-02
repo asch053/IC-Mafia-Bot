@@ -1,0 +1,64 @@
+{
+    "game_id": "20250202-095800",
+    "start_time": "2025-02-02T09:58:00.009998+00:00",
+    "players": {
+        "-3": {
+            "name": "Innocent Bystander",
+            "display_name": "Innocent Bystander",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-7": {
+            "name": "Sneaky McSneakface",
+            "display_name": "Sneaky McSneakface",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-8": {
+            "name": "Not The Godfather",
+            "display_name": "Not The Godfather",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-10": {
+            "name": "Just a Regular Townie",
+            "display_name": "Just a Regular Townie",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-9": {
+            "name": "Totally Harmless",
+            "display_name": "Totally Harmless",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-2": {
+            "name": "Robo-Mafioso",
+            "display_name": "Robo-Mafioso",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        },
+        "-1": {
+            "name": "Botty McBotface",
+            "display_name": "Botty McBotface",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null
+        }
+    },
+    "phases": [],
+    "winner": null
+}

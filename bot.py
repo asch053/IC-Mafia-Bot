@@ -5,8 +5,9 @@ import asyncio
 import json
 from datetime import datetime, timedelta, timezone
 import random
-import config  # Assuming you have a config.py file with necessary settings
+import config  
 import logging
+
 
 # --- Bot Setup ---
 intents = discord.Intents.default()
@@ -31,6 +32,7 @@ sk_target = ""
 mob_target = ""
 heal_target = ""
 investigate_target =""
+message_send_delay = 1
 
 # --- Load Roles ---
 try:
@@ -62,6 +64,18 @@ try:
 except FileNotFoundError:
     print("ERROR: mafia_setups.json not found!")
     mafia_setups = {}
+
+# --- Roles ---
+class GameRole:
+    def __init__(self, name, alignment, description, night_action=None, uses=None):
+        self.name = name
+        self.alignment = alignment
+        self.description = description
+        self.night_action = night_action
+        self.uses = uses
+    def __str__(self):
+        return self.name
+
 
 # --- load data files ---
 def save_json_data(data, name, sub="game_data"):
@@ -105,17 +119,6 @@ def load_data(filepath, error_msg):
                 return []
         return {} if filepath.endswith(".json") else []
 
-# --- Roles ---
-class GameRole:
-    def __init__(self, name, alignment, description, night_action=None, uses=None):
-        self.name = name
-        self.alignment = alignment
-        self.description = description
-        self.night_action = night_action
-        self.uses = uses
-    def __str__(self):
-        return self.name
-
 # --- Data Retention ---
 def save_game_data(game_data):
     """Saves the game data to a JSON file."""
@@ -140,7 +143,7 @@ def save_lynch_data(lynch_data):
         json.dump(all_games, f, indent=4)
 
 # --- Bot Functions ---
-def is_owner_or_mod():
+def is_owner_or_mod(bot,discord_role_data):
     """Custom check to allow command usage by owner or users with Mod role."""
     async def predicate(ctx):
         if ctx.author.id == bot.owner_id:  # Check if it's the bot owner
@@ -157,31 +160,7 @@ def is_owner_or_mod():
         return False
     return commands.check(predicate)
 
-# --- Role Definitions ---
-def generate_game_roles(num_players):
-    """Generates a role setup based on the number of players."""
-    global game_roles
-    game_roles = []
-    # Get the appropriate setup from mafia_setups.json
-    setups = mafia_setups.get(str(num_players))
-    if not setups:
-        print(f"ERROR: No setup found for {num_players} players.")
-        return
-    # Select a random setup (for now, just the first one)
-    setup = setups[0]
-    # Create Role objects based on the setup
-    for role_data in setup["roles"]:
-        for _ in range(role_data["quantity"]):
-            game_role = GameRole(
-                name=role_data["name"],
-                alignment=role_data["alignment"],
-                description=role_data["description"],
-                uses=role_data.get("uses"),
-            )
-            game_roles.append(game_role)
-
-# --- Helper Functions ---
-async def update_player_discord_roles(bot, guild, players, discord_role_data):
+async def update_player_discord_roles(guild, players, discord_role_data):
     """Updates player roles in Discord based on their status."""
     living_role_id = discord_role_data.get("living", {}).get("id")
     dead_role_id = discord_role_data.get("dead", {}).get("id")
@@ -207,24 +186,10 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
             await member.add_roles(spectator_role)
             await member.remove_roles(living_role, dead_role)
 
-def get_time_left_string(end_time):
-    """
-    Calculates the time remaining until the given end_time.
-    Returns a formatted string of the remaining time or "Time's up!".
-    """
-    print(f"get_time_left_string called with end_time = {end_time}")
-    if end_time is None:
-        return "Unknown"
-    now = datetime.now(timezone.utc)
-    time_left = end_time - now
-    if time_left.total_seconds() <= 0:
-        return "Time's up!"
-    minutes = int(time_left.total_seconds() // 60)
-    return f"{minutes} minutes"
 
-async def is_player_alive(player_id):
+
+async def is_player_alive(player_id, players):
     """Checks if a player is alive and returns the player data if so."""
-    global players
     if player_id in players:
         if players[player_id]["alive"]:
             return players[player_id]  # Return the player's data
@@ -233,18 +198,151 @@ async def is_player_alive(player_id):
     else:
         return None  # Player not found
     
-async def get_player_id_by_name(player_name):
+async def get_player_id_by_name(player_name, players):
     """
     Finds a player's ID based on their name (or nickname).
     Returns the player ID if found, otherwise returns None.
     """
-    global players
     print("DEBUG: get_player_id_by_name called")
     for player_id, player_data in players.items():
         if player_data["name"].lower() == player_name.lower() or \
            (player_data["display_name"] and player_data["display_name"].lower() == player_name.lower()):
+            print(f"DEBUG: player_id returned = {player_id}")
             return player_id
     return None  # Player not found
+
+def get_specific_player_id(players,specific_role):
+    """
+    Finds the ID of the living Serial Killer player, if any.
+
+    Args:
+        players (dict): The dictionary containing player information.
+
+    Returns:
+        int or None: The ID of the living Serial Killer player, or None if no such player is found.
+    """
+    for player_id, player_data in players.items():
+        if (
+            player_data["alive"]
+            and player_data["role"]
+            and player_data["role"].name == specific_role
+        ):
+            return player_id
+    return None
+
+
+async def send_role_dm(bot,player_id, role,message_send_delay):
+    """Sends a DM to the player with their role information."""
+    print(f"DEBUG: PLayer ID = {player_id} Ready to send role")
+    print("-------------------------------")
+    try:
+        player = await bot.fetch_user(player_id)
+        await asyncio.sleep(message_send_delay)
+        print("DEBUG: sent role")
+        print("-------------------------------")
+        await player.send(f"You are a {role.name}. {role.description}")
+    except discord.Forbidden:
+        print(f"Could not send role information to {player.name} due to their privacy settings.")
+    except Exception as e:
+        print(f"An error occurred while sending role information to {player.name}: {e}")
+
+async def send_mafia_info_dm(bot, players, message_send_delay):
+    """Sends DMs to Mafia players with a list of other Mafia members."""
+    print("DEBUG: Calling send_mafia_info_dm")
+    for player_id, player_data in players.items():
+        if player_data["alive"] and player_data["role"].alignment == "Mafia":
+            mafia_members = [
+                p_data["name"]
+                for p_id, p_data in players.items()
+                if p_id != player_id and p_data["alive"] and p_data["role"].alignment == "Mafia"
+            ]
+            if mafia_members:
+                mafia_list = ", ".join(mafia_members)
+                message = f"The other living Mafia members are: {mafia_list}"
+                print("Sent mafia list to all mafia alligned players")
+            else:
+                message = "You are the only remaining Mafia member."
+            if player_id > 0:
+                try:
+                    player = await bot.fetch_user(player_id)
+                    await asyncio.sleep(message_send_delay)
+                    await player.send(message)
+                except discord.Forbidden:
+                    print(f"Could not send Mafia info DM to {player_data['name']} due to their privacy settings.")
+                except Exception as e:
+                    print(f"An error occurred while sending Mafia info DM to {player_data['name']}: {e}")
+
+def assign_game_roles(bot, players, game_roles, message_send_delay):
+    """Assigns roles to players randomly based on the chosen setup."""
+    # Shuffle the player IDs 
+    player_ids = list(players.keys())
+    x = random.randint(1,10)
+    asyncio.sleep(x)
+    for i in range(1, x + 1):
+        random.shuffle(player_ids)
+        print(f"Debug: Cycle: {x}, {player_ids}")
+    # Assign roles to players
+    for i, player_id in enumerate(player_ids):
+        if i < len(game_roles):
+            role = game_roles[i]
+            players[player_id]["role"] = role
+            players[player_id]["alive"] = True
+            players[player_id]["votes"] = 0
+            # Send DM with role information
+            if player_id > 0:  # Check if it's not an NPC
+                print(f"DEBUG: Sending dm to {player_id}, {players[player_id]['display_name']}")
+                asyncio.create_task(send_role_dm(bot, player_id, role, message_send_delay))
+        else:
+            print(
+                f"WARNING: More players than roles in setup. {players[player_id]['name']} will not be assigned a role."
+            )
+
+# --- Role Definitions ---
+def generate_game_roles(num_players):
+    """Generates a role setup based on the number of players."""
+    global game_roles
+    game_roles = []
+    # Get the appropriate setup from mafia_setups.json
+    setups = mafia_setups.get(str(num_players))
+    if not setups:
+        print(f"ERROR: No setup found for {num_players} players.")
+        return
+    # Select a random setup (for now, just the first one)
+    setup = setups[0]
+    # Create Role objects based on the setup
+    for role_data in setup["roles"]:
+        for _ in range(role_data["quantity"]):
+            game_role = GameRole(
+                name=role_data["name"],
+                alignment=role_data["alignment"],
+                description=role_data["description"],
+                uses=role_data.get("uses"),
+            )
+            game_roles.append(game_role)
+
+# --- Helper Functions ---
+def get_time_left_string(end_time):
+    """
+    Calculates the time remaining until the given end_time.
+    Returns a formatted string of the remaining time in hours and minutes, or "Time's up!".
+    """
+    if end_time is None:
+        return "Unknown"
+
+    now = datetime.now(timezone.utc)
+    time_left = end_time - now
+
+    if time_left.total_seconds() <= 0:
+        return "Time's up!"
+
+    hours = int(time_left.total_seconds() // 3600)
+    minutes = int((time_left.total_seconds() % 3600) // 60)
+
+    if hours > 0:
+        return f"{hours} hours {minutes} minutes"
+    else:
+        return f"{minutes} minutes"
+
 
 def generate_status_message(players):
     global current_phase, time_left, phase_number, time_day_ends, time_night_ends, time_signup_ends
@@ -282,25 +380,6 @@ def generate_status_message(players):
     print("DEBUG: Status message generated")
     return status_message
 
-def get_specific_player_id(players,specific_role):
-    """
-    Finds the ID of the living Serial Killer player, if any.
-
-    Args:
-        players (dict): The dictionary containing player information.
-
-    Returns:
-        int or None: The ID of the living Serial Killer player, or None if no such player is found.
-    """
-    for player_id, player_data in players.items():
-        if (
-            player_data["alive"]
-            and player_data["role"]
-            and player_data["role"].name == specific_role
-        ):
-            return player_id
-    return None
-
 def create_godfather_role():
     """Creates a new Godfather role object."""
     return GameRole(
@@ -327,71 +406,10 @@ def reset_game():
     lynch_votes = {}
     if gameprocess.is_running:
         gameprocess.stop
-
-async def send_role_dm(player_id, role):
-    """Sends a DM to the player with their role information."""
-    print(f"DEBUG: PLayer ID = {player_id} Ready to send role")
-    print("-------------------------------")
-    try:
-        player = await bot.fetch_user(player_id)
-        await asyncio.sleep(30)
-        print("DEBUG: sent role")
-        print("-------------------------------")
-        await player.send(f"You are a {role.name}. {role.description}")
-    except discord.Forbidden:
-        print(f"Could not send role information to {player.name} due to their privacy settings.")
-    except Exception as e:
-        print(f"An error occurred while sending role information to {player.name}: {e}")
-
-async def send_mafia_info_dm(bot, players):
-    """Sends DMs to Mafia players with a list of other Mafia members."""
-    print("DEBUG: Calling send_mafia_info_dm")
-    for player_id, player_data in players.items():
-        if player_data["alive"] and player_data["role"].alignment == "Mafia":
-            mafia_members = [
-                p_data["name"]
-                for p_id, p_data in players.items()
-                if p_id != player_id and p_data["alive"] and p_data["role"].alignment == "Mafia"
-            ]
-            if mafia_members:
-                mafia_list = ", ".join(mafia_members)
-                message = f"The other living Mafia members are: {mafia_list}"
-                print("Sent mafia list to all mafia alligned players")
-            else:
-                message = "You are the only remaining Mafia member."
-            try:
-                player = await bot.fetch_user(player_id)
-                await asyncio.sleep(30)
-                await player.send(message)
-            except discord.Forbidden:
-                print(f"Could not send Mafia info DM to {player_data['name']} due to their privacy settings.")
-            except Exception as e:
-                print(f"An error occurred while sending Mafia info DM to {player_data['name']}: {e}")
-
-def assign_game_roles(players):
-    """Assigns roles to players randomly based on the chosen setup."""
-    global game_roles
-    # Shuffle the player IDs 
-    player_ids = list(players.keys())
-    random.shuffle(player_ids)
-    # Assign roles to players
-    for i, player_id in enumerate(player_ids):
-        if i < len(game_roles):
-            role = game_roles[i]
-            players[player_id]["role"] = role
-            players[player_id]["alive"] = True
-            players[player_id]["votes"] = 0
-            # Send DM with role information
-            if player_id > 0:  # Check if it's not an NPC
-                asyncio.create_task(send_role_dm(player_id, role))
-        else:
-            print(
-                f"WARNING: More players than roles in setup. {players[player_id]['name']} will not be assigned a role."
-            )
-    
+ 
 async def prepare_game_start(ctx, bot, npc_names):
     """Prepares the game to start by adding NPCs and assigning roles."""
-    global players, current_phase, game_id, game_data, time_signup_ends
+    global players, current_phase, game_id, game_data, time_signup_ends, game_roles, message_send_delay
     print("prepare_game_start called")
     # Fill in any missing players with NPCs
     while len(players) < 7:
@@ -422,13 +440,13 @@ async def prepare_game_start(ctx, bot, npc_names):
     # Generate and assign roles
     generate_game_roles(len(players))
     if game_roles:
-        assign_game_roles(players)
+        assign_game_roles(bot, players, game_roles, message_send_delay)
         print("DEBUG: Roles assigned")
         channel = bot.get_channel(config.STORIES_CHANNEL_ID)
         await channel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n"
                            "**Roles have been assigned, starting game!**\n")
         print("DEBUG: Sending DM to all mafia players")
-        await send_mafia_info_dm(bot,players)
+        await send_mafia_info_dm(bot,players, message_send_delay)
         # await start_game_night(bot, role_data, injokes, no_injoke) #Removed until game logic added
         # Create initial game data
         print(f"Ready to start, gameprocess.is_running = {gameprocess.is_running}")
@@ -446,19 +464,13 @@ async def prepare_game_start(ctx, bot, npc_names):
         await ctx.send("Failed to generate roles.")
     print("DEBUG: prepare_game_start finished")  # Add this print statement
 
-async def process_lynch_vote(ctx, voter_id, lynch_target):
-    global lynch_votes
+async def process_lynch_vote(voter_id, lynch_target):
+    global lynch_votes, players
     print(f"DEBUG: Target is {lynch_target}")
-    lynch_target_id = await get_player_id_by_name(lynch_target)
-    if not target_id:
-        await ctx.send(f"Player {lynch_target} is not in the game")
-        return
-    target_alive = await is_player_alive(lynch_target_id)
+    lynch_target_id = await get_player_id_by_name(lynch_target, players)
+    target_alive = await is_player_alive(lynch_target_id,players)
     print(f"DEBUG: target {lynch_target_id} alive => {target_alive}")
-    if not target_alive:
-        await ctx.send(f"Player {lynch_target} is not alive")
-        return
-    print(f"DEBUG: Lynch Tarrget ID => {lynch_target_id}")
+    print(f"DEBUG: Lynch Target ID => {lynch_target_id}")
     # Check if the voter has already voted
     for target_id, vote_data in lynch_votes.items():
         if voter_id in vote_data["voters"]:
@@ -479,7 +491,7 @@ async def process_lynch_vote(ctx, voter_id, lynch_target):
     lynch_votes[lynch_target_id]["total_votes"] += 1
     lynch_votes[lynch_target_id]["voters"].append(voter_id)
     channel = bot.get_channel(config.VOTING_CHANNEL_ID)
-    await channel.send(f"{ctx.author.mention} voted for {lynch_target} who now has {lynch_votes[lynch_target_id]["total_votes"]}")
+    await channel.send(f"<@{voter_id}> voted for <@{lynch_target}> who now has {lynch_votes[lynch_target_id]["total_votes"]}")
     print(f"DEBUG: Lynch votes after /vote -> {lynch_votes}")
 
 async def countlynchvotes(bot, players):
@@ -554,6 +566,7 @@ async def send_vote_update(bot,players):
     global current_phase, phase_number
     voting_channel = bot.get_channel(config.VOTING_CHANNEL_ID)
     print(f"DEBUG: Current phase is {current_phase}- {phase_number}")
+    print("DEBUG: Send_vote_update called...")
     if current_phase != "Day":
         await voting_channel.send("Vote counting is only available during the day phase.")
         print(f"DEBUG: Current phase is {current_phase}")
@@ -563,6 +576,7 @@ async def send_vote_update(bot,players):
     voters = {}  # Dictionary to track who voted for whom
     for player_id, player_data in players.items():
         target_id = player_data["action_target"]
+        print(f"DEBUG: {player_id} -> target_id: {target_id}")
         if target_id is not None and player_data["alive"]:
             if target_id not in vote_counts:
                 vote_counts[target_id] = 0
@@ -573,14 +587,23 @@ async def send_vote_update(bot,players):
             voters[target_id].append(player_data["name"])
     # Prepare the message content
     message_content = "**Current Lynch Vote:**\n"
+    print(f"DEBUG: Current message content == {message_content}")
+    print(f"DEBUG: vote counts: {vote_counts}")
     if not vote_counts:
         message_content += "No votes yet.\n"
+        print(f"DEBUG: Current message content == {message_content}")
     else:
+        print(f"DEBUG: {vote_counts}")
         for player_id, vote_count in vote_counts.items():
-            player_data = players[player_id]
-            player_name = player_data["name"]
-            voter_list = ", ".join(voters[player_id])
-            message_content += f"- {player_name}: {vote_count} vote(s) - {voter_list}\n"
+            print(f"DEBUG: PlayerID: {player_id}")
+            if player_id is None or player_id == "":
+                print("No id")
+            else:
+                player_data = players[player_id]
+                player_name = player_data["name"]
+                voter_list = ", ".join(voters[player_id])
+                message_content += f"- {player_name}: {vote_count} vote(s) - {voter_list}\n"
+                print(f"DEBUG: Current message content == {message_content}")
     # Find players who haven't voted
     not_voted = [
         player_data["name"]
@@ -590,6 +613,7 @@ async def send_vote_update(bot,players):
     if not_voted:
         message_content += "\n**Players who haven't voted yet:**\n"
         message_content += ", ".join(not_voted) + "\n"
+        print(f"DEBUG: Current message content == {message_content}")
     else:
         message_content += "\nAll players have voted.\n"
     await voting_channel.send(message_content) 
@@ -695,59 +719,59 @@ async def announce_winner(bot, winner):
     game_started = False  # Allow new games to be started
     gameprocess.stop()
 
-async def process_sk_night_kill(bot,target_id):
+async def process_sk_night_kill(bot, target_id):
     global current_phase, phase_number, players
     total_phases = (phase_number * 2) - (1 if current_phase == "night" else 0)
-    sk_player_id = get_specific_player_id(players,"Serial Killer")
-    print(f"DEBUG: mob_gf_id => {sk_player_id}")
-    # Check if a Godfather was found before proceeding
+    sk_player_id = get_specific_player_id(players, "Serial Killer")
     if sk_player_id is None:
-        print("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
-        print(f"Players = {players}")
+        print("DEBUG: No living Serial Killer found. Skipping SK night kill process.")
         return
+    sk_player_action_target = players[sk_player_id]["action_target"]
+    # Check if a Serial Killer was found before proceeding
     if sk_player_id > 0:
-        if bot:  # Check if ctx is available
-            sk_player = await bot.fetch_user(sk_player_id)
-            try:
-                if target_id is None:
-                    print("DEBUG: No target selected for SK. Skipping kill process.")
-                    await sk_player.send("You did not select a target for the night kill.")
-                    return
-                if target_id not in players:
-                    print(f"DEBUG: Invalid target ID {target_id} for SK. Skipping kill process.")
-                    await sk_player.send(f"Invalid target for the night kill. Target player is not in the game.")
-                    return
-                if not players[target_id]["alive"]:
-                    print("DEBUG: Target player for SK is already dead. Skipping kill process.")
-                    await sk_player.send("Target player for the night kill is already dead.") 
-                    return
-            except discord.Forbidden:
-                print(f"Could not send DM to Serial Killer due to their privacy settings.")
-            except Exception as e:
-                print(f"An error occurred while sending DM to Serial Killer: {e}")
-        else:
-            print("DEBUG: No living Serial Killer found.")
-    if target_id is not None:
-        story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        print(f"DEBUG: SK killed {target_id}")
-        # Mark the player as dead and record how
-        players[target_id]["alive"] = False
-        players[target_id]["death_info"] = {
+        sk_player = await bot.fetch_user(sk_player_id)
+        try:
+            if target_id is None:
+                print("DEBUG: No target selected for SK. Skipping kill process.")
+                await sk_player.send("You did not select a target for the night kill.")
+                return
+            if target_id not in players:
+                print(f"DEBUG: Invalid target ID {target_id} for SK. Skipping kill process.")
+                await sk_player.send(f"Invalid target for the night kill. Target player is not in the game.")
+                return
+            if not players[target_id]["alive"]:
+                print("DEBUG: Target player for SK is already dead. Skipping kill process.")
+                await sk_player.send("Target player for the night kill is already dead.")
+                return
+            # Target is valid, proceed with the kill process
+            story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
+            print(f"DEBUG: SK killed {target_id}")
+            # Mark the player as dead and record how
+            players[target_id]["alive"] = False
+            players[target_id]["death_info"] = {
                 "phase": f"{current_phase} {phase_number}",
-                "phase num": f"{phase_number}",
-                "total phases": f"{total_phases}",
+                "phase_num": f"{phase_number}",
+                "total_phases": f"{total_phases}",
                 "how": "Killed by SK"
-            }    
-        # Announce the player's role
-        target_name = players[target_id]["name"] 
-        await story_channel.send(f"**{target_name} was killed by the SK!**")
+            }
+            # Announce the player's death
+            target_name = players[target_id]["name"]
+            await story_channel.send(f"**{target_name} was killed by the SK!**")
+            # Announce the player's role if not an NPC
+            target_role = players[target_id]["role"].name
+            await story_channel.send(f"{target_name}'s role was: {target_role}")
+            players[sk_player_id]["action_target"] = ""
+        except discord.Forbidden:
+            print(f"Could not send DM to Serial Killer due to their privacy settings.")
+        except Exception as e:
+            print(f"An error occurred while sending DM to Serial Killer: {e}")
+    else:
+        print("DEBUG: No living Serial Killer found.")
 
 async def process_mafia_night_kill(bot,target_id):
     global current_phase, phase_number, players
     total_phases = (phase_number * 2) - (1 if current_phase == "night" else 0)
     mob_gf_id = get_specific_player_id(players,"Godfather")
-    print(f"DEBUG: mob_gf_id => {mob_gf_id}")
-    # Check if a Godfather was found before proceeding
     if mob_gf_id is None:
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
         print("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
@@ -760,6 +784,8 @@ async def process_mafia_night_kill(bot,target_id):
             mob_goon_player = await bot.fetch_user(mob_goon_id)
             await mob_goon_player.send("Your Godfather has been killed, you are the Godfather Now")
         return
+    gf_player_action_target = players[mob_gf_id]["action_target"]
+    # Check if a Godfather was found before proceeding
     if mob_gf_id > 0:
         if bot:
             mob_gf_player = await bot.fetch_user(mob_gf_id)
@@ -781,7 +807,9 @@ async def process_mafia_night_kill(bot,target_id):
                 print(f"An error occurred while sending DM to mob GF: {e}")
     else:
         print("DEBUG: No living Godfather found.")
-    if target_id is not None:  # only show role for non-npc
+    if target_id is None or target_id == "":  
+        print("DEBUG: No target")
+    else:    # only show role for non-npc
             story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
             print(f"DEBUG: Mob killed {target_id}")
             # Mark the player as dead and record how
@@ -795,12 +823,21 @@ async def process_mafia_night_kill(bot,target_id):
             # Announce the player's role
             target_name = players[target_id]["name"] 
             await story_channel.send(f"**{target_name} was killed by the mob!**")
+    players[mob_gf_id]["action_target"] = ""
 
 async def process_doc_night_heal(bot,target_id):
     global current_phase, phase_number, players
     if current_phase == "Day":
         return
+    if target_id:
+        if players[target_id]["Role"].name == "Doctor":
+            if players[target_id]["alive"] == False:    
+                players[target_id]["alive"] = True
+                await story_channel.send("**Town Doc managed to revive themselves....**")
     town_doc_id = get_specific_player_id(players,"Doctor")
+    if town_doc_id is None:
+        print("DEBUG: No living doctor found. Skipping doc night heal process.")        
+        return
     if town_doc_id > 0:
         if bot:
             town_doc_player = await bot.fetch_user(town_doc_id)
@@ -826,20 +863,23 @@ async def process_doc_night_heal(bot,target_id):
                 print(f"Could not send DM to town doc due to their privacy settings.")
             except Exception as e:
                 print(f"An error occurred while sending DM to town doc: {e}")
-    story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-    previous_target = False
-    if target_id is not None:
-        target_name = players[target_id]["name"]
-        print(f"DEBUG: Town Doc heals {target_id}")
-        if players[target_id]["alive"] == False:
-            previous_target = True
-        players[target_id]["alive"] = True
-        if previous_target == True:
-            await story_channel.send(f"**Town Doc found {target_name} and revived them....")
-
+            story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
+            previous_target = False
+            if target_id is not None:
+                target_name = players[target_id]["name"]
+                print(f"DEBUG: Town Doc heals {target_id}")
+                if players[target_id]["alive"] == False:
+                    previous_target = True
+                players[target_id]["alive"] = True
+                if previous_target == True:
+                    await story_channel.send(f"**Town Doc found {target_name} and revived them....")
+                    
 async def process_cop_night_investigate(bot,target_id):
     global current_phase, phase_number,players
     town_cop_id = get_specific_player_id(players,"Town Cop")
+    if town_cop_id is None:
+        print("DEBUG: Town Cop is already dead")
+        return
     if town_cop_id > 0:
         if bot:
             town_cop_player = await bot.fetch_user(town_cop_id)
@@ -873,7 +913,7 @@ async def on_ready():
 # --- Bot Commands ---
 @bot.command(name="startmafia")
 #@commands.has_role(discord_role_data.get("mod", {}).get("id"))
-@commands.check(is_owner_or_mod())
+@commands.check(is_owner_or_mod(bot, discord_role_data))
 async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime: str):
     # ""Args:""
     #    ctx: The command context.
@@ -894,6 +934,7 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     # Parse the start_datetime string into a datetime object
     try:
         time_signup_ends = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+        print(f"DEBUG: Time signups end => {time_signup_ends}")
     except ValueError:
         await ctx.send("Invalid date/time format. Please use '%Y-%m-%d %H:%M' format in UTC.")
         return
@@ -903,7 +944,7 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         return
     # Calculate join_hours based on the difference between now and start_datetime
     join_hours = round((time_signup_ends - datetime.now(timezone.utc)).total_seconds() / 3600, 2)
-    print(f"DEBUG: New game started.")
+    print(f"DEBUG: New game started with join hours {join_hours}")
     channel = bot.get_channel(config.TALKY_TALKY_CHANNEL_ID)
     await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
                         f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
@@ -931,8 +972,9 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         print("DEBUG: Sign-ups ended, but the game was stopped.")
 
 @bot.command(name="join")
-@commands.check(is_owner_or_mod())
-async def join_game(ctx,*,game_name: str):
+@commands.check(is_owner_or_mod(bot, discord_role_data))
+#async def join_game(ctx,*,game_name: str):
+async def join_game(ctx):
     """Joins the Mafia game."""
     global players
     if not game_started:
@@ -949,7 +991,7 @@ async def join_game(ctx,*,game_name: str):
     if current_phase == "":
         players[player_id] = {
             "name": ctx.author.name,
-            "display_name": game_name,
+            "display_name": ctx.author.nick if ctx.author.nick else ctx.author.name,
             "role": None,
             "alive": True,
             "votes": 0,
@@ -957,7 +999,7 @@ async def join_game(ctx,*,game_name: str):
         }
         # Update discord roles
         guild = ctx.guild
-        await update_player_discord_roles(bot, guild, players, discord_role_data)
+        await update_player_discord_roles(guild, players, discord_role_data)
         print(f"DEBUG: Player joined: {ctx.author.name} (ID: {player_id}). Players: {players}")
         await ctx.send(
             f"{ctx.author.mention} has joined the game!"
@@ -986,7 +1028,7 @@ async def join_game_error(ctx, error):
         await ctx.author.send("An error occurred during processing of this command.")
 
 @bot.command(name="stop")
-@commands.check(is_owner_or_mod())
+@commands.check(is_owner_or_mod(bot, discord_role_data))
 #@commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def stop_game(ctx):
     """Stops the current game."""
@@ -1001,10 +1043,10 @@ async def stop_game(ctx):
     print("DEBUG: Game stopped. Players:", players)
     await ctx.send("The current game has been stopped.")
     guild = ctx.guild
-    await update_player_discord_roles(bot, guild, players, discord_role_data)
+    await update_player_discord_roles(guild, players, discord_role_data)
 
 @bot.command(name="status")
-@commands.check(is_owner_or_mod())
+@commands.check(is_owner_or_mod(bot, discord_role_data))
 #@commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def status(ctx):
     """Displays the current game status."""
@@ -1016,7 +1058,7 @@ async def status(ctx):
     print(f"/Status called and info sent to channel")
 
 @bot.command(name = "vote")
-@commands.check(is_owner_or_mod())
+@commands.check(is_owner_or_mod(bot, discord_role_data))
 @commands.has_role(discord_role_data.get("living", {}).get("id"))
 async def vote(ctx, *, lynch_target):
     """Allows playes to vote."""
@@ -1031,20 +1073,24 @@ async def vote(ctx, *, lynch_target):
         await ctx.send("Not currently Day Phase")
         return
     player_id = ctx.author.id
-    target_id = get_player_id_by_name(lynch_target)
+    target_id = await get_player_id_by_name(lynch_target, players)
+    print(f"DEBUG: Target for lynch = {target_id}")
     if player_id not in players:
         channel = bot.get_channel(config.VOTING_CHANNEL_ID)
         await channel.send("You are not in this game")
         return 
     if target_id not in players:
         channel = bot.get_channel(config.VOTING_CHANNEL_ID)
+        print(f"DEBUG {players}")
+        print(f"DEBUG: Target for lynch = {target_id}")
         await channel.send("Lynch target is not in this game")
         return 
-    await process_lynch_vote(ctx, player_id, lynch_target)
+    print(f"DEBUG: Sending data to process_lynch_vote: {ctx}, {player_id}, {lynch_target}")
+    await process_lynch_vote(player_id, lynch_target)
     await send_vote_update(bot, players)  # Send vote update after each vote
 
 @bot.command(name = "count")
-@commands.check(is_owner_or_mod())
+@commands.check(is_owner_or_mod(bot, discord_role_data))
 @commands.has_role(discord_role_data.get("living", {}).get("id"))
 async def count(ctx):
     await send_vote_update(bot, players) #manually send vote count with /count
@@ -1052,7 +1098,7 @@ async def count(ctx):
 @bot.command(name="kill")
 @commands.dm_only()
 async def kill_command(ctx, *, kill_target: str):
-    global sk_target, mob_target
+    global sk_target, mob_target, players
     player_id = ctx.author.id
     if not game_started:
         await ctx.author.send("No game is currently running.")
@@ -1075,28 +1121,35 @@ async def kill_command(ctx, *, kill_target: str):
         return
     if not kill_target:  # Check if target_name is empty
         await ctx.author.send("You must specify a target to kill.")
+        print("Player used /kill with no target")
         return
-    target_id = await get_player_id_by_name(kill_target)
+    target_id = await get_player_id_by_name(kill_target, players)
     print("DEBUG: target input has been converted to ID")
     if target_id is None:
         await ctx.author.send(f"Could not find a player named '{kill_target}'.")
+        print("Player used /kill but target_id could not be found")
         return
     # Ensure the target is not the player themselves
     if target_id == player_id:
         await ctx.author.send("You cannot target yourself.")
+        print("Player used /kill on themselves")
         return
     # Ensure the target is alive
     if not players[target_id]["alive"]:
         await ctx.author.send("You cannot target dead players.")
+        print("Player used /kill on a dead player")
         return
     # Rest of the command logic for players with the correct role
     if player_data["role"].name == "Godfather":
         mob_target = target_id
         await ctx.author.send(f"Godfather has selected {players[target_id]['name']} as the target.")
+        print(f"Godfather used /kill on {target_id}")
     elif player_data["role"].name == "Serial Killer":
         sk_target = target_id
         await ctx.author.send(f"Serial Killer has selected {players[target_id]['name']} as the target.")
+        print(f"SK used /kill on {target_id}")
     await ctx.author.send(f"You have chosen to kill {players[target_id]['name']}.")
+    players[player_id]["action_target"]=target_id
 @kill_command.error
 async def kill_command_error(ctx, error):
     if isinstance(error, commands.PrivateMessageOnly):
@@ -1112,7 +1165,7 @@ async def kill_command_error(ctx, error):
 @commands.dm_only()
 async def heal_command(ctx, *, target_name: str):  # Changed target to target_name
     """Allows the Doctor to select a player to heal during the night phase."""
-    global heal_target
+    global heal_target, players
     player_id = ctx.author.id
     if not game_started:
         await ctx.author.send("No game is currently running.")
@@ -1133,7 +1186,7 @@ async def heal_command(ctx, *, target_name: str):  # Changed target to target_na
     if player_data["role"].name not in allowed_roles:
         await ctx.author.send("You do not have the required role to use this command.")
         return
-    target_id = await get_player_id_by_name(target_name)
+    target_id = await get_player_id_by_name(target_name, players)
     if target_id is None:
         await ctx.author.send(f"Could not find a player named '{target_name}'.")
         return
@@ -1147,6 +1200,7 @@ async def heal_command(ctx, *, target_name: str):  # Changed target to target_na
         return
     # Rest of the command logic for players with the correct role
     heal_target = target_id
+    players[player_id]["action_target"] = target_id
     await ctx.author.send(f"You have chosen to heal {players[target_id]['name']}.")
 @heal_command.error
 async def heal_command_error(ctx, error):
@@ -1163,7 +1217,7 @@ async def heal_command_error(ctx, error):
 @commands.dm_only()
 async def investigate_command(ctx, *, target_name: str):
     """Allows the Town Cop to investigate a player during the night phase."""
-    global investigate_target
+    global investigate_target, players
     player_id = ctx.author.id
     if not game_started:
         await ctx.author.send("No game is currently running.")
@@ -1184,7 +1238,7 @@ async def investigate_command(ctx, *, target_name: str):
     if player_data["role"].name not in allowed_roles:
         await ctx.author.send("You do not have the required role to use this command.")
         return
-    target_id = await get_player_id_by_name(target_name)
+    target_id = await get_player_id_by_name(target_name, players)
     if target_id is None:
         await ctx.author.send(f"Could not find a player named '{target_name}'.")
         return
@@ -1198,6 +1252,7 @@ async def investigate_command(ctx, *, target_name: str):
         return
     # Rest of the command logic for players with the correct role
     investigate_target = target_id
+    players[player_id]["action_target"] = target_id
     await ctx.author.send(f"You have chosen to investigate {players[target_id]['name']}.")
 @investigate_command.error
 async def investigate_command_error(ctx, error):
@@ -1237,15 +1292,18 @@ async def show_rules(ctx):
 # --- Game Loop ---
 @tasks.loop(seconds = 1)
 async def gameprocess(ctx,bot,players):
-    global phase_number, current_phase, lynch_votes, sk_target, mob_target, heal_target, investigate_target, time_night_ends, time_day_ends
+    global phase_number, current_phase, lynch_votes, sk_target, mob_target, heal_target, investigate_target, time_night_ends, time_day_ends, message_send_delay
     if current_phase == "Night":
         #night phase
+        if phase_number == 0:
+            time_night_ends = time_signup_ends + timedelta(hours=LOOP_HOURS)
+        else:
+            time_night_ends = time_day_ends + timedelta(hours=LOOP_HOURS)
         phase_number += 1 
         print(f"DEBUG: Starting {current_phase} - {phase_number} which will last {LOOP_HOURS} hours\n"
               "The town goes to sleep....\n")
         channel = bot.get_channel(config.STORIES_CHANNEL_ID)
         await channel.send(f"Night {phase_number} has fallen. The town goes to sleep...")
-        time_night_ends = datetime.now(timezone.utc) + timedelta(hours=LOOP_HOURS)
         print(f"DEBUG: Current time night ends = {time_night_ends}")
         status_message = generate_status_message(players)
         await channel.send(status_message)
@@ -1253,17 +1311,25 @@ async def gameprocess(ctx,bot,players):
         print("Sleeping....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         print(f"DEBUG: Targets... Sk target = {sk_target}, mob target = {mob_target}, doc target = {heal_target}, cop target = {investigate_target}")
+        await asyncio.sleep(message_send_delay)
+        print(f"DEBUG - SK Kill {sk_target}")
         await process_sk_night_kill(bot, sk_target)
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
+        print(f"DEBUG - Mob Kill {mob_target}")
         await process_mafia_night_kill(bot, mob_target)
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
+        print(f"DEBUG - Doc Heal {heal_target}")
         await process_doc_night_heal(bot, heal_target)
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
+        print(f"DEBUG - Cop investigate {investigate_target}")
         await process_cop_night_investigate(bot, investigate_target)
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
+        print("DEBUG - All night actions done")
         guild = bot.get_guild(config.SERVER_ID)
-        await update_player_discord_roles(bot, guild, players, discord_role_data)
-        await asyncio.sleep(10)
+        await update_player_discord_roles(guild, players, discord_role_data)
+        print("DEBUG - Discord roles now updted")
+        await asyncio.sleep(message_send_delay)
+        print("DEBUG: Checking winner")
         winner = check_win_conditions()
         if winner:
             await announce_winner(bot, winner)  # You'll need to implement announce_winner
@@ -1282,21 +1348,24 @@ async def gameprocess(ctx,bot,players):
         channel = bot.get_channel(config.STORIES_CHANNEL_ID)
         await channel.send(f"Day {phase_number} has dawned. The town awakens...")
         print(f"The current UTC time is {datetime.now(timezone.utc)}")
-        time_day_ends = datetime.now(timezone.utc) + timedelta(hours=LOOP_HOURS)
+        time_day_ends = time_night_ends + timedelta(hours=LOOP_HOURS)
         print(f"DEBUG: Current time day ends = {time_day_ends}")
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
+        print("DEBUG: Generate and send status message")
         status_message = generate_status_message(players)
         await channel.send(status_message)
         #future day actions logic
         print("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         await channel.send("Voting ended!")
-        await countlynchvotes(bot,ctx,players,game_roles)
+        print("DEBUG: Counting votes...")
+        await countlynchvotes(bot,players)
         print(f"DEBUG: The lynch results -> {lynch_votes} for {current_phase} - {phase_number}")
-        await asyncio.sleep(10)
+        await asyncio.sleep(message_send_delay)
         guild = bot.get_guild(config.SERVER_ID)
-        await update_player_discord_roles(bot, guild, players, discord_role_data)
-        await asyncio.sleep(10)
+        await update_player_discord_roles(guild, players, discord_role_data)
+        await asyncio.sleep(message_send_delay)
+        print("DEBUG: Checking win conditions")
         winner = check_win_conditions()
         if winner:
             await announce_winner(bot, winner)  # You'll need to implement announce_winner
@@ -1304,6 +1373,7 @@ async def gameprocess(ctx,bot,players):
         #recordphaseactions()
         lynch_votes = {}
         current_phase = "Night"
+        print("DEBUG: Changed to night phase")
 
 # --- Start the Bot ---
 bot.run(config.BOT_TOKEN,log_handler=handler, log_level=logging.DEBUG)
