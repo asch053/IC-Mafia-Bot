@@ -343,5 +343,37 @@
         "phase": "Day",
         "phase_num": 4,
         "lynch votes": {}
+    },
+    {
+        "game_id": "20250203-020033",
+        "phase": "Day",
+        "phase_num": 1,
+        "lynch votes": {
+            "-9": {
+                "total_votes": 1,
+                "voters": [
+                    225405842235719680
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250203-140131",
+        "phase": "Day",
+        "phase_num": 2,
+        "lynch votes": {
+            "-1": {
+                "total_votes": 1,
+                "voters": [
+                    225405842235719680
+                ]
+            },
+            "-4": {
+                "total_votes": 1,
+                "voters": [
+                    479362336264683520
+                ]
+            }
+        }
     }
 ]
