@@ -22,12 +22,9 @@ bot = commands.Bot(command_prefix=config.BOT_PREFIX, intents=intents)
 
 def setup_logging():
     """Configures logging for the bot."""
-
     # Create logs directory if it doesn't exist
     log_dir = os.path.join(".", "logs", datetime.now(timezone(timedelta(hours=12))).strftime("%Y-%m-%d")) # Use UTC+12
     os.makedirs(log_dir, exist_ok=True)
-
-
     # --- Create formatter ---
     dt_fmt = '%Y-%m-%d %H:%M:%S'
     formatter = logging.Formatter('[{asctime}] [{levelname:<8}] {name} - {funcName}:{lineno}: {message}', dt_fmt, style='{')
@@ -44,7 +41,6 @@ def setup_logging():
     )
     debug_handler.setFormatter(formatter)
     debug_handler.setLevel(logging.DEBUG)
-
     # Error log handler
     error_log_file = os.path.join(log_dir, f"{datetime.now(timezone(timedelta(hours=12))).strftime('%Y-%m-%d')}_error.log")
     error_handler = RotatingFileHandler( #No longer need to specify the logging module
@@ -55,26 +51,20 @@ def setup_logging():
     )
     error_handler.setFormatter(formatter)
     error_handler.setLevel(logging.INFO) # Only INFO and above
-
     # Console handler (INFO and above)
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
     console_handler.setLevel(logging.INFO) # Only INFO and above to console
-
     # --- Get logger and add handlers ---
     logger = logging.getLogger('discord') # Get the discord logger
     logger.setLevel(logging.DEBUG)  # Set the ROOT logger level to DEBUG
     logger.addHandler(debug_handler)       # Everything to the debug log
     logger.addHandler(error_handler)      # Errors to the error log
     logger.addHandler(console_handler)   # Info and above to console
-
     return logger, debug_handler  # Return the logger and main filehandler
 
 # --- Logging setup ---
 logger, handler = setup_logging() # Set up logging at the very top
-
-
-
 
 # Example logging calls
 logger.debug("This is a debug message.")
@@ -132,15 +122,15 @@ except FileNotFoundError:
 
 # --- Roles ---
 class GameRole:
-    def __init__(self, name, alignment, description, night_action=None, uses=None):
+    def __init__(self, name, alignment, short_description ,description, night_action=None, uses=None):
         self.name = name
         self.alignment = alignment
+        self.short_description = short_description
         self.description = description
         self.night_action = night_action
         self.uses = uses
     def __str__(self):
         return self.name
-
 
 # --- load data files ---
 def save_json_data(data, name, sub="game_data"):
@@ -156,7 +146,7 @@ def save_json_data(data, name, sub="game_data"):
     filename = f"{name}.json"
     subdirectory = f"{sub}/{name}"
     # Create the subdirectory if it doesn't exist
-    data_dir = os.path.join("stats", subdirectory)
+    data_dir = os.path.join("stats", subdirectory, name)
     os.makedirs(data_dir, exist_ok=True)
     # Construct the full file path
     filepath = os.path.join(data_dir, filename)
@@ -357,7 +347,7 @@ async def send_role_dm(bot, player_id, role, message_send_delay):
         logger.debug(f"DEBUG: Player details: {player}... sending role")
         print("-------------------------------")
         await asyncio.sleep(message_send_delay)  # Consider if this delay is *really* needed
-        await asyncio.wait_for(player.send(f"You are a {role.name}. {role.description}"), timeout=5.0)  # Timeout here
+        await asyncio.wait_for(player.send(f"You are a **{role.name}**.\n{role.description}"), timeout=5.0)  # Timeout here
     except discord.Forbidden:
         logger.error(f"Could not send role information to {player.name} due to their privacy settings.")
     except asyncio.TimeoutError: # Handle timeout
@@ -434,6 +424,7 @@ async def generate_game_roles(num_players):
             game_role = GameRole(
                 name=role_data["name"],
                 alignment=role_data["alignment"],
+                short_description=role_data["short_description"],
                 description=role_data["description"],
                 uses=role_data.get("uses"),
             )
@@ -463,47 +454,55 @@ def get_time_left_string(end_time):
     else:
         return f"{minutes} minutes"
 
-
 def generate_status_message(players):
     global current_phase, time_left, phase_number, time_day_ends, time_night_ends, time_signup_ends
     """Generates the game status message."""
-    logger.info(f"DEBUG: generate_status_message called\n"
-          f"The current phase is {current_phase} - {phase_number}")
+    logger.info(
+        f"DEBUG: generate_status_message called\n"
+        f"The current phase is {current_phase} - {phase_number}"
+    )
     status_message = "**Current Game Status:**\n"
     # Add phase information with countdown
     if current_phase == "":
-        logger.info("DEBUG: Status message generated during setup")
         time_left = get_time_left_string(time_signup_ends)
         status_message += f"**Phase:** Signups - ends in {time_left}\n"
-        status_message += f"Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
-        status_message += f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
+        status_message += (
+            f"Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
+        )
+        status_message += (
+            f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
+        )
         logger.info(f"DEBUG: Status message generated during setup with {time_left}")
     else:
         if current_phase == "Day":
             time_left = get_time_left_string(time_day_ends)
-            status_message += f"**Phase:** {current_phase} {phase_number} - ends in {time_left}\n"
-            status_message += f"{time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
-            logger.info(f"DEBUG: Status message generated during day with {time_left}")
         else:
             time_left = get_time_left_string(time_night_ends)
-            status_message += f"**Phase:** {current_phase} {phase_number} - ends in {time_left}\n"
-            status_message += f"{time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
-            logger.info(f"DEBUG: Status message generated during setup with {time_left}")
+        status_message += (
+            f"**Phase:** {current_phase} {phase_number} - ends in {time_left}\n"
+        )
     status_message += f"**Players:**\n"
     for player_id, player_data in players.items():
         player_name = player_data["display_name"]
-        # Check if role is assigned before accessing its attributes
-        player_role = ""
-        player_alignment = ""
+        player_status = "Alive" if player_data["alive"] else "Dead"
         if player_data["alive"]:
-            status_message += f"- {player_name}: Status = Alive, Role = {player_role}, Alignment = {player_alignment}\n"
+            status_message += f"- {player_name}: Status = {player_status}\n"
         else:
-            player_role = player_data["role"].name if player_data.get("role") else "No Role"
-            player_alignment = player_data["role"].alignment if player_data.get("role") else "N/A"
+            # Only show role/alignment for dead players
+            player_role = (
+                player_data["role"].name if player_data.get("role") else "No Role"
+            )
+            player_alignment = (
+                player_data["role"].alignment if player_data.get("role") else "N/A"
+            )
             death_info = player_data.get("death_info")
             death_phase = death_info.get("phase") if death_info else "N/A"
             death_how = death_info.get("how") if death_info else "N/A"
-            status_message += f"- ~~{player_name}~~: Status = Dead, Role = {player_role}, Alignment = {player_alignment}, Died in Phase: {death_phase}, Cause: {death_how}\n"
+            status_message += (
+                f"- ~~{player_name}~~: Status = {player_status}, "
+                f"Role = {player_role}, Alignment = {player_alignment}, "
+                f"Died in Phase: {death_phase}, Cause: {death_how}\n"
+            )
     logger.info(f"DEBUG: Status message generated: {status_message}")
     return status_message
 
@@ -512,9 +511,38 @@ def create_godfather_role():
     return GameRole(
         name="Godfather",
         alignment="Mafia",
+        short_description="Chooses the Mafia's target each night.",
         description="Chooses the Mafia's target each night.",
         night_action="Choose a target to kill. Use `/kill @player` in the Mafia chat.",
     )
+
+async def list_assigned_roles():
+    """
+    Lists all assigned roles in the game and sends the list to a specified channel.
+
+    Args:
+        bot: The discord.ext.commands.Bot instance.
+        channel_id: The ID of the channel to send the list to.
+    """
+    logger.info("list_assinged_roles called")
+    global players
+    # Build a set of unique role and alignment combinations
+    assigned_roles = set()
+    for player_data in players.values():
+        if player_data.get("role"):  # Safely check if role is assigned
+            role = player_data["role"]
+            assigned_roles.add(f"**{role.alignment}** - {role.name} - _{role.short_description}_")  # Combine alignment and name
+    if not assigned_roles:
+        role_list_message = "No roles have been assigned yet."  # Should not happen, but good to check
+        logger.error("No Roles have been assigned")
+        return role_list_message
+    # Sort list alphabetically
+    logger.info(f"Role list: {assigned_roles}")
+    # Create a formatted string of the assigned roles
+    role_list_message = "**\nAssigned Roles in this Game:**\n"
+    role_list_message += "\n".join(f"- {role_name}" for role_name in sorted(assigned_roles))
+    logger.info(f"Role list: {role_list_message}")
+    return(role_list_message)
 
 # --- Game Functions ---
 def reset_game():
@@ -531,8 +559,10 @@ def reset_game():
     time_day_ends = None
     time_night_ends = None
     lynch_votes = {}
+    logger.info(f"DEBUG: gameprocess is running {gameprocess.is_running}")
     if gameprocess.is_running:
         gameprocess.stop
+        gameprocess.cancel
  
 async def prepare_game_start(ctx, bot, npc_names):
     """Prepares the game to start by adding NPCs and assigning roles."""
@@ -553,7 +583,6 @@ async def prepare_game_start(ctx, bot, npc_names):
             "action_target": None,
         }
         logger.info(f"NPC {npc_name} added")
-    
     game_data = {
             "game_id": game_id,
             "start_time": datetime.now(timezone.utc).isoformat(),
@@ -571,9 +600,14 @@ async def prepare_game_start(ctx, bot, npc_names):
     if game_roles:
         await assign_game_roles(bot, players, game_roles, message_send_delay)
         logger.info("DEBUG: Roles assigned")
-        channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        await channel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n"
-                           "**Roles have been assigned, starting game!**\n")
+        role_list_message = await list_assigned_roles()
+        ruleschannel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+        storychannel = bot.get_channel(config.STORIES_CHANNEL_ID)
+        await ruleschannel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n"
+                           "**Roles have been assigned, starting game!**\n\n")
+        await ruleschannel.send("------ **Role List** ---------"
+                                f"{role_list_message}")
+        await storychannel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n")
         logger.info("DEBUG: Sending DM to all mafia players")
         await send_mafia_info_dm(bot,players, message_send_delay)
         # await start_game_night(bot, role_data, injokes, no_injoke) #Removed until game logic added
@@ -1029,7 +1063,7 @@ async def process_cop_night_investigate(bot,target_id):
                     return
                 if target_id is not None:
                     target_role = players[target_id]["role"].name
-                    target_description = players[target_id]["role"].description
+                    target_description = players[target_id]["role"].short_description
                     await town_cop_player.send(f"{players[target_id]['display_name']} is {target_role}. {target_description}")
             except discord.Forbidden:
                 logger.error(f"Could not send role information to town cop due to their privacy settings.")
@@ -1097,14 +1131,14 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     # Wait for signups to end (until start_datetime)
     delay = (time_signup_ends - datetime.now(timezone.utc)).total_seconds()
     logger.debug(f"DEBUG: Delay =  {delay} // {(time_signup_ends - datetime.now(timezone.utc)).total_seconds()}")
-    logger.info(f"DEBUG: TImestamp: {datetime.now(timezone.utc)} -  Game Started == {game_started}")
+    logger.info(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} -  Game Started == {game_started}")
     await asyncio.sleep(delay)
     if game_started:
-        logger.info(f"DEBUG: TImestamp: {datetime.now(timezone.utc)} - game started = {game_started} so prepare game start")
+        logger.info(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started} so prepare game start")
         await prepare_game_start(ctx, bot, npc_names)
     else:
         logger.error("DEBUG: Sign-ups ended, but the game was stopped.")
-        logger.error(f"DEBUG: TImestamp: {datetime.now(timezone.utc)} - game started = {game_started}")
+        logger.error(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started}")
 
 @bot.command(name="join")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
@@ -1129,7 +1163,7 @@ async def join_game(ctx):
     if current_phase == "":
         players[player_id] = {
             "name": ctx.author.name,
-            "display_name": ctx.author.nick if ctx.author.nick else ctx.author.name,
+            "display_name": ctx.author.display_name,
             "role": None,
             "alive": True,
             "votes": 0,
@@ -1185,7 +1219,7 @@ async def stop_game(ctx):
     time_signup_ends = None  # Reset the signup end time
     gameprocess.stop()
     reset_game()
-    logger.info("DEBUG: Game stopped. Players:", players)
+    logger.info(f"DEBUG: Game stopped.")
     await ctx.send("The current game has been stopped.")
     guild = ctx.guild
     await update_player_discord_roles(bot, guild, players, discord_role_data)
@@ -1473,32 +1507,33 @@ async def gameprocess(ctx,bot,players):
         phase_number += 1 
         logger.info(f"DEBUG: Starting {current_phase} - {phase_number} which will last {LOOP_HOURS} hours\n"
               "The town goes to sleep....\n")
-        channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        await channel.send(f"Night {phase_number} has fallen. The town goes to sleep...")
+        storychannel = bot.get_channel(config.STORIES_CHANNEL_ID)
+        ruleschannel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+        await storychannel.send(f"Night {phase_number} has fallen. The town goes to sleep...")
         logger.info(f"DEBUG: Current time night ends = {time_night_ends}")
         status_message = generate_status_message(players)
-        await channel.send(status_message)
+        await ruleschannel.send(status_message)
         #future night time actions logic
         logger.info("Sleeping....")
         await asyncio.sleep(LOOP_HOURS*60*60)
-        logger.info(f"DEBUG: Targets... Sk target = {sk_target}, mob target = {mob_target}, doc target = {heal_target}, cop target = {investigate_target}")
+        logger.debug(f"DEBUG: Targets... Sk target = {sk_target}, mob target = {mob_target}, doc target = {heal_target}, cop target = {investigate_target}")
         await asyncio.sleep(message_send_delay)
-        logger.info(f"DEBUG - SK Kill {sk_target}")
+        logger.debug(f"DEBUG - SK Kill {sk_target}")
         await process_sk_night_kill(bot, sk_target)
         await asyncio.sleep(message_send_delay)
-        logger.info(f"DEBUG - Mob Kill {mob_target}")
+        logger.debug(f"DEBUG - Mob Kill {mob_target}")
         await process_mafia_night_kill(bot, mob_target)
         await asyncio.sleep(message_send_delay)
-        logger.info(f"DEBUG - Doc Heal {heal_target}")
+        logger.debug(f"DEBUG - Doc Heal {heal_target}")
         await process_doc_night_heal(bot, heal_target)
         await asyncio.sleep(message_send_delay)
-        logger.info(f"DEBUG - Cop investigate {investigate_target}")
+        logger.debug(f"DEBUG - Cop investigate {investigate_target}")
         await process_cop_night_investigate(bot, investigate_target)
         await asyncio.sleep(message_send_delay)
         logger.info("DEBUG - All night actions done")
         guild = bot.get_guild(config.SERVER_ID)
         await update_player_discord_roles(bot, guild, players, discord_role_data)
-        logger.info("DEBUG - Discord roles now updted")
+        logger.info("DEBUG - Discord roles now updated")
         await asyncio.sleep(message_send_delay)
         logger.info("DEBUG: Checking winner")
         winner = check_win_conditions()
@@ -1518,19 +1553,21 @@ async def gameprocess(ctx,bot,players):
         #day phase
         logger.info(f"DEBUG: {current_phase} - {phase_number} has dawned which will last {LOOP_HOURS} hours.\n" 
               "The town awakens...")
-        channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        await channel.send(f"Day {phase_number} has dawned. The town awakens...")
+        storychannel = bot.get_channel(config.STORIES_CHANNEL_ID)
+        ruleschannel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+        votingchannel = bot.get_channel(config.VOTING_CHANNEL_ID)
+        await storychannel.send(f"Day {phase_number} has dawned. The town awakens...")
         logger.info(f"The current UTC time is {datetime.now(timezone.utc)}")
         time_day_ends = time_night_ends + timedelta(hours=LOOP_HOURS)
         logger.info(f"DEBUG: Current time day ends = {time_day_ends}")
         await asyncio.sleep(message_send_delay)
         logger.info("DEBUG: Generate and send status message")
         status_message = generate_status_message(players)
-        await channel.send(status_message)
+        await ruleschannel.send(status_message)
         #future day actions logic
         logger.info("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
-        await channel.send("Voting ended!")
+        await votingchannel.send("Voting ended!")
         logger.info("DEBUG: Counting votes...")
         await countlynchvotes(bot,players)
         logger.info(f"DEBUG: The lynch results -> {lynch_votes} for {current_phase} - {phase_number}")
