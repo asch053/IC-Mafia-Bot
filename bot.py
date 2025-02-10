@@ -1517,7 +1517,7 @@ async def show_info(ctx):
         "- `/count`: Displays the current vote count.\n"
         "- `/rules`: Displays the rules of the game.\n"
         "- `/info`: Shows this help message.\n"
-        " **\n--- Player actions ---\n**"
+        " \n**--- Player actions ---**\n"
         "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
         "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
         "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
