@@ -86,7 +86,7 @@ sk_target = ""
 mob_target = ""
 heal_target = ""
 investigate_target =""
-message_send_delay = 10
+message_send_delay = config.message_send_delay
 
 # --- Load Roles ---
 try:
@@ -360,7 +360,7 @@ async def send_mafia_info_dm(bot, players, message_send_delay):
     for player_id, player_data in players.items():
         if player_data["alive"] and player_data["role"].alignment == "Mafia":
             mafia_members = [
-                p_data["name"]
+                p_data["display_name"]
                 for p_id, p_data in players.items()
                 if p_id != player_id and p_data["alive"] and p_data["role"].alignment == "Mafia"
             ]
@@ -563,7 +563,7 @@ def reset_game():
         gameprocess.stop
         gameprocess.cancel
  
-async def prepare_game_start(ctx, bot, npc_names):
+async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     """Prepares the game to start by adding NPCs and assigning roles."""
     global players, current_phase, game_id, game_data, time_signup_ends, game_roles, message_send_delay
     logger.info("prepare_game_start called")
@@ -602,11 +602,13 @@ async def prepare_game_start(ctx, bot, npc_names):
         role_list_message = await list_assigned_roles()
         ruleschannel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
         storychannel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        await ruleschannel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n"
+        await ruleschannel.send("\n \n -------- **NEW GAME STARTING** -------- \n \n"
+                           f"Each phase will be {phase_hours} hours long. \n\n" 
                            "**Roles have been assigned, starting game!**\n\n")
-        await ruleschannel.send("------ **Role List** ---------"
-                                f"{role_list_message}")
-        await storychannel.send("\n \n -------------------- **NEW GAME STARTING** -------------------------- \n \n")
+        await ruleschannel.send("------ **Role List** ---------\n\n"
+                                f"{role_list_message}\n\n"
+                                )
+        await storychannel.send("\n \n -------- **NEW GAME STARTING** -------- \n \n")
         logger.info("DEBUG: Sending DM to all mafia players")
         await send_mafia_info_dm(bot,players, message_send_delay)
         # await start_game_night(bot, role_data, injokes, no_injoke) #Removed until game logic added
@@ -695,7 +697,7 @@ async def countlynchvotes(bot, players):
             lynched_player_data = players[lynched_player_id]
             lynched_player_name = lynched_player_data["name"]
             lynched_player_role = lynched_player_data["role"].name
-            lynched_player_faction = lynched_player_data["alignment"]
+            lynched_player_faction = lynched_player_data["role"].alignment
             await story_channel.send(f"The town gathered as the sun went down to lynch **{lynched_player_name}, the {lynched_player_role} from {lynched_player_faction}!**")
             # Mark the player as dead
             players[lynched_player_id]["alive"] = False
@@ -879,7 +881,6 @@ async def announce_winner(bot, winner):
     }
     save_game_data(game_data)  # Save to JSON file
     # Reset game variables
-    reset_game()
     game_started = False  # Allow new games to be started
     gameprocess.stop()
 
@@ -921,7 +922,7 @@ async def process_sk_night_kill(bot, target_id):
             # Announce the player's death
             target_name = players[target_id]["name"]
             target_role = players[target_id]["role"].name
-            target_faction = players[target_id]["alignment"]
+            target_faction = players[target_id]["role"].alignment
             await story_channel.send(f"**{target_name} was killed by the SK!**")
             await story_channel.send(f"{target_name}'s role was: {target_role}, aligned with {target_faction}")
             players[sk_player_id]["action_target"] = ""
@@ -990,7 +991,7 @@ async def process_mafia_night_kill(bot,target_id):
             # Announce the player's role
             target_name = players[target_id]["name"]
             target_role = players[target_id]["role"].name
-            target_faction = players[target_id]["alignment"]
+            target_faction = players[target_id]["role"].alignment
             await story_channel.send(f"**{target_name} was killed by the SK!**")
             await story_channel.send(f"{target_name}'s role was: {target_role}, aligned with {target_faction}")
     players[mob_gf_id]["action_target"] = ""
@@ -1091,7 +1092,7 @@ async def process_cop_night_investigate(bot, target_id):
     # Target is valid, proceed with investigation.
     target_name = players[target_id]["display_name"]  # Use display_name
     target_role = players[target_id]["role"].name
-    target_alignment = players[target_id]["role"].alignment  # Get alignment
+    target_alignment = players[target_id]["role"].alignment # Get alignment
     target_short_desc = players[target_id]["role"].short_description
     logger.debug(f"Town Cop investigates {target_name} (ID: {target_id}), Role: {target_role}, Alignment: {target_alignment}")
     try:
@@ -1146,18 +1147,18 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     logger.info(f"DEBUG: New game started with join hours {join_hours}")
     channel = bot.get_channel(config.TALKY_TALKY_CHANNEL_ID)
     await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
-                        f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
+                        f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n\n"
                         )
     channel = bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID)
     await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
-                        f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
+                        f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n\n"
                         )
     channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
-    await channel.send( "------- ** New Basic Bitch Game open for signups ** -----------\n"
+    await channel.send( "--- ** New Basic Bitch Game open for signups ** ---\n"
                         f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
-                        f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n"
+                        f"**Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.**\n\n"
                         f"{rules_text}\n"
-                        "------- **No story generated** ------"
+                        "\n--- **No story generated** ---\n\n"
                         )
     # Wait for signups to end (until start_datetime)
     delay = (time_signup_ends - datetime.now(timezone.utc)).total_seconds()
@@ -1166,7 +1167,7 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     await asyncio.sleep(delay)
     if game_started:
         logger.info(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started} so prepare game start")
-        await prepare_game_start(ctx, bot, npc_names)
+        await prepare_game_start(ctx, bot, npc_names, phase_hours)
     else:
         logger.error("DEBUG: Sign-ups ended, but the game was stopped.")
         logger.error(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started}")
@@ -1241,19 +1242,24 @@ async def join_game_error(ctx, error):
 @commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def stop_game(ctx):
     """Stops the current game."""
-    global game_started, time_signup_ends, gameprocess
+    global game_started, time_signup_ends, players, gameprocess
     if not game_started:
         await ctx.send("No game is currently running.")
         logger.error("No game is currently running.")
         return
     game_started = False
     time_signup_ends = None  # Reset the signup end time
-    gameprocess.stop()
-    reset_game()
-    logger.info(f"DEBUG: Game stopped.")
-    await ctx.send("The current game has been stopped.")
+     # Stop the game loop task if it's running
+    if gameprocess is not None:
+        gameprocess.stop()
+        logger.info(f"DEBUG: Gameprocess stopped.")
+    else:
+        logger.error("Game process not running")
     guild = ctx.guild
     await update_player_discord_roles(bot, guild, players, discord_role_data)
+    reset_game()
+    await ctx.send("The current game has been stopped.")
+    logger.info(f"DEBUG: Game stopped.")
 
 @bot.command(name="status")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
@@ -1407,7 +1413,7 @@ async def heal_command(ctx, *, target_name: str):  # Changed target to target_na
         logger.error(f"Player {player_id} used /heal when dead")
         return
     # Check for allowed roles
-    allowed_roles = ["Doctor"]  # Add other roles if needed
+    allowed_roles = ["Town Doctor"]  # Add other roles if needed
     if player_data["role"].name not in allowed_roles:
         await ctx.author.send("You do not have the required role to use this command.")
         logger.error(f"Player {player_id} does not have the required role")
@@ -1503,18 +1509,21 @@ async def investigate_command_error(ctx, error):
 async def show_info(ctx):
     """Shows the list of available commands."""
     info_text = (
-        "**Available Commands:**\n"
-        "`/startmafia <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
-        "`/stop`: Stops the current game.\n"
-        "`/join <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
-        "`/status`: Displays the current game status. Will show game names of all signed up players\n"
-        "`/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
-        "`/count`: Displays the current vote count.\n"
-        "`/rules`: Displays the rules of the game.\n"
-        "`/info`: Shows this help message.\n"
-        "`/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
-        "`/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
-        "`/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
+        "**Available Commands:**\n\n"
+        "**Player commands:**\n"
+        "- `/join <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
+        "- `/status`: Displays the current game status. Will show game names of all signed up players\n"
+        "- `/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
+        "- `/count`: Displays the current vote count.\n"
+        "- `/rules`: Displays the rules of the game.\n"
+        "- `/info`: Shows this help message.\n"
+        " **\n--- Player actions ---\n**"
+        "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
+        "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
+        "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
+        "**Moderator commands:**\n"
+        "- `/startmafia <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
+        "- `/stop`: Stops the current game.\n"
     )
     await ctx.send(info_text)
     logger.info("/info was called")
@@ -1522,7 +1531,18 @@ async def show_info(ctx):
 @bot.command(name="rules")
 async def show_rules(ctx):
     """Displays the rules of the game."""
-    await ctx.send(rules_text)
+    global current_phase, phase_number, time_signup_ends, time_day_ends, time_night_ends
+    ruleschannel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+    if current_phase == "Day":
+        next_deadline = time_day_ends
+    elif current_phase == "night":
+        next_deadline = time_night_ends
+    else:
+        next_deadline = time_signup_ends
+    if next_deadline:
+        await ruleschannel.send(f"{rules_text}\n\n Current {current_phase} phase ends at {next_deadline}\n")
+    else:
+        await ctx.send(f"\nNo current game running. \nStandard game rules: {rules_text} \n")
     logger.info("/rules was called")
 
 # --- Game Loop ---
@@ -1575,6 +1595,7 @@ async def gameprocess(ctx,bot,players):
         if winner:
             logger.info("We have a winner!")
             await announce_winner(bot, winner)  # You'll need to implement announce_winner
+            current_phase = ""
             status_message = generate_status_message(players)
             await ruleschannel.send(status_message)
             reset_game()
