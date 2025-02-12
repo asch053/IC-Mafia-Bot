@@ -1446,7 +1446,6 @@ async def vote(ctx, *, lynch_target):
         ctx.send("You can not vote for a dead player") 
 
 @bot.command(name = "count")
-@commands.check(is_owner_or_mod(bot, discord_role_data))
 @commands.has_role(discord_role_data.get("living", {}).get("id"))
 async def count(ctx):
     await send_vote_update(bot, players) #manually send vote count with /count
@@ -1734,7 +1733,8 @@ async def leave_game(ctx):
     print(f"DEBUG: Player left: {ctx.author.name} (ID: {player_id}). Players: {players}")
 
 @bot.command(name="kick")
-@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
+#@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
+@commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def kick_player(ctx, *, player_name: str):
     """Kicks a player from the game (Mod Only).
 
