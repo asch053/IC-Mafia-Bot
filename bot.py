@@ -121,16 +121,12 @@ except FileNotFoundError:
 
 # --- Roles ---
 class GameRole:
-    def __init__(self, name, alignment, short_description ,description, day_action=None, day_uses=None, lynch_vote=None, night_action=None, night_uses=None):
+    def __init__(self, name, alignment, short_description ,description, uses=None):
         self.name = name
         self.alignment = alignment
         self.short_description = short_description
         self.description = description
-        self.day_action = day_action
-        self.day_uses = day_uses
-        self.lynch_vote = lynch_vote
-        self.night_action = night_action
-        self.night_uses = night_uses
+        self.uses = uses
     def __str__(self):
         return self.name
     def to_dict(self):
@@ -1367,7 +1363,7 @@ async def join_game_error(ctx, error):
         logger.error(f"{ctx.author.name} used an incorrect argument in /join")
     else:
         await ctx.author.send("An error occurred during processing of this command.")
-        logger.critical("An error occurred during processing of this command.")
+        logger.critical(f"An error occurred during processing of this command. {error}")
 
 @bot.command(name="stop")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
@@ -1732,8 +1728,8 @@ async def leave_game(ctx):
     await ctx.send(f"{ctx.author.mention} has left the game.")
     print(f"DEBUG: Player left: {ctx.author.name} (ID: {player_id}). Players: {players}")
 
-@bot.command(name="kick")
-#@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
+@bot.command(name="remove")
+@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
 @commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def kick_player(ctx, *, player_name: str):
     """Kicks a player from the game (Mod Only).
@@ -1742,37 +1738,45 @@ async def kick_player(ctx, *, player_name: str):
         ctx: The command context.
         player_name: The name or mention of the player to kick.
     """
-    global players
+    global players, current_phase
 
+    logger.info("Remove command called")
     target_id = await get_player_id_by_name(player_name)
+    logger.info(f"Target for removal is {target_id}")
     if target_id is None:
         await ctx.send(f"Could not find a player named '{player_name}'.")
+        logger.error(f"Could not find a player named '{player_name}'.")
         return
     if target_id not in players:
         await ctx.send(f"Player '{player_name}' is not in the current game.")
+        logger.error(f"Player '{player_name}' is not in the current game.")
         return
     target_data = players[target_id]
     target_name = target_data["name"]
+    logger.info(f"Target for removal is {target_name} in current phase {current_phase}")
     if current_phase == "":  # Sign-up phase
         # Remove the player from the game
         del players[target_id]
+        logger.info(f"Deleting player {target_id}")
         # Remove roles
-        guild = ctx.guild
-        member = guild.get_member(target_id)
-        if member:
-            living_role_id = discord_role_data.get("living", {}).get("id")
-            dead_role_id = discord_role_data.get("dead", {}).get("id")
-            spectator_role_id = discord_role_data.get("spectator", {}).get("id")
-            living_role = discord.utils.get(guild.roles, id=living_role_id)
-            dead_role = discord.utils.get(guild.roles, id=dead_role_id)
-            spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
-            await member.remove_roles(living_role, dead_role)  # Remove both, just in case
-            await member.add_roles(spectator_role)  # Add back spectator
-        await ctx.send(f"{target_name} has been removed from the game.")
-        print(f"DEBUG: Player {target_name} (ID: {target_id}) removed during sign-up.")
+        if target_id > 0:
+            guild = ctx.guild
+            member = guild.get_member(target_id)
+            if member:
+                living_role_id = discord_role_data.get("living", {}).get("id")
+                dead_role_id = discord_role_data.get("dead", {}).get("id")
+                spectator_role_id = discord_role_data.get("spectator", {}).get("id")
+                living_role = discord.utils.get(guild.roles, id=living_role_id)
+                dead_role = discord.utils.get(guild.roles, id=dead_role_id)
+                spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
+                await member.remove_roles(living_role, dead_role)  # Remove both, just in case
+                await member.add_roles(spectator_role)  # Add back spectator
+            await ctx.send(f"{target_name} has been removed from the game.")
+        logger.info(f"DEBUG: Player {target_name} (ID: {target_id}) removed during sign-up.")
     else:  # Game is in progress (Day or Night)
         if not target_data["alive"]:
             await ctx.send(f"{target_name} is already dead.")
+            logger.error(f"{target_name} is already dead.")
             return
         # Mark the player as dead
         target_data["alive"] = False
@@ -1782,13 +1786,14 @@ async def kick_player(ctx, *, player_name: str):
             "how": "Mod Kill",
         }
         # Update roles
-        guild = ctx.guild
-        await update_player_discord_roles(bot, guild, players, discord_role_data)
-        # Send message to stories channel
-        story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-        await story_channel.send(f"**{target_name} has been mod-killed!**")
-        await ctx.send(f"{target_name} has been mod-killed.")
-        print(f"DEBUG: Player {target_name} (ID: {target_id}) mod-killed during {current_phase} phase.")
+        if target_id >0 :
+            guild = ctx.guild
+            await update_player_discord_roles(bot, guild, players, discord_role_data)
+            # Send message to stories channel
+            story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
+            await story_channel.send(f"**{target_name} has been mod-killed!**")
+            await ctx.send(f"{target_name} has been mod-killed.")
+        logger.info(f"DEBUG: Player {target_name} (ID: {target_id}) mod-killed during {current_phase} phase.")
 @kick_player.error
 async def kick_player_error(ctx, error):
   if isinstance(error, commands.MissingRequiredArgument):
