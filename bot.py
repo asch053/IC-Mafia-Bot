@@ -822,9 +822,11 @@ def check_win_conditions():
                 living_neutral += 1
     
     if living_mafia == 0 and living_neutral == 0 and living_town == 0:
+        logger.info("The game was a draw after everyone died")
         return "Draw"       # if everyone is dead, then the game ended in a draw  
     
     elif living_neutral == 1 and living_mafia == 0 and living_town == 0:
+        logger.info("The game was Won by the SK after Killing everyone")
         return "Serial Killer"    # Neutral wins if they are the only one alive
     
     elif living_mafia > living_town and living_neutral == 0:
@@ -838,12 +840,14 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Killed by Mob",
                     }
+        logger.info("The game was won by the Mafia after the SK died and Mafia outnumbered Town")
         return "Mafia"      # Mafia wins if they equal or outnumber Town and SK is dead
     
     elif living_mafia == 0 and living_neutral == 0 and living_town > 0:
+        logger.info("The game was Won by the Town as they were the only people left")
         return "Town"       # Town wins if no Mafia or Neutral players are alive
     
-    elif current_phase == "Day" and living_mafia == 1 and living_town == 1:
+    elif current_phase == "Day" and living_mafia == 1 and living_town == 1 and living_neutral == 0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True:
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -854,9 +858,10 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Lynched",
                     } 
+        logger.info("The game was a draw as only 2 people left at start of day from mafia and town")
         return "Draw"
     
-    elif current_phase == "Day" and living_mafia == 1 and living_neutral == 1:
+    elif current_phase == "Day" and living_mafia == 1 and living_neutral == 1 and living_town == 0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True:
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -867,9 +872,10 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Lynched",
                     } 
+        logger.info("The game was a draw as only 2 people left at start of day from SK and town")
         return "Draw"
     
-    elif current_phase == "Night" and living_neutral == 1 and living_town == 1:
+    elif current_phase == "Night" and living_neutral == 1 and living_town == 1 and living_mafia == 0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True and player_data["role"].alignment == "Town":
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -879,10 +885,11 @@ def check_win_conditions():
                     "phase num": f"{phase_number}",
                     "total phases": f"{total_phases}",
                     "how": "Killed by SK",
-                    } 
+                    }
+        logger.info("The game was won by SK as only SK and 1 town alive at start of night - SK will kill last town overnight")
         return "Serial Killer"    # Neutral wins if they are the only one alive
     
-    elif current_phase == "Day" and living_mafia == 1 and living_town == 1:
+    elif current_phase == "Day" and living_mafia == 1 and living_neutral == 1 and living_mafia == 0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True:
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -893,9 +900,10 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Lynched",
                     } 
+        logger.info("The game was a draw as only 2 people left at start of day from mafia and SK")
         return "Draw"
     
-    elif current_phase == "Night" and living_mafia == 1 and living_town == 1:
+    elif current_phase == "Night" and living_mafia == 1 and living_town == 1 and living_neutral == 0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True and player_data["role"].alignment == "Town":
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -906,9 +914,10 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Killed by Mafia",
                     } 
+        logger.info("The game was won by Mob as only mob and 1 town alive at start of night - SK will kill last town overnight")
         return "Mafia"
     
-    elif current_phase == "Night" and living_mafia == 1 and living_neutral == 1:
+    elif current_phase == "Night" and living_mafia == 1 and living_neutral == 1 and living_town ==0:
         for player_id, player_data in players.items():
             if player_data["alive"] == True and player_data["role"].alignment == "Mafia":
                 total_phases = ((phase_number * 2) - (1 if current_phase == "Night" else 0) - 1)
@@ -919,8 +928,10 @@ def check_win_conditions():
                     "total phases": f"{total_phases}",
                     "how": "Killed by SK",
                     } 
-        return "Serial Killer" # SK wins if they and 1 mob left at start of night as they kill first
+        logger.info("SK wins if they and 1 mob left at start of night as they kill first")
+        return "Serial Killer" #SK wins if they and 1 mob left at start of night as they kill first
     else:
+        logger.info("No winner found")
         return None  # No winner yet 
  
 async def announce_winner(bot, winner):
@@ -1109,7 +1120,7 @@ async def process_doc_night_heal(bot, target_id): #pass in bot and target_id var
     global current_phase, phase_number, players
 
     #Check if /heal is used during night phase
-    if current_phase != "night":
+    if current_phase != "Night":
         logger.error("DEBUG: Doctor heal action attempted outside of night phase.")
         #if the current phase is not night then log the error and exit the function
         return
@@ -1846,6 +1857,7 @@ async def gameprocess(ctx,bot,players):
         await asyncio.sleep(message_send_delay)
         logger.info("DEBUG: Checking winner")
         winner = check_win_conditions()
+        logger.info(f"Winner is {winner}")
         if winner:
             logger.info("We have a winner!")
             await announce_winner(bot, winner)  # You'll need to implement announce_winner
