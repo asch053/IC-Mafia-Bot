@@ -670,5 +670,229 @@
                 "phases_lasted": 2
             }
         ]
+    },
+    {
+        "game_id": "20250214-190000",
+        "total_phases": 4,
+        "winner": "Serial Killer",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": ".you_fool",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4
+            },
+            {
+                "player_id": 469571706898350080,
+                "name": "jason.wills",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4
+            },
+            {
+                "player_id": 502496057192742932,
+                "name": "apunypenguin",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by SK",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": "2",
+                    "total phases": "2",
+                    "how": "Killed by SK"
+                }
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "mrblonde3442",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase num": "1",
+                    "total phases": "2",
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": 216918396539764737,
+                "name": "ordos.",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4
+            },
+            {
+                "player_id": -10,
+                "name": "Just a Regular Townie",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": "1",
+                    "total phases": "2",
+                    "how": "Lynched",
+                    "voters": ".you_fool"
+                }
+            },
+            {
+                "player_id": -2,
+                "name": "Robo-Mafioso",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Killed by Mob"
+                }
+            }
+        ]
+    },
+    {
+        "game_id": "20250216-060000",
+        "total_phases": 4,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "pandabbear",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Lynched",
+                    "voters": "pandabbear"
+                }
+            },
+            {
+                "player_id": 216918396539764737,
+                "name": "ordos.",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": ".you_fool",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": 1057856572899999744,
+                "name": "thebigone05",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Lynched",
+                    "voters": "pandabbear"
+                }
+            },
+            {
+                "player_id": 469571706898350080,
+                "name": "jason.wills",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Lynched",
+                    "voters": "pandabbear"
+                }
+            },
+            {
+                "player_id": 295040267973820416,
+                "name": "bar.at",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": "2",
+                    "total phases": "4",
+                    "how": "Lynched",
+                    "voters": "pandabbear"
+                }
+            },
+            {
+                "player_id": -8,
+                "name": "Not The Godfather",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": "1",
+                    "total phases": "2",
+                    "how": "Lynched",
+                    "voters": ".you_fool, bar.at"
+                }
+            }
+        ]
     }
 ]
