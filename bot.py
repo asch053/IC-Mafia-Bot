@@ -530,7 +530,7 @@ def create_godfather_role():
         alignment="Mafia",
         short_description="Chooses the Mafia's target each night.",
         description="Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bot to kill your chosen player. \n",
-        night_action=None,
+        action=None,
     )
 
 async def list_assigned_roles():
@@ -590,7 +590,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 11:
+    while len(players) < 7:
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -1325,6 +1325,32 @@ def clear_actions(players):
     for player_id, player_data in players.items():  # Iterate through items()
         player_data["action_target"] = None  # Set to None, not an empty string
 
+async def check_gf_status(bot, players):
+    mob_gf_id = get_specific_player_id(players,"Godfather")
+    logger.info(f"Mob GF: {mob_gf_id}")
+    if mob_gf_id:
+        mob_gf_alive = players[mob_gf_id]["alive"]
+    if mob_gf_id is None or mob_gf_alive == False :
+        mob_goon_id = get_specific_player_id(players,"Mob Goon")
+        logger.error("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
+        logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
+        if mob_goon_id is None:
+            logger.error("Debug: All mob are dead")
+            return
+        players[mob_goon_id]["role"] = create_godfather_role()
+        if mob_goon_id > 0:
+            mob_goon_player = await bot.fetch_user(mob_goon_id)
+            logger.info("Promoted Mob Good to Mob Godfather")
+            try:
+               await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
+            except discord.Forbidden:
+                logger.error(f"Could not send DM to promoted Godfather.  User has DMs disabled.")
+            except discord.HTTPException as e:
+                logger.error(f"HTTP Error sending DM to promoted Godfather: {e}")
+            except Exception as e:
+                logger.exception(f"Unexpected error promoting Godfather: {e}")
+        return
+
 # --- Bot Event ---
 @bot.event
 async def on_ready():
@@ -1666,7 +1692,7 @@ async def heal_command(ctx, *, target_name: str):  # Changed target to target_na
         return
     # Rest of the command logic for players with the correct role
     players[player_id]["action_target"] = target_id
-    await ctx.author.send(f"You have chosen to heal {players[target_id]['name']}.")
+    await ctx.author.send(f"You have chosen to heal {players[target_id]['display_name']}.")
     logger.info(f"Player {player_id} targeted {target_id}")
     logger.info(f"Player action target: {players[player_id]["action_target"]}")
 @heal_command.error
@@ -1727,7 +1753,7 @@ async def investigate_command(ctx, *, target_name: str):
         return
     # Rest of the command logic for players with the correct role
     players[player_id]["action_target"] = target_id
-    await ctx.author.send(f"You have chosen to investigate {players[target_id]['name']}.")
+    await ctx.author.send(f"You have chosen to investigate {players[target_id]['display_name']}.")
     logger.info(f"Player {player_id} targeted {target_id}")
     logger.info(f"Player action target: {players[player_id]["action_target"]}")
 @investigate_command.error
@@ -1982,6 +2008,7 @@ async def gameprocess(ctx,bot,players):
         logger.info(f"DEBUG: Current time night ends = {time_night_ends}")
         status_message = generate_status_message(players)
         await ruleschannel.send(status_message)
+        await check_gf_status(bot, players)
         #future night time actions logic
         logger.info("Sleeping....")
         await asyncio.sleep(LOOP_HOURS*60*60)
