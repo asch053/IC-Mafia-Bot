@@ -1168,6 +1168,9 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
         return
     story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
     town_doc_id = get_specific_player_id(players, "Town Doctor")
+    if town_doc_id < 0:
+        logger.info(f"Town doctor is NPC ID {town_doc_id} // {players[town_doc_id]["name"]}")
+        return
     mob_rb_id = get_specific_player_id(players, "Mob Role Blocker")
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     logger.info(f"Town doc id: {town_doc_id} // mob rb id: {mob_rb_id} // town rb id: {town_rb_id}")
@@ -1187,68 +1190,71 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
             await story_channel.send("That night the town doc went for a walk, but there was always someone behind them. The doc hurried home and locked their door.\n")
             return
     target_id = players[town_doc_id]["action_target"]
-    story_channel = bot.get_channel(config.STORIES_CHANNEL_ID) # Get story channel id
-    target_name = players[target_id]["display_name"] # get the name of the player being revived
-    logger.info(f"Town Doc ID: {town_doc_id} healed {target_id}")
-    # Check if the target is already dead from a previous phase
-    if target_id:
-        if players[target_id]["alive"] == False:
-            # If the target player has been set to dead
-            death_info = players[target_id].get("death_info")
-            # Then first get the death_info dictonary attached to that target player
-            if death_info:
-                # If there is some death info attached
-                death_phase_num = death_info.get("phase_num")
-                # Determine what phase the player died
-                if death_phase_num < phase_number:
-                    # If the death phasenumber stored in the death info is less than the current phase then the target cannot be revived
-                    logger.info(
-                        "DEBUG: Target player for Doctor heal is already dead from a previous phase. Skipping action."
-                    )
-                    await town_doc_player.send(
-                        "Target player for the night heal is already dead."
-                    )
-                    # Log error and inform player before exiting function
-                    return
-            # However, if Target is valid, proceed with heal
-            
-            logger.info(f"DEBUG: Town Doctor heals {target_name}") #log who the doctor is healing
-            # If target was previously dead, revive them
-            players[target_id]["alive"] = True
-            players[target_id]["death_info"] = {
-                        "phase": None,
-                        "phase_num": None,
-                        "total_phases": None,
-                        "how": None
-                    }    
-            # Send info to story channel
-            await story_channel.send(f"**Town Doctor found {target_name} and revived them!**")
-        else:
-            #if the player wasn't dead then just log the fact that the doctor tried to heal them
-            logger.debug(f"**Town Doctor protected {target_name} from harm.**")
-        #
-    if town_doc_id is None:
-        logger.error("DEBUG: No living doctor found. Skipping doc night heal process.")
+    if target_id == None:
+        logger.info("Town Doctor did not enter a heal target")
         return
-    # Fetch the Doctor's user object for sending DMs
-    if town_doc_id > 0:
-        town_doc_player = await bot.fetch_user(town_doc_id)
-        if target_id is None:
-            logger.error("DEBUG: No target selected for Doctor heal. Skipping action.")
-            await town_doc_player.send("You did not select a target to heal.")
+    else:
+        story_channel = bot.get_channel(config.STORIES_CHANNEL_ID) # Get story channel id
+        target_name = players[target_id]["display_name"] # get the name of the player being revived
+        logger.info(f"Town Doc ID: {town_doc_id} healed {target_id}")
+        # Check if the target is already dead from a previous phase
+        if target_id:
+            if players[target_id]["alive"] == False:
+                # If the target player has been set to dead
+                death_info = players[target_id].get("death_info")
+                # Then first get the death_info dictonary attached to that target player
+                if death_info:
+                    # If there is some death info attached
+                    death_phase_num = death_info.get("phase_num")
+                    # Determine what phase the player died
+                    if death_phase_num < phase_number:
+                        # If the death phasenumber stored in the death info is less than the current phase then the target cannot be revived
+                        logger.info(
+                            "DEBUG: Target player for Doctor heal is already dead from a previous phase. Skipping action."
+                        )
+                        await town_doc_player.send(
+                            "Target player for the night heal is already dead."
+                        )
+                        # Log error and inform player before exiting function
+                        return
+                # However, if Target is valid, proceed with heal
+                logger.info(f"DEBUG: Town Doctor heals {target_name}") #log who the doctor is healing
+                # If target was previously dead, revive them
+                players[target_id]["alive"] = True
+                players[target_id]["death_info"] = {
+                            "phase": None,
+                            "phase_num": None,
+                            "total_phases": None,
+                            "how": None
+                        }    
+                # Send info to story channel
+                await story_channel.send(f"**Town Doctor found {target_name} and revived them!**")
+            else:
+                #if the player wasn't dead then just log the fact that the doctor tried to heal them
+                logger.debug(f"**Town Doctor protected {target_name} from harm.**")
+            #
+        if town_doc_id is None:
+            logger.error("DEBUG: No living doctor found. Skipping doc night heal process.")
             return
-        if target_id not in players:
-            logger.error(f"DEBUG: Invalid target ID {target_id} for Doctor heal. Skipping action.")
-            await town_doc_player.send(f"Invalid target for the night heal. Target player is not in the game.")
-            return
-        # --- Doctor Self-Revive Logic ---
-        # Check if the *doctor* is dead, AND the target is the doctor:
-        if not players[town_doc_id]["alive"] and target_id == town_doc_id:
-            logger.info("DEBUG: Doctor is dead and targeted themselves. Reviving Doctor.")
-            players[town_doc_id]["alive"] = True  # Revive the doctor
-            story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
-            await story_channel.send("**Town Doctor managed to revive themselves....**")
-            return # VERY important, stop the rest of the logic.
+        # Fetch the Doctor's user object for sending DMs
+        if town_doc_id > 0:
+            town_doc_player = await bot.fetch_user(town_doc_id)
+            if target_id is None:
+                logger.error("DEBUG: No target selected for Doctor heal. Skipping action.")
+                await town_doc_player.send("You did not select a target to heal.")
+                return
+            if target_id not in players:
+                logger.error(f"DEBUG: Invalid target ID {target_id} for Doctor heal. Skipping action.")
+                await town_doc_player.send(f"Invalid target for the night heal. Target player is not in the game.")
+                return
+            # --- Doctor Self-Revive Logic ---
+            # Check if the *doctor* is dead, AND the target is the doctor:
+            if not players[town_doc_id]["alive"] and target_id == town_doc_id:
+                logger.info("DEBUG: Doctor is dead and targeted themselves. Reviving Doctor.")
+                players[town_doc_id]["alive"] = True  # Revive the doctor
+                story_channel = bot.get_channel(config.STORIES_CHANNEL_ID)
+                await story_channel.send("**Town Doctor managed to revive themselves....**")
+                return # VERY important, stop the rest of the logic.
                        
 async def process_cop_night_investigate(bot):
     """Processes the Cop's night investigation action."""
@@ -1506,8 +1512,9 @@ async def stop_game(ctx):
     else:
         logger.error("Game process not running")
     guild = ctx.guild
-    await update_player_discord_roles(bot, guild, players, discord_role_data)
+    announce_winner(bot,"Draw")
     reset_game()
+    await update_player_discord_roles(bot, guild, players, discord_role_data)
     await ctx.send("The current game has been stopped.")
     logger.info(f"DEBUG: Game stopped.")
 
