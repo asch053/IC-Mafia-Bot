@@ -894,5 +894,46 @@
                 }
             }
         ]
+    },
+    {
+        "game_id": "20250222-003000",
+        "total_phases": 10,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 10
+            },
+            {
+                "player_id": 469571706898350080,
+                "name": "jason.wills",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 5",
+                "death_cause": "Lynched",
+                "phases_lasted": 9
+                
+            },
+            {
+                "player_id": 295040267973820416,
+                "name": "Nut",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 5",
+                "death_cause": "Lynched",
+                "phases_lasted": 9
+            }
+        ]
     }
 ]

@@ -508,5 +508,128 @@
                 ]
             }
         }
+    },
+    {
+        "game_id": "20250222-003000",
+        "phase": "Day",
+        "phase_num": 1,
+        "lynch votes": {}
+    },
+    {
+        "game_id": "20250222-003000",
+        "phase": "Day",
+        "phase_num": 2,
+        "lynch votes": {}
+    },
+    {
+        "game_id": "20250222-003000",
+        "phase": "Day",
+        "phase_num": 3,
+        "lynch votes": {
+            "-2": {
+                "total_votes": 1,
+                "voters": [
+                    220142891027136512
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250222-003000",
+        "phase": "Day",
+        "phase_num": 4,
+        "lynch votes": {
+            "-1": {
+                "total_votes": 2,
+                "voters": [
+                    220142891027136512,
+                    295040267973820416
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250222-003000",
+        "phase": "Day",
+        "phase_num": 5,
+        "lynch votes": {
+            "295040267973820416": {
+                "total_votes": 1,
+                "voters": [
+                    295040267973820416
+                ]
+            },
+            "469571706898350080": {
+                "total_votes": 1,
+                "voters": [
+                    220142891027136512
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250302-000000",
+        "phase": "Day",
+        "phase_num": 1,
+        "lynch votes": {
+            "469571706898350080": {
+                "total_votes": 1,
+                "voters": [
+                    216918396539764737
+                ]
+            },
+            "216918396539764737": {
+                "total_votes": 2,
+                "voters": [
+                    220142891027136512,
+                    469571706898350080
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250302-000000",
+        "phase": "Day",
+        "phase_num": 2,
+        "lynch votes": {
+            "-7": {
+                "total_votes": 1,
+                "voters": [
+                    469571706898350080
+                ]
+            },
+            "-6": {
+                "total_votes": 1,
+                "voters": [
+                    220142891027136512
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250304-120000",
+        "phase": "Day",
+        "phase_num": 1,
+        "lynch votes": {
+            "-5": {
+                "total_votes": 1,
+                "voters": [
+                    225405842235719680
+                ]
+            }
+        }
+    },
+    {
+        "game_id": "20250304-120000",
+        "phase": "Day",
+        "phase_num": 2,
+        "lynch votes": {
+            "-10": {
+                "total_votes": 1,
+                "voters": [
+                    469571706898350080
+                ]
+            }
+        }
     }
 ]
