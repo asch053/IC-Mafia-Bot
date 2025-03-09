@@ -1032,7 +1032,7 @@ async def announce_winner(bot, winner):
         if not member.bot:
             await member.add_roles(spectator_role)  # Add Spectator to non-bots
     # Save game data before resetting
-    if current_phase != "":
+    if current_phase != "signup":
         game_data = {
             "game_id": game_id,
             "total_phases": (phase_number * 2) - (1 if current_phase == "night" else 0),
@@ -1056,17 +1056,17 @@ async def announce_winner(bot, winner):
                 for player_id, player_data in players.items()
             ],
         }
-    if game_data:
-        logger.debug(f"DEBUG: {game_data}")
-        filename = f"{game_id}_Game_Data"
-        subdir = f"alpha_testing/{game_id}"
-        save_json_data(game_data,filename,subdir)  # Save to JSON file
+        if game_data:
+            logger.debug(f"DEBUG: {game_data}")
+            filename = f"{game_id}_Game_Data"
+            subdir = f"alpha_testing/{game_id}"
+            save_json_data(game_data,filename,subdir)  # Save to JSON file
     end_data = {
             "game_id": game_id,
             "start_time": datetime.now(timezone.utc).isoformat(),
             "players": players,  # You'll add player data here later
-            "phases": [],  # You can store phase data here
-            "winner": None,  # Update this when the game ends
+            "phases": (phase_number * 2) - (1 if current_phase == "night" else 0),  # You can store phase data here
+            "winner": winner,  # Update this when the game ends
             }
     # Save initial game data
     logger.info(f"DEBUG: Game saved with game_id = {game_id}")
