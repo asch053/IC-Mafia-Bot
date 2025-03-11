@@ -1353,6 +1353,7 @@ async def process_cop_night_investigate(bot):
         logger.info(story_text)
         return (story_text)  
     target_id = players[town_cop_id]["action_target"]
+    logger.debug(f"DEBUG: Town Cop: {players[town_cop_id]}")
     if town_cop_id > 0: #do not send messages to NPC bots
         town_cop_player = await bot.fetch_user(town_cop_id)
         if target_id not in players:
