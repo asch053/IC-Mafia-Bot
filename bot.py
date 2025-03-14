@@ -385,7 +385,9 @@ def get_specific_player_id(players,specific_role):
     Returns:
         int or None: The ID of the living Serial Killer player, or None if no such player is found.
     """
+    logger.info(f"get_sepcific_player has been called for {specific_role}")
     for player_id, player_data in players.items():
+        logger.debug(f"Player Name = {player_data["display_name"]} returns role {player_data["role"].name}")
         if (player_data["role"] and player_data["role"].name == specific_role):
             return player_id
     return None
@@ -1121,6 +1123,10 @@ async def process_sk_night_kill(bot):
     if sk_player_id > 0:
         sk_player = await bot.fetch_user(sk_player_id)
         try:
+            if players[sk_player_id]["alive"] == False:
+                logger.error("DEBUG: SK Player is Dead")
+                story_parts.append("")
+                return story_text
             if target_id is None:
                 logger.error("DEBUG: No target selected for SK. Skipping kill process.")
                 await sk_player.send("You did not select a target for the night kill.")
@@ -1187,7 +1193,7 @@ async def process_mafia_night_kill(bot):
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
         logger.error("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
         logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
-        if mob_goon_id is None:
+        if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
             logger.error("Debug: All mob are dead")
             return (story_text)
         players[mob_goon_id]["role"] = create_godfather_role()
@@ -1274,15 +1280,14 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     mob_rb_id = get_specific_player_id(players, "Mob Role Blocker")
     town_doc_id = get_specific_player_id(players, "Town Doctor")
-    if town_doc_id is None or town_rb_id is None or mob_rb_id is None:
-        logger.debug("No Town Cop found. Skipping investigation.")
-        logger.debug("No Town RB found. Skipping Blocks.")
-        logger.debug("No Mob RB found. Skipping Blocks.")
+    logger.debug(f"Town Doc: {town_doc_id}")
+    if town_doc_id is None: 
+        logger.debug("No Town Doc found. Skipping investigation.")
         return
     logger.debug(f"Town Doc ID: {town_doc_id}")
-    if town_rb_id > 0:
+    if town_rb_id and town_rb_id > 0:
         town_block_target = players[town_rb_id]["action_target"]
-    if mob_rb_id > 0:
+    if mob_rb_id and mob_rb_id > 0:
         mob_block_target = players[mob_rb_id]["action_target"]
     if town_doc_id > 0:
         heal_target = players[town_doc_id]["action_target"]
@@ -1328,11 +1333,15 @@ async def process_cop_night_investigate(bot):
     town_cop_id = get_specific_player_id(players, "Town Cop")
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     mob_rb_id = get_specific_player_id(players, "Mob Role Blocker")
-    if town_cop_id is None or town_rb_id is None or mob_rb_id is None:
+    if town_cop_id is None or players[town_cop_id]["alive"] == False:
         logger.debug("No Town Cop found. Skipping investigation.")
+        return story_text
+    if town_rb_id is None:
         logger.debug("No Town RB found. Skipping Blocks.")
+        return story_text
+    if mob_rb_id is None:
         logger.debug("No Mob RB found. Skipping Blocks.")
-        return
+        return story_text
     if town_rb_id > 0:
         town_block_target = players[town_rb_id]["action_target"]
     if mob_rb_id > 0:
