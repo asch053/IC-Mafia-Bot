@@ -1009,7 +1009,7 @@ def check_win_conditions():
  
 async def announce_winner(bot, winner):
     """Announces the winner and resets the game."""
-    global game_started, phase_number, current_phase, discord_role_data, players,game_id, gameprocess
+    global game_started, phase_number, current_phase, discord_role_data, players,game_id, time_signup_ends, gameprocess
     # Send announcement to the stories channel
     #await generate_narration(bot, f"Game Over! The **{winner}** team wins!")
     logger.info(f"Winning team = {winner}")
@@ -1065,7 +1065,8 @@ async def announce_winner(bot, winner):
             save_json_data(game_data,filename,subdir)  # Save to JSON file
     end_data = {
             "game_id": game_id,
-            "start_time": datetime.now(timezone.utc).isoformat(),
+            "start_time": time_signup_ends.isoformat(),
+            "end_time": datetime.now(timezone.utc).isoformat(),
             "players": players,  # You'll add player data here later
             "phases": (phase_number * 2) - (1 if current_phase == "night" else 0),  # You can store phase data here
             "winner": winner,  # Update this when the game ends
@@ -1470,9 +1471,6 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         await ctx.send("A game is already in progress!")
         logger.error("A game is already in progress!")
         return
-    # Reset game variables
-    reset_game()
-    game_started = True
     # Parse the start_datetime string into a datetime object
     try:
         time_signup_ends = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
@@ -1480,12 +1478,17 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     except ValueError:
         await ctx.send("Invalid date/time format. Please use '%Y-%m-%d %H:%M' format in UTC.")
         logger.error("Invalid date/time format. Please use '%Y-%m-%d %H:%M' format in UTC.")
+        reset_game()
         return
     # Check if the provided start_datetime is in the future
     if time_signup_ends < datetime.now(timezone.utc):
         await ctx.send("The provided start time is in the past. Please provide a future date and time.")
         logger.error("The provided start time is in the past. Please provide a future date and time.")
+        reset_game()
         return
+    # Reset game variables
+    reset_game()
+    game_started = True
     # Calculate join_hours based on the difference between now and start_datetime
     join_hours = round((time_signup_ends - datetime.now(timezone.utc)).total_seconds() / 3600, 2)
     logger.info(f"DEBUG: New game started with join hours {join_hours}")
@@ -1587,6 +1590,10 @@ async def stop_game(ctx):
     if not game_started:
         await ctx.send("No game is currently running.")
         logger.error("No game is currently running.")
+        return
+    if time_signup_ends > datetime.now(timezone.utc):
+        await ctx.send("Cannot end game during signup phase")
+        logger.critical("Cannot end game during sign up phase")
         return
     game_started = False
     time_signup_ends = None  # Reset the signup end time
