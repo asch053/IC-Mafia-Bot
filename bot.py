@@ -1471,6 +1471,9 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         await ctx.send("A game is already in progress!")
         logger.error("A game is already in progress!")
         return
+    # Reset game variables
+    reset_game()
+    game_started = True
     # Parse the start_datetime string into a datetime object
     try:
         time_signup_ends = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
@@ -1479,16 +1482,15 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         await ctx.send("Invalid date/time format. Please use '%Y-%m-%d %H:%M' format in UTC.")
         logger.error("Invalid date/time format. Please use '%Y-%m-%d %H:%M' format in UTC.")
         reset_game()
+        game_started = False
         return
     # Check if the provided start_datetime is in the future
     if time_signup_ends < datetime.now(timezone.utc):
         await ctx.send("The provided start time is in the past. Please provide a future date and time.")
         logger.error("The provided start time is in the past. Please provide a future date and time.")
         reset_game()
+        game_started = False
         return
-    # Reset game variables
-    reset_game()
-    game_started = True
     # Calculate join_hours based on the difference between now and start_datetime
     join_hours = round((time_signup_ends - datetime.now(timezone.utc)).total_seconds() / 3600, 2)
     logger.info(f"DEBUG: New game started with join hours {join_hours}")
