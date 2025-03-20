@@ -1159,7 +1159,7 @@ async def process_sk_night_kill(bot):
                 target_role = players[target_id]["role"].name
                 target_faction = players[target_id]["role"].alignment
                 story_parts.append(f"The deranged person that was the serial killer went out into the town at night.\nThey saw {target_name} walking alone and couldn't resist...\n")
-                story_parts.append(f"**{target_name} was killed by the SK!**\n")
+                story_parts.append(f"**{target_name} was killed by the SK!**\n\n")
                 logger.critical(story_parts)
                 logger.debug(f"DEBUG: SK action_target = {players[sk_player_id]["action_target"]}")
             #clear SK player action target
@@ -1260,7 +1260,7 @@ async def process_mafia_night_kill(bot):
                 # Announce the player's role
                 target_name = players[target_id]["display_name"]
                 story_parts.append(f"The mob godfather was looking over the town at night. They saw {target_name} nearby and decided to feed them to the fishes\n")
-                story_parts.append(f"**{target_name} was killed by the Mob!**\n")
+                story_parts.append(f"**{target_name} was killed by the Mob!**\n\n")
     players[mob_gf_id]["action_target"] = None
     logger.debug(f"DEBUG: Mob GF action_target = {players[mob_gf_id]["action_target"]}")
     logger.info(story_parts)
@@ -1315,9 +1315,11 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
         if town_doc_id == heal_target:
             logger.info("Doctor saved themselves")
             story_parts.append("The doctor struggled to breath after the attack, but luckily for them they had brought their emergency first aid kit with them and immediately started to bandage themselves up. They would live, even if they would be sore for the next few days")
+            story_parts.append(f"**The Town Doctor healed themselves!**\n\n")
         else:
             logger.info(f"Doctor saved {heal_target}")
             story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
+            story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
     logger.info(story_parts)
     story_text = "\n".join(story_parts)
     logger.info(story_text)
@@ -1338,13 +1340,11 @@ async def process_cop_night_investigate(bot):
         return story_text
     if town_rb_id is None:
         logger.debug("No Town RB found. Skipping Blocks.")
-        return story_text
     if mob_rb_id is None:
         logger.debug("No Mob RB found. Skipping Blocks.")
-        return story_text
-    if town_rb_id > 0:
+    if town_rb_id and town_rb_id > 0:
         town_block_target = players[town_rb_id]["action_target"]
-    if mob_rb_id > 0:
+    if mob_rb_id and mob_rb_id > 0:
         mob_block_target = players[mob_rb_id]["action_target"]
     story_parts = []
     if town_cop_id == town_block_target:
