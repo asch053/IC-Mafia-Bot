@@ -651,7 +651,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 4:
+    while len(players) <= 5:
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
