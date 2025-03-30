@@ -559,7 +559,7 @@ def generate_status_message(players):
         status_message += (
             f"**Phase:** {current_phase} {phase_number} - ends in {time_left}\n"
         )
-    status_message += f"**Players:**\n"
+    status_message += f"**Players ({len(players)}):**\n"
     for player_id, player_data in players.items():
         player_name = player_data["display_name"]
         player_status = "Alive" if player_data["alive"] else "Dead"
@@ -584,10 +584,10 @@ def generate_status_message(players):
     logger.debug(f"DEBUG: Status message generated: {status_message}")
     return status_message
 
-def create_godfather_role():
+def create_godfather_role(name):
     """Creates a new Godfather role object."""
     return GameRole(
-        name= "Mob Goon",
+        name= name,
         alignment="Mafia",
         short_description="A member of the Mafia. Can now choose the Mafia's target each night.",
         description="Your mob boss has died so you as a member of the Mafia will now be promoted to Mob Godfather.\nyou now choose the Mafia's target each night. \n Use _/kill player-name_ in this DM during the night phase with the bot to kill your chosen player. \n \nDuring the day you can still use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
@@ -1205,12 +1205,16 @@ async def process_mafia_night_kill(bot):
         mob_gf_alive = players[mob_gf_id]["alive"]
     if mob_gf_id is None or mob_gf_alive == False :
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
+        name = "Mob Goon"
         logger.error("DEBUG: No living Godfather found.")
-        logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
+        logger.info(f"DEBUG: Promoting Mob to Godfather")
         if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
-            logger.error("Debug: All mob are dead")
-            return (story_text)
-        players[mob_goon_id]["role"] = create_godfather_role()
+            mob_goon_id = get_specific_player_id(players,"Mob Role Blocker")
+            name = "Mob Role Blocker"
+            if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+                logger.error("Debug: All mob are dead")
+                return (story_text)
+        players[mob_goon_id]["role"] = create_godfather_role(name)
         if mob_goon_id > 0:
             mob_goon_player = await bot.fetch_user(mob_goon_id)
             logger.info("Promoted Mob Good to Mob Godfather")
@@ -1331,8 +1335,8 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
             }    
         if town_doc_id == heal_target:
             logger.debug("Doctor saved themselves")
-            story_parts.append("The doctor struggled to breath after the attack, but luckily for them they had brought their emergency first aid kit with them and immediately started to bandage themselves up. They would live, even if they would be sore for the next few days")
-            story_parts.append(f"**The Town Doctor healed themselves!**\n\n")
+            story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
+            story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
         else:
             logger.debug(f"Doctor saved {heal_target}")
             story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
@@ -1444,15 +1448,19 @@ async def check_gf_status(bot, players):
         mob_gf_alive = players[mob_gf_id]["alive"]
     if mob_gf_id is None or mob_gf_alive == False :
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
+        name = "Mob Good"
         logger.error("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
-        logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
-        if mob_goon_id is None:
-            logger.error("Debug: All mob are dead")
-            return
-        players[mob_goon_id]["role"] = create_godfather_role()
+        logger.info(f"DEBUG: Promoting Mob to Godfather")
+        if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+            name = "Mob Role Blocker"
+            mob_goon_id = get_specific_player_id(players,"Mob Role Blocker")
+            if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+                logger.error("Debug: All mob are dead")
+                return
+        players[mob_goon_id]["role"] = create_godfather_role(name)
         if mob_goon_id > 0:
             mob_goon_player = await bot.fetch_user(mob_goon_id)
-            logger.info("Promoted Mob Good to Mob Godfather")
+            logger.info("Promoted Mob to Mob Godfather")
             try:
                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
             except discord.Forbidden:
@@ -1916,7 +1924,7 @@ async def roleblock_command(ctx, *, target_name: str):
         logger.error(f"Player {blocker_id} does not have the required role (block) to use this command.")
         return
     # --- Target Resolution and Validation ---
-    target_id = await get_player_id_by_name(target_name)
+    target_id = await get_player_id_by_name(target_name,players)
     if target_id is None:
         await ctx.author.send(f"Could not find a player named '{target_name}'.")
         return
