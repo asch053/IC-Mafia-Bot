@@ -622,8 +622,6 @@ async def list_assigned_roles():
     logger.debug(f"Role list: {role_list_message}")
     return(role_list_message)
 
-
-
 # --- Game Functions ---
 def reset_game():
     """Resets the game variables."""
@@ -1020,8 +1018,10 @@ async def announce_winner(bot, winner):
         for player_id, player_data in players.items():
             if player_data["role"].alignment == winner:
                 winning_players.append(f"<@{player_id}>")
+                logger.debug(f"DEBUG: {player_data['display_name']} is a winner")
         if winning_players:
             winners = ", ".join(winning_players)
+            logger.debug(f"DEBUG: Winners = {winners}")
             await channel.send(f"GAME ENDED - Congratulations to {winner} - {winners}!")
     else:
         await channel.send(f"GAME ENDED - Game was a draw!")
@@ -1095,7 +1095,8 @@ async def announce_winner(bot, winner):
 
 async def process_role_block(bot):
     """Check if RB players blocked themselves and cancel their target if they did"""
-    global players, story_text
+    global players, story_text, town_block_target, mob_block_target
+    logger.info("process_role_block called")
     story_parts = []
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     mob_rb_id = get_specific_player_id(players,"Mob Role Blocker")
@@ -1114,6 +1115,17 @@ async def process_role_block(bot):
     logger.debug(f"{story_parts}")
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
+    if town_rb_id is not None and players[town_rb_id]["alive"] == True:
+        target_id = players[town_rb_id]["action_target"]
+        players[target_id]["action_target"] = None
+        logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
+        town_block_target = target_id
+    if mob_rb_id is not None and players[mob_rb_id]["alive"] == True:
+        # Check if the target is a valid player ID
+        target_id = players[mob_rb_id]["action_target"]
+        players[target_id]["action_target"] = None
+        logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
+        mob_block_target = target_id
     return(story_text)
 
 async def process_sk_night_kill(bot):
@@ -1219,7 +1231,7 @@ async def process_mafia_night_kill(bot):
             mob_goon_player = await bot.fetch_user(mob_goon_id)
             logger.info("Promoted Mob Good to Mob Godfather")
             try:
-                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
+                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}\nAny previous ight actions you may have had no longer work.\nYou are now the Godfather and can choose a target to kill.\nPlease use the /kill command to select a target.\n")
             except discord.Forbidden:
                 logger.error(f"Could not send DM to promoted Godfather.  User has DMs disabled.")
             except discord.HTTPException as e:
