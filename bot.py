@@ -1559,7 +1559,7 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         logger.error("DEBUG: Sign-ups ended, but the game was stopped.")
         logger.error(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started}")
 
-@bot.command(name="join")
+@bot.command(name="mafiajoin")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 #async def join_game(ctx,*,game_name: str):
 async def join_game(ctx):
@@ -1621,7 +1621,7 @@ async def join_game_error(ctx, error):
         await ctx.author.send("An error occurred during processing of this command.")
         logger.critical(f"An error occurred during processing of this command. {error}")
 
-@bot.command(name="stop")
+@bot.command(name="mafiastop")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 @commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def stop_game(ctx):
@@ -1650,7 +1650,7 @@ async def stop_game(ctx):
     await ctx.send("The current game has been stopped.")
     logger.info(f"DEBUG: Game stopped.")
 
-@bot.command(name="status")
+@bot.command(name="mafiastatus")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 async def status(ctx):
     """Displays the current game status."""
@@ -1702,7 +1702,7 @@ async def vote(ctx, *, lynch_target):
         logger.error(f"Player {player_id} tried to vote for dead player {target_id}")
         await ctx.send("You can not vote for a dead player") 
 
-@bot.command(name = "count")
+@bot.command(name = "mafiacount")
 @commands.has_role(discord_role_data.get("living", {}).get("id"))
 async def count(ctx):
     await send_vote_update(bot, players) #manually send vote count with /count
@@ -1981,31 +1981,31 @@ async def roleblock_command_error(ctx, error):
         await ctx.author.send("An error occurred during processing of this command.")
         logger.exception(f"Error in roleblock command: {error}")
 
-@bot.command(name="info")
+@bot.command(name="mafiainfo")
 async def show_info(ctx):
     """Shows the list of available commands."""
     info_text = (
         "**Available Commands:**\n\n"
         "**Player Commands:**\n"
-        "- `/join <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
-        "- `/status`: Displays the current game status. Will show game names of all signed up players\n"
+        "- `/mafiajoin <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
+        "- `/mafiastatus`: Displays the current game status. Will show game names of all signed up players\n"
         "- `/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
-        "- `/count`: Displays the current vote count.\n"
-        "- `/rules`: Displays the rules of the game.\n"
-        "- `/info`: Shows this help message.\n"
-        "- `/leave : Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
+        "- `/mafiacount`: Displays the current vote count.\n"
+        "- `/mafiarules`: Displays the rules of the game.\n"
+        "- `/mafiainfo`: Shows this help message.\n"
+        "- `/mafialeave : Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
         " \n\n**Player Actions**\n"
         "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
         "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
         "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
         "\n\n**Moderator Commands:**\n"
-        "- `/startmafia <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
-        "- `/stop`: Stops the current game.\n"
+        "- `/mafiastart <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
+        "- `/mafiastop`: Stops the current game.\n"
     )
     await ctx.send(info_text)
     logger.info("/info was called")
 
-@bot.command(name="rules")
+@bot.command(name="mafiarules")
 async def show_rules(ctx):
     """Displays the rules of the game."""
     global current_phase, phase_number, time_signup_ends, time_day_ends, time_night_ends
@@ -2022,7 +2022,7 @@ async def show_rules(ctx):
         await ctx.send(f"\nNo current game running. \nStandard game rules: {rules_text} \n")
     logger.info("/rules was called")
 
-@bot.command(name="leave")
+@bot.command(name="mafialeave")
 async def leave_game(ctx):
     """Allows a player to leave the game during the sign-up phase."""
     global players
@@ -2061,44 +2061,122 @@ async def leave_game(ctx):
     await ctx.send(f"{ctx.author.mention} has left the game.")
     print(f"DEBUG: Player left: {ctx.author.name} (ID: {player_id}). Players: {players}")
 
-@bot.command(name="remove")
-@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
-@commands.has_role(discord_role_data.get("mod", {}).get("id"))
-async def kick_player(ctx):
-    """(Admin/Mod only) Re-initializes the player dictionary.
-    Removes spectators and players without a role, updates display names,
-    and keeps only players with "Living Players" or "Dead Players" roles.
+@bot.command(name="mafiareinit") # Renamed command for clarity
+@commands.check(is_owner_or_mod(bot, discord_role_data)) # Use custom check
+async def reinitialize_players(ctx):
+    """(Admin/Mod only) Re-initializes the player dictionary based on current roles.
+
+    If in signup phase: Clears players and re-adds based on 'Living Players' role.
+    If in game phase: Updates player status based on 'Living/Dead Players' roles,
+                      preserving existing role/target/death data.
     """
-    global players, game_started
-    if game_started == False: # Check if game exists
+    global players, game_started, current_phase # Ensure all needed globals are declared
+
+    logger.info(f"Reinitialize players command called by {ctx.author.name}")
+
+    if not game_started:
         await ctx.send("No game is currently running.")
+        logger.warning("Attempted to reinitialize players when no game was started.")
         return
+
     guild = ctx.guild
     if not guild:
         await ctx.send("This command must be used in a server.")
+        logger.warning("Reinitialize players command used outside of a server.")
         return
-    living_role = discord_role_data.get("living", {}).get("id")
-    dead_role = discord_role_data.get("dead", {}).get("id")
-    if not living_role or not dead_role:
-        await ctx.send("Error: 'Living Players' or 'Dead Players' roles not found.")
+
+    # Get Discord Role Objects
+    living_role_id = discord_role_data.get("living", {}).get("id")
+    dead_role_id = discord_role_data.get("dead", {}).get("id")
+    spectator_role_id = discord_role_data.get("spectator", {}).get("id") # Get spectator role too
+
+    living_role = discord.utils.get(guild.roles, id=living_role_id)
+    dead_role = discord.utils.get(guild.roles, id=dead_role_id)
+    spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
+
+    if not living_role or not dead_role or not spectator_role:
+        await ctx.send("Error: Could not find 'Living Players', 'Dead Players', or 'Spectator' role in the server config.")
+        logger.error("Could not find essential game roles in discord_roles.json or server.")
         return
+
+    logger.info(f"Current game phase for reinitialization: '{current_phase or 'Signup'}'")
+
     new_players = {}
-    for member in guild.members:
-        if living_role in member.roles or dead_role in member.roles:
-            # Add player to the new dictionary, resetting relevant game data
-            new_players[member.id] = {
-                "name": member.name,
-                "display_name": member.display_name,
-                "role": None,  # Reset role.
-                "alive": living_role in member.roles,  # Alive if they have living role.
-                "action_target": None,
-                "previous_target": None,
-                #Keep death info if player was dead
-                "death_info": players.get(member.id, {}).get("death_info", {}) if not living_role in member.roles else {}
-            }
+
+    if current_phase == "": # --- SIGNUP PHASE ---
+        logger.info("Reinitializing players during signup phase.")
+        players = {} # Clear the existing player dictionary
+
+        for member in guild.members:
+            if living_role in member.roles: # Only add members with the living role
+                if not member.bot: # Exclude bots
+                    logger.debug(f"Adding player {member.display_name} (ID: {member.id}) during signup reinit.")
+                    new_players[member.id] = {
+                        "name": member.name,
+                        "display_name": member.display_name,
+                        "role": None,
+                        "alive": True, # Must be alive if they have living role
+                        "votes": 0,
+                        "action_target": None,
+                        "previous_target": None,
+                        "death_info": {} # Initialize as empty
+                    }
+            # Ensure non-players have spectator role during signup phase reset
+            elif not member.bot and spectator_role not in member.roles:
+                 try:
+                    await member.add_roles(spectator_role)
+                    await member.remove_roles(living_role, dead_role) # Clean up other roles
+                 except discord.HTTPException as e:
+                     logger.error(f"HTTPException setting spectator role for {member.name}: {e}")
+                 except discord.Forbidden:
+                     logger.error(f"Bot lacks permissions to set spectator role for {member.name}.")
+
+    else: # --- GAME PHASE (Day or Night) ---
+        logger.info("Reinitializing players during active game phase (Day/Night).")
+        for member in guild.members:
+            if living_role in member.roles or dead_role in member.roles:
+                if not member.bot: # Exclude bots
+                    # Get existing player data safely
+                    existing_player_data = players.get(member.id, {})
+                    logger.debug(f"Processing player {member.display_name} (ID: {member.id}) during game phase reinit.")
+
+                    # Add player to the new dictionary, preserving/resetting data
+                    new_players[member.id] = {
+                        "name": member.name,
+                        "display_name": member.display_name,
+                        "role": existing_player_data.get("role", None),  # Preserve role
+                        "alive": living_role in member.roles,            # Update based on current role
+                        "votes": 0,  # Reset votes for the new phase
+                        "action_target": existing_player_data.get("action_target", None),  # Preserve target
+                        "previous_target": existing_player_data.get("previous_target", None), # Preserve previous target
+                        "death_info": existing_player_data.get("death_info", {}) if dead_role in member.roles else {} # Keep if dead
+                    }
+            # Ensure non-players have spectator role
+            elif not member.bot and spectator_role not in member.roles:
+                try:
+                    await member.add_roles(spectator_role)
+                    await member.remove_roles(living_role, dead_role) # Clean up other roles
+                except discord.HTTPException as e:
+                    logger.error(f"HTTPException setting spectator role for {member.name}: {e}")
+                except discord.Forbidden:
+                    logger.error(f"Bot lacks permissions to set spectator role for {member.name}.")
+
     players = new_players  # Replace the old dictionary with the new one.
-    await ctx.send("Player dictionary reinitialized.")
-    logger.info("Player dictionary reinitialized by %s", ctx.author.name) # Use logger
+    await ctx.send("Player dictionary reinitialized based on current roles.")
+    logger.info("Player dictionary reinitialized by %s", ctx.author.name)
+    logger.info(f"New Player dictionary: {players}")
+    @reinitialize_players.error # Added specific error handler
+    async def reinitialize_players_error(ctx, error):
+        if isinstance(error, commands.CheckFailure): # Handles custom check failure
+            # The is_owner_or_mod check already sends a DM if needed
+            logger.warning(f"{ctx.author.name} lacked permission for /reset_players.")
+        elif isinstance(error, commands.MissingRole): # Handles has_role failure
+            await ctx.send(f"{ctx.author.mention}, you need the 'Mod' role to use this command.")
+            logger.warning(f"{ctx.author.name} lacked 'Mod' role for /reset_players.")
+        else:
+            # Handle other errors as needed. Always log the full exception.
+            await ctx.send("An unexpected error occurred during player reinitialization.")
+            logger.exception(f"Error in /reset_players command: {error}")
 
 # --- Game Loop ---
 @tasks.loop(seconds = 1)
