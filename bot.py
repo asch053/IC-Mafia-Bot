@@ -649,7 +649,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) <= 5:
+    while len(players) < 5:  # Minimum number of players
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -1117,15 +1117,17 @@ async def process_role_block(bot):
     logger.debug(story_text)
     if town_rb_id is not None and players[town_rb_id]["alive"] == True:
         target_id = players[town_rb_id]["action_target"]
-        players[target_id]["action_target"] = None
-        logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
-        town_block_target = target_id
+        if target_id:
+            players[target_id]["action_target"] = None
+            logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
+            town_block_target = target_id
     if mob_rb_id is not None and players[mob_rb_id]["alive"] == True:
         # Check if the target is a valid player ID
         target_id = players[mob_rb_id]["action_target"]
-        players[target_id]["action_target"] = None
-        logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
-        mob_block_target = target_id
+        if target_id:
+            players[target_id]["action_target"] = None
+            logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
+            mob_block_target = target_id
     return(story_text)
 
 async def process_sk_night_kill(bot):
