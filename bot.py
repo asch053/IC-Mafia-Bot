@@ -1355,7 +1355,6 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
             logger.debug(f"Doctor saved {heal_target}")
             story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
             story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
-    logger.debug(story_parts)
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
     return (story_text)  
@@ -1484,6 +1483,50 @@ async def check_gf_status(bot, players):
             except Exception as e:
                 logger.exception(f"Unexpected error promoting Godfather: {e}")
         return
+async def kill_inactive_player():
+    global bot, players, current_phase, phase_number, story_text
+    logger.info("Checking for inactive voters...")
+    players_to_remove = []
+    story_parts = []
+    # --- Increment Missed Vote Counters ---
+    for p_id, p_data in players.items():
+        if p_data["alive"] and p_data["action_target"] is None:
+            p_data["missed_votes"] += 1
+            logger.info(f"Player {p_data['display_name']} missed vote {p_data['missed_votes']} time(s).")
+    # --- End Increment ---
+    # --- Identify Inactive Players ---
+    for player_id, player_data in players.items():
+        if player_data["alive"]: # Only check living players
+            # Check for missed votes
+            if player_data["missed_votes"] >= 1: # Check if they missed >= 1 vote
+                logger.warning(f"Player {player_data['display_name']} (ID: {player_id}) marked inactive for missing vote.")
+                players_to_remove.append((player_id, "Inactive - Missed Vote"))
+    # --- Process Removals ---
+    if players_to_remove:
+        for player_id, reason in players_to_remove:
+            if player_id in players: # Double-check player still exists
+                player_data = players[player_id]
+                if player_data["alive"]: # Make sure they weren't killed/lynched already
+                    player_data["alive"] = False
+                    total_phases_calculation = (phase_number * 2) - (1 if current_phase == "night" else 0) # Calculate here
+                    player_data["death_info"] = {
+                        "phase": f"{current_phase} {phase_number}",
+                        "phase_num": phase_number,
+                        "total_phases": total_phases_calculation,
+                        "how": reason
+                    }
+                    logger.info(f"Removed inactive player: {player_data['display_name']} (ID: {player_id}), Reason: {reason}")
+                    story_parts.append(f"**{player_data['display_name']}** was removed from the game due to inactivity (Missed Vote).")
+                    # Announce role 
+                    if player_data["role"]:
+                         story_parts.append(f"Their role was: {player_data['role'].name}")
+        # Send combined story message if there were removals
+        if story_parts:
+                story_text = "\n".join(story_parts)
+                logger.debug(story_text)
+    else:
+        logger.info("No inactive voters found.")
+    return (story_text)  
 
 # --- Bot Event ---
 @bot.event
@@ -1491,7 +1534,7 @@ async def on_ready():
     logger.critical(f"Logged in as {bot.user.name}")
 
 # --- Bot Commands ---
-@bot.command(name="startmafia")
+@bot.command(name="mafiastart")
 #@commands.has_role(discord_role_data.get("mod", {}).get("id"))
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime: str):
@@ -1588,6 +1631,8 @@ async def join_game(ctx):
             "votes": 0,
             "action_target": None,
             "previous_target": None,
+            "missed_vote": 0,
+            "death_info": None
         }
         # Update discord roles
         guild = ctx.guild
@@ -1698,6 +1743,10 @@ async def vote(ctx, *, lynch_target):
         logger.debug(f"DEBUG: Sending data to process_lynch_vote: {ctx}, {player_id}, {lynch_target}")
         await process_lynch_vote(player_id, lynch_target)
         await send_vote_update(bot, players)  # Send vote update after each vote
+        # --- Reset Missed Votes ---
+        players[player_id]["missed_votes"] = 0
+        logger.debug(f"Reset missed_votes for {players[player_id]['display_name']}")
+        # --- End Reset ---
     else:
         logger.error(f"Player {player_id} tried to vote for dead player {target_id}")
         await ctx.send("You can not vote for a dead player") 
@@ -2287,6 +2336,11 @@ async def gameprocess(ctx,bot,players):
         logger.info("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         await votingchannel.send("Voting ended!")
+        await kill_inactive_player() #checks for inactive players and kills them
+        if story_text:
+            logger.debug(f"DEBUG: Story text to send => \n{story_text}")
+            await storychannel.send(story_text)
+        await asyncio.sleep(message_send_delay)
         logger.info("DEBUG: Counting votes...")
         await countlynchvotes(bot,players)
         logger.debug(f"DEBUG: The lynch results -> {lynch_votes} for {current_phase} - {phase_number}")

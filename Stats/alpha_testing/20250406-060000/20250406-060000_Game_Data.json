@@ -1,0 +1,126 @@
+[
+    {
+        "game_id": "20250406-060000",
+        "total_phases": 6,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 6
+            },
+            {
+                "player_id": 1057856572899999744,
+                "name": "TheBigOne",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 6
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by SK",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase_num": 2,
+                    "total_phases": 4,
+                    "how": "Killed by SK"
+                }
+            },
+            {
+                "player_id": 377879725894533121,
+                "name": "Squatch",
+                "role": "Mob Good",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 3",
+                "death_cause": "Killed by SK",
+                "phases_lasted": {
+                    "phase": "Night 3",
+                    "phase_num": 3,
+                    "total_phases": 6,
+                    "how": "Killed by SK"
+                }
+            },
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": 2,
+                    "total phases": 4,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680,
+                        295040267973820416,
+                        1057856572899999744
+                    ]
+                }
+            },
+            {
+                "player_id": 216918396539764737,
+                "name": "Ordos",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680,
+                        746540828432007225,
+                        1057856572899999744
+                    ]
+                }
+            },
+            {
+                "player_id": 295040267973820416,
+                "name": "Nut",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 3",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 3",
+                    "phase num": 3,
+                    "total phases": 6,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680,
+                        295040267973820416,
+                        1057856572899999744
+                    ]
+                }
+            }
+        ]
+    }
+]

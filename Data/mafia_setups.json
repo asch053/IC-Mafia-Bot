@@ -197,8 +197,16 @@
           "alignment": "Town",
           "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
           "short_description": "Normal member of town.",
-          "quantity": 3,
+          "quantity": 2,
           "action": ""
+        },
+        {
+          "name": "Town Role Blocker",
+          "alignment": "Town",
+          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+          "short_description": "Prevents one player from performing their night action.",
+          "quantity": 1,
+          "action": "Block"
         },
         {
           "name": "Serial Killer",
