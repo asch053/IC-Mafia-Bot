@@ -2189,6 +2189,7 @@ async def reinitialize_players(ctx):
                         "votes": 0,  # Reset votes for the new phase
                         "action_target": existing_player_data.get("action_target", None),  # Preserve target
                         "previous_target": existing_player_data.get("previous_target", None), # Preserve previous target
+                        "missed_votes": existing_player_data.get("missed_votes", None), # Preserve previous missed votes
                         "death_info": existing_player_data.get("death_info", {}) if dead_role in member.roles else {} # Keep if dead
                     }
             # Ensure non-players have spectator role

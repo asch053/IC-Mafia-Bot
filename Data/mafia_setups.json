@@ -11,14 +11,7 @@
           "quantity": 1,
           "action": "Kill"
         },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
+        { "name": "Town Doctor", "alignment": "Town", "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "short_description": "Can heal one player each night.", "quantity": 1, "action": "Heal" },
         {
           "name": "Plain Townie",
           "alignment": "Town",
@@ -50,14 +43,7 @@
           "quantity": 1,
           "action": ""
         },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
+        { "name": "Town Doctor", "alignment": "Town", "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "short_description": "Can heal one player each night.", "quantity": 1, "action": "Heal" },
         {
           "name": "Plain Townie",
           "alignment": "Town",
