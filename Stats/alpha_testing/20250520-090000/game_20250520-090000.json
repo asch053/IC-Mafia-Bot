@@ -1,0 +1,65 @@
+[
+    {
+        "game_id": "20250520-090000",
+        "start_time": "2025-05-20T09:00:00.069931+00:00",
+        "players": {
+            "220142891027136512": {
+                "name": "pandabbear",
+                "display_name": "Panda",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "746540828432007225": {
+                "name": "lisamafia",
+                "display_name": "LisaMVP",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "216918396539764737": {
+                "name": "ordos.",
+                "display_name": "Ordos",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "1039345137928646688": {
+                "name": "scriv88",
+                "display_name": "----virc$-,.;_",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            }
+        },
+        "phases": [],
+        "winner": null
+    }
+]

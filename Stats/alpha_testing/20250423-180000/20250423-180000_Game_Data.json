@@ -1,0 +1,97 @@
+[
+    {
+        "game_id": "20250423-180000",
+        "total_phases": 4,
+        "winner": "Draw",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": 2,
+                    "total phases": 2,
+                    "how": "Lynched"
+                }
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        479362336264683520,
+                        220142891027136512
+                    ]
+                }
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "Morblnde",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": 2,
+                    "total phases": 2,
+                    "how": "Lynched"
+                }
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Town Role Blocker",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase_num": 2,
+                    "total_phases": 4,
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": -9,
+                "name": "Totally Harmless",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680,
+                        746540828432007225
+                    ]
+                }
+            }
+        ]
+    }
+]

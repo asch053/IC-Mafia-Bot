@@ -1186,6 +1186,9 @@ async def process_sk_night_kill(bot):
                 story_parts.append(f"**{target_name} was killed by the SK!**\n\n")
                 logger.critical(story_parts)
                 logger.debug(f"DEBUG: SK action_target = {players[sk_player_id]["action_target"]}")
+            else:
+                if players[target_id]["role"].name == "Godfather" or players[target_id]["role"].name == "Serial Killer":
+                    story_parts.append(f"The crazy serial killer went after the {players[target_id]["role"].name} but their nemsis was too hard to kill")
             #clear SK player action target
             players[sk_player_id]["action_target"] = None
             logger.debug(f"DEBUG: SK action_target = {players[sk_player_id]["action_target"]}")
@@ -1287,6 +1290,9 @@ async def process_mafia_night_kill(bot):
                 target_name = players[target_id]["display_name"]
                 story_parts.append(f"The mob godfather was looking over the town at night. They saw {target_name} nearby and decided to feed them to the fishes\n")
                 story_parts.append(f"**{target_name} was killed by the Mob!**\n\n")
+            else:
+                if players[target_id]["role"].name == "Godfather" or players[target_id]["role"].name == "Serial Killer":
+                    story_parts.append(f"The Godfather went after the {players[target_id]["role"].name} but their nemsis was too hard to kill")
     players[mob_gf_id]["action_target"] = None
     logger.debug(f"DEBUG: Mob GF action_target = {players[mob_gf_id]["action_target"]}")
     story_text = "\n".join(story_parts)
@@ -2183,6 +2189,7 @@ async def reinitialize_players(ctx):
                         "votes": 0,  # Reset votes for the new phase
                         "action_target": existing_player_data.get("action_target", None),  # Preserve target
                         "previous_target": existing_player_data.get("previous_target", None), # Preserve previous target
+                        "missed_votes": existing_player_data.get("missed_votes", None), # Preserve previous missed votes
                         "death_info": existing_player_data.get("death_info", {}) if dead_role in member.roles else {} # Keep if dead
                     }
             # Ensure non-players have spectator role
