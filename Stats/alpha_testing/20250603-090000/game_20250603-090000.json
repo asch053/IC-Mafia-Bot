@@ -1,0 +1,87 @@
+[
+    {
+        "game_id": "20250603-090000",
+        "start_time": "2025-06-03T09:00:00.011476+00:00",
+        "players": {
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "1039345137928646688": {
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "220142891027136512": {
+                "name": "pandabbear",
+                "display_name": "Panda",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "746540828432007225": {
+                "name": "lisamafia",
+                "display_name": "LisaMVP",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "479362336264683520": {
+                "name": "mrblonde3442",
+                "display_name": "Morblnde",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "469571706898350080": {
+                "name": "jason.wills",
+                "display_name": "Soul",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "216918396539764737": {
+                "name": "ordos.",
+                "display_name": "Ordos",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            }
+        },
+        "phases": [],
+        "winner": null
+    }
+]
