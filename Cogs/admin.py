@@ -1,80 +1,96 @@
 import discord
 from discord.ext import commands
-import asyncio  # Import asyncio
-# Import Game *class*, not the instance
-from game.engine import Game #, stop_signup_task
 import logging
 
-# VERY IMPORTANT: We need a way to access the *global* Game instance.
-# We'll use a global variable for this, BUT this is NOT ideal.
-# A better solution would involve a more sophisticated way of managing
-# the game state (e.g., a dedicated "GameManager" class).  But for
-# simplicity, we'll use a global here.
-
-game = None  # Global variable to hold the current game instance.
+# Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')
 
-class AdminCog(commands.Cog):
+class AdminCog(commands.Cog, name="AdminCog"):
+    """Cog for all administrator and owner commands."""
     def __init__(self, bot):
         self.bot = bot
-
+    def get_game_instance(self):
+        """A helper method to safely get the game instance from GameCog."""
+        game_cog = self.bot.get_cog('GameCog')
+        if game_cog:
+            return game_cog.game
+        return None
+    def set_game_instance(self, new_game_instance):
+        """A helper method to safely set the game instance in GameCog."""
+        game_cog = self.bot.get_cog('GameCog')
+        if game_cog:
+            game_cog.game = new_game_instance
+            return True
+        return False
     @commands.command(name="stop")
-    @commands.has_permissions(administrator=True)  # Example permission check
+    @commands.has_permissions(administrator=True)
     async def stop_game_command(self, ctx):
-      global game  # Access the global game variable
-      if game is None:
-          await ctx.send("No game is currently running.")
-          logger.info("No game is currently running.")
-          return
-      # Get the current guild for role updates
-      guild = ctx.guild
-      if not guild:
-          await ctx.send("This command can only be used in a server.")
-          logger.info("This command (`/stop`) was used outside a server.")
-          return
-      # Call the reset method on the game instance.
-      await game.reset(self.bot, guild)  # Pass bot and guild.
-      game = None # IMPORTANT! Set game to None after stopping
-      await ctx.send("The current game has been stopped.")
-      logger.info("The current game has been stopped.")
+        """
+        Stops the currently running game, resets all roles, and cleans up.
+        """
+        # Get the current game instance from the GameCog.
+        game = self.get_game_instance()
+        if game is None:
+            await ctx.send("No game is currently running.")
+            logger.info(f"/stop command used by {ctx.author.name}, but no game was running.")
+            return
+        # We call the game's own reset method. The game engine knows best how to clean itself up.
+        await game.reset()
+        # IMPORTANT: We now set the game instance in the GameCog back to None.
+        # This frees up memory and allows a new game to be started.
+        self.set_game_instance(None)
+        await ctx.send("The current game has been stopped and all variables have been reset.")
+        logger.info(f"The game was stopped by {ctx.author.name}.")
 
     @commands.command(name="reinit_players")
     @commands.is_owner()
     async def reinitialize_players(self, ctx):
-      """(Admin/Mod only) Re-initializes the player dictionary.
-      Removes spectators and players without a role, updates display names,
-      and keeps only players with "Living Players" or "Dead Players" roles.
-      """
-      global game
-      if game is None: # Check if game exists
-            await ctx.send("No game is currently running.")
+        """
+        (Owner Only) A debug tool to refresh the player list from Discord roles.
+        This is useful for recovering from a crash or inconsistent state.
+        """
+        game = self.get_game_instance()
+
+        if game is None:
+            await ctx.send("No game is currently running to re-initialize.")
             return
-      guild = ctx.guild
-      if not guild:
-          await ctx.send("This command must be used in a server.")
-          return
-      living_role = discord.utils.get(guild.roles, id=game.discord_role_data.get("living", {}).get("id"))
-      dead_role = discord.utils.get(guild.roles, id=game.discord_role_data.get("dead", {}).get("id"))
-      if not living_role or not dead_role:
-          await ctx.send("Error: 'Living Players' or 'Dead Players' roles not found.")
-          return
-      new_players = {}
-      for member in guild.members:
-          if living_role in member.roles or dead_role in member.roles:
-              # Add player to the new dictionary, resetting relevant game data
-              new_players[member.id] = {
-                  "name": member.name,
-                  "display_name": member.display_name,
-                  "role": None,  # Reset role.
-                  "alive": living_role in member.roles,  # Alive if they have living role.
-                  "action_target": None,
-                  "previous_target": None,
-                  #Keep death info if player was dead
-                  "death_info": game.players.get(member.id, {}).get("death_info", {}) if not living_role in member.roles else {}
-              }
-      game.players = new_players  # Replace the old dictionary with the new one.
-      await ctx.send("Player dictionary reinitialized.")
-      self.bot.logger.info("Player dictionary reinitialized by %s", ctx.author.name) # Use logger
+        if not ctx.guild:
+            await ctx.send("This command must be used in a server.")
+            return
+        living_role = ctx.guild.get_role(game.discord_role_data.get("living", {}).get("id", 0))
+        dead_role = ctx.guild.get_role(game.discord_role_data.get("dead", {}).get("id", 0))
+        if not living_role or not dead_role:
+            await ctx.send("Error: 'Living Players' or 'Dead Players' roles could not be found.")
+            return
+        new_players = {}
+        for member in ctx.guild.members:
+            # Check if the member has either the living or dead role
+            if living_role in member.roles or dead_role in member.roles:
+                # Add the player to our new dictionary, preserving essential data
+                new_players[member.id] = {
+                    "name": member.name,
+                    "display_name": member.display_name,
+                    "role": game.players.get(member.id, {}).get("role"), # Try to keep their role
+                    "alive": living_role in member.roles,
+                    "action_target": None, # Reset action targets
+                    "previous_target": None,
+                    "death_info": game.players.get(member.id, {}).get("death_info", {}),
+                }
+        # Replace the game's player dictionary with our newly constructed one
+        game.players = new_players
+        await ctx.send(f"Player dictionary re-initialized. Found {len(new_players)} players.")
+        logger.warning(f"Player dictionary was manually re-initialized by {ctx.author.name}.")
+
+    # In cogs/admin.py, inside the AdminCog class:
+    @commands.command(name="forcestart")
+    @commands.has_permissions(administrator=True)
+    async def force_start_command(self, ctx):
+        """Forces the current sign-up period to end and the game to start."""
+        game = self.get_game_instance()
+        if game:
+            await game.force_start(ctx)
+        else:
+            await ctx.send("No game is currently in the sign-up phase.")
 
 async def setup(bot):
-  await bot.add_cog(AdminCog(bot))
+    await bot.add_cog(AdminCog(bot))

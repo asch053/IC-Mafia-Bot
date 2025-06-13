@@ -1,17 +1,8 @@
-# test_imports.py
+import random
 
-from discord.ext import commands, tasks
+def generate_random_string(length=10):
+    """Generates a random string of fixed length."""
+    letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+    return ''.join(random.choice(letters) for i in range(length))
 
-print(f"commands: {commands}")  # Check if commands is imported
-print(f"tasks: {tasks}")       # Check if tasks is imported
-
-@tasks.loop(seconds=1)  # Use tasks directly
-async def my_task():
-    print("Task running")
-
-# We *don't* need to start the loop for this test,
-# just see if we can *define* the task.
-
-# If you *do* want to see it run, you can add:
-# import asyncio
-# asyncio.run(my_task.start())
+print(generate_random_string(10))  # Example usage, prints a random string of length 10

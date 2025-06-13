@@ -65,9 +65,9 @@ logger, main_handler = setup_logging()
 async def on_ready():
     logger.info(f"Logged in as {bot.user.name}")
     try:
-        await bot.load_extension("cogs.game")
-        await bot.load_extension("cogs.admin")
-        await bot.load_extension("cogs.info")
+        await bot.load_extension("Cogs.game")
+        await bot.load_extension("Cogs.admin")
+        await bot.load_extension("Cogs.info")
         #await bot.load_extension("cogs.stats")
         logger.info("Cogs loaded successfully.")
     except Exception as e:

@@ -4,215 +4,152 @@ import mafiaconfig as config
 import logging
 
 from discord.ext import commands
-from game.engine import Game, start_new_game, join_game
-from utils.utilities import load_data
+# Import the Game class, but not the standalone functions that will be deprecated
+from game.engine import Game
+from utils.utilities import get_player_id_by_name # Example of a specific utility import
 from datetime import datetime, timezone
 
-logger = logging.getLogger('discord')  # Get the SAME logger as in bot.py
+# Get the same logger instance as in mafiabot.py
+logger = logging.getLogger('discord')
 
-class GameCog(commands.Cog):
+class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
+    """Cog for all player-facing game commands."""
     def __init__(self, bot):
         self.bot = bot
-        self.game = None  # Store the Game instance here
-    @commands.command(name="startmafia")
-    #@commands.has_permissions(administrator=True) # Example: Only admins can use.  Use more robust permission system.
-    async def start_game_command(self, ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime: str):
-        """Starts a new Mafia game.
+        # This instance variable will hold the single, running Game object.
+        # This is the correct way to manage state within a cog.
+        self.game = None
+
+    @commands.command(name="mafiastart")
+    @commands.has_permissions(administrator=True) # It's good practice to keep permissions checks.
+    async def start_game_command(self, ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime_str: str):
+        """
+        Starts a new Mafia game with a scheduled start time.
         Args:
-            ctx: The command context.
             phase_hours: The number of hours each phase (day/night) will last.
-            start_datetime: The datetime string for when the game should start, in the format '%Y-%m-%d %H:%M'.
+            start_datetime_str: The datetime for the game start, format 'YYYY-MM-DD HH:MM' (UTC).
         """
         if self.game is not None:
             await ctx.send("A game is already in progress!")
             return
-        # Parse the start_datetime string
+        # --- Input Validation ---
         try:
-            start_datetime_obj = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+            # Add seconds to the format string for more precision if needed
+            start_datetime_obj = datetime.strptime(start_datetime_str, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
         except ValueError:
             await ctx.send("Invalid date/time format. Please use 'YYYY-MM-DD HH:MM' format in UTC.")
             return
-        # Check if start_datetime is in the future
         if start_datetime_obj <= datetime.now(timezone.utc):
             await ctx.send("The start time must be in the future.")
             return
         try:
             phase_hours = float(phase_hours)
             if phase_hours <= 0:
-                raise ValueError("Phase duration must be positive")
+                raise ValueError("Phase duration must be positive.")
         except ValueError:
-            await ctx.send("Invalid phase hours")
+            await ctx.send("Invalid phase hours. Please provide a positive number.")
             return
-        # Create and start the game
-        self.game = Game(self.bot, ctx)  # Create a new Game instance
+        # --- Create and Start Game ---
+        # Create a new Game instance and store it in this cog's state.
+        self.game = Game(self.bot, ctx)
+        logger.info(f"New game instance created by {ctx.author.name}.")
+        # The 'start' method in the Game object now handles all announcements and waiting.
         await self.game.start(start_datetime_obj, phase_hours)
 
-async def setup(bot):
-    await bot.add_cog(GameCog(bot))
-    @commands.command(name="join")
+
+    @commands.command(name="mafiajoin")
     async def join_game_command(self, ctx):
-      """Joins the current game."""
-      global game
-      if game is None:
-        await ctx.send("No game is currently running.")
-        return
-      await join_game(self.bot, ctx, game) # Pass the 'game' instance
+        """Joins the current game during the sign-up phase."""
+        if self.game is None:
+            await ctx.send("No game is currently running or accepting sign-ups.")
+            return
+        # We call a method on the game instance to handle the logic.
+        # This keeps the cog clean and the logic in the engine.
+        await self.game.add_player(ctx.author, ctx.author.display_name)
+        logger.info(f"{ctx.author.display_name} joined the game.")
+
     @commands.command(name="vote")
-    #@commands.has_permissions(administrator=True) # Example: Only admins can start
-    async def vote(self, ctx, *, lynch_target):
+    async def vote(self, ctx, *, lynch_target_name: str):
         """Votes for a player during the day phase."""
-        global game
-        if game is None:
+        if self.game is None:
             await ctx.send("No game is currently running.")
             return
-        if game.current_phase != "day":
-          await ctx.send("Can only vote during the day")
-          return
-        voter_id = ctx.author.id
-        if voter_id not in game.players or not game.players[voter_id]["alive"]:
-          await ctx.send("You are not able to vote in this game.")
-          return
-        target_id = await game.get_player_id_by_name(lynch_target)
-        if target_id is None or not game.players[target_id]["alive"]:
-          await ctx.send(f"Player {lynch_target} not found or is not a valid target")
-          return
-        await game.process_lynch_vote(ctx, voter_id, target_id) # vote handled in engine
-        await self.send_vote_update(ctx.channel)  # Send vote update. ctx.channel is correct
+        # All logic is now handled by methods on the game instance.
+        # This makes the code much more readable and less error-prone.
+        await self.game.process_lynch_vote(ctx, ctx.author, lynch_target_name)
+        logger.info(f"{ctx.author.name} voted to lynch {lynch_target_name}.")
 
-    @commands.command(name="count")
+    @commands.command(name="mafiacount")
     async def count_votes_command(self, ctx):
         """Displays the current vote count."""
-        # No changes needed here, BUT you must define send_vote_update in this Cog!
-        if game is None:
+        if self.game is None:
             await ctx.send("No game is currently running.")
             return
-        await self.send_vote_update(ctx.channel)
-    async def send_vote_update(self, channel):
-      """Sends a vote update to the specified channel."""
-      global game
-      if game:
-        message = game.get_vote_status()
-        await channel.send(message)
-      else:
-         await channel.send("No game running.")
+        # This method will fetch the current vote count from the game instance.
+        logger.info(f"Vote count requested by {ctx.author.name}.")
+        await self.game.send_vote_count(ctx.channel)
 
-    @commands.command(name="status")
-    #@commands.has_permissions(administrator=True)
+    @commands.command(name="mafiastatus")
     async def status_command(self, ctx):
         """Displays the current game status."""
-        global game
-        if game is not None:
-            await ctx.send(game.get_status_message())
-        else:
+        if self.game is None:
             await ctx.send("No game is currently running.")
+            return
+        # The game object itself should know how to format its status.
+        logger.info(f"Game status requested by {ctx.author.name}.")
+        status_message = self.game.get_status_message()
+        await ctx.send(status_message)
 
+    # --- Night Action Commands (DM Only) ---
     @commands.command(name="kill")
     @commands.dm_only()
     async def kill(self, ctx, *, target_name: str):
-      global game
-      if game is None:
-        await ctx.author.send("No game is currently running.")
-        return
-      player_id = ctx.author.id
-      if player_id not in game.players:
-        await ctx.author.send("You are not part of the current game.")
-        return
-      if game.current_phase != "night":
-        await ctx.author.send("You can only use this command during the night phase.")
-        return
-      if not game.players[player_id]["alive"]:
-        await ctx.author.send("Dead players cannot use this command.")
-        return
-      allowed_roles = ["Godfather", "Serial Killer"]
-      if game.players[player_id]["role"].name not in allowed_roles:
-          await ctx.author.send("You do not have the required role to use this command.")
-          return
-      target_id = await game.get_player_id_by_name(target_name)
-      if target_id is None:
-          await ctx.author.send(f"Could not find a player named '{target_name}'.")
-          return
-      if target_id == player_id:
-          await ctx.author.send("You cannot target yourself.")
-          return
-      if not game.players[target_id]["alive"]:
-          await ctx.author.send("You cannot target dead players.")
-          return
-      if game.players[player_id]["role"].name == "Godfather":
-          game.mob_target = target_id
-          await ctx.author.send(f"Godfather has selected {game.players[target_id]['name']} as the target.")
-      elif game.players[player_id]["role"].name == "Serial Killer":
-          game.sk_target = target_id
-          await ctx.author.send(f"Serial Killer has selected {game.players[target_id]['name']} as the target.")
-
+        """(DM Only) Action for roles that can kill, like Godfather or Serial Killer."""
+        if self.game is None:
+            await ctx.author.send("No game is currently running.")
+            return
+        # The game engine handles all the logic and permissions checks.
+        # This method records the night action for the killer.
+        # Note: The target_name should be validated to ensure it exists in the game.
+        await self.game.record_night_action(
+            player_id=ctx.author.id, 
+            action_type='kill', 
+            target_name=target_name
+        )
+        logger.info(f"{self.players[ctx.author.id]['role']} has requested to kill {target_name}.")
+        
     @commands.command(name="heal")
     @commands.dm_only()
     async def heal(self, ctx, *, target_name: str):
-        global game
-        if game is None:
-            await ctx.author.send("No game is currently running")
+        """(DM Only) Action for the Doctor to heal a player."""
+        if self.game is None:
+            await ctx.author.send("No game is currently running.")
             return
-        player_id = ctx.author.id
-        if player_id not in game.players:
-          await ctx.author.send("You are not part of the current game.")
-          return
-        if game.current_phase != "night":
-            await ctx.author.send("You can only use this command during the night phase.")
-            return
-        player_data = game.players[player_id]
-        if not player_data["alive"]:
-            await ctx.author.send("Dead players cannot use this command.")
-            return
-        allowed_roles = ["Doctor"]
-        if player_data["role"].name not in allowed_roles:
-            await ctx.author.send("You do not have the required role to use this command.")
-            return
-        target_id = await game.get_player_id_by_name(target_name)
-        if target_id is None:
-            await ctx.author.send(f"Could not find a player named '{target_name}'.")
-            return
-        if target_id == player_id:
-            await ctx.author.send("You cannot target yourself.")
-            return
-        if not game.players[target_id]["alive"]:
-            await ctx.author.send("You cannot target dead players.")
-            return
-        game.heal_target = target_id
-        await ctx.author.send(f"You have chosen to heal {game.players[target_id]['name']}.")
-
+        # The game engine handles all the logic and permissions checks.
+        # This method records the night action for the healer.
+        await self.game.record_night_action(
+            player_id=ctx.author.id, 
+            action_type='heal', 
+            target_name=target_name
+        )
+        logger.info(f"{self.players[ctx.author.id]['role']} has requested to heal {target_name}.")
+    
     @commands.command(name="investigate")
     @commands.dm_only()
     async def investigate(self, ctx, *, target_name: str):
-        global game
-        if game is None:
-          await ctx.author.send("No game is currently running")
-          return
-        player_id = ctx.author.id
-        if player_id not in game.players:
-          await ctx.author.send("You are not part of the current game")
-          return
-        if not game.current_phase == "night":
-          await ctx.author.send("You can only use this command during the night phase.")
-          return
-        player_data = game.players[player_id]
-        if not player_data["alive"]:
-          await ctx.author.send("Dead players cannot use this command")
-          return
-        allowed_roles = ["Town Cop"]
-        if player_data["role"].name not in allowed_roles:
-          await ctx.author.send("You do not have the required role to use this command.")
-          return
-        target_id = await game.get_player_id_by_name(target_name)
-        if target_id is None:
-          await ctx.author.send("Could not find the target player")
-          return
-        if target_id == player_id:
-            await ctx.author.send("You cannot target yourself.")
+        """(DM Only) Action for the Town Cop to investigate a player."""
+        if self.game is None:
+            await ctx.author.send("No game is currently running.")
             return
-        if not game.players[target_id]["alive"]:
-            await ctx.author.send("You cannot target dead players.")
-            return
-        game.investigate_target = target_id
-        await ctx.author.send("You have investigated {}".format(game.players[target_id]["name"]))
+        # The game engine handles all the logic and permissions checks.
+        # This method records the night action for the investigator.
+        await self.game.record_night_action(
+            player_id=ctx.author.id, 
+            action_type='investigate', 
+            target_name=target_name
+        )
+        logger.info(f"{self.players[ctx.author.id]['role']} has requested to investigate {target_name}.")
 
+# This function is called by mafiabot.py to load the cog.
 async def setup(bot):
-  await bot.add_cog(GameCog(bot))
+    await bot.add_cog(GameCog(bot))
