@@ -443,8 +443,13 @@ async def assign_game_roles(bot, players, game_roles, message_send_delay):  # bo
     global roles
     # Shuffle the player IDs and roles
     player_ids = list(players.keys())
+    random.shuffle(player_ids)  # Shuffle player IDs
+    await asyncio.sleep(message_send_delay)  
     random.shuffle(player_ids)
+    await asyncio.sleep(message_send_delay)  
     random.shuffle(game_roles)
+    await asyncio.sleep(message_send_delay)  
+    random.shuffle(game_roles)  # Shuffle roles to ensure randomness
     # Assign roles to players
     for i, player_id in enumerate(player_ids):
         if i < len(game_roles):
