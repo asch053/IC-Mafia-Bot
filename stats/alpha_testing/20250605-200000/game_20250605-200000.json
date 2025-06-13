@@ -1,0 +1,198 @@
+[
+    {
+        "game_id": "20250605-200000",
+        "start_time": "2025-06-05T20:00:00.004830+00:00",
+        "players": {
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "746540828432007225": {
+                "name": "lisamafia",
+                "display_name": "LisaMVP",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "479362336264683520": {
+                "name": "mrblonde3442",
+                "display_name": "Mrblonde",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "220142891027136512": {
+                "name": "pandabbear",
+                "display_name": "Panda",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "377879725894533121": {
+                "name": "squatchosaurusrex",
+                "display_name": "Squatch",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "1039345137928646688": {
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            }
+        },
+        "phases": [],
+        "winner": null
+    },
+    {
+        "game_id": "20250605-200000",
+        "total_phases": 2,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Normal member of town.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 1,
+                "votes": []
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "lisamafia",
+                "display_name": "LisaMVP",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Normal member of town.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 1,
+                "votes": []
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "mrblonde3442",
+                "display_name": "Mrblonde",
+                "role": {
+                    "name": "Godfather",
+                    "alignment": "Mafia",
+                    "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
+                    "short_description": "Immune, chooses Mafia target.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": 2,
+                "votes": []
+            },
+            {
+                "player_id": 220142891027136512,
+                "name": "pandabbear",
+                "display_name": "Panda",
+                "role": {
+                    "name": "Mob Goon",
+                    "alignment": "Mafia",
+                    "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
+                    "short_description": "Standard Mafia member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": 1,
+                "votes": []
+            },
+            {
+                "player_id": 377879725894533121,
+                "name": "squatchosaurusrex",
+                "display_name": "Squatch",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Normal member of town.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 1,
+                "votes": []
+            },
+            {
+                "player_id": 1039345137928646688,
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": {
+                    "name": "Town Doctor",
+                    "alignment": "Town",
+                    "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Can heal one player each night.",
+                    "action": "Heal",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 1,
+                "votes": []
+            }
+        ],
+        "end_time": "2025-06-06T20:03:48.876578+00:00"
+    }
+]

@@ -93,7 +93,7 @@ story_text = None
 
 # --- Load Roles ---
 try:
-    with open("data/discord_roles.json", "r") as f:
+    with open("Data/discord_roles.json", "r") as f:
         discord_role_data = json.load(f)
 except FileNotFoundError:
     print("ERROR: discord_roles.json not found!")
@@ -101,21 +101,21 @@ except FileNotFoundError:
 
 # --- Load Bot Names ---
 try:
-    with open("data/bot_names.txt", "r") as f:
+    with open("Data/bot_names.txt", "r") as f:
         npc_names = [line.strip() for line in f]
 except FileNotFoundError:
     npc_names = []
 
 # --- Load Rules ---
 try:
-    with open("data/rules.txt", "r") as f:
+    with open("Data/rules.txt", "r") as f:
         rules_text = f.read()
 except FileNotFoundError:
     rules_text = "Rules not found."
 
 # --- Load Mafia Setups ---
 try:
-    with open("data/mafia_setups.json", "r") as f:
+    with open("Data/mafia_setups.json", "r") as f:
         mafia_setups = json.load(f)
         print(f"Loading Discord Roles => {discord_role_data}")
 except FileNotFoundError:
@@ -280,6 +280,7 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
     living_role_id = discord_role_data.get("living", {}).get("id")
     dead_role_id = discord_role_data.get("dead", {}).get("id")
     spectator_role_id = discord_role_data.get("spectator", {}).get("id")
+    logger.info(f"INFO: Living = {living_role_id}, dead = {dead_role_id}, spectator = {spectator_role_id}")
     living_role = discord.utils.get(guild.roles, id=living_role_id)
     dead_role = discord.utils.get(guild.roles, id=dead_role_id)
     spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
