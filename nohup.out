@@ -1084,3 +1084,11 @@ The town awakens...
 [2025-06-13 09:10:51] [INFO    ] discord - get_time_left_string:511: Time's up!
 [2025-06-13 09:10:51] [INFO    ] discord - reset_game:630: DEBUG: reset_game() called
 [2025-06-13 09:10:51] [INFO    ] discord - prepare_game_start:714: DEBUG: prepare_game_start finished
+  File "/home/opc/IC-Mafia-Bot/bot.py", line 391
+    logger.debug(f"Player Name = {player_data["display_name"]} returns role {player_data["role"].name}")
+                                               ^
+SyntaxError: f-string: unmatched '['
+  File "/home/opc/IC-Mafia-Bot/bot.py", line 391
+    logger.debug(f"Player Name = {player_data["display_name"]} returns role {player_data["role"].name}")
+                                               ^
+SyntaxError: f-string: unmatched '['

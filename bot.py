@@ -388,7 +388,7 @@ def get_specific_player_id(players,specific_role):
     """
     logger.info(f"get_sepcific_player has been called for {specific_role}")
     for player_id, player_data in players.items():
-        logger.debug(f"Player Name = {player_data["display_name"]} returns role {player_data["role"].name}")
+        logger.debug(f"Player Name = {player_data['display_name']} returns role {player_data['role'].name}")
         if (player_data["role"] and player_data["role"].name == specific_role):
             return player_id
     return None
@@ -1143,11 +1143,15 @@ async def process_sk_night_kill(bot):
     if sk_player_id == town_block_target:
         logger.info("SK was blocked by town RB")
         story_parts.append("The SK went out looking for someone to kill, but there was a shadowy figure following them.\n The SK decided it was to risky to kill tonight and went home.")
-        return
+        story_text = "\n".join(story_parts)
+        logger.debug(f"DEBUG: {story_text}")
+        return story_text
     if sk_player_id == mob_block_target:
         logger.info("SK was blocked by mob RB")
         story_parts.append("The SK went out looking for someone to kill, but there was a shadowy figure following them.\n The SK decided it was to risky to kill tonight and went home.")
-        return
+        story_text = "\n".join(story_parts)
+        logger.debug(f"DEBUG: {story_text}")
+        return story_text
     target_id = players[sk_player_id]["action_target"]
     # Check if a Serial Killer was found before proceeding
     if sk_player_id > 0:
@@ -1156,22 +1160,30 @@ async def process_sk_night_kill(bot):
             if players[sk_player_id]["alive"] == False:
                 logger.error("DEBUG: SK Player is Dead")
                 story_parts.append("")
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
                 return story_text
             if target_id is None:
                 logger.error("DEBUG: No target selected for SK. Skipping kill process.")
                 await sk_player.send("You did not select a target for the night kill.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return(story_text)
             if target_id not in players:
                 logger.error(f"DEBUG: Invalid target ID {target_id} for SK. Skipping kill process.")
                 await sk_player.send(f"Invalid target for the night kill. Target player is not in the game.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return story_text
             if not players[target_id]["alive"]:
                 logger.error("DEBUG: Target player for SK is already dead. Skipping kill process.")
                 await sk_player.send("Target player for the night kill is already dead.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return story_text
             # Target is valid, proceed with the kill process
             logger.debug(f"DEBUG: SK killed {target_id}")
             # If target is not the godfather then mark the player as dead and record how
