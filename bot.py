@@ -1208,12 +1208,21 @@ async def process_mafia_night_kill(bot):
         logger.error("DEBUG: No living Godfather found.")
         logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
         if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+<<<<<<< Updated upstream
             logger.error("Debug: All mob are dead")
             return (story_text)
         players[mob_goon_id]["role"] = create_godfather_role()
         if mob_goon_id > 0:
+=======
+            mob_goon_id = get_specific_player_id(players,"Mob Role Blocker")
+            name = "Mob Role Blocker"
+            if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+                logger.error("Debug: All mob are dead")
+                return (story_text)
+        if mob_goon_id > 0 and players[mob_goon_id]["alive"] == True and players[mob_goon_id]["role"].action != "Kill":
+>>>>>>> Stashed changes
             mob_goon_player = await bot.fetch_user(mob_goon_id)
-            logger.info("Promoted Mob Good to Mob Godfather")
+            logger.info("Promoted Mob Goon to Mob Godfather")
             try:
                 await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
             except discord.Forbidden:
@@ -1222,7 +1231,8 @@ async def process_mafia_night_kill(bot):
                 logger.error(f"HTTP Error sending DM to promoted Godfather: {e}")
             except Exception as e:
                 logger.exception(f"Unexpected error promoting Godfather: {e}")
-        return
+        players[mob_goon_id]["role"] = create_godfather_role(name)
+        mob_gf_id = mob_goon_id
     target_id = players[mob_gf_id]["action_target"]
     if mob_gf_id == town_block_target:
         logger.info("SK was blocked by town RB")
