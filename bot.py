@@ -93,7 +93,7 @@ story_text = None
 
 # --- Load Roles ---
 try:
-    with open("data/discord_roles.json", "r") as f:
+    with open("Data/discord_roles.json", "r") as f:
         discord_role_data = json.load(f)
 except FileNotFoundError:
     print("ERROR: discord_roles.json not found!")
@@ -101,21 +101,21 @@ except FileNotFoundError:
 
 # --- Load Bot Names ---
 try:
-    with open("data/bot_names.txt", "r") as f:
+    with open("Data/bot_names.txt", "r") as f:
         npc_names = [line.strip() for line in f]
 except FileNotFoundError:
     npc_names = []
 
 # --- Load Rules ---
 try:
-    with open("data/rules.txt", "r") as f:
+    with open("Data/rules.txt", "r") as f:
         rules_text = f.read()
 except FileNotFoundError:
     rules_text = "Rules not found."
 
 # --- Load Mafia Setups ---
 try:
-    with open("data/mafia_setups.json", "r") as f:
+    with open("Data/mafia_setups.json", "r") as f:
         mafia_setups = json.load(f)
         print(f"Loading Discord Roles => {discord_role_data}")
 except FileNotFoundError:
@@ -280,6 +280,7 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
     living_role_id = discord_role_data.get("living", {}).get("id")
     dead_role_id = discord_role_data.get("dead", {}).get("id")
     spectator_role_id = discord_role_data.get("spectator", {}).get("id")
+    logger.info(f"INFO: Living = {living_role_id}, dead = {dead_role_id}, spectator = {spectator_role_id}")
     living_role = discord.utils.get(guild.roles, id=living_role_id)
     dead_role = discord.utils.get(guild.roles, id=dead_role_id)
     spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
@@ -387,7 +388,7 @@ def get_specific_player_id(players,specific_role):
     """
     logger.info(f"get_sepcific_player has been called for {specific_role}")
     for player_id, player_data in players.items():
-        logger.debug(f"Player Name = {player_data["display_name"]} returns role {player_data["role"].name}")
+        logger.debug(f"Player Name = {player_data['display_name']} returns role {player_data['role'].name}")
         if (player_data["role"] and player_data["role"].name == specific_role):
             return player_id
     return None
@@ -442,8 +443,13 @@ async def assign_game_roles(bot, players, game_roles, message_send_delay):  # bo
     global roles
     # Shuffle the player IDs and roles
     player_ids = list(players.keys())
+    random.shuffle(player_ids)  # Shuffle player IDs
+    await asyncio.sleep(message_send_delay)  
     random.shuffle(player_ids)
+    await asyncio.sleep(message_send_delay)  
     random.shuffle(game_roles)
+    await asyncio.sleep(message_send_delay)  
+    random.shuffle(game_roles)  # Shuffle roles to ensure randomness
     # Assign roles to players
     for i, player_id in enumerate(player_ids):
         if i < len(game_roles):
@@ -559,7 +565,7 @@ def generate_status_message(players):
         status_message += (
             f"**Phase:** {current_phase} {phase_number} - ends in {time_left}\n"
         )
-    status_message += f"**Players:**\n"
+    status_message += f"**Players ({len(players)}):**\n"
     for player_id, player_data in players.items():
         player_name = player_data["display_name"]
         player_status = "Alive" if player_data["alive"] else "Dead"
@@ -584,10 +590,10 @@ def generate_status_message(players):
     logger.debug(f"DEBUG: Status message generated: {status_message}")
     return status_message
 
-def create_godfather_role():
+def create_godfather_role(name):
     """Creates a new Godfather role object."""
     return GameRole(
-        name= "Mob Goon",
+        name= name,
         alignment="Mafia",
         short_description="A member of the Mafia. Can now choose the Mafia's target each night.",
         description="Your mob boss has died so you as a member of the Mafia will now be promoted to Mob Godfather.\nyou now choose the Mafia's target each night. \n Use _/kill player-name_ in this DM during the night phase with the bot to kill your chosen player. \n \nDuring the day you can still use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
@@ -622,8 +628,6 @@ async def list_assigned_roles():
     logger.debug(f"Role list: {role_list_message}")
     return(role_list_message)
 
-
-
 # --- Game Functions ---
 def reset_game():
     """Resets the game variables."""
@@ -651,7 +655,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 4:
+    while len(players) < 5:  # Minimum number of players
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -661,6 +665,9 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
             "alive": True,
             "votes": 0,
             "action_target": None,
+            "previous_target": None,
+            "missed_votes": 0,
+            "death_info": None
         }
         logger.debug(f"NPC {npc_name} added")
     game_data = {
@@ -713,11 +720,11 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
 
 async def process_lynch_vote(voter_id, lynch_target):
     global lynch_votes, players
-    logger.debug(f"DEBUG: Target is {lynch_target}")
+    logger.info("DEBUG: process_lynch_vote called")
+    # Check if the voter is alive
     lynch_target_id = await get_player_id_by_name(lynch_target, players)
     target_alive = await is_player_alive(lynch_target_id,players)
-    logger.debug(f"DEBUG: target {lynch_target_id} alive => {target_alive}")
-    logger.debug(f"DEBUG: Lynch Target ID => {lynch_target_id}")
+    logger.debug(f"DEBUG: Target is {lynch_target} with Lynch Target ID => {lynch_target_id} and status {target_alive}")
     # Check if the voter has already voted
     for target_id, vote_data in lynch_votes.items():
         if voter_id in vote_data["voters"]:
@@ -811,7 +818,6 @@ async def countlynchvotes(bot, players):
     subdir = f"alpha_testing/{game_id}"
     filename = f"{game_id}_Lynch_Data"
     save_json_data(lynch_data,filename,subdir)
-    logger.debug(story_parts)
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
     return (story_text)
@@ -826,7 +832,6 @@ async def send_vote_update(bot,players):
     logger.info("DEBUG: Send_vote_update called...")
     if current_phase != "Day":
         await voting_channel.send("Vote counting is only available during the day phase.")
-        logger.debug(f"DEBUG: Current phase is {current_phase}")
         return
     # Tally votes (ensure lynch_votes is updated before calling this function)
     vote_counts = {}
@@ -852,7 +857,6 @@ async def send_vote_update(bot,players):
     else:
         logger.debug(f"DEBUG: {vote_counts}")
         for player_id, vote_count in vote_counts.items():
-            logger.debug(f"DEBUG: PlayerID: {player_id}")
             if player_id is None or player_id == "":
                 logger.error("No id")
             else:
@@ -860,7 +864,6 @@ async def send_vote_update(bot,players):
                 player_name = player_data["display_name"]
                 voter_list = ", ".join(voters[player_id])
                 message_content += f"- {player_name}: {vote_count} vote(s) - {voter_list}\n"
-                logger.debug(f"DEBUG: Current message content == {message_content}")
     # Find players who haven't voted
     not_voted = [
         player_data["display_name"]
@@ -870,7 +873,6 @@ async def send_vote_update(bot,players):
     if not_voted:
         message_content += "\n**Players who haven't voted yet:**\n"
         message_content += ", ".join(not_voted) + "\n"
-        logger.debug(f"DEBUG: Current message content == {message_content}")
     else:
         message_content += "\nAll players have voted.\n"
     await voting_channel.send(message_content) 
@@ -1020,8 +1022,10 @@ async def announce_winner(bot, winner):
         for player_id, player_data in players.items():
             if player_data["role"].alignment == winner:
                 winning_players.append(f"<@{player_id}>")
+                logger.debug(f"DEBUG: {player_data['display_name']} is a winner")
         if winning_players:
             winners = ", ".join(winning_players)
+            logger.debug(f"DEBUG: Winners = {winners}")
             await channel.send(f"GAME ENDED - Congratulations to {winner} - {winners}!")
     else:
         await channel.send(f"GAME ENDED - Game was a draw!")
@@ -1095,11 +1099,11 @@ async def announce_winner(bot, winner):
 
 async def process_role_block(bot):
     """Check if RB players blocked themselves and cancel their target if they did"""
-    global players, story_text
+    global players, story_text, town_block_target, mob_block_target
+    logger.info("process_role_block called")
     story_parts = []
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     mob_rb_id = get_specific_player_id(players,"Mob Role Blocker")
-    logger.debug(f"Town RB ID: {town_rb_id} // Mob RB ID: {mob_rb_id}")
     if mob_rb_id and town_rb_id:
         if mob_rb_id is not None and town_rb_id is not None:
             if players[mob_rb_id]["alive"] == True and  players[town_rb_id]["alive"]  == True:
@@ -1111,9 +1115,21 @@ async def process_role_block(bot):
                     players[town_rb_id]["action_target"] = None
                     logger.info("Town RB was blocked by Mob RB")
                     story_parts.append("One of the townsfolk went out to see if they could help their besieged town.\nHowever as they drove across the town they could see a set of headlights in their mirrors.\n They decided to head back home, unable to fulfill their mission.\n")
-    logger.debug(f"{story_parts}")
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
+    if town_rb_id is not None and players[town_rb_id]["alive"] == True:
+        target_id = players[town_rb_id]["action_target"]
+        if target_id:
+            players[target_id]["action_target"] = None
+            logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
+            town_block_target = target_id
+    if mob_rb_id is not None and players[mob_rb_id]["alive"] == True:
+        # Check if the target is a valid player ID
+        target_id = players[mob_rb_id]["action_target"]
+        if target_id:
+            players[target_id]["action_target"] = None
+            logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
+            mob_block_target = target_id
     return(story_text)
 
 async def process_sk_night_kill(bot):
@@ -1127,11 +1143,15 @@ async def process_sk_night_kill(bot):
     if sk_player_id == town_block_target:
         logger.info("SK was blocked by town RB")
         story_parts.append("The SK went out looking for someone to kill, but there was a shadowy figure following them.\n The SK decided it was to risky to kill tonight and went home.")
-        return
+        story_text = "\n".join(story_parts)
+        logger.debug(f"DEBUG: {story_text}")
+        return story_text
     if sk_player_id == mob_block_target:
         logger.info("SK was blocked by mob RB")
         story_parts.append("The SK went out looking for someone to kill, but there was a shadowy figure following them.\n The SK decided it was to risky to kill tonight and went home.")
-        return
+        story_text = "\n".join(story_parts)
+        logger.debug(f"DEBUG: {story_text}")
+        return story_text
     target_id = players[sk_player_id]["action_target"]
     # Check if a Serial Killer was found before proceeding
     if sk_player_id > 0:
@@ -1140,22 +1160,30 @@ async def process_sk_night_kill(bot):
             if players[sk_player_id]["alive"] == False:
                 logger.error("DEBUG: SK Player is Dead")
                 story_parts.append("")
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
                 return story_text
             if target_id is None:
                 logger.error("DEBUG: No target selected for SK. Skipping kill process.")
                 await sk_player.send("You did not select a target for the night kill.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return(story_text)
             if target_id not in players:
                 logger.error(f"DEBUG: Invalid target ID {target_id} for SK. Skipping kill process.")
                 await sk_player.send(f"Invalid target for the night kill. Target player is not in the game.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return story_text
             if not players[target_id]["alive"]:
                 logger.error("DEBUG: Target player for SK is already dead. Skipping kill process.")
                 await sk_player.send("Target player for the night kill is already dead.")
                 story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-                return
+                story_text = "\n".join(story_parts)
+                logger.debug(f"DEBUG: {story_text}")
+                return story_text
             # Target is valid, proceed with the kill process
             logger.debug(f"DEBUG: SK killed {target_id}")
             # If target is not the godfather then mark the player as dead and record how
@@ -1176,6 +1204,9 @@ async def process_sk_night_kill(bot):
                 story_parts.append(f"**{target_name} was killed by the SK!**\n\n")
                 logger.critical(story_parts)
                 logger.debug(f"DEBUG: SK action_target = {players[sk_player_id]["action_target"]}")
+            else:
+                if players[target_id]["role"].name == "Godfather" or players[target_id]["role"].name == "Serial Killer":
+                    story_parts.append(f"The crazy serial killer went after the {players[target_id]["role"].name} but their nemsis was too hard to kill")
             #clear SK player action target
             players[sk_player_id]["action_target"] = None
             logger.debug(f"DEBUG: SK action_target = {players[sk_player_id]["action_target"]}")
@@ -1189,7 +1220,6 @@ async def process_sk_night_kill(bot):
     logger.debug("--- WE ARE HERE!! ---")
     if sk_player_id < 0:
         story_parts.append("The Serial Killer found some childrens paint and started to lick it.... they never left their house all night")
-    logger.debug(f"{story_parts}")
     story_text = "\n".join(story_parts)
     logger.debug(f"DEBUG: {story_text}")
     return(story_text)
@@ -1200,51 +1230,46 @@ async def process_mafia_night_kill(bot):
     story_parts = []
     total_phases = (phase_number * 2) - (1 if current_phase == "night" else 0)
     mob_gf_id = get_specific_player_id(players,"Godfather")
-    logger.debug(f"Mob GF: {mob_gf_id}")
     if mob_gf_id:
         mob_gf_alive = players[mob_gf_id]["alive"]
     if mob_gf_id is None or mob_gf_alive == False :
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
+        name = "Mob Goon"
         logger.error("DEBUG: No living Godfather found.")
-        logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
+        logger.info(f"DEBUG: Promoting Mob to Godfather")
         if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
-<<<<<<< Updated upstream
-            logger.error("Debug: All mob are dead")
-            return (story_text)
-        players[mob_goon_id]["role"] = create_godfather_role()
-        if mob_goon_id > 0:
-=======
             mob_goon_id = get_specific_player_id(players,"Mob Role Blocker")
             name = "Mob Role Blocker"
             if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
                 logger.error("Debug: All mob are dead")
-                return (story_text)
+                return ()
         if mob_goon_id > 0 and players[mob_goon_id]["alive"] == True and players[mob_goon_id]["role"].action != "Kill":
->>>>>>> Stashed changes
             mob_goon_player = await bot.fetch_user(mob_goon_id)
-            logger.info("Promoted Mob Goon to Mob Godfather")
+            logger.info("Promoted Mob Good to Mob Godfather")
             try:
-                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
+                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}\nAny previous ight actions you may have had no longer work.\nYou are now the Godfather and can choose a target to kill.\nPlease use the /kill command to select a target.\n")
             except discord.Forbidden:
                 logger.error(f"Could not send DM to promoted Godfather.  User has DMs disabled.")
             except discord.HTTPException as e:
                 logger.error(f"HTTP Error sending DM to promoted Godfather: {e}")
             except Exception as e:
                 logger.exception(f"Unexpected error promoting Godfather: {e}")
+
         players[mob_goon_id]["role"] = create_godfather_role(name)
         mob_gf_id = mob_goon_id
+        logger.debug(f"DEBUG: Mob Goon or RB now has GF powers, and mob_gf_id is equal to mob_good_id or mob_rb_id")
     target_id = players[mob_gf_id]["action_target"]
     if mob_gf_id == town_block_target:
-        logger.info("SK was blocked by town RB")
+        logger.info("Godfather was blocked by town RB")
         story_parts.append("The Mafia talked and decided on a target. They sent out their killer to do the job for them, but there was a shadowy figure following them.\n The mob hired killer decided it was to risky to kill tonight and went home.\n")
         story_text = "\n".join(story_parts)
         return (story_text)
     if mob_gf_id == mob_block_target:
-        logger.info("SK was blocked by mob RB")
+        logger.info("Godfather was blocked by mob RB")
         story_parts.append("The Mafia talked and decided on a target. They sent out their killer to do the job for them, but there was a shadowy figure following them.\n The mob hired killer decided it was to risky to kill tonight and went home.\n")
         story_text = "\n".join(story_parts)
         return (story_text)
-    logger.debug(f"Players == {players}")
+
     # Check if a Godfather was found before proceeding
     if mob_gf_id > 0:
         if bot:
@@ -1253,14 +1278,24 @@ async def process_mafia_night_kill(bot):
                 if target_id is None:
                     logger.error("DEBUG: No target selected for Mob. Skipping kill process.")
                     await mob_gf_player.send("You did not select a target for the night kill.")
-                    return
+                    story_parts.append("The Godfather stayed in and thought about who they should kill... but they thought for so long the sun came up and they had not left the house")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(f"DEBUG: {story_text}")
+                    return(story_text)
                 if target_id not in players:
                     logger.error(f"DEBUG: Invalid target ID {target_id} for Mob kill. Skipping kill process.")
-                    return
+                    story_parts.append("The Godfather stayed in and thought about who they should kill... but they thought for so long the sun came up and they had not left the house")
+                    await mob_gf_player.send(f"Invalid target for the night kill. Target player is not in the game.")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(f"DEBUG: {story_text}")
+                    return(story_text)
                 if not players[target_id]["alive"]:
                     logger.error("DEBUG: Target player for Mob is already dead. Skipping kill process.")
                     await mob_gf_player.send("Target player for the night kill is already dead.")
-                    return
+                    story_parts.append("The Godfather decided on who to kill, but the target was already dead.\n They thought about who they should kill next time.\n")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(story_text)
+                    return (story_text)
             except discord.Forbidden:
                 logger.error(f"Could not send DM to mob GF due to their privacy settings.")
             except Exception as e:
@@ -1285,9 +1320,11 @@ async def process_mafia_night_kill(bot):
                 target_name = players[target_id]["display_name"]
                 story_parts.append(f"The mob godfather was looking over the town at night. They saw {target_name} nearby and decided to feed them to the fishes\n")
                 story_parts.append(f"**{target_name} was killed by the Mob!**\n\n")
+            else:
+                if players[target_id]["role"].name == "Godfather" or players[target_id]["role"].name == "Serial Killer":
+                    story_parts.append(f"The Godfather went after the {players[target_id]["role"].name} but their nemsis was too hard to kill")
     players[mob_gf_id]["action_target"] = None
     logger.debug(f"DEBUG: Mob GF action_target = {players[mob_gf_id]["action_target"]}")
-    logger.debug(story_parts)
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
     return (story_text)
@@ -1304,14 +1341,12 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
     mob_rb_id = get_specific_player_id(players, "Mob Role Blocker")
     town_doc_id = get_specific_player_id(players, "Town Doctor")
-    logger.debug(f"Town Doc: {town_doc_id}")
     if town_doc_id is None: 
         logger.debug("No Town Doc found. Skipping investigation.")
         return
     if players[town_doc_id]["alive"] == False and players[town_doc_id]["action_target"] == None:
         logger.debug("Town doc is dead already")
         return
-    logger.debug(f"Town Doc ID: {town_doc_id}")
     if town_rb_id and town_rb_id > 0:
         town_block_target = players[town_rb_id]["action_target"]
     if mob_rb_id and mob_rb_id > 0:
@@ -1341,13 +1376,12 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
             }    
         if town_doc_id == heal_target:
             logger.debug("Doctor saved themselves")
-            story_parts.append("The doctor struggled to breath after the attack, but luckily for them they had brought their emergency first aid kit with them and immediately started to bandage themselves up. They would live, even if they would be sore for the next few days")
-            story_parts.append(f"**The Town Doctor healed themselves!**\n\n")
+            story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
+            story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
         else:
             logger.debug(f"Doctor saved {heal_target}")
             story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
             story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
-    logger.debug(story_parts)
     story_text = "\n".join(story_parts)
     logger.debug(story_text)
     return (story_text)  
@@ -1377,19 +1411,16 @@ async def process_cop_night_investigate(bot):
     if town_cop_id == town_block_target:
         story_parts.append("Once the sun went down, the town cop headed out into the cold night with a determination to find out what was happening. However, where ever they went there was always a shadowy figure somewhere behind them. They spent all night avoiding this mysterious figure.\n")
         logger.debug("Town RB blocks town cop")
-        logger.debug(story_parts)
         story_text = "\n".join(story_parts)
         logger.debug(story_text)
         return (story_text)  
     if town_cop_id == mob_block_target:
         story_parts.append("Once the sun went down, the town cop headed out into the cold night with a determination to find out what was happening. However, where ever they went there was always a shadowy figure somewhere behind them. They spent all night avoiding this mysterious figure.\n")
         logger.debug("Mob RB blocks town cop")
-        logger.debug(story_parts)
         story_text = "\n".join(story_parts)
         logger.debug(story_text)
         return (story_text)  
     target_id = players[town_cop_id]["action_target"]
-    logger.debug(f"DEBUG: Town Cop: {players[town_cop_id]}")
     if town_cop_id > 0: #do not send messages to NPC bots
         town_cop_player = await bot.fetch_user(town_cop_id)
         if target_id not in players:
@@ -1428,7 +1459,6 @@ async def process_cop_night_investigate(bot):
             target_role = "Plain Townie"
             target_alignment = "Town"
             target_short_desc = "Normal member of town"
-        logger.debug(f"Town Cop investigates {target_name} (ID: {target_id}), Role: {target_role}, Alignment: {target_alignment}")
         try:
             await town_cop_player.send(f"You investigated {target_name}.  Their role is: {target_role} ({target_short_desc}).  Their alignment is: {target_alignment}.")
         except discord.Forbidden:
@@ -1449,20 +1479,23 @@ def clear_actions(players):
 
 async def check_gf_status(bot, players):
     mob_gf_id = get_specific_player_id(players,"Godfather")
-    logger.debug(f"Mob GF: {mob_gf_id}")
     if mob_gf_id:
         mob_gf_alive = players[mob_gf_id]["alive"]
     if mob_gf_id is None or mob_gf_alive == False :
         mob_goon_id = get_specific_player_id(players,"Mob Goon")
+        name = "Mob Goon"
         logger.error("DEBUG: No living Godfather found. Skipping Mafia night kill process.")
-        logger.info(f"DEBUG: Promoting Mob Goon to Godfather")
-        if mob_goon_id is None:
-            logger.error("Debug: All mob are dead")
-            return
-        players[mob_goon_id]["role"] = create_godfather_role()
+        logger.info(f"DEBUG: Promoting Mob to Godfather")
+        if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+            name = "Mob Role Blocker"
+            mob_goon_id = get_specific_player_id(players,"Mob Role Blocker")
+            if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
+                logger.error("Debug: All mob are dead")
+                return
+        players[mob_goon_id]["role"] = create_godfather_role(name)
         if mob_goon_id > 0:
             mob_goon_player = await bot.fetch_user(mob_goon_id)
-            logger.info("Promoted Mob Good to Mob Godfather")
+            logger.info("Promoted Mob to Mob Godfather")
             try:
                await mob_goon_player.send(f"Your Godfather has been killed, you are the Godfather Now\n\n {players[mob_goon_id]["role"].description}")
             except discord.Forbidden:
@@ -1472,6 +1505,50 @@ async def check_gf_status(bot, players):
             except Exception as e:
                 logger.exception(f"Unexpected error promoting Godfather: {e}")
         return
+async def kill_inactive_player():
+    global bot, players, current_phase, phase_number, story_text
+    logger.info("Checking for inactive voters...")
+    players_to_remove = []
+    story_parts = []
+    # --- Increment Missed Vote Counters ---
+    for p_id, p_data in players.items():
+        if p_data["alive"] and p_data["action_target"] is None:
+            p_data["missed_votes"] += 1
+            logger.info(f"Player {p_data['display_name']} missed vote {p_data['missed_votes']} time(s).")
+    # --- End Increment ---
+    # --- Identify Inactive Players ---
+    for player_id, player_data in players.items():
+        if player_data["alive"]: # Only check living players
+            # Check for missed votes
+            if player_data["missed_votes"] >= 1: # Check if they missed >= 1 vote
+                logger.warning(f"Player {player_data['display_name']} (ID: {player_id}) marked inactive for missing vote.")
+                players_to_remove.append((player_id, "Inactive - Missed Vote"))
+    # --- Process Removals ---
+    if players_to_remove:
+        for player_id, reason in players_to_remove:
+            if player_id in players: # Double-check player still exists
+                player_data = players[player_id]
+                if player_data["alive"]: # Make sure they weren't killed/lynched already
+                    player_data["alive"] = False
+                    total_phases_calculation = (phase_number * 2) - (1 if current_phase == "night" else 0) # Calculate here
+                    player_data["death_info"] = {
+                        "phase": f"{current_phase} {phase_number}",
+                        "phase_num": phase_number,
+                        "total_phases": total_phases_calculation,
+                        "how": reason
+                    }
+                    logger.info(f"Removed inactive player: {player_data['display_name']} (ID: {player_id}), Reason: {reason}")
+                    story_parts.append(f"**{player_data['display_name']}** was removed from the game due to inactivity (Missed Vote).")
+                    # Announce role 
+                    if player_data["role"]:
+                         story_parts.append(f"Their role was: {player_data['role'].name}")
+        # Send combined story message if there were removals
+        if story_parts:
+                story_text = "\n".join(story_parts)
+                logger.debug(story_text)
+    else:
+        logger.info("No inactive voters found.")
+    return (story_text)  
 
 # --- Bot Event ---
 @bot.event
@@ -1479,7 +1556,7 @@ async def on_ready():
     logger.critical(f"Logged in as {bot.user.name}")
 
 # --- Bot Commands ---
-@bot.command(name="startmafia")
+@bot.command(name="mafiastart")
 #@commands.has_role(discord_role_data.get("mod", {}).get("id"))
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime: str):
@@ -1521,16 +1598,16 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
     join_hours = round((time_signup_ends - datetime.now(timezone.utc)).total_seconds() / 3600, 2)
     logger.info(f"DEBUG: New game started with join hours {join_hours}")
     channel = bot.get_channel(config.TALKY_TALKY_CHANNEL_ID)
-    await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
+    await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/mafiajoin` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n "
                         f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n\n"
                         )
     channel = bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID)
-    await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
+    await channel.send( f"Sign-ups are now open for {join_hours} hours! Use `/mafiajoin` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
                         f"Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.\n\n"
                         )
     channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
     await channel.send( "--- ** New Basic Bitch Game open for signups ** ---\n"
-                        f"Sign-ups are now open for {join_hours} hours! Use `/join [name]` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
+                        f"Sign-ups are now open for {join_hours} hours! Use `/mafiajoin` in the <#{config.SIGN_UP_HERE_CHANNEL_ID}> channel to join the game.\n"
                         f"**Game will start at: {time_signup_ends.strftime('%Y-%m-%d %H:%M:%S UTC')}.**\n\n"
                         f"{rules_text}\n"
                         "\n--- **No story generated** ---\n\n"
@@ -1547,7 +1624,7 @@ async def start_game(ctx, phase_hours: float = config.PHASE_HOURS, *, start_date
         logger.error("DEBUG: Sign-ups ended, but the game was stopped.")
         logger.error(f"DEBUG: Timestamp: {datetime.now(timezone.utc)} - game started = {game_started}")
 
-@bot.command(name="join")
+@bot.command(name="mafiajoin")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 #async def join_game(ctx,*,game_name: str):
 async def join_game(ctx):
@@ -1567,7 +1644,8 @@ async def join_game(ctx):
         logger.error(f"Player {player_id} have already joined the game!")
         return
     # Add player to the game
-    if current_phase == "":
+    if current_phase == "" or current_phase == "Signup": #check that the game is in signup phase
+        # Add player to the players dictionary
         players[player_id] = {
             "name": ctx.author.name,
             "display_name": ctx.author.display_name,
@@ -1576,12 +1654,13 @@ async def join_game(ctx):
             "votes": 0,
             "action_target": None,
             "previous_target": None,
+            "missed_votes": 0,
+            "death_info": {}
         }
         # Update discord roles
         guild = ctx.guild
         await update_player_discord_roles(bot,guild, players, discord_role_data)
         logger.info(f"DEBUG: Player joined: {ctx.author.name} (ID: {player_id}).") 
-        logger.debug(f"DEBUG: Players --> {players}")
         await ctx.send(
             f"{ctx.author.mention} has joined the game!"
         )
@@ -1609,7 +1688,7 @@ async def join_game_error(ctx, error):
         await ctx.author.send("An error occurred during processing of this command.")
         logger.critical(f"An error occurred during processing of this command. {error}")
 
-@bot.command(name="stop")
+@bot.command(name="mafiastop")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 @commands.has_role(discord_role_data.get("mod", {}).get("id"))
 async def stop_game(ctx):
@@ -1638,7 +1717,7 @@ async def stop_game(ctx):
     await ctx.send("The current game has been stopped.")
     logger.info(f"DEBUG: Game stopped.")
 
-@bot.command(name="status")
+@bot.command(name="mafiastatus")
 @commands.check(is_owner_or_mod(bot, discord_role_data))
 async def status(ctx):
     """Displays the current game status."""
@@ -1686,11 +1765,15 @@ async def vote(ctx, *, lynch_target):
         logger.debug(f"DEBUG: Sending data to process_lynch_vote: {ctx}, {player_id}, {lynch_target}")
         await process_lynch_vote(player_id, lynch_target)
         await send_vote_update(bot, players)  # Send vote update after each vote
+        # --- Reset Missed Votes ---
+        players[player_id]["missed_votes"] = 0
+        logger.debug(f"Reset missed_votes for {players[player_id]['display_name']}")
+        # --- End Reset ---
     else:
         logger.error(f"Player {player_id} tried to vote for dead player {target_id}")
         await ctx.send("You can not vote for a dead player") 
 
-@bot.command(name = "count")
+@bot.command(name = "mafiacount")
 @commands.has_role(discord_role_data.get("living", {}).get("id"))
 async def count(ctx):
     await send_vote_update(bot, players) #manually send vote count with /count
@@ -1820,7 +1903,6 @@ async def heal_command(ctx, *, target_name: str):  # Changed target to target_na
     # Rest of the command logic for players with the correct role
     players[player_id]["action_target"] = target_id
     await ctx.author.send(f"You have chosen to heal {players[target_id]['display_name']}.")
-    logger.debug(f"Player {player_id} targeted {target_id}")
     logger.debug(f"Player action target: {players[player_id]["action_target"]}")
 @heal_command.error
 async def heal_command_error(ctx, error):
@@ -1881,7 +1963,6 @@ async def investigate_command(ctx, *, target_name: str):
     # Rest of the command logic for players with the correct role
     players[player_id]["action_target"] = target_id
     await ctx.author.send(f"You have chosen to investigate {players[target_id]['display_name']}.")
-    logger.debug(f"Player {player_id} targeted {target_id}")
     logger.debug(f"Player action target: {players[player_id]["action_target"]}")
 @investigate_command.error
 async def investigate_command_error(ctx, error):
@@ -1926,7 +2007,7 @@ async def roleblock_command(ctx, *, target_name: str):
         logger.error(f"Player {blocker_id} does not have the required role (block) to use this command.")
         return
     # --- Target Resolution and Validation ---
-    target_id = await get_player_id_by_name(target_name)
+    target_id = await get_player_id_by_name(target_name,players)
     if target_id is None:
         await ctx.author.send(f"Could not find a player named '{target_name}'.")
         return
@@ -1946,7 +2027,7 @@ async def roleblock_command(ctx, *, target_name: str):
     # --- Check for previous blocks (two nights in a row) ---
     if target_id == player_data["previous_target"]:
         await ctx.author.send("You cannot target the same player two nights in a row")
-        logger.debug(f"Roleblock {blocker_id} // {players[blocker_id]["role"].alignment} attempted to target {target_id} two nights in a row")
+        logger.debug(f"Roleblock {players[blocker_id]["role"].alignment} attempted to target {target_id} two nights in a row")
         return 
     # --- Process the Block ---
     await ctx.author.send(f"You have blocked {target_data['display_name']}.")
@@ -1969,31 +2050,31 @@ async def roleblock_command_error(ctx, error):
         await ctx.author.send("An error occurred during processing of this command.")
         logger.exception(f"Error in roleblock command: {error}")
 
-@bot.command(name="info")
+@bot.command(name="mafiainfo")
 async def show_info(ctx):
     """Shows the list of available commands."""
     info_text = (
         "**Available Commands:**\n\n"
         "**Player Commands:**\n"
-        "- `/join <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
-        "- `/status`: Displays the current game status. Will show game names of all signed up players\n"
+        "- `/mafiajoin <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
+        "- `/mafiastatus`: Displays the current game status. Will show game names of all signed up players\n"
         "- `/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
-        "- `/count`: Displays the current vote count.\n"
-        "- `/rules`: Displays the rules of the game.\n"
-        "- `/info`: Shows this help message.\n"
-        "- `/leave : Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
+        "- `/mafiacount`: Displays the current vote count.\n"
+        "- `/mafiarules`: Displays the rules of the game.\n"
+        "- `/mafiainfo`: Shows this help message.\n"
+        "- `/mafialeave : Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
         " \n\n**Player Actions**\n"
         "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
         "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
         "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
         "\n\n**Moderator Commands:**\n"
-        "- `/startmafia <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
-        "- `/stop`: Stops the current game.\n"
+        "- `/mafiastart <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
+        "- `/mafiastop`: Stops the current game.\n"
     )
     await ctx.send(info_text)
     logger.info("/info was called")
 
-@bot.command(name="rules")
+@bot.command(name="mafiarules")
 async def show_rules(ctx):
     """Displays the rules of the game."""
     global current_phase, phase_number, time_signup_ends, time_day_ends, time_night_ends
@@ -2010,7 +2091,7 @@ async def show_rules(ctx):
         await ctx.send(f"\nNo current game running. \nStandard game rules: {rules_text} \n")
     logger.info("/rules was called")
 
-@bot.command(name="leave")
+@bot.command(name="mafialeave")
 async def leave_game(ctx):
     """Allows a player to leave the game during the sign-up phase."""
     global players
@@ -2049,44 +2130,124 @@ async def leave_game(ctx):
     await ctx.send(f"{ctx.author.mention} has left the game.")
     print(f"DEBUG: Player left: {ctx.author.name} (ID: {player_id}). Players: {players}")
 
-@bot.command(name="remove")
-@commands.check(is_owner_or_mod(bot, discord_role_data))  # Use your custom check
-@commands.has_role(discord_role_data.get("mod", {}).get("id"))
-async def kick_player(ctx):
-    """(Admin/Mod only) Re-initializes the player dictionary.
-    Removes spectators and players without a role, updates display names,
-    and keeps only players with "Living Players" or "Dead Players" roles.
+@bot.command(name="mafiareinit") # Renamed command for clarity
+@commands.check(is_owner_or_mod(bot, discord_role_data)) # Use custom check
+async def reinitialize_players(ctx):
+    """(Admin/Mod only) Re-initializes the player dictionary based on current roles.
+
+    If in signup phase: Clears players and re-adds based on 'Living Players' role.
+    If in game phase: Updates player status based on 'Living/Dead Players' roles,
+                      preserving existing role/target/death data.
     """
-    global players, game_started
-    if game_started == False: # Check if game exists
+    global players, game_started, current_phase # Ensure all needed globals are declared
+
+    logger.info(f"Reinitialize players command called by {ctx.author.name}")
+
+    if not game_started:
         await ctx.send("No game is currently running.")
+        logger.warning("Attempted to reinitialize players when no game was started.")
         return
+
     guild = ctx.guild
     if not guild:
         await ctx.send("This command must be used in a server.")
+        logger.warning("Reinitialize players command used outside of a server.")
         return
-    living_role = discord_role_data.get("living", {}).get("id")
-    dead_role = discord_role_data.get("dead", {}).get("id")
-    if not living_role or not dead_role:
-        await ctx.send("Error: 'Living Players' or 'Dead Players' roles not found.")
+
+    # Get Discord Role Objects
+    living_role_id = discord_role_data.get("living", {}).get("id")
+    dead_role_id = discord_role_data.get("dead", {}).get("id")
+    spectator_role_id = discord_role_data.get("spectator", {}).get("id") # Get spectator role too
+
+    living_role = discord.utils.get(guild.roles, id=living_role_id)
+    dead_role = discord.utils.get(guild.roles, id=dead_role_id)
+    spectator_role = discord.utils.get(guild.roles, id=spectator_role_id)
+
+    if not living_role or not dead_role or not spectator_role:
+        await ctx.send("Error: Could not find 'Living Players', 'Dead Players', or 'Spectator' role in the server config.")
+        logger.error("Could not find essential game roles in discord_roles.json or server.")
         return
+
+    logger.info(f"Current game phase for reinitialization: '{current_phase or 'Signup'}'")
+
     new_players = {}
-    for member in guild.members:
-        if living_role in member.roles or dead_role in member.roles:
-            # Add player to the new dictionary, resetting relevant game data
-            new_players[member.id] = {
-                "name": member.name,
-                "display_name": member.display_name,
-                "role": None,  # Reset role.
-                "alive": living_role in member.roles,  # Alive if they have living role.
-                "action_target": None,
-                "previous_target": None,
-                #Keep death info if player was dead
-                "death_info": players.get(member.id, {}).get("death_info", {}) if not living_role in member.roles else {}
-            }
+
+    if current_phase == "" or current_phase == "signup": # --- SIGNUP PHASE ---
+        logger.info("Reinitializing players during signup phase.")
+        players = {} # Clear the existing player dictionary
+
+        for member in guild.members:
+            if living_role in member.roles: # Only add members with the living role
+                if not member.bot: # Exclude bots
+                    logger.debug(f"Adding player {member.display_name} (ID: {member.id}) during signup reinit.")
+                    new_players[member.id] = {
+                        "name": member.name,
+                        "display_name": member.display_name,
+                        "role": None,
+                        "alive": True, # Must be alive if they have living role
+                        "votes": 0,
+                        "action_target": None,
+                        "previous_target": None,
+                        "missed_votes": 0,
+                        "death_info": {} # Initialize as empty
+                    }
+            # Ensure non-players have spectator role during signup phase reset
+            elif not member.bot and spectator_role not in member.roles:
+                 try:
+                    await member.add_roles(spectator_role)
+                    await member.remove_roles(living_role, dead_role) # Clean up other roles
+                 except discord.HTTPException as e:
+                     logger.error(f"HTTPException setting spectator role for {member.name}: {e}")
+                 except discord.Forbidden:
+                     logger.error(f"Bot lacks permissions to set spectator role for {member.name}.")
+
+    else: # --- GAME PHASE (Day or Night) ---
+        logger.info("Reinitializing players during active game phase (Day/Night).")
+        for member in guild.members:
+            if living_role in member.roles or dead_role in member.roles:
+                if not member.bot: # Exclude bots
+                    # Get existing player data safely
+                    existing_player_data = players.get(member.id, {})
+                    logger.debug(f"Processing player {member.display_name} (ID: {member.id}) during game phase reinit.")
+
+                    # Add player to the new dictionary, preserving/resetting data
+                    new_players[member.id] = {
+                        "name": member.name,
+                        "display_name": member.display_name,
+                        "role": existing_player_data.get("role", None),  # Preserve role
+                        "alive": living_role in member.roles,            # Update based on current role
+                        "votes": 0,  # Reset votes for the new phase
+                        "action_target": existing_player_data.get("action_target", None),  # Preserve target
+                        "previous_target": existing_player_data.get("previous_target", None), # Preserve previous target
+                        "missed_votes": existing_player_data.get("missed_votes", None), # Preserve previous missed votes
+                        "death_info": existing_player_data.get("death_info", {}) if dead_role in member.roles else {} # Keep if dead
+                    }
+            # Ensure non-players have spectator role
+            elif not member.bot and spectator_role not in member.roles:
+                try:
+                    await member.add_roles(spectator_role)
+                    await member.remove_roles(living_role, dead_role) # Clean up other roles
+                except discord.HTTPException as e:
+                    logger.error(f"HTTPException setting spectator role for {member.name}: {e}")
+                except discord.Forbidden:
+                    logger.error(f"Bot lacks permissions to set spectator role for {member.name}.")
+
     players = new_players  # Replace the old dictionary with the new one.
-    await ctx.send("Player dictionary reinitialized.")
-    logger.info("Player dictionary reinitialized by %s", ctx.author.name) # Use logger
+    await ctx.send("Player dictionary reinitialized based on current roles.")
+    logger.info("Player dictionary reinitialized by %s", ctx.author.name)
+    logger.info(f"New Player dictionary: {players}")
+    @reinitialize_players.error # Added specific error handler
+    async def reinitialize_players_error(ctx, error):
+        if isinstance(error, commands.CheckFailure): # Handles custom check failure
+            # The is_owner_or_mod check already sends a DM if needed
+            logger.warning(f"{ctx.author.name} lacked permission for /reset_players.")
+        elif isinstance(error, commands.MissingRole): # Handles has_role failure
+            await ctx.send(f"{ctx.author.mention}, you need the 'Mod' role to use this command.")
+            logger.warning(f"{ctx.author.name} lacked 'Mod' role for /reset_players.")
+        else:
+            # Handle other errors as needed. Always log the full exception.
+            await ctx.send("An unexpected error occurred during player reinitialization.")
+            logger.exception(f"Error in /reset_players command: {error}")
 
 # --- Game Loop ---
 @tasks.loop(seconds = 1)
@@ -2165,9 +2326,7 @@ async def gameprocess(ctx,bot,players):
             return  # End the game loop if there's a winner
         #recordphaseactions()
         set_previous_actions(players)
-        logger.debug(f"{players}")
         clear_actions(players)
-        logger.debug(f"{players}")
         logger.info(f"DEBUG: End of night phase, about to switch to day phase")
         current_phase = "Day"
         sk_target = None
@@ -2197,6 +2356,11 @@ async def gameprocess(ctx,bot,players):
         logger.info("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         await votingchannel.send("Voting ended!")
+        await kill_inactive_player() #checks for inactive players and kills them
+        if story_text:
+            logger.debug(f"DEBUG: Story text to send => \n{story_text}")
+            await storychannel.send(story_text)
+        await asyncio.sleep(message_send_delay)
         logger.info("DEBUG: Counting votes...")
         await countlynchvotes(bot,players)
         logger.debug(f"DEBUG: The lynch results -> {lynch_votes} for {current_phase} - {phase_number}")
@@ -2216,10 +2380,7 @@ async def gameprocess(ctx,bot,players):
             await ruleschannel.send(status_message)
             reset_game()
             return  # End the game loop if there's a winner
-        #recordphaseactions()
-        logger.debug(f"{players}")
         clear_actions(players)
-        logger.debug(f"{players}")
         lynch_votes = {}
         current_phase = "Night"
         logger.info("DEBUG: Changed to night phase")
