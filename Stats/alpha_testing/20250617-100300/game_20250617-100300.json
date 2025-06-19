@@ -1,0 +1,65 @@
+[
+    {
+        "game_id": "20250617-100300",
+        "start_time": "2025-06-17T10:03:00.015942+00:00",
+        "players": {
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {}
+            },
+            "-6": {
+                "name": "TownieBot 3000",
+                "display_name": "TownieBot 3000",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": null
+            },
+            "-10": {
+                "name": "Just a Regular Townie",
+                "display_name": "Just a Regular Townie",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": null
+            },
+            "-7": {
+                "name": "Sneaky McSneakface",
+                "display_name": "Sneaky McSneakface",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": null
+            },
+            "-3": {
+                "name": "Innocent Bystander",
+                "display_name": "Innocent Bystander",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": null
+            }
+        },
+        "phases": [],
+        "winner": null
+    }
+]

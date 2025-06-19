@@ -10,8 +10,10 @@ import logging
 import logging.handlers
 import logging.config
 from logging.handlers import RotatingFileHandler 
+import subprocess
+import sys
 
-# ----------------------------------------- #
+# ----------test branch------------------------------- #
 
 # --- Bot Setup ---
 intents = discord.Intents.default()
@@ -438,11 +440,71 @@ async def send_mafia_info_dm(bot, players, message_send_delay):
                 except Exception as e:
                     logger.error(f"An error occurred while sending info DM to {player_data['name']}: {e}")
 
+async def test_randomness(self, num_players: int, num_simulations: int = 10000):
+    """
+    (Owner only) Runs the role assignment randomness test script.
+    
+    Args:
+        num_players: The number of players to simulate the game with.
+        num_simulations: (Optional) The number of iterations to run. Defaults to 10,000.
+    """
+    if num_simulations > 50000: # Add a safety limit
+        await rules_channel.send("Please choose a number of simulations less than 50,000 to avoid long waits.")
+        return
+    rules_channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+    await rules_channel.send(f"Running randomness test for **{num_players} players** over **{num_simulations} simulations**. This might take a moment...")
+    await rules_channel.send("Please wait while the test runs...")
+    # Construct the command to run the script
+    # sys.executable ensures we use the same Python interpreter the bot is using
+    command_to_run = [
+        sys.executable,
+        'randomnumbertest.py', # The name of your script file
+        str(num_players),
+        str(num_simulations)
+    ]
+
+    try:
+        # Run the script as a separate process
+        process = await asyncio.to_thread(
+            subprocess.run,
+            command_to_run,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        # The output might be too long for a single Discord message, so send as a file
+        results_output = process.stdout
+        
+        # Save results to a temporary file
+        results_filename = "randomness_test_results.txt"
+        with open(results_filename, "w", encoding="utf-8") as f:
+            f.write(f"Randomness Test Results for {num_players} players over {num_simulations} simulations:\n\n")
+            f.write(results_output)
+            
+        # Send the file to Discord
+        await rules_channel.send("Test complete! Here are the results:", file=discord.File(results_filename))
+        
+        # Clean up the file
+        os.remove(results_filename)
+
+    except FileNotFoundError:
+        await rules_channel.send("Error: `randonnumbertester.py` not found in the bot's directory.")
+        logger.error("Could not find randonnumbertester.py to run the test.")
+    except subprocess.CalledProcessError as e:
+        await rules_channel.send("An error occurred while running the test script. Check the logs for details.")
+        logger.error(f"Test script failed with exit code {e.returncode}:\n{e.stderr}")
+    except Exception as e:
+        await rules_channel.send("An unexpected error occurred. Please check the logs.")
+        logger.exception(f"An unexpected error occurred in testrandom command: {e}")
+
+
 async def assign_game_roles(bot, players, game_roles, message_send_delay):  # bot needed!
     """Assigns roles to players randomly based on the chosen setup."""
     global roles
     # Shuffle the player IDs and roles
     player_ids = list(players.keys())
+    await test_randomness(bot,len(game_roles),10000)
     random.shuffle(player_ids)  # Shuffle player IDs
     await asyncio.sleep(message_send_delay)  
     random.shuffle(player_ids)
@@ -655,7 +717,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 5:  # Minimum number of players
+    while len(players) < 11:  # Minimum number of players
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -1655,7 +1717,12 @@ async def join_game(ctx):
             "action_target": None,
             "previous_target": None,
             "missed_votes": 0,
-            "death_info": {}
+            "death_info":    {
+                    "phase": None,
+                    "phase_num": None,
+                    "total_phases": None,
+                    "how": None
+                }
         }
         # Update discord roles
         guild = ctx.guild
