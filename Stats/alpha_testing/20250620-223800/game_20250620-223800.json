@@ -1,0 +1,263 @@
+[
+    {
+        "game_id": "20250620-223800",
+        "start_time": "2025-06-20T22:38:00.008168+00:00",
+        "players": {
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-5": {
+                "name": "MafiaBot 9000",
+                "display_name": "MafiaBot 9000",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-1": {
+                "name": "Botty McBotface",
+                "display_name": "Botty McBotface",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-4": {
+                "name": "Definitely Not Sus",
+                "display_name": "Definitely Not Sus",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-3": {
+                "name": "Innocent Bystander",
+                "display_name": "Innocent Bystander",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-7": {
+                "name": "Sneaky McSneakface",
+                "display_name": "Sneaky McSneakface",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "-6": {
+                "name": "TownieBot 3000",
+                "display_name": "TownieBot 3000",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            }
+        },
+        "phases": [],
+        "winner": null
+    },
+    {
+        "game_id": "20250620-223800",
+        "total_phases": 6,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Normal member of town.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 3,
+                "votes": []
+            },
+            {
+                "player_id": -5,
+                "name": "MafiaBot 9000",
+                "display_name": "MafiaBot 9000",
+                "role": {
+                    "name": "Town Doctor",
+                    "alignment": "Town",
+                    "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Can heal one player each night.",
+                    "action": "Heal",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 3,
+                "votes": []
+            },
+            {
+                "player_id": -1,
+                "name": "Botty McBotface",
+                "display_name": "Botty McBotface",
+                "role": {
+                    "name": "Mob Goon",
+                    "alignment": "Mafia",
+                    "description": "Your mob boss has died so you as a member of the Mafia will now be promoted to Mob Godfather.\nyou now choose the Mafia's target each night. \n Use _/kill player-name_ in this DM during the night phase with the bot to kill your chosen player. \n \nDuring the day you can still use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
+                    "short_description": "A member of the Mafia. Can now choose the Mafia's target each night.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 3",
+                "death_cause": "Lynched",
+                "phases_lasted": 6,
+                "votes": []
+            },
+            {
+                "player_id": -4,
+                "name": "Definitely Not Sus",
+                "display_name": "Definitely Not Sus",
+                "role": {
+                    "name": "Serial Killer",
+                    "alignment": "Neutral",
+                    "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
+                    "short_description": "Kills one player each night.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Neutral",
+                "alive": false,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": -3,
+                "name": "Innocent Bystander",
+                "display_name": "Innocent Bystander",
+                "role": {
+                    "name": "Town Cop",
+                    "alignment": "Town",
+                    "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Investigates one player each night to learn their alignment.",
+                    "action": "Investigate",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 3,
+                "votes": []
+            },
+            {
+                "player_id": -7,
+                "name": "Sneaky McSneakface",
+                "display_name": "Sneaky McSneakface",
+                "role": {
+                    "name": "Godfather",
+                    "alignment": "Mafia",
+                    "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
+                    "short_description": "Immune, chooses Mafia target.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": 2,
+                "votes": []
+            },
+            {
+                "player_id": -6,
+                "name": "TownieBot 3000",
+                "display_name": "TownieBot 3000",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+                    "short_description": "Normal member of town.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 3,
+                "votes": []
+            }
+        ],
+        "end_time": "2025-06-20T22:41:05.144336+00:00"
+    }
+]

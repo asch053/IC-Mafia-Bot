@@ -717,7 +717,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 11:  # Minimum number of players
+    while len(players) < config.min_players:  # Minimum number of players
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -729,7 +729,12 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
             "action_target": None,
             "previous_target": None,
             "missed_votes": 0,
-            "death_info": None
+            "death_info":    {
+                    "phase": None,
+                    "phase_num": None,
+                    "total_phases": None,
+                    "how": None
+                }
         }
         logger.debug(f"NPC {npc_name} added")
     game_data = {
@@ -2423,7 +2428,8 @@ async def gameprocess(ctx,bot,players):
         logger.info("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         await votingchannel.send("Voting ended!")
-        await kill_inactive_player() #checks for inactive players and kills them
+        if config.game_type == "Production":
+            await kill_inactive_player() #checks for inactive players and kills them
         if story_text:
             logger.debug(f"DEBUG: Story text to send => \n{story_text}")
             await storychannel.send(story_text)
