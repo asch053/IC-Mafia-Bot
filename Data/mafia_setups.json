@@ -201,12 +201,12 @@
           "action": ""
         },
         {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
+          "name": "Mob Role Blocker",
+          "alignment": "Mafia",
+          "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+          "short_description": "Prevents one player from performing their night action.",
           "quantity": 1,
-          "action": "Kill"
+           "action":"Block"
         }
       ]
     }
