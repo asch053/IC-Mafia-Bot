@@ -1,0 +1,104 @@
+[
+    {
+        "game_id": "20250324-180000",
+        "start_time": "2025-03-24T17:59:59.976423+00:00",
+        "players": {
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "1057856572899999744": {
+                "name": "thebigone05",
+                "display_name": "TheBigOne",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "220142891027136512": {
+                "name": "pandabbear",
+                "display_name": "Panda",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "216918396539764737": {
+                "name": "ordos.",
+                "display_name": "Ordos",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "469571706898350080": {
+                "name": "jason.wills",
+                "display_name": "Soul",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "1039345137928646688": {
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null
+            },
+            "-6": {
+                "name": "TownieBot 3000",
+                "display_name": "TownieBot 3000",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null
+            },
+            "-10": {
+                "name": "Just a Regular Townie",
+                "display_name": "Just a Regular Townie",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null
+            },
+            "-9": {
+                "name": "Totally Harmless",
+                "display_name": "Totally Harmless",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null
+            },
+            "-1": {
+                "name": "Botty McBotface",
+                "display_name": "Botty McBotface",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null
+            },
+            "-3": {
+                "name": "Innocent Bystander",
+                "display_name": "Innocent Bystander",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null
+            }
+        },
+        "phases": [],
+        "winner": null
+    }
+]
