@@ -1,6 +1,9 @@
 # config file
 config.py
 
+# discord roles
+data/discord_roles.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -172,5 +175,12 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-*.key
-Data/discord_roles.json
+
+#nohup file
+nohup.out 
+nohup.log
+nohup.err
+
+# Alpha and Beta Stats
+/Stats/Alpha Testing/
+/Stats/BETA Testing/

@@ -1,0 +1,179 @@
+[
+    {
+        "game_id": "20250620-093000",
+        "total_phases": 2,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 377879725894533121,
+                "name": "Squatch",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        1039345137928646688,
+                        225405842235719680
+                    ]
+                }
+            },
+            {
+                "player_id": 1039345137928646688,
+                "name": "sCriv",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 1057856572899999744,
+                "name": "TheBigOne",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 331831967723159566,
+                "name": "Schniepel",
+                "role": "Mob Role Blocker",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "Mrblonde",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": -8,
+                "name": "Not The Godfather",
+                "role": "Town Role Blocker",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": -4,
+                "name": "Definitely Not Sus",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": true,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": -1,
+                "name": "Botty McBotface",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            }
+        ]
+    }
+]

@@ -10,8 +10,10 @@ import logging
 import logging.handlers
 import logging.config
 from logging.handlers import RotatingFileHandler 
+import subprocess
+import sys
 
-# ----------------------------------------- #
+# ----------test branch------------------------------- #
 
 # --- Bot Setup ---
 intents = discord.Intents.default()
@@ -438,11 +440,71 @@ async def send_mafia_info_dm(bot, players, message_send_delay):
                 except Exception as e:
                     logger.error(f"An error occurred while sending info DM to {player_data['name']}: {e}")
 
+async def test_randomness(self, num_players: int, num_simulations: int = 10000):
+    """
+    (Owner only) Runs the role assignment randomness test script.
+    
+    Args:
+        num_players: The number of players to simulate the game with.
+        num_simulations: (Optional) The number of iterations to run. Defaults to 10,000.
+    """
+    if num_simulations > 50000: # Add a safety limit
+        await rules_channel.send("Please choose a number of simulations less than 50,000 to avoid long waits.")
+        return
+    rules_channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+    await rules_channel.send(f"Running randomness test for **{num_players} players** over **{num_simulations} simulations**. This might take a moment...")
+    await rules_channel.send("Please wait while the test runs...")
+    # Construct the command to run the script
+    # sys.executable ensures we use the same Python interpreter the bot is using
+    command_to_run = [
+        sys.executable,
+        'randomnumbertest.py', # The name of your script file
+        str(num_players),
+        str(num_simulations)
+    ]
+
+    try:
+        # Run the script as a separate process
+        process = await asyncio.to_thread(
+            subprocess.run,
+            command_to_run,
+            capture_output=True,
+            text=True,
+            check=True
+        )
+
+        # The output might be too long for a single Discord message, so send as a file
+        results_output = process.stdout
+        
+        # Save results to a temporary file
+        results_filename = "randomness_test_results.txt"
+        with open(results_filename, "w", encoding="utf-8") as f:
+            f.write(f"Randomness Test Results for {num_players} players over {num_simulations} simulations:\n\n")
+            f.write(results_output)
+            
+        # Send the file to Discord
+        await rules_channel.send("Test complete! Here are the results:", file=discord.File(results_filename))
+        
+        # Clean up the file
+        os.remove(results_filename)
+
+    except FileNotFoundError:
+        await rules_channel.send("Error: `randonnumbertester.py` not found in the bot's directory.")
+        logger.error("Could not find randonnumbertester.py to run the test.")
+    except subprocess.CalledProcessError as e:
+        await rules_channel.send("An error occurred while running the test script. Check the logs for details.")
+        logger.error(f"Test script failed with exit code {e.returncode}:\n{e.stderr}")
+    except Exception as e:
+        await rules_channel.send("An unexpected error occurred. Please check the logs.")
+        logger.exception(f"An unexpected error occurred in testrandom command: {e}")
+
+
 async def assign_game_roles(bot, players, game_roles, message_send_delay):  # bot needed!
     """Assigns roles to players randomly based on the chosen setup."""
     global roles
     # Shuffle the player IDs and roles
     player_ids = list(players.keys())
+    await test_randomness(bot,len(game_roles),10000)
     random.shuffle(player_ids)  # Shuffle player IDs
     await asyncio.sleep(message_send_delay)  
     random.shuffle(player_ids)
@@ -655,7 +717,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     game_id = time_signup_ends.strftime("%Y%m%d-%H%M%S")  # Unique ID based on time game starts
     logger.info(f"Game ID generated = {game_id}")
     # Fill in any missing players with NPCs
-    while len(players) < 5:  # Minimum number of players
+    while len(players) < config.min_players:  # Minimum number of players
         npc_name = random.choice(npc_names)
         npc_id = -(npc_names.index(npc_name) + 1)
         players[npc_id] = {
@@ -667,7 +729,12 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
             "action_target": None,
             "previous_target": None,
             "missed_votes": 0,
-            "death_info": None
+            "death_info":    {
+                    "phase": None,
+                    "phase_num": None,
+                    "total_phases": None,
+                    "how": None
+                }
         }
         logger.debug(f"NPC {npc_name} added")
     game_data = {
@@ -681,7 +748,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     logger.info(f"DEBUG: Game created with game_id = {game_id}")
     # Save initial game data
     name = f"game_{game_id}"
-    subdir = f"alpha_testing/{game_id}"
+    subdir = f"{config.game_type}/{game_id}"
     save_json_data(game_data, name, subdir)
     logger.info(f"DEBUG: Stat files created... assigning {len(players)} roles...")
     # Generate and assign roles
@@ -815,7 +882,7 @@ async def countlynchvotes(bot, players):
         "phase_num": phase_number,
         "lynch votes": lynch_votes  
     }
-    subdir = f"alpha_testing/{game_id}"
+    subdir = f"{config.game_type}/{game_id}"
     filename = f"{game_id}_Lynch_Data"
     save_json_data(lynch_data,filename,subdir)
     story_text = "\n".join(story_parts)
@@ -1066,7 +1133,7 @@ async def announce_winner(bot, winner):
         if game_data:
             logger.debug(f"DEBUG: {game_data}")
             filename = f"{game_id}_Game_Data"
-            subdir = f"alpha_testing/{game_id}"
+            subdir = f"{config.game_type}/{game_id}"
             save_json_data(game_data,filename,subdir)  # Save to JSON file
 
     # --- Construct the final game_data ---
@@ -1091,7 +1158,7 @@ async def announce_winner(bot, winner):
          for player_id, player_data in players.items()
      ]
     if game_data:
-        save_json_data(game_data, f"game_{game_data['game_id']}", f"alpha_testing/{game_id}") 
+        save_json_data(game_data, f"game_{game_data['game_id']}", f"{config.game_type}/{game_id}") 
         logger.debug(f"Saved game data to file: {game_data}")  
     # Reset game variables
     game_started = False  # Allow new games to be started
@@ -1242,9 +1309,8 @@ async def process_mafia_night_kill(bot):
             name = "Mob Role Blocker"
             if mob_goon_id is None or players[mob_goon_id]["alive"] == False:
                 logger.error("Debug: All mob are dead")
-                return (story_text)
-        players[mob_goon_id]["role"] = create_godfather_role(name)
-        if mob_goon_id > 0:
+                return ()
+        if mob_goon_id > 0 and players[mob_goon_id]["alive"] == True and players[mob_goon_id]["role"].action != "Kill":
             mob_goon_player = await bot.fetch_user(mob_goon_id)
             logger.info("Promoted Mob Good to Mob Godfather")
             try:
@@ -1255,19 +1321,22 @@ async def process_mafia_night_kill(bot):
                 logger.error(f"HTTP Error sending DM to promoted Godfather: {e}")
             except Exception as e:
                 logger.exception(f"Unexpected error promoting Godfather: {e}")
-        return
+
+        players[mob_goon_id]["role"] = create_godfather_role(name)
+        mob_gf_id = mob_goon_id
+        logger.debug(f"DEBUG: Mob Goon or RB now has GF powers, and mob_gf_id is equal to mob_good_id or mob_rb_id")
     target_id = players[mob_gf_id]["action_target"]
     if mob_gf_id == town_block_target:
-        logger.info("SK was blocked by town RB")
+        logger.info("Godfather was blocked by town RB")
         story_parts.append("The Mafia talked and decided on a target. They sent out their killer to do the job for them, but there was a shadowy figure following them.\n The mob hired killer decided it was to risky to kill tonight and went home.\n")
         story_text = "\n".join(story_parts)
         return (story_text)
     if mob_gf_id == mob_block_target:
-        logger.info("SK was blocked by mob RB")
+        logger.info("Godfather was blocked by mob RB")
         story_parts.append("The Mafia talked and decided on a target. They sent out their killer to do the job for them, but there was a shadowy figure following them.\n The mob hired killer decided it was to risky to kill tonight and went home.\n")
         story_text = "\n".join(story_parts)
         return (story_text)
-    logger.debug(f"Players == {players}")
+
     # Check if a Godfather was found before proceeding
     if mob_gf_id > 0:
         if bot:
@@ -1276,14 +1345,24 @@ async def process_mafia_night_kill(bot):
                 if target_id is None:
                     logger.error("DEBUG: No target selected for Mob. Skipping kill process.")
                     await mob_gf_player.send("You did not select a target for the night kill.")
-                    return
+                    story_parts.append("The Godfather stayed in and thought about who they should kill... but they thought for so long the sun came up and they had not left the house")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(f"DEBUG: {story_text}")
+                    return(story_text)
                 if target_id not in players:
                     logger.error(f"DEBUG: Invalid target ID {target_id} for Mob kill. Skipping kill process.")
-                    return
+                    story_parts.append("The Godfather stayed in and thought about who they should kill... but they thought for so long the sun came up and they had not left the house")
+                    await mob_gf_player.send(f"Invalid target for the night kill. Target player is not in the game.")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(f"DEBUG: {story_text}")
+                    return(story_text)
                 if not players[target_id]["alive"]:
                     logger.error("DEBUG: Target player for Mob is already dead. Skipping kill process.")
                     await mob_gf_player.send("Target player for the night kill is already dead.")
-                    return
+                    story_parts.append("The Godfather decided on who to kill, but the target was already dead.\n They thought about who they should kill next time.\n")
+                    story_text = "\n".join(story_parts)
+                    logger.debug(story_text)
+                    return (story_text)
             except discord.Forbidden:
                 logger.error(f"Could not send DM to mob GF due to their privacy settings.")
             except Exception as e:
@@ -1643,7 +1722,12 @@ async def join_game(ctx):
             "action_target": None,
             "previous_target": None,
             "missed_votes": 0,
-            "death_info": {}
+            "death_info":    {
+                    "phase": None,
+                    "phase_num": None,
+                    "total_phases": None,
+                    "how": None
+                }
         }
         # Update discord roles
         guild = ctx.guild
@@ -2344,7 +2428,8 @@ async def gameprocess(ctx,bot,players):
         logger.info("working....")
         await asyncio.sleep(LOOP_HOURS*60*60)
         await votingchannel.send("Voting ended!")
-        await kill_inactive_player() #checks for inactive players and kills them
+        if config.game_type == "Production":
+            await kill_inactive_player() #checks for inactive players and kills them
         if story_text:
             logger.debug(f"DEBUG: Story text to send => \n{story_text}")
             await storychannel.send(story_text)
