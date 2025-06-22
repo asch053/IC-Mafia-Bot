@@ -440,31 +440,39 @@ async def send_mafia_info_dm(bot, players, message_send_delay):
                 except Exception as e:
                     logger.error(f"An error occurred while sending info DM to {player_data['name']}: {e}")
 
-async def test_randomness(self, num_players: int, num_simulations: int = 10000):
+
+async def test_randomness(bot, simulations: int = 10000):
     """
-    (Owner only) Runs the role assignment randomness test script.
+    (Admin/Mod only) Runs the role assignment randomness test script
+    using the names of the players currently in the game.
     
     Args:
-        num_players: The number of players to simulate the game with.
-        num_simulations: (Optional) The number of iterations to run. Defaults to 10,000.
+        simulations: (Optional) The number of iterations to run.
     """
-    if num_simulations > 50000: # Add a safety limit
+    global players
+    rules_channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)  # Get the channel to send messages
+    if not players:
+        await rules_channel.send("Error: There are no players currently in the game to test with.")
+        return
+    # Use the display names of current players for the test
+    player_names = [data["display_name"] for data in players.values()]
+    num_players = len(player_names)
+    if num_players < 5: # Or whatever your minimum game size is
+        await rules_channel.send(f"Error: Need at least 5 players to run a valid test, but there are only {num_players}.")
+        return
+    if simulations > 50000: # Add a safety limit
         await rules_channel.send("Please choose a number of simulations less than 50,000 to avoid long waits.")
         return
-    rules_channel = bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
-    await rules_channel.send(f"Running randomness test for **{num_players} players** over **{num_simulations} simulations**. This might take a moment...")
-    await rules_channel.send("Please wait while the test runs...")
-    # Construct the command to run the script
-    # sys.executable ensures we use the same Python interpreter the bot is using
+    await rules_channel.send(f"Running randomness test for the **{num_players} current players** over **{simulations} simulations**. This might take a moment...")
+    # Construct the command to run the script. Player names go at the end.
     command_to_run = [
         sys.executable,
         'randomnumbertest.py', # The name of your script file
-        str(num_players),
-        str(num_simulations)
-    ]
-
+        '--simulations',
+        str(simulations)
+    ] + player_names # Add the list of names to the command
     try:
-        # Run the script as a separate process
+        # Run the script as a separate process in a thread to avoid blocking
         process = await asyncio.to_thread(
             subprocess.run,
             command_to_run,
@@ -472,28 +480,22 @@ async def test_randomness(self, num_players: int, num_simulations: int = 10000):
             text=True,
             check=True
         )
-
         # The output might be too long for a single Discord message, so send as a file
         results_output = process.stdout
-        
-        # Save results to a temporary file
         results_filename = "randomness_test_results.txt"
         with open(results_filename, "w", encoding="utf-8") as f:
-            f.write(f"Randomness Test Results for {num_players} players over {num_simulations} simulations:\n\n")
             f.write(results_output)
-            
         # Send the file to Discord
         await rules_channel.send("Test complete! Here are the results:", file=discord.File(results_filename))
-        
+        logger.info(f"Randomness test completed successfully. Results saved to {results_filename}.") 
         # Clean up the file
         os.remove(results_filename)
-
     except FileNotFoundError:
         await rules_channel.send("Error: `randonnumbertester.py` not found in the bot's directory.")
         logger.error("Could not find randonnumbertester.py to run the test.")
     except subprocess.CalledProcessError as e:
-        await rules_channel.send("An error occurred while running the test script. Check the logs for details.")
-        logger.error(f"Test script failed with exit code {e.returncode}:\n{e.stderr}")
+        await rules_channel.send("An error occurred while running the test script. The player count might be invalid for your setups. Check logs for details.")
+        logger.error(f"Test script failed with exit code {e.returncode}:\nSTDERR: {e.stderr}")
     except Exception as e:
         await rules_channel.send("An unexpected error occurred. Please check the logs.")
         logger.exception(f"An unexpected error occurred in testrandom command: {e}")
@@ -504,7 +506,7 @@ async def assign_game_roles(bot, players, game_roles, message_send_delay):  # bo
     global roles
     # Shuffle the player IDs and roles
     player_ids = list(players.keys())
-    await test_randomness(bot,len(game_roles),10000)
+    await test_randomness(bot,10000)
     random.shuffle(player_ids)  # Shuffle player IDs
     await asyncio.sleep(message_send_delay)  
     random.shuffle(player_ids)
@@ -664,31 +666,43 @@ def create_godfather_role(name):
 
 async def list_assigned_roles():
     """
-    Lists all assigned roles in the game and sends the list to a specified channel.
-
-    Args:
-        bot: The discord.ext.commands.Bot instance.
-        channel_id: The ID of the channel to send the list to.
+    Lists all assigned roles with their counts, sorted alphabetically,
+    and returns a formatted string.
     """
-    logger.info("list_assinged_roles called")
+    logger.info("list_assigned_roles called to generate role list with counts.")
     global players
-    # Build a set of unique role and alignment combinations
-    assigned_roles = set()
+
+    if not players:
+        return "No players in the game."
+    # Step 1: Tally roles and store a representative object for each role type
+    role_counts = {}
+    role_details = {} # To store one instance of each role for its details
     for player_data in players.values():
-        if player_data.get("role"):  # Safely check if role is assigned
+        if player_data.get("role"):  # Safely check if a role is assigned
             role = player_data["role"]
-            assigned_roles.add(f"**{role.alignment}** - {role.name} - _{role.short_description}_")  # Combine alignment and name
-    if not assigned_roles:
-        role_list_message = "No roles have been assigned yet."  # Should not happen, but good to check
-        logger.error("No Roles have been assigned")
-        return role_list_message
-    # Sort list alphabetically
-    logger.debug(f"Role list: {assigned_roles}")
-    # Create a formatted string of the assigned roles
+            role_name = role.name
+            # Increment count for this role name
+            role_counts[role_name] = role_counts.get(role_name, 0) + 1
+            # If we haven't seen this role before, store its full details
+            if role_name not in role_details:
+                role_details[role_name] = role
+    if not role_counts:
+        logger.error("No Roles have been assigned in list_assigned_roles.")
+        return "No roles have been assigned yet."
+    # Step 2: Build the formatted message parts from the tallied data
+    message_parts = []
+    # Sort role names alphabetically for a consistent order
+    for role_name in sorted(role_counts.keys()):
+        count = role_counts[role_name]
+        role_obj = role_details[role_name] # Get the role object to access its alignment/desc
+        # Format the line including the count, e.g., "(2x) Town - Plain Townie - ..."
+        line = f"- **{role_obj.alignment}** - {role_name} ({count}) - _{role_obj.short_description}_"
+        message_parts.append(line)
+    # Step 3: Join parts into the final message
     role_list_message = "**\nAssigned Roles in this Game:**\n"
-    role_list_message += "\n".join(f"- {role_name}" for role_name in sorted(assigned_roles))
-    logger.debug(f"Role list: {role_list_message}")
-    return(role_list_message)
+    role_list_message += "\n".join(message_parts)
+    logger.debug(f"Generated role list: {role_list_message}")
+    return role_list_message
 
 # --- Game Functions ---
 def reset_game():
@@ -2320,6 +2334,24 @@ async def reinitialize_players(ctx):
             # Handle other errors as needed. Always log the full exception.
             await ctx.send("An unexpected error occurred during player reinitialization.")
             logger.exception(f"Error in /reset_players command: {error}")
+
+@bot.command(name="testrandom")
+@commands.check(is_owner_or_mod(bot, discord_role_data))
+async def random_test(ctx, simulations: int = 10000):
+    """
+    (Admin/Mod only) Runs the role assignment randomness test script
+    using the names of the players currently in the game.
+    
+    Args:
+        simulations: (Optional) The number of iterations to run.
+    """
+    global players
+
+    if not players:
+        await ctx.send("Error: There are no players currently in the game to test with.")
+        return
+
+    await test_randomness(bot,simulations)
 
 # --- Game Loop ---
 @tasks.loop(seconds = 1)
