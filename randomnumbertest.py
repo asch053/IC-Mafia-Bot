@@ -1,15 +1,11 @@
-# randonnumbertester.py
+# randomnumbertest.py
 
 import random
 import json
 from collections import Counter
 import time
-import sys # Import the sys module to read command-line arguments
-
-# --- Default Configuration ---
-# These will be used if no arguments are provided
-DEFAULT_NUM_PLAYERS = 9
-DEFAULT_NUM_SIMULATIONS = 10000
+import sys
+import argparse # Import the argparse module
 
 # --- Replicated GameRole Class and Data Loading ---
 class GameRole:
@@ -38,7 +34,6 @@ mafia_setups = load_data("data/mafia_setups.json", "mafia_setups.json not found!
 def generate_test_roles(num_players):
     """Generates a list of GameRole objects based on the setup file."""
     game_roles = []
-    # Use .get() for safer access to the setups dictionary
     setup_data = mafia_setups.get(str(num_players))
     if not setup_data:
         raise ValueError(f"No setup found for {num_players} players in mafia_setups.json")
@@ -51,39 +46,49 @@ def generate_test_roles(num_players):
             )
     return game_roles
 
-def run_simulation(num_players):
-    """Simulates one round of role assignment and returns the result."""
-    player_ids = [f"Player {i+1}" for i in range(num_players)]
+def run_simulation(player_names):
+    """Simulates one round of role assignment using the provided player names."""
+    num_players = len(player_names)
+    local_player_list = list(player_names) # Create a copy to shuffle
     roles_to_assign = generate_test_roles(num_players)
     
-    # This is the core randomization logic
-    random.shuffle(player_ids)
+    random.shuffle(local_player_list)
     random.shuffle(roles_to_assign)
 
-    assignments = {player_ids[i]: roles_to_assign[i] for i in range(num_players)}
+    assignments = {local_player_list[i]: roles_to_assign[i] for i in range(num_players)}
     return assignments
 
 # --- Main Test Execution ---
 if __name__ == "__main__":
-    # Get parameters from command-line arguments, with defaults
-    try:
-        num_players = int(sys.argv[1]) if len(sys.argv) > 1 else DEFAULT_NUM_PLAYERS
-        num_simulations = int(sys.argv[2]) if len(sys.argv) > 2 else DEFAULT_NUM_SIMULATIONS
-    except (IndexError, ValueError):
-        print("Usage: python randonnumbertester.py [num_players] [num_simulations]")
-        print(f"Using defaults: {DEFAULT_NUM_PLAYERS} players, {DEFAULT_NUM_SIMULATIONS} simulations.")
-        num_players = DEFAULT_NUM_PLAYERS
-        num_simulations = DEFAULT_NUM_SIMULATIONS
+    # --- New Argument Parsing ---
+    parser = argparse.ArgumentParser(description="Test randomness of Mafia role assignments.")
+    parser.add_argument(
+        "-s", "--simulations",
+        type=int,
+        default=10000,
+        help="The number of simulations to run."
+    )
+    parser.add_argument(
+        'player_names',
+        nargs='+', # This means it will accept one or more player names
+        help="A list of player names, separated by spaces."
+    )
+    args = parser.parse_args()
+
+    num_players = len(args.player_names)
+    num_simulations = args.simulations
+    # --- End New Argument Parsing ---
 
     print(f"--- Running Role Assignment Randomness Test ---")
     print(f"Simulating a {num_players}-player game for {num_simulations} iterations...")
+    print(f"Players: {', '.join(args.player_names)}")
     print("-" * 45)
 
-    results = {f"Player {i+1}": Counter() for i in range(num_players)}
+    results = {player_name: Counter() for player_name in args.player_names}
     start_time = time.time()
 
     for _ in range(num_simulations):
-        single_game_assignments = run_simulation(num_players)
+        single_game_assignments = run_simulation(args.player_names)
         for player, role in single_game_assignments.items():
             results[player][role.name] += 1
 
