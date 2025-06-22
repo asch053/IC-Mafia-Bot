@@ -26,41 +26,38 @@ class GameRole:
 
 class TownInvestigative(GameRole):
     """Base class for Town Investigative roles (Cop, etc.)."""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-      super().__init__(name, "Town", description, short_description, abilities, uses, win_condition="Town must eliminate all threats.")
-    # Add any methods specific to investigative roles (e.g., investigate_target)
-
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Town", **kwargs)
 
 class TownProtective(GameRole):
     """Base class for Town Protective roles (Doctor, etc.)."""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-        super().__init__(name, "Town", description, short_description, abilities, uses, win_condition="Town must eliminate all threats.")
-    # Add methods specific to protective roles (e.g., protect_target)
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Town", **kwargs)
 
 class TownKilling(GameRole):
     """Base class for Town Killing roles."""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-      super().__init__(name, "Town", description, short_description, abilities, uses, win_condition="Town must eliminate all threats.")
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Town", **kwargs)
 
 class MafiaKilling(GameRole):
     """Base class for Mafia Killing roles (Godfather, etc.)."""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-        super().__init__(name, "Mafia", description, short_description, abilities, uses, win_condition="Mafia must equal or outnumber the Town.")
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Mafia", **kwargs)
 
 class MafiaSupport(GameRole):
-    """Base class for Mafia Killing roles (Godfather, etc.)."""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-        super().__init__(name, "Mafia", description, short_description, abilities, uses, win_condition="Mafia must equal or outnumber the Town.")
+    """Base class for Mafia Support roles."""
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Mafia", **kwargs)
 
 class NeutralKilling(GameRole):
-    """Base class for Neutral Killing roles"""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-      super().__init__(name, "Neutral", description, short_description, abilities, uses, win_condition="Be the last player alive.")
+    """Base class for Neutral Killing roles."""
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Neutral", **kwargs)
 
 class NeutralEvil(GameRole):
-    """Base class for Neutral Killing roles"""
-    def __init__(self, name, description, short_description, abilities=None, uses=None):
-      super().__init__(name, "Neutral", description, short_description, abilities, uses)
+    """Base class for Neutral Evil roles."""
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Neutral", **kwargs)
 
 # --- Specific Role Instances (Examples) ---
 
@@ -85,7 +82,7 @@ def create_town_doctor_role():
 def create_townie_role():
     """Creates an instance of the vanilla Townie role."""
     return TownKilling(
-        name="Townie",
+        name="Plain Townie",
         description="A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead",
         short_description="Normal member of town",
     )
@@ -102,7 +99,7 @@ def create_godfather_role():
 def create_mafioso_role():
     """Creates an instance of the Mafioso role."""
     return MafiaSupport(
-        name="Mafioso",
+        name="Mob Goon",
         description="A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
         short_description="Standard Mafia member.",
     )
@@ -147,12 +144,12 @@ def get_role_instance(role_name):
         "Town Cop": create_town_cop_role,
         "Town Doctor": create_town_doctor_role,
         "Godfather": create_godfather_role,
-        "Mafioso": create_mafioso_role,  # Or Mob Goon, if that's the name in your JSON
+        "Mob Goon": create_mafioso_role,  
         "Mob Role Blocker": create_mob_role_blocker_role,
-        "Serial Killer": create_serial_killer_role,
-        "Townie": create_townie_role,
-        "Jester": create_jester_role,
+        "Plain Townie": create_townie_role,
         "Town Role Blocker": create_town_role_blocker_role,
+        "Jester": create_jester_role,
+        "Serial Killer": create_serial_killer_role,
         # Add other roles here
     }
     role_creation_function = role_mapping.get(role_name)

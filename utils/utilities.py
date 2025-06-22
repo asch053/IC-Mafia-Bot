@@ -61,26 +61,34 @@ def save_json_data(data, filename, subdirectory):
 
 # --- Player & Role Functions ---
 
+# In utils/utilities.py
+
 async def update_player_discord_roles(bot, guild, players, discord_role_data):
-    """Updates player roles in Discord based on their game status (alive/dead)."""
+    """Updates player roles in Discord based on their game status, with retries and logging."""
     if not guild:
         logger.error("update_player_discord_roles called without a valid guild.")
         return
+
     living_role = guild.get_role(discord_role_data.get("living", {}).get("id", 0))
     dead_role = guild.get_role(discord_role_data.get("dead", {}).get("id", 0))
     spectator_role = guild.get_role(discord_role_data.get("spectator", {}).get("id", 0))
+
     if not all((living_role, dead_role, spectator_role)):
         logger.error("Could not find one or more required roles (Living, Dead, Spectator) in the server.")
         return
+
     # Update roles for players in the game
-    for player_id, player_data in players.items():
-        if player_id <= 0: continue # Skip NPCs
+    for player_id, player_obj in players.items(): # Changed variable name for clarity
+        if player_obj.is_npc: continue # Skip NPCs
+        
         member = guild.get_member(player_id)
         if not member:
             logger.warning(f"Could not find player with ID {player_id} in the server.")
             continue
+        
         try:
-            if player_data["alive"]:
+            # CORRECTED: Use dot notation to access object attributes
+            if player_obj.is_alive:
                 await member.add_roles(living_role)
                 await member.remove_roles(dead_role, spectator_role)
             else:
@@ -88,8 +96,9 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
                 await member.remove_roles(living_role, spectator_role)
         except discord.HTTPException as e:
             logger.error(f"Failed to update roles for {member.name}: {e}")
+
     # Ensure non-players are spectators
-    player_ids = set(p for p in players if p > 0)
+    player_ids = set(p for p in players if not players[p].is_npc)
     async for member in guild.fetch_members(limit=None):
         if member.bot or member.id in player_ids:
             continue

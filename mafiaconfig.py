@@ -19,4 +19,7 @@ PHASE_HOURS = 0.1   # Duration of day and night phases in hours
 
 game_settings = {}  # Initialize game_settings here
 
-message_send_delay = 1
+message_send_delay = 1 #delay in seconds before sending a message
+start_message_send_delay = 0.06 # delay in minutes between sending status update messages during signup phase
+
+min_players = 11  # Minimum number of players to start the game

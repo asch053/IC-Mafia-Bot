@@ -29,6 +29,7 @@ class Game:
         self.bot = bot
         self.ctx = ctx  # The context from the '/startmafia' command
         self.guild = ctx.guild
+        self.last_reminder_time = None  # Track the last time a reminder was sent
 
         # --- Game State Variables ---
         self.game_settings = {
@@ -88,7 +89,7 @@ class Game:
         # Start the sign-up monitoring loop
         self.signup_loop.start()
 
-    @tasks.loop(minutes=30) # Loop periodically to send reminders
+    @tasks.loop(seconds=30) # Loop periodically to send reminders
     async def signup_loop(self):
         """Monitors the sign-up phase, sends reminders, and checks for start conditions."""
         
@@ -115,20 +116,19 @@ class Game:
             return
 
         # --- Send Reminder Message ---
-        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
-        if not spectator_role:
-            return # Can't send reminders without the role
-
-        joined_player_ids = set(self.players.keys())
-        unjoined_spectators = [member.mention for member in spectator_role.members if not member.bot and member.id not in joined_player_ids]
-
-        if unjoined_spectators:
+        time_for_reminder = False
+        if self.last_reminder_time is None:
+            time_for_reminder = True
+        elif (datetime.now(timezone.utc) - self.last_reminder_time).total_seconds() >= config.start_message_send_delay * 60:
+            time_for_reminder = True
+        if time_for_reminder:
+            spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
+            if not spectator_role:
+                return # Can't send reminders without the role
             time_left_str = format_time_remaining(self.game_settings["phase_end_time"])
-            mentions = " ".join(unjoined_spectators[:10]) # Limit mentions to avoid spam
             await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(
-                f"**Reminder!** There's still time to join! Sign-ups close in **{time_left_str}**.\n"
-                f"Use `/join <your_game_name>` to participate!\n"
-                f"Still waiting for: {mentions}"
+                    f"**Reminder!** {spectator_role.mention}  There's still time to join! Sign-ups close in **{time_left_str}**.\n"
+                    f"Use `/mafiajoin` to participate!\n"
             )
 
     async def force_start(self, ctx):
@@ -138,7 +138,7 @@ class Game:
             return
         
         self.force_start_flag = True
-        await ctx.send("Force start flag has been set. The game will begin on the next loop iteration (within 30 minutes).")
+        await ctx.send(f"Force start flag has been set. The game will begin on the next loop iteration (within {config.start_message_send_delay} minutes).")
         logger.warning(f"Game force start initiated by {ctx.author.name}.")
 
 
@@ -170,7 +170,7 @@ class Game:
         self.game_settings["current_phase"] = "preparation"
         
         # Add NPCs if player count is below minimum (e.g., 5)
-        min_players = 5
+        min_players = config.min_players
         while len(self.players) < min_players:
             self.add_npc()
 
@@ -207,13 +207,13 @@ class Game:
         """Generates a list of GameRole objects based on player count."""
         num_players = len(self.players)
         setup_key = str(num_players)
-        
+        # Check if we have a setup for this number of players
         if setup_key not in self.mafia_setups:
             logger.error(f"No setup found for {num_players} players in mafia_setups.json.")
             return
-
+        # Randomly select a setup for this player count
         setup = random.choice(self.mafia_setups[setup_key])
-        
+        logger.info(f"Using setup for {num_players} players: {setup['id']}")
         self.game_roles = []
         for role_data in setup["roles"]:
             for _ in range(role_data["quantity"]):

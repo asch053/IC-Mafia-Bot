@@ -22,7 +22,7 @@ class AdminCog(commands.Cog, name="AdminCog"):
             game_cog.game = new_game_instance
             return True
         return False
-    @commands.command(name="stop")
+    @commands.command(name="mafiastop")
     @commands.has_permissions(administrator=True)
     async def stop_game_command(self, ctx):
         """
@@ -42,7 +42,7 @@ class AdminCog(commands.Cog, name="AdminCog"):
         await ctx.send("The current game has been stopped and all variables have been reset.")
         logger.info(f"The game was stopped by {ctx.author.name}.")
 
-    @commands.command(name="reinit_players")
+    @commands.command(name="mafiareinit")
     @commands.is_owner()
     async def reinitialize_players(self, ctx):
         """
