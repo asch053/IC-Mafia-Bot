@@ -748,7 +748,7 @@ async def prepare_game_start(ctx, bot, npc_names, phase_hours):
     logger.info(f"DEBUG: Game created with game_id = {game_id}")
     # Save initial game data
     name = f"game_{game_id}"
-    subdir = f"alpha_testing/{game_id}"
+    subdir = f"{config.game_type}/{game_id}"
     save_json_data(game_data, name, subdir)
     logger.info(f"DEBUG: Stat files created... assigning {len(players)} roles...")
     # Generate and assign roles
@@ -882,7 +882,7 @@ async def countlynchvotes(bot, players):
         "phase_num": phase_number,
         "lynch votes": lynch_votes  
     }
-    subdir = f"alpha_testing/{game_id}"
+    subdir = f"{config.game_type}/{game_id}"
     filename = f"{game_id}_Lynch_Data"
     save_json_data(lynch_data,filename,subdir)
     story_text = "\n".join(story_parts)
@@ -1133,7 +1133,7 @@ async def announce_winner(bot, winner):
         if game_data:
             logger.debug(f"DEBUG: {game_data}")
             filename = f"{game_id}_Game_Data"
-            subdir = f"alpha_testing/{game_id}"
+            subdir = f"{config.game_type}/{game_id}"
             save_json_data(game_data,filename,subdir)  # Save to JSON file
 
     # --- Construct the final game_data ---
@@ -1158,7 +1158,7 @@ async def announce_winner(bot, winner):
          for player_id, player_data in players.items()
      ]
     if game_data:
-        save_json_data(game_data, f"game_{game_data['game_id']}", f"alpha_testing/{game_id}") 
+        save_json_data(game_data, f"game_{game_data['game_id']}", f"{config.game_type}/{game_id}") 
         logger.debug(f"Saved game data to file: {game_data}")  
     # Reset game variables
     game_started = False  # Allow new games to be started
