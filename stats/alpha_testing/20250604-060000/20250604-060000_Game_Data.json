@@ -1,0 +1,92 @@
+[
+    {
+        "game_id": "20250604-060000",
+        "total_phases": 2,
+        "winner": "Mafia",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        746540828432007225,
+                        220142891027136512
+                    ]
+                }
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Killed by Mafia",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 1,
+                    "how": "Killed by Mafia"
+                }
+            },
+            {
+                "player_id": 377879725894533121,
+                "name": "Squatch",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "Mrblonde",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        377879725894533121,
+                        225405842235719680
+                    ]
+                }
+            }
+        ]
+    }
+]

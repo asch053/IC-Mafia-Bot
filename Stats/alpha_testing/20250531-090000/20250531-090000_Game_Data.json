@@ -1,0 +1,125 @@
+[
+    {
+        "game_id": "20250531-090000",
+        "total_phases": 4,
+        "winner": "Draw",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by SK",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase_num": 2,
+                    "total_phases": 4,
+                    "how": "Killed by SK"
+                }
+            },
+            {
+                "player_id": 479362336264683520,
+                "name": "Morblnde",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": 2,
+                    "total phases": 2,
+                    "how": "Lynched"
+                }
+            },
+            {
+                "player_id": 216918396539764737,
+                "name": "Ordos",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Night 2",
+                    "phase num": 2,
+                    "total phases": 2,
+                    "how": "Lynched"
+                }
+            },
+            {
+                "player_id": 469571706898350080,
+                "name": "Soul",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Inactive - Missed Vote",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Inactive - Missed Vote"
+                }
+            },
+            {
+                "player_id": 1039345137928646688,
+                "name": "sCriv",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680,
+                        479362336264683520
+                    ]
+                }
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by SK",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase_num": 1,
+                    "total_phases": 2,
+                    "how": "Killed by SK"
+                }
+            }
+        ]
+    }
+]
