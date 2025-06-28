@@ -6,7 +6,7 @@ import logging
 import json
 import discord
 from discord.ext import commands
-import mafiaconfig as config
+import config
 import utils.utilities as utils
 from game.engine import Game
 from game.player import Player

@@ -7,7 +7,7 @@ from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
 import random
 
-import mafiaconfig as config
+import config
 from utils.utilities import (
     load_data,
     save_json_data,
