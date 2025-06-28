@@ -1,6 +1,6 @@
 import discord
 import asyncio
-import mafiaconfig as config
+import config
 import logging
 
 from discord.ext import commands
