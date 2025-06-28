@@ -5,7 +5,7 @@ import json
 import os
 from datetime import datetime, timezone
 import logging
-import mafiaconfig as config
+import config
 
 # Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')

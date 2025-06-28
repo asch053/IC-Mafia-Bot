@@ -5,7 +5,7 @@ import json
 import logging
 import logging.handlers
 import os
-import mafiaconfig  # Import the config module directly
+import config as mafiaconfig # Import the config module directly
 from datetime import datetime, timedelta, timezone
 
 # --- Bot Setup ---
