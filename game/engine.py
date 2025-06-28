@@ -327,9 +327,9 @@ class Game:
             return
         voter_obj = self.players.get(voter.id)
         # Voter validation
-        if not voter_obj or voter_obj.is_alive:
+        if not voter_obj or voter_obj.is_alive == False:
             await ctx.send("You are not able to currently vote in this game.")
-            logger.warning(f"Player {voter.display_name} tried to vote but is not eligible.")
+            logger.warning(f"Player {voter.display_name} tried to vote but is not eligible.\nvoter_obj: {voter_obj}, voter.is_alive: {voter.is_alive}")
             return
         # Find the target player by name
         target_obj = self.get_player_by_display_name(target_name)
