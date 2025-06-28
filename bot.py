@@ -495,7 +495,7 @@ async def test_randomness(bot, simulations: int = 10000):
         logger.error("Could not find randonnumbertester.py to run the test.")
     except subprocess.CalledProcessError as e:
         await rules_channel.send("An error occurred while running the test script. The player count might be invalid for your setups. Check logs for details.")
-        logger.error(f"Test script failed with exit code {e.returncode}:\nSTDERR: {e.stderr}")
+        logger.error(f"Test script failed with exit code {e.returncode}:\nSTDOUT: {e.stdout}\nSTDERR: {e.stderr}")
     except Exception as e:
         await rules_channel.send("An unexpected error occurred. Please check the logs.")
         logger.exception(f"An unexpected error occurred in testrandom command: {e}")

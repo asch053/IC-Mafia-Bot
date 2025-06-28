@@ -28,7 +28,7 @@ def load_data(filepath, error_msg):
         print(f"Error: Could not decode JSON from {filepath}")
         sys.exit(1)
 
-mafia_setups = load_data("data/mafia_setups.json", "mafia_setups.json not found!")
+mafia_setups = load_data("Data/mafia_setups.json", "mafia_setups.json not found!")
 
 # --- Core Logic to Test ---
 def generate_test_roles(num_players):
