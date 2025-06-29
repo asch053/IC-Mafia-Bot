@@ -1201,14 +1201,14 @@ async def process_role_block(bot):
     if town_rb_id is not None and players[town_rb_id]["alive"] == True:
         target_id = players[town_rb_id]["action_target"]
         if target_id:
-            players[target_id]["action_target"] = None
+            players[target_id]["action_target"] = "Blocked by Town RB"
             logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
             town_block_target = target_id
     if mob_rb_id is not None and players[mob_rb_id]["alive"] == True:
         # Check if the target is a valid player ID
         target_id = players[mob_rb_id]["action_target"]
         if target_id:
-            players[target_id]["action_target"] = None
+            players[target_id]["action_target"] = "Blocked by Mob RB"
             logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
             mob_block_target = target_id
     return(story_text)
@@ -1442,9 +1442,15 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
     if heal_target is None:
         story_parts.append("The town doctor was at home watching some TV. They thought about going out and trying to help their fellow towns people, but wanted to watch one more episode. Before they knew it the sun was rising and they had missed their change to help.\n")
         logger.debug("Town doctor did not enter a heal target")
+        story_text = "\n".join(story_parts)
+        logger.debug(story_text)
+        return (story_text)  
     elif town_doc_id == town_block_target or town_doc_id == mob_block_target:
         story_parts.append("Once the sun went down, the town doctor headed out into the cold night with a determination to help. However, where ever they went there was always a shadowy figure somewhere behind them. They spent all night avoiding this mysterious figure that they did not find anyone to help.\n")
         logger.debug("Town doctor was blocked")
+        story_text = "\n".join(story_parts)
+        logger.debug(story_text)
+        return (story_text)  
     elif players[heal_target]["alive"] == False:
         logger.debug(f"DEBUG: Town Doctor heals {heal_target}") #log who the doctor is healing
         # If target was previously dead, revive them
@@ -1463,9 +1469,9 @@ async def process_doc_night_heal(bot): #pass in bot and target_id variables
             logger.debug(f"Doctor saved {heal_target}")
             story_parts.append(f"As the doctor waled through town they found {players[heal_target]["display_name"]} bloodied and dying. The town doctor pulled out their emergency first aid kit and set about saving {players[heal_target]["display_name"]} from certain death")
             story_parts.append(f"**{players[heal_target]["display_name"]} was healed by the Town Doctor!**\n\n")
-    story_text = "\n".join(story_parts)
-    logger.debug(story_text)
-    return (story_text)  
+        story_text = "\n".join(story_parts)
+        logger.debug(story_text)
+        return (story_text)  
                        
 async def process_cop_night_investigate(bot):
     """Processes the Cop's night investigation action."""
