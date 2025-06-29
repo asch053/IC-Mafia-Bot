@@ -2,7 +2,7 @@ import discord
 import asyncio
 import json
 from discord.ext import commands
-import mafiaconfig as config
+import config
 # Get the same logger instance as in mafiabot.py
 import logging
 
