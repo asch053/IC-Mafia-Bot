@@ -2,7 +2,7 @@
 config.py
 
 # discord roles
-data/discord_roles.json
+Data/discord_roles.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

@@ -697,3 +697,1226 @@ The town awakens...
 [2025-06-21 10:00:38] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 10:10:00.480000+00:00
 [2025-06-21 10:00:38] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 22
 [2025-06-21 10:00:38] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 10:09:29] [INFO    ] discord - <module>:72: This is an info message.
+[2025-06-21 10:09:29] [WARNING ] discord - <module>:73: This is a warning message.
+[2025-06-21 10:09:29] [ERROR   ] discord - <module>:74: This is an error message.
+[2025-06-21 10:09:29] [CRITICAL] discord - <module>:75: This is a critical message.
+[2025-06-21 10:09:29] [INFO    ] discord.client - login:643: logging in using static token
+[2025-06-21 10:09:30] [INFO    ] discord.gateway - received_message:562: Shard ID None has connected to Gateway (Session ID: 5828d58971454b0a4324d34ae362b3f7).
+[2025-06-21 10:09:32] [CRITICAL] discord - on_ready:1623: Logged in as IC Mafia Bot (BETA)
+[2025-06-21 10:10:23] [INFO    ] discord - reset_game:697: DEBUG: reset_game() called
+[2025-06-21 10:10:23] [INFO    ] discord - start_game:1650: DEBUG: Time signups end => 2025-06-21 10:30:00+00:00
+[2025-06-21 10:10:23] [INFO    ] discord - start_game:1666: DEBUG: New game started with join hours 0.33
+[2025-06-21 10:10:24] [INFO    ] discord - start_game:1685: DEBUG: Timestamp: 2025-06-21 10:10:24.479121+00:00 -  Game Started == True
+[2025-06-21 10:10:28] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:10:30] [INFO    ] discord - join_game:1735: DEBUG: Player joined: .you_fool (ID: 225405842235719680).
+[2025-06-21 10:11:05] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:11:06] [INFO    ] discord - join_game:1735: DEBUG: Player joined: pandabbear (ID: 220142891027136512).
+[2025-06-21 10:13:00] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:13:01] [INFO    ] discord - join_game:1735: DEBUG: Player joined: lisamafia (ID: 746540828432007225).
+[2025-06-21 10:24:39] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:24:40] [INFO    ] discord - join_game:1735: DEBUG: Player joined: mrblonde3442 (ID: 479362336264683520).
+[2025-06-21 10:30:00] [INFO    ] discord - start_game:1688: DEBUG: Timestamp: 2025-06-21 10:30:00.034806+00:00 - game started = True so prepare game start
+[2025-06-21 10:30:00] [INFO    ] discord - prepare_game_start:716: prepare_game_start called
+[2025-06-21 10:30:00] [INFO    ] discord - prepare_game_start:718: Game ID generated = 20250621-103000
+[2025-06-21 10:30:00] [INFO    ] discord - prepare_game_start:748: DEBUG: Game created with game_id = 20250621-103000
+[2025-06-21 10:30:00] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/game_20250621-103000.json
+[2025-06-21 10:30:00] [INFO    ] discord - prepare_game_start:753: DEBUG: Stat files created... assigning 8 roles...
+[2025-06-21 10:30:00] [INFO    ] discord - generate_game_roles:555: Game Roles Created
+[2025-06-21 10:30:01] [ERROR   ] discord - test_randomness:496: Test script failed with exit code 1:
+
+[2025-06-21 10:30:04] [INFO    ] discord - send_role_dm:400: DEBUG: Player ID = 220142891027136512 Ready to send role
+[2025-06-21 10:30:06] [INFO    ] discord - send_role_dm:400: DEBUG: Player ID = 225405842235719680 Ready to send role
+[2025-06-21 10:30:08] [INFO    ] discord - send_role_dm:400: DEBUG: Player ID = 479362336264683520 Ready to send role
+[2025-06-21 10:30:10] [INFO    ] discord - send_role_dm:400: DEBUG: Player ID = 746540828432007225 Ready to send role
+[2025-06-21 10:30:12] [INFO    ] discord - prepare_game_start:758: DEBUG: Roles assigned
+[2025-06-21 10:30:12] [INFO    ] discord - list_assigned_roles:673: list_assinged_roles called
+[2025-06-21 10:30:13] [INFO    ] discord - prepare_game_start:769: DEBUG: Sending DM to all mafia players
+[2025-06-21 10:30:13] [INFO    ] discord - send_mafia_info_dm:417: DEBUG: Calling send_mafia_info_dm
+[2025-06-21 10:30:13] [INFO    ] discord - send_mafia_info_dm:428: Sent mafia list to all mafia alligned players
+[2025-06-21 10:30:13] [INFO    ] discord - send_mafia_info_dm:428: Sent mafia list to all mafia alligned players
+[2025-06-21 10:30:13] [INFO    ] discord - send_mafia_info_dm:428: Sent mafia list to all mafia alligned players
+[2025-06-21 10:30:13] [ERROR   ] discord - prepare_game_start:779: gameprocess was running... now stopping
+[2025-06-21 10:30:13] [ERROR   ] discord - prepare_game_start:782: After stopping, starting game process in Night
+[2025-06-21 10:30:13] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 1 which will last 0.166667 hours
+[2025-06-21 10:30:13] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 10:30:14] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 10:40:00.001200+00:00
+[2025-06-21 10:30:14] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 10:30:14] [INFO    ] discord - generate_status_message:609: The current phase is Night - 1
+[2025-06-21 10:30:14] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 10:40:00.001200+00:00
+[2025-06-21 10:30:14] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 45
+[2025-06-21 10:30:14] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 10:30:14] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 10:31:44] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:31:44] [ERROR   ] discord - heal_command:1964: Could not find the target Morblnde
+[2025-06-21 10:31:51] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:36:08] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 10:36:08] [INFO    ] discord - generate_status_message:609: The current phase is Night - 1
+[2025-06-21 10:36:08] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 10:40:00.001200+00:00
+[2025-06-21 10:36:08] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 3, 51
+[2025-06-21 10:36:09] [INFO    ] discord - status:1803: /Status called and info sent to channel
+[2025-06-21 10:40:15] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 10:40:15] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 10:40:15] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 10:40:15] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 10:40:15] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 10:40:15] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 10:40:15] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 10:40:16] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 10:40:16] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 10:40:16] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 10:40:16] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 10:40:17] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 10:40:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 10:40:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 10:40:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 10:40:18] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 10:40:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 10:40:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 10:40:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 10:40:20] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 10:40:20] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:40:20] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 10:40:21] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 10:40:21] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 10:40:21] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 10:40:21] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 10:40:21] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 1 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 10:40:22] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 10:40:22.141619+00:00
+[2025-06-21 10:40:22] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 10:50:00.002400+00:00
+[2025-06-21 10:40:23] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 10:40:23] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 10:40:23] [INFO    ] discord - generate_status_message:609: The current phase is Day - 1
+[2025-06-21 10:40:23] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 10:50:00.002400+00:00
+[2025-06-21 10:40:23] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 36
+[2025-06-21 10:40:23] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 10:42:28] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:42:28] [INFO    ] discord - process_lynch_vote:790: DEBUG: process_lynch_vote called
+[2025-06-21 10:42:28] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:42:29] [INFO    ] discord - send_vote_update:899: DEBUG: Send_vote_update called...
+[2025-06-21 10:43:26] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:43:26] [INFO    ] discord - process_lynch_vote:790: DEBUG: process_lynch_vote called
+[2025-06-21 10:43:26] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 10:43:27] [INFO    ] discord - send_vote_update:899: DEBUG: Send_vote_update called...
+[2025-06-21 10:49:05] [ERROR   ] discord - join_game:1741: 377879725894533121 tried to join an active game
+[2025-06-21 10:50:25] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 10:50:25] [INFO    ] discord - countlynchvotes:836: Debug: Lynched Players => [-5]
+[2025-06-21 10:50:25] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 10:50:26] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 10:50:27] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 10:50:27] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 10:50:27] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 10:50:27] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 2 which will last 0.166667 hours
+[2025-06-21 10:50:27] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 10:50:28] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 11:00:00.003600+00:00
+[2025-06-21 10:50:28] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 10:50:28] [INFO    ] discord - generate_status_message:609: The current phase is Night - 2
+[2025-06-21 10:50:28] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:00:00.003600+00:00
+[2025-06-21 10:50:28] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 31
+[2025-06-21 10:50:28] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 10:50:28] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 10:50:28] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 10:50:28] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 10:50:28] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 11:00:29] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 11:00:29] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 11:00:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:00:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:00:29] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 11:00:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 11:00:29] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 11:00:30] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 11:00:30] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:00:30] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:00:30] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 11:00:30] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:00:30] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 11:00:30] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 11:00:32] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 11:00:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:00:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:00:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 11:00:33] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 11:00:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 11:00:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:00:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:00:35] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 11:00:35] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:00:35] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 11:00:36] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 2 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 11:00:36.705801+00:00
+[2025-06-21 11:00:36] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 11:10:00.004800+00:00
+[2025-06-21 11:00:37] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 11:00:37] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:00:37] [INFO    ] discord - generate_status_message:609: The current phase is Day - 2
+[2025-06-21 11:00:37] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:10:00.004800+00:00
+[2025-06-21 11:00:37] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 22
+[2025-06-21 11:00:38] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 11:10:39] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 11:10:39] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 11:10:41] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 11:10:42] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 3 which will last 0.166667 hours
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 11:20:00.006000+00:00
+[2025-06-21 11:10:42] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:10:42] [INFO    ] discord - generate_status_message:609: The current phase is Night - 3
+[2025-06-21 11:10:42] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:20:00.006000+00:00
+[2025-06-21 11:10:42] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 17
+[2025-06-21 11:10:42] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:10:42] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:10:42] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 11:10:42] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:10:42] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 11:20:43] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 11:20:43] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 11:20:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:20:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:20:43] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 11:20:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 11:20:43] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 11:20:44] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 11:20:44] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:20:44] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:20:44] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 11:20:44] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:20:44] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 11:20:44] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 11:20:46] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 11:20:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:20:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:20:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 11:20:48] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 11:20:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 11:20:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:20:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:20:50] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 11:20:50] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:20:50] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 11:20:51] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 11:20:51] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:20:51] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 11:20:51] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 11:20:51] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 3 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 11:20:52] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 11:20:52.071352+00:00
+[2025-06-21 11:20:52] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 11:30:00.007200+00:00
+[2025-06-21 11:20:53] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 11:20:53] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:20:53] [INFO    ] discord - generate_status_message:609: The current phase is Day - 3
+[2025-06-21 11:20:53] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:30:00.007200+00:00
+[2025-06-21 11:20:53] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 6
+[2025-06-21 11:20:53] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 11:30:55] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 11:30:55] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 11:30:56] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:30:57] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 11:30:57] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:30:57] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 11:30:57] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 4 which will last 0.166667 hours
+[2025-06-21 11:30:57] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 11:30:58] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 11:40:00.008400+00:00
+[2025-06-21 11:30:58] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:30:58] [INFO    ] discord - generate_status_message:609: The current phase is Night - 4
+[2025-06-21 11:30:58] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:40:00.008400+00:00
+[2025-06-21 11:30:58] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 9, 1
+[2025-06-21 11:30:58] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:30:58] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:30:58] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 11:30:58] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:30:58] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 11:40:59] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 11:40:59] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 11:40:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:40:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:40:59] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 11:40:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 11:40:59] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 11:41:00] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 11:41:00] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:41:00] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:41:00] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 11:41:00] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:41:00] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 11:41:00] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 11:41:01] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 11:41:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:41:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:41:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 11:41:03] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 11:41:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 11:41:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 11:41:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:41:04] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 11:41:04] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:41:04] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 11:41:05] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 11:41:05] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:41:05] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 11:41:05] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 11:41:05] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 4 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 11:41:06] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 11:41:06.287706+00:00
+[2025-06-21 11:41:06] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 11:50:00.009600+00:00
+[2025-06-21 11:41:07] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 11:41:07] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:41:07] [INFO    ] discord - generate_status_message:609: The current phase is Day - 4
+[2025-06-21 11:41:07] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 11:50:00.009600+00:00
+[2025-06-21 11:41:07] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 52
+[2025-06-21 11:41:07] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 11:41:38] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 11:41:38] [INFO    ] discord - process_lynch_vote:790: DEBUG: process_lynch_vote called
+[2025-06-21 11:41:38] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 11:41:38] [INFO    ] discord - send_vote_update:899: DEBUG: Send_vote_update called...
+[2025-06-21 11:45:25] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 11:45:25] [INFO    ] discord - process_lynch_vote:790: DEBUG: process_lynch_vote called
+[2025-06-21 11:45:25] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 11:45:25] [INFO    ] discord - send_vote_update:899: DEBUG: Send_vote_update called...
+[2025-06-21 11:51:09] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 11:51:09] [INFO    ] discord - countlynchvotes:836: Debug: Lynched Players => [-9]
+[2025-06-21 11:51:09] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 11:51:10] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 11:51:11] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 11:51:11] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 11:51:11] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 11:51:12] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 5 which will last 0.166667 hours
+[2025-06-21 11:51:12] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 11:51:12] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 12:00:00.010800+00:00
+[2025-06-21 11:51:12] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 11:51:12] [INFO    ] discord - generate_status_message:609: The current phase is Night - 5
+[2025-06-21 11:51:12] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:00:00.010800+00:00
+[2025-06-21 11:51:12] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 47
+[2025-06-21 11:51:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 11:51:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 11:51:12] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 11:51:12] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 11:51:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 11:51:12] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 12:01:13] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 12:01:13] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 12:01:13] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:01:13] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:01:13] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 12:01:13] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 12:01:13] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 12:01:14] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 12:01:14] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:01:14] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:01:14] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 12:01:14] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:01:14] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:01:14] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 12:01:14] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 12:01:16] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 12:01:16] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:01:16] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:01:16] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 12:01:17] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 12:01:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 12:01:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:01:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:01:19] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 12:01:19] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:01:19] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 12:01:20] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 5 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 12:01:20.479123+00:00
+[2025-06-21 12:01:20] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 12:10:00.012000+00:00
+[2025-06-21 12:01:21] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 12:01:21] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:01:21] [INFO    ] discord - generate_status_message:609: The current phase is Day - 5
+[2025-06-21 12:01:21] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:10:00.012000+00:00
+[2025-06-21 12:01:21] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 38
+[2025-06-21 12:01:21] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 12:11:23] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 12:11:23] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 12:11:24] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:11:25] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 12:11:25] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:11:25] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 12:11:25] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 6 which will last 0.166667 hours
+[2025-06-21 12:11:25] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 12:11:25] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 12:20:00.013200+00:00
+[2025-06-21 12:11:25] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:11:25] [INFO    ] discord - generate_status_message:609: The current phase is Night - 6
+[2025-06-21 12:11:26] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:20:00.013200+00:00
+[2025-06-21 12:11:26] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 33
+[2025-06-21 12:11:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:11:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:11:26] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 12:11:26] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:11:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:11:26] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 12:21:27] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 12:21:27] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 12:21:27] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:21:27] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:21:27] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 12:21:27] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 12:21:27] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 12:21:28] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 12:21:28] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:21:28] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:21:28] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 12:21:28] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:21:28] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:21:28] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 12:21:28] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 12:21:29] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 12:21:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:21:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:21:29] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 12:21:31] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 12:21:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 12:21:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:21:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:21:32] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 12:21:32] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:21:32] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 12:21:33] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 12:21:33] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:21:33] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 12:21:33] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 12:21:33] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 6 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 12:21:34] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 12:21:34.358836+00:00
+[2025-06-21 12:21:34] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 12:30:00.014400+00:00
+[2025-06-21 12:21:35] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 12:21:35] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:21:35] [INFO    ] discord - generate_status_message:609: The current phase is Day - 6
+[2025-06-21 12:21:35] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:30:00.014400+00:00
+[2025-06-21 12:21:35] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 24
+[2025-06-21 12:21:35] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 12:31:37] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 12:31:37] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 12:31:38] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:31:39] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 12:31:39] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:31:39] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 12:31:39] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 7 which will last 0.166667 hours
+[2025-06-21 12:31:39] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 12:31:39] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 12:40:00.015600+00:00
+[2025-06-21 12:31:39] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:31:39] [INFO    ] discord - generate_status_message:609: The current phase is Night - 7
+[2025-06-21 12:31:39] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:40:00.015600+00:00
+[2025-06-21 12:31:39] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 20
+[2025-06-21 12:31:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:31:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:31:40] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 12:31:40] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:31:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:31:40] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 12:41:41] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 12:41:41] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 12:41:41] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:41:41] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:41:41] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 12:41:41] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 12:41:41] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 12:41:42] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 12:41:42] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:41:42] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:41:42] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 12:41:42] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:41:42] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:41:42] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 12:41:42] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 12:41:43] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 12:41:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:41:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:41:43] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 12:41:44] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 12:41:44] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 12:41:44] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 12:41:44] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:41:46] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 12:41:46] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:41:46] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 12:41:47] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 12:41:47] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:41:47] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 12:41:47] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 12:41:47] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 7 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 12:41:48] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 12:41:48.166359+00:00
+[2025-06-21 12:41:48] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 12:50:00.016800+00:00
+[2025-06-21 12:41:49] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 12:41:49] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:41:49] [INFO    ] discord - generate_status_message:609: The current phase is Day - 7
+[2025-06-21 12:41:49] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 12:50:00.016800+00:00
+[2025-06-21 12:41:49] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 10
+[2025-06-21 12:41:49] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 12:51:50] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 12:51:50] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 12:51:52] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 12:51:53] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 12:51:53] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 12:51:53] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 12:51:53] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 8 which will last 0.166667 hours
+[2025-06-21 12:51:53] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 12:51:53] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 13:00:00.018000+00:00
+[2025-06-21 12:51:53] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 12:51:53] [INFO    ] discord - generate_status_message:609: The current phase is Night - 8
+[2025-06-21 12:51:53] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:00:00.018000+00:00
+[2025-06-21 12:51:53] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 8, 6
+[2025-06-21 12:51:54] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 12:51:54] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 12:51:54] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 12:51:54] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 12:51:54] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 12:51:54] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 13:01:55] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 13:01:55] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 13:01:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:01:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:01:55] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 13:01:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 13:01:55] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 13:01:56] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 13:01:56] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:01:56] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:01:56] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 13:01:56] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:01:56] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:01:56] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 13:01:56] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 13:01:57] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 13:01:57] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:01:57] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:01:57] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 13:01:58] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 13:01:58] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 13:01:58] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:01:58] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:02:00] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 13:02:00] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:02:00] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 13:02:01] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 13:02:01] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:02:01] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 13:02:01] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 13:02:01] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 8 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 13:02:02] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 13:02:02.047551+00:00
+[2025-06-21 13:02:02] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 13:10:00.019200+00:00
+[2025-06-21 13:02:03] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 13:02:03] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:02:03] [INFO    ] discord - generate_status_message:609: The current phase is Day - 8
+[2025-06-21 13:02:03] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:10:00.019200+00:00
+[2025-06-21 13:02:03] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 56
+[2025-06-21 13:02:03] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 13:12:04] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 13:12:04] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 13:12:06] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 13:12:07] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 9 which will last 0.166667 hours
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 13:20:00.020400+00:00
+[2025-06-21 13:12:07] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:12:07] [INFO    ] discord - generate_status_message:609: The current phase is Night - 9
+[2025-06-21 13:12:07] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:20:00.020400+00:00
+[2025-06-21 13:12:07] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 52
+[2025-06-21 13:12:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:12:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:12:07] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 13:12:07] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:12:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:12:07] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 13:22:08] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 13:22:08] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 13:22:08] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:22:08] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:22:08] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 13:22:08] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 13:22:08] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 13:22:09] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 13:22:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:22:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:22:09] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 13:22:09] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:22:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:22:09] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 13:22:09] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 13:22:11] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 13:22:11] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:22:11] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:22:11] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 13:22:12] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 13:22:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 13:22:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:22:12] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:22:14] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 13:22:14] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:22:14] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 13:22:15] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 9 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 13:22:15.744341+00:00
+[2025-06-21 13:22:15] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 13:30:00.021600+00:00
+[2025-06-21 13:22:16] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 13:22:16] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:22:16] [INFO    ] discord - generate_status_message:609: The current phase is Day - 9
+[2025-06-21 13:22:16] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:30:00.021600+00:00
+[2025-06-21 13:22:16] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 43
+[2025-06-21 13:22:17] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 13:32:18] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 13:32:18] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 13:32:20] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 13:32:21] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 10 which will last 0.166667 hours
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 13:40:00.022800+00:00
+[2025-06-21 13:32:21] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:32:21] [INFO    ] discord - generate_status_message:609: The current phase is Night - 10
+[2025-06-21 13:32:21] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:40:00.022800+00:00
+[2025-06-21 13:32:21] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 38
+[2025-06-21 13:32:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:32:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:32:21] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 13:32:21] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:32:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:32:21] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 13:42:22] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 13:42:22] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 13:42:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:42:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:42:22] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 13:42:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 13:42:22] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 13:42:23] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 13:42:23] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:42:23] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:42:23] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 13:42:23] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:42:23] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:42:23] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 13:42:23] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 13:42:25] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 13:42:25] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:42:25] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:42:25] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 13:42:26] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 13:42:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 13:42:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 13:42:26] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:42:28] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 13:42:28] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:42:28] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 13:42:29] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 10 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 13:42:29.763690+00:00
+[2025-06-21 13:42:29] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 13:50:00.024000+00:00
+[2025-06-21 13:42:30] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 13:42:30] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:42:30] [INFO    ] discord - generate_status_message:609: The current phase is Day - 10
+[2025-06-21 13:42:30] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 13:50:00.024000+00:00
+[2025-06-21 13:42:30] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 29
+[2025-06-21 13:42:31] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 13:52:32] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 13:52:32] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 13:52:33] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 13:52:34] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 13:52:34] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 13:52:34] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 13:52:34] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 11 which will last 0.166667 hours
+[2025-06-21 13:52:34] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 13:52:35] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 14:00:00.025200+00:00
+[2025-06-21 13:52:35] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 13:52:35] [INFO    ] discord - generate_status_message:609: The current phase is Night - 11
+[2025-06-21 13:52:35] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:00:00.025200+00:00
+[2025-06-21 13:52:35] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 24
+[2025-06-21 13:52:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 13:52:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 13:52:35] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 13:52:35] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 13:52:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 13:52:35] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 14:02:36] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 14:02:36] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 14:02:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:02:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:02:36] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 14:02:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 14:02:36] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 14:02:37] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 14:02:37] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:02:37] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:02:37] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 14:02:37] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:02:37] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:02:37] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 14:02:37] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 14:02:38] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 14:02:38] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:02:38] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:02:38] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 14:02:40] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 14:02:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 14:02:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:02:40] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:02:43] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 14:02:43] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:02:43] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 14:02:44] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 11 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 14:02:44.527726+00:00
+[2025-06-21 14:02:44] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 14:10:00.026400+00:00
+[2025-06-21 14:02:45] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 14:02:45] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:02:45] [INFO    ] discord - generate_status_message:609: The current phase is Day - 11
+[2025-06-21 14:02:45] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:10:00.026400+00:00
+[2025-06-21 14:02:45] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 14
+[2025-06-21 14:02:45] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 14:03:26] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-21 14:12:47] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 14:12:47] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 14:12:48] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:12:49] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 14:12:49] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:12:49] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 14:12:49] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 12 which will last 0.166667 hours
+[2025-06-21 14:12:49] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 14:12:50] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 14:20:00.027600+00:00
+[2025-06-21 14:12:50] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:12:50] [INFO    ] discord - generate_status_message:609: The current phase is Night - 12
+[2025-06-21 14:12:50] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:20:00.027600+00:00
+[2025-06-21 14:12:50] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 10
+[2025-06-21 14:12:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:12:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:12:50] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 14:12:50] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:12:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:12:50] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 14:22:51] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 14:22:51] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 14:22:51] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:22:51] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:22:51] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 14:22:51] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 14:22:51] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 14:22:52] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 14:22:52] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:22:52] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:22:52] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 14:22:52] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:22:52] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:22:52] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 14:22:52] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 14:22:53] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 14:22:53] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:22:53] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:22:53] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 14:22:55] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 14:22:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 14:22:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:22:55] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:22:57] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 14:22:57] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:22:57] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 14:22:58] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 12 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 14:22:58.337950+00:00
+[2025-06-21 14:22:58] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 14:30:00.028800+00:00
+[2025-06-21 14:22:59] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 14:22:59] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:22:59] [INFO    ] discord - generate_status_message:609: The current phase is Day - 12
+[2025-06-21 14:22:59] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:30:00.028800+00:00
+[2025-06-21 14:22:59] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 7, 0
+[2025-06-21 14:22:59] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 14:33:01] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 14:33:01] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 14:33:02] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:33:03] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 14:33:03] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:33:03] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 14:33:03] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 13 which will last 0.166667 hours
+[2025-06-21 14:33:03] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 14:33:03] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 14:40:00.030000+00:00
+[2025-06-21 14:33:03] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:33:03] [INFO    ] discord - generate_status_message:609: The current phase is Night - 13
+[2025-06-21 14:33:03] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:40:00.030000+00:00
+[2025-06-21 14:33:03] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 56
+[2025-06-21 14:33:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:33:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:33:04] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 14:33:04] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:33:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:33:04] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 14:43:05] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 14:43:05] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 14:43:05] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:43:05] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:43:05] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 14:43:05] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 14:43:05] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 14:43:06] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 14:43:06] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:43:06] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:43:06] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 14:43:06] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:43:06] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:43:06] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 14:43:06] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 14:43:07] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 14:43:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:43:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:43:07] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 14:43:09] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 14:43:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 14:43:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 14:43:09] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:43:10] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 14:43:10] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:43:10] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 14:43:11] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 14:43:11] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:43:11] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 14:43:11] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 14:43:11] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 13 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 14:43:12] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 14:43:12.071178+00:00
+[2025-06-21 14:43:12] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 14:50:00.031200+00:00
+[2025-06-21 14:43:13] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 14:43:13] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:43:13] [INFO    ] discord - generate_status_message:609: The current phase is Day - 13
+[2025-06-21 14:43:13] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 14:50:00.031200+00:00
+[2025-06-21 14:43:13] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 46
+[2025-06-21 14:43:13] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 14:53:14] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 14:53:14] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 14:53:16] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 14:53:17] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 14 which will last 0.166667 hours
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 15:00:00.032400+00:00
+[2025-06-21 14:53:17] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 14:53:17] [INFO    ] discord - generate_status_message:609: The current phase is Night - 14
+[2025-06-21 14:53:17] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:00:00.032400+00:00
+[2025-06-21 14:53:17] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 42
+[2025-06-21 14:53:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 14:53:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 14:53:17] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 14:53:17] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 14:53:17] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 14:53:17] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 15:03:18] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 15:03:18] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 15:03:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:03:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:03:18] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 15:03:18] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 15:03:18] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 15:03:19] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 15:03:19] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:03:19] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:03:19] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 15:03:19] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:03:19] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:03:19] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 15:03:19] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 15:03:21] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 15:03:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:03:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:03:21] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 15:03:22] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 15:03:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 15:03:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:03:22] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:03:24] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 15:03:24] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:03:24] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 15:03:25] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 14 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 15:03:25.590836+00:00
+[2025-06-21 15:03:25] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 15:10:00.033600+00:00
+[2025-06-21 15:03:26] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 15:03:26] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:03:26] [INFO    ] discord - generate_status_message:609: The current phase is Day - 14
+[2025-06-21 15:03:26] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:10:00.033600+00:00
+[2025-06-21 15:03:26] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 33
+[2025-06-21 15:03:26] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 15:13:28] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 15:13:28] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 15:13:29] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:13:30] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 15:13:30] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:13:30] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 15:13:30] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 15 which will last 0.166667 hours
+[2025-06-21 15:13:30] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 15:13:31] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 15:20:00.034800+00:00
+[2025-06-21 15:13:31] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:13:31] [INFO    ] discord - generate_status_message:609: The current phase is Night - 15
+[2025-06-21 15:13:31] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:20:00.034800+00:00
+[2025-06-21 15:13:31] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 28
+[2025-06-21 15:13:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:13:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:13:31] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 15:13:31] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:13:31] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:13:31] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 15:23:32] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 15:23:32] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 15:23:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:23:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:23:32] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 15:23:32] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 15:23:32] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 15:23:33] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 15:23:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:23:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:23:33] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 15:23:33] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:23:33] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:23:33] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 15:23:33] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 15:23:35] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 15:23:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:23:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:23:35] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 15:23:36] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 15:23:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 15:23:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:23:36] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:23:38] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 15:23:38] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:23:38] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 15:23:39] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 15 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 15:23:39.869258+00:00
+[2025-06-21 15:23:39] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 15:30:00.036000+00:00
+[2025-06-21 15:23:40] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 15:23:40] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:23:40] [INFO    ] discord - generate_status_message:609: The current phase is Day - 15
+[2025-06-21 15:23:40] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:30:00.036000+00:00
+[2025-06-21 15:23:40] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 19
+[2025-06-21 15:23:41] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 15:33:42] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 15:33:42] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 15:33:43] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:33:44] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 15:33:44] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:33:44] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 15:33:44] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 16 which will last 0.166667 hours
+[2025-06-21 15:33:44] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 15:33:45] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 15:40:00.037200+00:00
+[2025-06-21 15:33:45] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:33:45] [INFO    ] discord - generate_status_message:609: The current phase is Night - 16
+[2025-06-21 15:33:45] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:40:00.037200+00:00
+[2025-06-21 15:33:45] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 14
+[2025-06-21 15:33:45] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:33:45] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:33:45] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 15:33:45] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:33:45] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:33:45] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 15:38:08] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-21 15:43:46] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 15:43:46] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 15:43:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:43:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:43:46] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 15:43:46] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 15:43:46] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 15:43:47] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 15:43:47] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:43:47] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:43:47] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 15:43:47] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:43:47] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:43:47] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 15:43:47] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 15:43:48] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 15:43:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:43:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:43:48] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 15:43:50] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 15:43:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 15:43:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 15:43:50] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:43:51] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 15:43:51] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:43:51] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 15:43:52] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 15:43:52] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:43:52] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 15:43:52] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 15:43:52] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 16 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 15:43:53] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 15:43:53.340062+00:00
+[2025-06-21 15:43:53] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 15:50:00.038400+00:00
+[2025-06-21 15:43:54] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 15:43:54] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:43:54] [INFO    ] discord - generate_status_message:609: The current phase is Day - 16
+[2025-06-21 15:43:54] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 15:50:00.038400+00:00
+[2025-06-21 15:43:54] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 5
+[2025-06-21 15:43:54] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 15:53:56] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 15:53:56] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 15:53:57] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 15:53:58] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 15:53:58] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 15:53:58] [INFO    ] discord - gameprocess:2459: DEBUG: Changed to night phase
+[2025-06-21 15:53:58] [INFO    ] discord - gameprocess:2335: DEBUG: Starting Night - 17 which will last 0.166667 hours
+[2025-06-21 15:53:58] [INFO    ] discord - gameprocess:2336: The town goes to sleep....
+[2025-06-21 15:53:59] [INFO    ] discord - gameprocess:2340: DEBUG: Current time night ends = 2025-06-21 16:00:00.039600+00:00
+[2025-06-21 15:53:59] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 15:53:59] [INFO    ] discord - generate_status_message:609: The current phase is Night - 17
+[2025-06-21 15:53:59] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 16:00:00.039600+00:00
+[2025-06-21 15:53:59] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 6, 0
+[2025-06-21 15:53:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 15:53:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 15:53:59] [ERROR   ] discord - check_gf_status:1554: DEBUG: No living Godfather found. Skipping Mafia night kill process.
+[2025-06-21 15:53:59] [INFO    ] discord - check_gf_status:1555: DEBUG: Promoting Mob to Godfather
+[2025-06-21 15:53:59] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 15:53:59] [INFO    ] discord - gameprocess:2346: Sleeping....
+[2025-06-21 16:04:00] [INFO    ] discord - gameprocess:2349: DEBUG: Roleblockers
+[2025-06-21 16:04:00] [INFO    ] discord - process_role_block:1170: process_role_block called
+[2025-06-21 16:04:00] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 16:04:00] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 16:04:00] [INFO    ] discord - gameprocess:2355: DEBUG: SK Kill
+[2025-06-21 16:04:00] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Serial Killer
+[2025-06-21 16:04:00] [ERROR   ] discord - process_sk_night_kill:1208: DEBUG: No living Serial Killer found. Skipping SK night kill process.
+[2025-06-21 16:04:01] [INFO    ] discord - gameprocess:2362: DEBUG: Mob Kill
+[2025-06-21 16:04:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Godfather
+[2025-06-21 16:04:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Goon
+[2025-06-21 16:04:01] [ERROR   ] discord - process_mafia_night_kill:1305: DEBUG: No living Godfather found.
+[2025-06-21 16:04:01] [INFO    ] discord - process_mafia_night_kill:1306: DEBUG: Promoting Mob to Godfather
+[2025-06-21 16:04:01] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 16:04:01] [ERROR   ] discord - process_mafia_night_kill:1371: DEBUG: No living Godfather found.
+[2025-06-21 16:04:01] [ERROR   ] discord - process_mafia_night_kill:1373: DEBUG: No target
+[2025-06-21 16:04:03] [INFO    ] discord - gameprocess:2369: DEBUG: Town Doc Heal
+[2025-06-21 16:04:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 16:04:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 16:04:03] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Doctor
+[2025-06-21 16:04:04] [INFO    ] discord - gameprocess:2376: DEBUG: Town Cop Investigate
+[2025-06-21 16:04:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Cop
+[2025-06-21 16:04:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Town Role Blocker
+[2025-06-21 16:04:04] [INFO    ] discord - get_specific_player_id:391: get_sepcific_player has been called for Mob Role Blocker
+[2025-06-21 16:04:06] [INFO    ] discord - gameprocess:2383: DEBUG: All night actions done
+[2025-06-21 16:04:06] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 16:04:06] [INFO    ] discord - gameprocess:2386: DEBUG: Discord roles now updated
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2388: DEBUG: Checking winner
+[2025-06-21 16:04:07] [INFO    ] discord - check_win_conditions:1077: No winner found
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2390: Winner is None
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2402: DEBUG: End of night phase, about to switch to day phase
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2413: DEBUG: Day - 17 has dawned which will last 0.166667 hours.
+The town awakens...
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2420: The current UTC time is 2025-06-21 16:04:07.353502+00:00
+[2025-06-21 16:04:07] [INFO    ] discord - gameprocess:2422: DEBUG: Current time day ends = 2025-06-21 16:10:00.040800+00:00
+[2025-06-21 16:04:08] [INFO    ] discord - gameprocess:2424: DEBUG: Generate and send status message
+[2025-06-21 16:04:08] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 16:04:08] [INFO    ] discord - generate_status_message:609: The current phase is Day - 17
+[2025-06-21 16:04:08] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 16:10:00.040800+00:00
+[2025-06-21 16:04:08] [INFO    ] discord - get_time_left_string:585: Build return based on time left ==> 0, 0, 5, 51
+[2025-06-21 16:04:08] [INFO    ] discord - gameprocess:2428: working....
+[2025-06-21 16:04:48] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 16:04:48] [INFO    ] discord - process_lynch_vote:790: DEBUG: process_lynch_vote called
+[2025-06-21 16:04:48] [INFO    ] discord - get_player_id_by_name:373: DEBUG: get_player_id_by_name called
+[2025-06-21 16:04:49] [INFO    ] discord - send_vote_update:899: DEBUG: Send_vote_update called...
+[2025-06-21 16:14:10] [INFO    ] discord - gameprocess:2437: DEBUG: Counting votes...
+[2025-06-21 16:14:10] [INFO    ] discord - countlynchvotes:836: Debug: Lynched Players => [-8]
+[2025-06-21 16:14:10] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Lynch_Data.json
+[2025-06-21 16:14:12] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1333019862754263053, dead = 1333019862754263052, spectator = 1333019862754263051
+[2025-06-21 16:14:13] [INFO    ] discord - gameprocess:2447: DEBUG: Checking win conditions
+[2025-06-21 16:14:13] [INFO    ] discord - check_win_conditions:990: The game was Won by the Town as they were the only people left
+[2025-06-21 16:14:13] [INFO    ] discord - gameprocess:2450: We have a winner!
+[2025-06-21 16:14:13] [INFO    ] discord - announce_winner:1085: Winning team = Town
+[2025-06-21 16:14:55] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/20250621-103000_Game_Data.json
+[2025-06-21 16:14:55] [INFO    ] discord - save_json_data:185: DEBUG: Data saved to stats/alpha_testing/20250621-103000/game_20250621-103000.json
+[2025-06-21 16:14:55] [INFO    ] discord - generate_status_message:608: DEBUG: generate_status_message called
+[2025-06-21 16:14:55] [INFO    ] discord - generate_status_message:609: The current phase is Day - 17
+[2025-06-21 16:14:55] [INFO    ] discord - get_time_left_string:568: format_time_remaining has been called with end time = 2025-06-21 16:10:00.040800+00:00
+[2025-06-21 16:14:55] [INFO    ] discord - get_time_left_string:578: Time's up!
+[2025-06-21 16:14:55] [INFO    ] discord - reset_game:697: DEBUG: reset_game() called
+[2025-06-21 16:14:55] [INFO    ] discord - prepare_game_start:786: DEBUG: prepare_game_start finished
+[2025-06-21 19:02:28] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-21 19:22:05] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "fuckoff" is not found
+[2025-06-21 19:22:15] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "foolisgay" is not found
+[2025-06-21 22:28:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-22 01:57:17] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-22 04:50:16] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 5828d58971454b0a4324d34ae362b3f7.
+[2025-06-22 05:24:46] [INFO    ] discord - <module>:72: This is an info message.
+[2025-06-22 05:24:46] [WARNING ] discord - <module>:73: This is a warning message.
+[2025-06-22 05:24:46] [ERROR   ] discord - <module>:74: This is an error message.
+[2025-06-22 05:24:46] [CRITICAL] discord - <module>:75: This is a critical message.
+[2025-06-22 05:24:47] [INFO    ] discord.client - login:643: logging in using static token
+[2025-06-22 05:24:48] [INFO    ] discord.gateway - received_message:562: Shard ID None has connected to Gateway (Session ID: d58ae9adf449466f5cfa378bbe8fcfdc).
+[2025-06-22 05:24:50] [CRITICAL] discord - on_ready:1623: Logged in as IC Mafia Bot (BETA)
+[2025-06-22 07:35:59] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 08:12:52] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 11:26:33] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 13:54:01] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 15:47:54] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 19:35:49] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-22 23:00:27] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 00:49:42] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 02:19:50] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 03:51:08] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 05:49:43] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 08:19:21] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 09:35:17] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 11:28:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 13:57:18] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 16:37:37] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 16:57:39] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 17:56:50] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 18:16:03] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 19:17:16] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 22:04:02] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 22:23:46] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-23 23:18:24] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 02:20:49] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 05:42:46] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 07:35:19] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 08:54:36] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 11:39:16] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 12:32:10] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 15:17:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 17:52:45] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 20:45:46] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 21:07:31] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 21:36:57] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 22:49:59] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-24 22:53:17] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 00:46:13] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 01:58:36] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 03:21:20] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 03:50:28] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 04:45:18] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 06:42:26] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 08:50:17] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 09:58:13] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 11:58:56] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 14:33:38] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 15:01:52] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 15:54:07] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 17:27:09] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 20:10:52] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-25 21:56:52] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 01:53:03] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 03:35:29] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 05:44:27] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 09:18:02] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 11:55:46] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 12:11:54] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 14:38:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 15:13:05] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 17:47:19] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 20:13:04] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 22:29:20] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 23:29:16] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-26 23:59:34] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 02:40:08] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 02:58:15] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 03:52:32] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 06:40:03] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 08:17:57] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 12:12:33] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 13:07:18] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 13:43:12] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 14:50:16] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 16:02:13] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 16:44:20] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 17:12:18] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 17:24:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 18:05:33] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-27 21:18:18] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 00:40:24] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 02:49:38] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 05:33:55] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 07:06:48] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 10:29:47] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 14:14:59] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 14:54:54] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 15:38:34] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 17:43:34] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 20:10:17] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-28 23:33:58] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+[2025-06-29 03:07:04] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session d58ae9adf449466f5cfa378bbe8fcfdc.
+  File "/home/opc/IC-Mafia-Bot/bot.py", line 829
+    await channel.send(f"<@{voter_id}> voted for <@{lynch_target}> who now has {lynch_votes[lynch_target_id]["total_votes"]}")
+                                                                                                              ^
+SyntaxError: f-string: unmatched '['
+[2025-06-29 05:03:19] [INFO    ] discord - <module>:72: This is an info message.
+[2025-06-29 05:03:19] [WARNING ] discord - <module>:73: This is a warning message.
+[2025-06-29 05:03:19] [ERROR   ] discord - <module>:74: This is an error message.
+[2025-06-29 05:03:19] [CRITICAL] discord - <module>:75: This is a critical message.
+[2025-06-29 05:03:19] [INFO    ] discord.client - login:643: logging in using static token
+[2025-06-29 05:03:21] [INFO    ] discord.gateway - received_message:562: Shard ID None has connected to Gateway (Session ID: 882a951d80a889a3e376f9c6ae20bc78).
+[2025-06-29 05:03:23] [CRITICAL] discord - on_ready:1643: Logged in as IC Mafia Bot (BETA)
+[2025-06-29 05:10:26] [INFO    ] discord - <module>:72: This is an info message.
+[2025-06-29 05:10:26] [WARNING ] discord - <module>:73: This is a warning message.
+[2025-06-29 05:10:26] [ERROR   ] discord - <module>:74: This is an error message.
+[2025-06-29 05:10:26] [CRITICAL] discord - <module>:75: This is a critical message.
+[2025-06-29 05:10:26] [INFO    ] discord.client - login:643: logging in using static token
+[2025-06-29 05:10:27] [INFO    ] discord.gateway - received_message:562: Shard ID None has connected to Gateway (Session ID: 78edf83cde1f64ac18dcde11ec5e658d).
+[2025-06-29 05:10:30] [CRITICAL] discord - on_ready:1643: Logged in as IC Mafia Bot (BETA)
+[2025-06-29 05:11:32] [INFO    ] discord - reset_game:711: DEBUG: reset_game() called
+[2025-06-29 05:11:32] [INFO    ] discord - start_game:1670: DEBUG: Time signups end => 2025-06-29 10:00:00+00:00
+[2025-06-29 05:11:32] [INFO    ] discord - start_game:1686: DEBUG: New game started with join hours 4.81
+[2025-06-29 05:11:34] [INFO    ] discord - start_game:1705: DEBUG: Timestamp: 2025-06-29 05:11:34.296139+00:00 -  Game Started == True
+[2025-06-29 05:11:41] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1322336366796996789, dead = 1322336409926762586, spectator = 1322335985702277151
+[2025-06-29 05:11:41] [ERROR   ] discord - update_player_discord_roles:291: ERROR: Could not find 'Living Players', 'Dead Players', or 'Spectator' role.
+[2025-06-29 05:11:41] [INFO    ] discord - join_game:1755: DEBUG: Player joined: .you_fool (ID: 225405842235719680).
+[2025-06-29 05:12:31] [INFO    ] discord - update_player_discord_roles:285: INFO: Living = 1322336366796996789, dead = 1322336409926762586, spectator = 1322335985702277151
+[2025-06-29 05:12:31] [ERROR   ] discord - update_player_discord_roles:291: ERROR: Could not find 'Living Players', 'Dead Players', or 'Spectator' role.
+[2025-06-29 05:12:31] [INFO    ] discord - join_game:1755: DEBUG: Player joined: pandabbear (ID: 220142891027136512).
+[2025-06-29 05:21:44] [INFO    ] discord - <module>:72: This is an info message.
+[2025-06-29 05:21:44] [WARNING ] discord - <module>:73: This is a warning message.
+[2025-06-29 05:21:44] [ERROR   ] discord - <module>:74: This is an error message.
+[2025-06-29 05:21:44] [CRITICAL] discord - <module>:75: This is a critical message.
+[2025-06-29 05:21:44] [INFO    ] discord.client - login:643: logging in using static token
+[2025-06-29 05:21:46] [INFO    ] discord.gateway - received_message:562: Shard ID None has connected to Gateway (Session ID: e9568f2848def7dab245519abb9e2267).
+[2025-06-29 05:21:48] [CRITICAL] discord - on_ready:1643: Logged in as IC Mafia Bot (BETA)
+[2025-06-29 05:22:27] [INFO    ] discord - reset_game:711: DEBUG: reset_game() called
+[2025-06-29 05:22:28] [INFO    ] discord - start_game:1670: DEBUG: Time signups end => 2025-06-29 10:00:00+00:00
+[2025-06-29 05:22:28] [INFO    ] discord - start_game:1686: DEBUG: New game started with join hours 4.63
+[2025-06-29 05:22:30] [INFO    ] discord - start_game:1705: DEBUG: Timestamp: 2025-06-29 05:22:30.701471+00:00 -  Game Started == True
+[2025-06-29 05:22:36] [INFO    ] discord - reinitialize_players:2236: Reinitialize players command called by .you_fool
+[2025-06-29 05:22:36] [INFO    ] discord - reinitialize_players:2263: Current game phase for reinitialization: 'Signup'
+[2025-06-29 05:22:36] [INFO    ] discord - reinitialize_players:2268: Reinitializing players during signup phase.
+[2025-06-29 05:22:37] [INFO    ] discord - reinitialize_players:2329: Player dictionary reinitialized by .you_fool
+[2025-06-29 05:22:37] [INFO    ] discord - reinitialize_players:2330: New Player dictionary: {220142891027136512: {'name': 'pandabbear', 'display_name': 'Panda', 'role': None, 'alive': True, 'votes': 0, 'action_target': None, 'previous_target': None, 'missed_votes': 0, 'death_info': {}}, 225405842235719680: {'name': '.you_fool', 'display_name': 'You_Fool', 'role': None, 'alive': True, 'votes': 0, 'action_target': None, 'previous_target': None, 'missed_votes': 0, 'death_info': {}}}
