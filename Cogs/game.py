@@ -6,7 +6,7 @@ import logging
 from discord.ext import commands
 # Import the Game class, but not the standalone functions that will be deprecated
 from game.engine import Game
-from utils.utilities import get_player_id_by_name # Example of a specific utility import
+import utils.utilities
 from datetime import datetime, timezone
 
 # Get the same logger instance as in mafiabot.py

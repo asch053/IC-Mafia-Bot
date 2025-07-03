@@ -143,15 +143,6 @@ def format_time_remaining(end_time):
         return f"{seconds} second{'s' if seconds != 1 else ''}"
     return " and ".join(parts)
 
-async def get_player_id_by_name(self, player_name):
-    """
-    Finds a player's ID based on their name (or nickname).
-    Returns the player ID if found, otherwise returns None.
-    """
-    logger.info("DEBUG: get_player_id_by_name called")
-    for player_id, player_data in self.players.items():
-        if player_data["name"].lower() == player_name.lower() or \
-           (player_data["display_name"] and player_data["display_name"].lower() == player_name.lower()):
-            logger.debug(f"DEBUG: player_id returned = {player_id}")
-            return player_id
-    return None  # Player not found
+# --- Game Functions ---
+
+
