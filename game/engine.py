@@ -4,9 +4,11 @@ import asyncio
 import json
 import logging
 import io
+import random
+
 from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
-import random
+from collections import Counter
 
 import config
 from utils.utilities import (
@@ -58,7 +60,6 @@ class Game:
             self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
         except Exception as e:
             logger.error(f"Error loading discord roles data: {e}")
-            ctx.send("Error loading discord role setups. Please contact the bot administrator.")
         try:
             self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
         except Exception as e:
@@ -73,7 +74,6 @@ class Game:
         except Exception as e:
             logger.error(f"Error loading mafia setups: {e}")
             logger.critical("No mafia setups loaded. The game cannot start.")
-            ctx.send("Error loading game setups. Please contact the bot administrator.")
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
@@ -112,7 +112,7 @@ class Game:
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
         self.signup_loop.start()
 
-    @tasks.loop(seconds=30) # Loop periodically to send reminders
+    @tasks.loop(seconds=config.signup_loop_interval_seconds) # Loop periodically to send reminders
     async def signup_loop(self):
         """Monitors the sign-up phase, sends reminders, and checks for start conditions."""
         logger.info("Sign-up loop iteration started.")
@@ -165,7 +165,7 @@ class Game:
             logger.error("Force start command attempted outside of sign-up phase.") 
             return
         self.force_start_flag = True
-        await ctx.send(f"Force start flag has been set. The game will begin on the next loop iteration (within {config.start_message_send_delay} minutes).")
+        await ctx.send(f"Force start flag has been set. The game will begin on the next loop iteration (within {config.signup_loop_interval_seconds} seconds).")
         logger.warning(f"Game force start initiated by {ctx.author.name}.")
 
     async def add_player(self, user, player_name):
@@ -290,7 +290,7 @@ class Game:
         logger.info("Roles assigned to players successfully.")
 
     # --- 3. MAIN GAME LOOP ---
-    @tasks.loop(seconds=15) # Run every 15 seconds to check phase deadlines
+    @tasks.loop(seconds=config.game_loop_interval_seconds) # Run every 15 seconds to check phase deadlines
     async def game_loop(self):
         """
         The main game loop. Runs every 15 seconds to check phase deadlines and send reminders. - To be updated in production to run every minute
@@ -307,6 +307,9 @@ class Game:
                 await self.process_night_actions() # If night phase has ended, process all night actions
                 logger.debug("Night phase ended. Processing night actions...")
             logger.info(f"{self.game_settings['current_phase'].capitalize()} phase ended. Events processed, creating story...")
+            # Check for win conditions
+            logger.debug("Checking win conditions after phase end.")
+            winner = self.check_win_conditions()
             # Construct the story from all collected events
             story = self.narration_manager.construct_story()
             if story:
@@ -316,15 +319,13 @@ class Game:
             logger.info(f"Phase {self.game_settings['current_phase']} {self.game_settings['phase_number']} ended. Story constructed.")
             # Clear the narration manager for the next phase
             self.narration_manager.clear()
-            # Check for win conditions
-            logger.debug("Checking win conditions after phase end.")
-            winner = self.check_win_conditions()
             if winner: #if there is a winner, announce them and stop the game loop
                 await self.announce_winner(winner)
                 self.game_loop.stop()
-                logger.info(f"Game ended with winner: {winner.display_name}")
+                logger.info(f"Game ended with winner: {winner}")
                 return
             await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
+            logger.debug("Updated player roles in Discord based on current game state.")
             # Generate a status message with players listed and send it to the Rules channel
             status_message = self.get_status_message() 
             try:
@@ -398,7 +399,7 @@ class Game:
             await ctx.send("You are not currently able to vote in this game.")
             logger.warning(f"{voter_user.name} tried to vote but is not a valid player or is dead.")
             return
-        target_obj = self.get_player_id_by_name(target_name) # Get the Player object for the target by name
+        target_obj = self.get_player_by_name(target_name) # Get the Player object for the target by name
         if not target_obj: # If the target is not found, send a message and log the attempt
             await ctx.send(f"Could not find a player named '{target_name}'.")
             logger.warning(f"{voter_obj.display_name} tried to vote for a non-existent player: {target_name}.")
@@ -534,7 +535,7 @@ class Game:
             return "It was a quiet night. Nothing seemed to happen." # Placeholder
 
     # --- 5. GAME END & UTILITIES ---
-    def get_player_id_by_name(self, name):
+    def get_player_by_name(self, name):
         """Finds a Player object by their display name (case-insensitive)."""
         for player_obj in self.players.values():
             if player_obj.display_name.lower() == name.lower():
@@ -543,14 +544,83 @@ class Game:
     
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""
-        # ... win condition logic ...
-        return None # Placeholder
+        living_players = [p for p in self.players.values() if p.is_alive]
+        logger.info(f"Checking win conditions for {len(living_players)} living players.")
+        # If there are no living players, it's a draw
+        if not living_players:
+            return "Draw" # Everyone is dead
+        # Count living players by alignment
+        counts = Counter(p.role.alignment for p in living_players if p.role)
+        mafia_count = counts.get("Mafia", 0) # Count living mafia players
+        town_count = counts.get("Town", 0) # Count living town players
+        neutral_killer_count = sum(1 for p in living_players if p.role and p.role.alignment == "Neutral" and "kill" in p.role.abilities) # Count Neutral Killers specifically (e.g., Serial Killer)
+        logger.info(f"Living counts - Mafia: {mafia_count}, Town: {town_count}, Neutral Killers: {neutral_killer_count}")
+        
+        # Other Draw conditions
+        # If end of night phase has only 2 players, one for each alignment, it's a draw
+        if self.game_settings["current_phase"].lower() == "night" and len(living_players) == 2 and ((mafia_count == 1 and town_count == 1) or (neutral_killer_count == 1 and town_count == 1) or (mafia_count == 1 and neutral_killer_count == 1)):
+            logger.info("Draw condition met: Only two players left, one from each alignment.")
+            return "Draw"
+        
+        # --- Check Win Conditions ---
+        # Town Win: All Mafia and Neutral Killers are eliminated.
+        if mafia_count == 0 and neutral_killer_count == 0:
+            # Check if there are any other hostile neutrals left (e.g. Jester doesn't count)
+            # This is a more advanced check for later. For now, this is sufficient.
+            if town_count > 0:
+                logger.info("Win Condition Met: Town wins.")
+                return "Town"
+            
+        # Mafia Win: 
+        # Mafia outnumber Town, and no Neutral Killers remain.
+        if mafia_count > town_count and neutral_killer_count == 0:
+            if mafia_count > 0:
+                logger.info("Win Condition Met: Mafia wins.")
+                return "Mafia"
+        # Mafia equal to Town and is end of day phase and no doc or or protective role exists
+        if mafia_count == town_count and neutral_killer_count == 0 and self.game_settings["current_phase"].lower() == "day" :
+            # Check if there are no protective roles left (e.g., Doctor)
+            protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
+            if not protective_roles:
+                logger.info("Win Condition Met: Mafia wins.")
+                return "Mafia"
+            
+        # Neutral Killer Win: Only the Neutral Killer(s) remain.
+        if neutral_killer_count > 0 and town_count == 0 and mafia_count == 0:
+            logger.info("Win Condition Met: Neutral Killer wins.")
+            # You might want to return the specific role name, e.g., "Serial Killer"
+            return "Serial Killer"  
+        # Or SK wins if SK alive at end of day phase and no doc or protective role exists
+        if neutral_killer_count == 1 and town_count == 1 and mafia_count == 0 and self.game_settings["current_phase"].lower() == "day":
+            # Check if there are no protective roles left (e.g., Doctor)
+            protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
+            if not protective_roles:
+                logger.info("Win Condition Met: Serial Killer wins.")
+                return "Serial Killer"
+        # SK wins if SK alive at end of day phase and only 1 Mafia alive and not godfather
+        if neutral_killer_count == 1 and mafia_count == 1 and town_count == 0 and self.game_settings["current_phase"].lower() == "day":
+            # Check if there is only one Mafia left and it's not the Godfather
+            mafia_roles = [p.role for p in living_players if p.role and p.role.alignment == "Mafia"]
+            if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
+                logger.info("Win Condition Met: Serial Killer wins.")
+                return "Serial Killer"
+
+        # No winner yet return none
+        logger.info("No win condition met yet.")
+        return None
 
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
-        await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(f"## GAME OVER! The **{winner}** team has won!")
-        # ... more detailed winner announcement ...
-        await self.reset()
+        status_message = self.get_status_message() # Generate a final status message
+        self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager
+        story = self.narration_manager.construct_story() # Construct the final story
+        if story:
+              story += f"\n\n{status_message}" # Add the status message to the story
+        try:
+            await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(f"**Game Over!**\n{story}")
+            logger.info(f"Announced winner: {winner}.")
+        except Exception as e:
+            logger.error(f"Error announcing winner: {e}")
 
     async def reset(self):
         """Resets the game state and cancels any running tasks."""
