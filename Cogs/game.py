@@ -112,6 +112,7 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # This method records the night action for the killer.
         # Note: The target_name should be validated to ensure it exists in the game.
         await self.game.record_night_action(
+            ctx,
             player_id=ctx.author.id, 
             action_type='kill', 
             target_name=target_name
@@ -128,6 +129,7 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # The game engine handles all the logic and permissions checks.
         # This method records the night action for the healer.
         await self.game.record_night_action(
+            ctx,
             player_id=ctx.author.id, 
             action_type='heal', 
             target_name=target_name
@@ -144,11 +146,12 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # The game engine handles all the logic and permissions checks.
         # This method records the night action for the investigator.
         await self.game.record_night_action(
+            ctx,
             player_id=ctx.author.id, 
             action_type='investigate', 
             target_name=target_name
         )
-        logger.info(f"{self.players[ctx.author.id]['role']} has requested to investigate {target_name}.")
+        logger.info(f"{ctx.author.id} has requested to investigate {target_name}.")
 
 # This function is called by mafiabot.py to load the cog.
 async def setup(bot):

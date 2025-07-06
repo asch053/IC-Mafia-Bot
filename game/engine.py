@@ -11,6 +11,7 @@ from datetime import datetime, timedelta, timezone
 from collections import Counter
 
 import config
+import game.actions as actions
 from utils.utilities import (
     load_data,
     save_json_data,
@@ -514,25 +515,57 @@ class Game:
         # the story is about a single victim or multiple victims.
         self.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
            
-    async def record_night_action(self, player_id, action_type, target_name):
-        """Records a night action from a player's DM."""
-        # ... logic to validate and store night actions ...
-        await self.bot.get_user(player_id).send(f"Your action ({action_type} on {target_name}) has been recorded.") # Placeholder
-        pass
+    async def record_night_action(self, ctx, player_id, action_type, target_name):
+        """Validates and records a night action from a player's DM."""
+        player_obj = self.players.get(player_id)
+        logger.info(f"Recording night action from player {player_id} ({player_obj.display_name if player_obj else 'Unknown'}) for action '{action_type}' on target '{target_name}'")
+        # --- Validation ---
+        if self.game_settings["current_phase"] != "night":
+            await ctx.author.send("You can only perform actions during the night.")
+            return
+        if not player_obj or not player_obj.is_alive:
+            await ctx.author.send("You are not able to perform actions in the game.")
+            return
+        if not player_obj.can_perform_action(action_type):
+            await ctx.author.send(f"Your role does not have the '{action_type}' ability.")
+            return
+        target_obj = self.get_player_by_name(target_name)
+        if not target_obj:
+            await ctx.author.send(f"Could not find a player named '{target_name}'.")
+            return
+        if not target_obj.is_alive:
+            await ctx.author.send(f"{target_obj.display_name} is already dead.")
+            return
+        if target_obj.id == player_obj.id:
+            await ctx.author.send("You cannot target yourself.")
+            return
+        # --- Record Action ---
+        self.night_actions[player_id] = {
+            "type": action_type,
+            "target_id": target_obj.id
+        }
+        await ctx.author.send(f"Your action (**{action_type}** on **{target_obj.display_name}**) has been recorded for the night.")
+        logger.info(f"Recorded night action: {player_obj.display_name} -> {action_type} on {target_obj.display_name}")
 
     async def process_night_actions(self):
-        """Processes all recorded night actions by adding events to the narration manager."""
-        # Example for a kill action
-        killer = self.players.get(...)
-        victim = self.players.get(...)
-        if killer and victim:
-            self.narration_manager.add_event('kill', killer=killer, victim=victim)
-        # Example for a heal action
-        doctor = self.players.get(...)
-        patient = self.players.get(...)
-        if doctor and patient:
-            self.narration_manager.add_event('heal', doctor=doctor, patient=patient)
-            return "It was a quiet night. Nothing seemed to happen." # Placeholder
+        """Processes all recorded night actions using the ACTION_HANDLERS dictionary."""
+        if not self.night_actions:
+            self.narration_manager.add_event('no_actions')
+            return
+        action_priority = {"block": 1, "heal": 2, "kill": 3, "investigate": 4}
+        sorted_actions = sorted(
+            self.night_actions.items(), 
+            key=lambda item: action_priority.get(item[1]['type'], 99)
+        )
+        self.protected_players_this_night = set()
+        for player_id, action in sorted_actions:
+            action_type = action.get('type')
+            target_id = action.get('target_id')
+            if action_type not in actions.ACTION_HANDLERS:
+                logger.error(f"Unknown action type: '{action_type}' from player {player_id}.")
+                continue
+            handler_function = actions.ACTION_HANDLERS[action_type]
+            handler_function(self, player_id, target_id)
 
     # --- 5. GAME END & UTILITIES ---
     def get_player_by_name(self, name):

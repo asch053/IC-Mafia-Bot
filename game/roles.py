@@ -1,6 +1,6 @@
 # game/roles.py
 class GameRole:
-    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None):
+    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None, investigate_result=None):
         self.name = name
         self.alignment = alignment
         self.description = description
@@ -8,6 +8,7 @@ class GameRole:
         self.abilities = abilities if abilities is not None else {}
         self.uses = uses
         self.win_condition = win_condition
+        self.investigation_result = investigate_result
 
     def __str__(self):
         return self.name
@@ -20,7 +21,8 @@ class GameRole:
             "short_description": self.short_description,
             "abilities": self.abilities,
             "uses": self.uses,
-            "win_condition": self.win_condition
+            "win_condition": self.win_condition,
+            "investigate_result": self.investigate_result  # Optional field for investigative roles
         }
 # --- Specific Role Classes ---
 
@@ -93,7 +95,8 @@ def create_godfather_role():
         name="Godfather",
         description="Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bo to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
         short_description="Chooses the Mafia's target each night.",
-        abilities={"kill": "Choose a player for the Mafia to kill."}
+        abilities={"kill": "Choose a player for the Mafia to kill."},
+        investigate_result = {"Plain Townie": "Normal Member of town"}  # Godfather appears as Town to investigators
     )
 
 def create_mafioso_role():
@@ -118,10 +121,11 @@ def create_serial_killer_role():
         description="Kills one player each night.\n Use _/kill player-name_ in this DM with the bot to kill your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and town players are dead",
         short_description="Kills one player each night.",
         abilities={"kill": "Choose a player to kill."},
-        win_condition="Be the last player alive."
+        win_condition="Be the last player alive.",
+        investigate_result = {"Plain Townie": "Normal Member of town"}  # Serial Killer appears as Town to investigators
     )
 def create_jester_role():
-    """Creates an instance of the Serial Killer role."""
+    """Creates an instance of the Jester role."""
     return NeutralEvil(
         name="Jester",
         description="Your goal is to get yourself lynched by the town. You have no night action.",
