@@ -117,7 +117,7 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
             action_type='kill', 
             target_name=target_name
         )
-        logger.info(f"{self.players[ctx.author.id]['role']} has requested to kill {target_name}.")
+        logger.debug(f"{ctx.author.id} has requested to kill {target_name}.")
         
     @commands.command(name="heal")
     @commands.dm_only()
@@ -134,7 +134,7 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
             action_type='heal', 
             target_name=target_name
         )
-        logger.info(f"{self.players[ctx.author.id]['role']} has requested to heal {target_name}.")
+        logger.debug(f"{ctx.author.id} has requested to heal {target_name}.")
     
     @commands.command(name="investigate")
     @commands.dm_only()
@@ -151,7 +151,18 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
             action_type='investigate', 
             target_name=target_name
         )
-        logger.info(f"{ctx.author.id} has requested to investigate {target_name}.")
+        logger.debug(f"{ctx.author.id} has requested to investigate {target_name}.")
+    
+    @commands.command(name="mafialeave")
+    async def leave_game_command(self, ctx):
+        """Allows a player to leave during the sign-up phase."""
+        if self.game is None or self.game.game_settings["current_phase"] != "signup":
+            await ctx.send("There is no game to leave, or sign-ups have already closed.")
+            logger.info(f"{ctx.author.name} tried to leave a game, but no game was running or sign-ups were closed.")
+            return
+        logger.info(f"{ctx.author.name} is leaving the game.")
+        # Call the game's method to remove the player.
+        await self.game.remove_player(ctx.author)
 
 # This function is called by mafiabot.py to load the cog.
 async def setup(bot):

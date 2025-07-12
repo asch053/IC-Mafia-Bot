@@ -5,14 +5,14 @@ import json
 import logging
 import logging.handlers
 import os
-import config as mafiaconfig # Import the config module directly
+import config  # Import the config module directly
 from datetime import datetime, timedelta, timezone
 
 # --- Bot Setup ---
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
-bot = commands.Bot(command_prefix=mafiaconfig.BOT_PREFIX, intents=intents, owner_id=mafiaconfig.OWNER_ID)
+bot = commands.Bot(command_prefix=config.BOT_PREFIX, intents=intents, owner_id=config.OWNER_ID)
 
 # --- Logging Setup ---
 def setup_logging():
@@ -75,7 +75,7 @@ async def on_ready():
 
 async def main():
   async with bot:
-    await bot.start(mafiaconfig.BOT_TOKEN)
+    await bot.start(config.BOT_TOKEN)
 
 if __name__ == "__main__":
     asyncio.run(main())

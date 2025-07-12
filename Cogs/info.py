@@ -40,7 +40,7 @@ class InfoCog(commands.Cog):
         info_text = (
             "**Available Commands:**\n\n"
             "**Player Commands:**\n"
-            "- `/mafiajoin` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
+            "- `/mafiajoin` : Joins the upcoming game. Enter your server display name will be used during the game\n"
             "- `/mafiastatus`: Displays the current game status. Will show game names of all signed up players\n"
             "- `/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
             "- `/mafiacount`: Displays the current vote count.\n"
@@ -49,7 +49,7 @@ class InfoCog(commands.Cog):
             "- `/mafiaroles`: Displays the list of possible roles in the game.\n"
             "- `/mafialeave`: Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
             " \n\n**Player Actions**\n"
-            "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
+            "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed during the night phase.\n"
             "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
             "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
             "- `/block <@player>` (Roleblock only, DM only): Blocks a player's actions for the night.\n"

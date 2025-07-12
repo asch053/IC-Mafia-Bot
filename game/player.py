@@ -46,3 +46,14 @@ class Player:
         if self.is_alive and self.role and self.role.abilities:
             return action_type in self.role.abilities
         return False
+    
+    async def send_dm(self, bot, message: str):
+        """Sends a direct message to the player."""
+        if self.is_npc:
+            return # Don't try to DM bots
+        try:
+            user = await bot.fetch_user(self.id)
+            await user.send(message)
+            logger.info(f"Sent DM to {self.display_name}: {message}")
+        except Exception as e:
+            logger.error(f"Failed to send DM to {self.display_name} (ID: {self.id}): {e}")

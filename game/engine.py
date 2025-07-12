@@ -18,6 +18,7 @@ from utils.utilities import (
     update_player_discord_roles,
     format_time_remaining,
     send_role_dm,
+    send_mafia_info_dm,
 )
 
 from game.narration import NarrationManager # Import the NarrationManager
@@ -187,6 +188,26 @@ class Game:
         self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
         await self.ctx.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
         logger.info(f"{user.name} ({player_name}) has joined the game.")
+    
+    async def remove_player(self, user):
+        """Removes a player from the game during the signup phase."""
+        # Check if the game is currently in the sign-up phase
+        if self.game_settings["current_phase"] != "signup":
+            await self.ctx.send("You can only leave the game during the sign-up phase.")
+            logger.error(f"{user.name} tried to leave the game outside of the sign-up phase.")
+            return
+        if user.id in self.players: # Check if the player is in the game
+            player_name = self.players[user.id].display_name
+            # Remove the player from the game
+            del self.players[user.id]
+            # send a confirmation message
+            await self.ctx.send(f"**{player_name}** has left the game.")
+            logger.info(f"{user.name} ({player_name}) has left the game.")
+            #update player roles in Discord
+            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
+        else:
+            await self.ctx.send("You are not currently in the game.")
+            logger.warning(f"{user.name} tried to leave the game but was not a participant.")
 
     # --- 2. GAME PREPARATION ---
     async def prepare_game(self):
@@ -289,6 +310,9 @@ class Game:
             else:
                 logger.warning(f"More players than available roles. Player {player_obj.display_name} was not assigned a role.")
         logger.info("Roles assigned to players successfully.")
+        # After assigning roles, send Mafia team information to Mafia players
+        await send_mafia_info_dm(self.bot, self.players)
+        logger.info("Mafia team information has been distributed.")
 
     # --- 3. MAIN GAME LOOP ---
     @tasks.loop(seconds=config.game_loop_interval_seconds) # Run every 15 seconds to check phase deadlines
@@ -501,6 +525,16 @@ class Game:
             logger.error("Could not find player objects for lynching, aborting tally.")
             self.narration_manager.add_event('no_lynch')
             return
+        # Inside tally_votes, after identifying the lynched player(s)
+        if len(lynched_players) == 1:
+            lynched_player = lynched_players[0]
+        # NEW: Check for Jester win condition
+        if lynched_player.role.name == "Jester":
+            self.narration_manager.add_event('jester_win', victim=lynched_player)
+            # The game ends immediately in a Jester victory
+            self.game_settings['winning_team'] = "Jester" 
+            logger.info(f"Jester {lynched_player.display_name} has won the game by being lynched.")
+            return # End the tallying process
         # Create a dictionary to hold the details for the narration manager.
         # Format: {victim_object: [voter_objects]}
         lynch_details = {}
@@ -574,6 +608,38 @@ class Game:
             if player_obj.display_name.lower() == name.lower():
                 return player_obj
         return None
+    
+    def _handle_promotions(self, dead_player):
+        """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
+        if dead_player.role and dead_player.role.name == "Godfather":
+            # Find a living Mafioso to promote
+            mafioso_to_promote = None
+            for player in self.players.values():
+                if player.is_alive and player.role and player.role.name == "Mob Goon":
+                    mafioso_to_promote = player
+                    break
+            if not mafioso_to_promote:
+                logger.warning("No Mob Goon found to promote to Godfather, trying to find other mob.")
+                # If no Mob Goon found, try to find any Mafia member to promote
+                for player in self.players.values():
+                    if player.is_alive and player.role and player.role.aligment == "Mafia":
+                        mafioso_to_promote = player
+                        break
+        # If a Mafioso was found, promote them to Godfather
+        if mafioso_to_promote:
+            logger.info(f"Promoting {mafioso_to_promote.display_name} to Godfather.")
+            # Assign the Godfather role to the Mafioso
+            godfather_role = get_role_instance("Godfather")
+            mafioso_to_promote.assign_role(godfather_role)
+            self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
+            # Send a DM to the newly promoted Godfather
+            try:   
+                send_role_dm(self.bot, mafioso_to_promote.user_id, godfather_role)
+                logger.info(f"Sent promotion DM to {mafioso_to_promote.display_name}.")
+            except Exception as e:
+                logger.error(f"Failed to send promotion DM to {mafioso_to_promote.display_name}: {e}")
+                return # If DM fails, just log the error and return
+            logger.info(f"Promoted {mafioso_to_promote.display_name} to Godfather successfully.")
     
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""

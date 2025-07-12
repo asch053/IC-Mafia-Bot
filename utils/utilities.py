@@ -68,15 +68,12 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
     if not guild:
         logger.error("update_player_discord_roles called without a valid guild.")
         return
-
     living_role = guild.get_role(discord_role_data.get("living", {}).get("id", 0))
     dead_role = guild.get_role(discord_role_data.get("dead", {}).get("id", 0))
     spectator_role = guild.get_role(discord_role_data.get("spectator", {}).get("id", 0))
-
     if not all((living_role, dead_role, spectator_role)):
         logger.error("Could not find one or more required roles (Living, Dead, Spectator) in the server.")
         return
-
     # Update roles for players in the game
     for player_id, player_obj in players.items(): # Changed variable name for clarity
         if player_obj.is_npc: continue # Skip NPCs
@@ -85,7 +82,6 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
         if not member:
             logger.warning(f"Could not find player with ID {player_id} in the server.")
             continue
-        
         try:
             # CORRECTED: Use dot notation to access object attributes
             if player_obj.is_alive:
@@ -96,9 +92,19 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
                 await member.remove_roles(living_role, spectator_role)
         except discord.HTTPException as e:
             logger.error(f"Failed to update roles for {member.name}: {e}")
-
     # Ensure non-players are spectators
-    player_ids = set(p for p in players if not players[p].is_npc)
+
+    player_ids = {pid for pid, p_obj in players.items() if not p_obj.is_npc}
+    # Fetch the spectator role from the guild
+    if not spectator_role:
+        logger.error("Spectator role not found in the server. Cannot update non-player roles.")
+        return
+    # Iterate through all members in the guild
+    # and update their roles if they are not players    
+    if not player_ids:
+        logger.warning("No player IDs found. Skipping non-player role updates.")
+        return
+    # Fetch all members in the guild to update non-player roles
     async for member in guild.fetch_members(limit=None):
         if member.bot or member.id in player_ids:
             continue
@@ -121,6 +127,28 @@ async def send_role_dm(bot, player_id, role):
         logger.error(f"Could not send role DM to player {player_id} due to their privacy settings.")
     except Exception as e:
         logger.exception(f"An unexpected error occurred while sending role DM to player {player_id}: {e}")
+
+async def send_mafia_info_dm(bot, players):
+    """Sends DMs to Mafia players with a list of their teammates."""
+    logger.info("Sending Mafia team information via DM to all Mafia players.")
+    # Filter players to find those with Mafia roles
+    mafia_team = [p for p in players.values() if p.role and p.role.alignment == "Mafia"]
+    # If no Mafia players, we can skip sending DMs
+    if not mafia_team:
+        logger.error("No Mafia players found to send team information.")
+        return
+    for member in mafia_team:
+        # Create a list of teammates, excluding the current member
+        teammates = [p.display_name for p in mafia_team if p.id != member.id]
+        # If there are teammates, format the message to include them
+        if teammates:
+            message = f"You are on the Mafia team. Your teammates are: **{', '.join(teammates)}**."
+        else:
+            # If no teammates, just inform them they are alone
+            message = "You are the sole member of the Mafia."
+        # Use the send_dm method on the Player object
+        await member.send_dm(bot, message)
+        logger.debug(f"Sent Mafia team DM to {member.display_name} ({member.id}).")
 
 # --- Time & Formatting ---
 

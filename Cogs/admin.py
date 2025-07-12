@@ -43,14 +43,13 @@ class AdminCog(commands.Cog, name="AdminCog"):
         logger.info(f"The game was stopped by {ctx.author.name}.")
 
     @commands.command(name="mafiareinit")
-    @commands.is_owner()
+    @commands.has_permissions(administrator=True)
     async def reinitialize_players(self, ctx):
         """
-        (Owner Only) A debug tool to refresh the player list from Discord roles.
+        (Mod Only) A debug tool to refresh the player list from Discord roles.
         This is useful for recovering from a crash or inconsistent state.
         """
         game = self.get_game_instance()
-
         if game is None:
             await ctx.send("No game is currently running to re-initialize.")
             return
@@ -64,18 +63,18 @@ class AdminCog(commands.Cog, name="AdminCog"):
             return
         new_players = {}
         for member in ctx.guild.members:
-            # Check if the member has either the living or dead role
             if living_role in member.roles or dead_role in member.roles:
-                # Add the player to our new dictionary, preserving essential data
-                new_players[member.id] = {
-                    "name": member.name,
-                    "display_name": member.display_name,
-                    "role": game.players.get(member.id, {}).get("role"), # Try to keep their role
-                    "alive": living_role in member.roles,
-                    "action_target": None, # Reset action targets
-                    "previous_target": None,
-                    "death_info": game.players.get(member.id, {}).get("death_info", {}),
-                }
+                # Get the old player object to preserve role and death info if it exists
+                old_player_obj = game.players.get(member.id)
+                # Create a new Player object
+                new_player_obj = game.player(user_id=member.id, discord_name=member.name, display_name=member.display_name)
+                # Set the alive status based on their Discord role
+                new_player_obj.is_alive = living_role in member.roles
+                # If we have data from the old object, transfer it
+                if old_player_obj:
+                    new_player_obj.role = old_player_obj.role
+                    new_player_obj.death_info = old_player_obj.death_info
+                new_players[member.id] = new_player_obj
         # Replace the game's player dictionary with our newly constructed one
         game.players = new_players
         await ctx.send(f"Player dictionary re-initialized. Found {len(new_players)} players.")
