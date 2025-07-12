@@ -61,29 +61,28 @@ def save_json_data(data, filename, subdirectory):
 
 # --- Player & Role Functions ---
 
-# In utils/utilities.py
-
 async def update_player_discord_roles(bot, guild, players, discord_role_data):
-    """Updates player roles in Discord based on their game status, with retries and logging."""
+    """Updates player roles in Discord based on their game status (alive/dead)."""
+    logger.debug("Updating player Discord roles based on game status.")
     if not guild:
-        logger.error("update_player_discord_roles called without a valid guild.")
+        logger.critical("update_player_discord_roles called without a valid guild.")
         return
     living_role = guild.get_role(discord_role_data.get("living", {}).get("id", 0))
     dead_role = guild.get_role(discord_role_data.get("dead", {}).get("id", 0))
     spectator_role = guild.get_role(discord_role_data.get("spectator", {}).get("id", 0))
     if not all((living_role, dead_role, spectator_role)):
-        logger.error("Could not find one or more required roles (Living, Dead, Spectator) in the server.")
+        logger.critical("Could not find one or more required roles (Living, Dead, Spectator) in the server.")
         return
     # Update roles for players in the game
-    for player_id, player_obj in players.items(): # Changed variable name for clarity
+    for player_id, player_obj in players.items():
         if player_obj.is_npc: continue # Skip NPCs
-        
+        # Fetch the member object from the guild
+        logger.debug(f"Updating roles for player {player_obj.display_name} (ID: {player_id})")
         member = guild.get_member(player_id)
         if not member:
             logger.warning(f"Could not find player with ID {player_id} in the server.")
             continue
         try:
-            # CORRECTED: Use dot notation to access object attributes
             if player_obj.is_alive:
                 await member.add_roles(living_role)
                 await member.remove_roles(dead_role, spectator_role)
@@ -92,25 +91,19 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
                 await member.remove_roles(living_role, spectator_role)
         except discord.HTTPException as e:
             logger.error(f"Failed to update roles for {member.name}: {e}")
+        logger.debug(f"Updated roles for {member.name} (ID: {member.id}) - Alive: {player_obj.is_alive}")
     # Ensure non-players are spectators
-
     player_ids = {pid for pid, p_obj in players.items() if not p_obj.is_npc}
-    # Fetch the spectator role from the guild
-    if not spectator_role:
-        logger.error("Spectator role not found in the server. Cannot update non-player roles.")
-        return
-    # Iterate through all members in the guild
-    # and update their roles if they are not players    
-    if not player_ids:
-        logger.warning("No player IDs found. Skipping non-player role updates.")
-        return
-    # Fetch all members in the guild to update non-player roles
     async for member in guild.fetch_members(limit=None):
+        logger.debug(f"Checking non-player roles for {member.name} (ID: {member.id})")
+        # Skip bots and already known players
         if member.bot or member.id in player_ids:
             continue
         try:
             if living_role in member.roles or dead_role in member.roles:
                 await member.remove_roles(living_role, dead_role)
+                logger.debug(f"Removed player roles from {member.name} (ID: {member.id})")
+            # Ensure they have the spectator role
             if spectator_role not in member.roles:
                 await member.add_roles(spectator_role)
         except discord.HTTPException as e:
