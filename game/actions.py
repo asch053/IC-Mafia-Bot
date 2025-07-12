@@ -62,15 +62,20 @@ def handle_kill(game, killer_id, target_id):
         logger.warning(f"Kill action failed: Killer/target not found, or target already dead. Killer ID: {killer_id}, Target ID: {target_id}")
         return
     # Check if the target was protected by a heal that occurred earlier
+    # In game/actions.py, inside the handle_kill function
+    logger.debug(f"Checking if {target.display_name} is protected by a heal.")
     if target_id in game.protected_players_this_night:
+        logger.debug(f"{target.display_name} is protected by a heal. The kill will not succeed.")
         # The kill fails. The NarrationManager receives a "heal" event to describe the save.
         doctor = None
         # Find the player who healed the target to credit them in the story.
+        logger.debug("Searching for the healer who protected the target.")
         for p_id, action in game.night_actions.items():
             if action.get('type') == 'heal' and action.get('target_id') == target_id:
                 doctor = game.players.get(p_id)
                 break      
         # The kill fails, so we log it and notify the game state
+        logger.debug(f"Sending heal event to the NarrationManager. {doctor}; {target}")
         game.narration_manager.add_event('heal', doctor=doctor, patient=target)
         logger.debug(f"{killer.display_name}'s kill on {target.display_name} was stopped by a heal.")
     else:

@@ -11,7 +11,6 @@ import config
 logger = logging.getLogger('discord')
 
 # --- File I/O Functions ---
-
 def load_data(filepath,error_default=None):
     """
     Loads data from a JSON or TXT file.

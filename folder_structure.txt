@@ -1,0 +1,84 @@
+Directory: f:/IC Mafia Bot
+  Subdirectory: .git
+  Subdirectory: .github
+  Subdirectory: .venv
+  Subdirectory: .vscode
+  Subdirectory: Cogs
+  Subdirectory: Community
+  Subdirectory: Data
+  Subdirectory: game
+  Subdirectory: Logs
+  Subdirectory: Stats
+  Subdirectory: Tests
+  Subdirectory: utils
+  Subdirectory: __pycache__
+  File: .gitignore
+  File: bot.py
+  File: config.py
+  File: foldertrace.py
+  File: folder_structure.txt
+  File: LICENSE
+  File: requirements.txt
+
+Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
+  Subdirectory: __pycache__
+  File: appdirs.py
+  File: compat.py
+  File: compatibility_tags.py
+  File: datetime.py
+  File: deprecation.py
+  File: direct_url_helpers.py
+  File: egg_link.py
+  File: entrypoints.py
+  File: filesystem.py
+  File: filetypes.py
+  File: glibc.py
+  File: hashes.py
+  File: logging.py
+  File: misc.py
+  File: packaging.py
+  File: retry.py
+  File: setuptools_build.py
+  File: subprocess.py
+  File: temp_dir.py
+  File: unpacking.py
+  File: urls.py
+  File: virtualenv.py
+  File: wheel.py
+  File: _jaraco_text.py
+  File: _log.py
+  File: __init__.py
+
+Directory: f:/IC Mafia Bot\Cogs
+  Subdirectory: __pycache__
+  File: admin.py
+  File: game.py
+  File: info.py
+  File: stats.py
+  File: __init__.py
+
+Directory: f:/IC Mafia Bot\Data
+  Subdirectory: __pycache__
+  File: bot_names.txt
+  File: discord_roles.json
+  File: injokes.json
+  File: mafia_setups.json
+  File: no_injoke.json
+  File: rules.txt
+  File: __init__.py
+
+Directory: f:/IC Mafia Bot\game
+  Subdirectory: __pycache__
+  File: actions.py
+  File: engine.py
+  File: narration.py
+  File: player.py
+  File: roles.py
+  File: __init__.py
+
+Directory: f:/IC Mafia Bot\utils
+  Subdirectory: __pycache__
+  File: randomness_tester.py
+  File: utilities.py
+  File: __init__.py
+

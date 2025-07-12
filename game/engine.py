@@ -622,7 +622,7 @@ class Game:
                 logger.warning("No Mob Goon found to promote to Godfather, trying to find other mob.")
                 # If no Mob Goon found, try to find any Mafia member to promote
                 for player in self.players.values():
-                    if player.is_alive and player.role and player.role.aligment == "Mafia":
+                    if player.is_alive and player.role and player.role.alignment == "Mafia":
                         mafioso_to_promote = player
                         break
         # If a Mafioso was found, promote them to Godfather
@@ -634,7 +634,7 @@ class Game:
             self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
             # Send a DM to the newly promoted Godfather
             try:   
-                send_role_dm(self.bot, mafioso_to_promote.user_id, godfather_role)
+                send_role_dm(self.bot, mafioso_to_promote.id, godfather_role)
                 logger.info(f"Sent promotion DM to {mafioso_to_promote.display_name}.")
             except Exception as e:
                 logger.error(f"Failed to send promotion DM to {mafioso_to_promote.display_name}: {e}")
