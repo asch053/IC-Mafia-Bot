@@ -6,7 +6,7 @@ from utils.utilities import load_data  # Import load_data
 logger = logging.getLogger('discord')  # Get the SAME logger as in bot.py
 
 class InfoCog(commands.Cog):
-    """Cog for informational commands like /rules, /roles, and /info."""
+    """Cog for informational commands like /mafiarules, /mafiaroles, /mafiainfo"""
 
     def __init__(self, bot):
         self.bot = bot
@@ -15,12 +15,12 @@ class InfoCog(commands.Cog):
             self.rules_text = "\n".join(self.rules_text)  # Join into a single string
         # self.roles is already a global in game_engine.py, no need to load here.
 
-    @commands.command(name="rules")
+    @commands.command(name="mafiarules")
     async def show_rules(self, ctx):
         """Displays the rules of the game."""
         await ctx.send(self.rules_text)
 
-    @commands.command(name="roles")
+    @commands.command(name="mafiaroles")
     async def show_roles(self, ctx):
         """Displays the list of possible roles in the game."""
         # Assuming you have a way to access the *possible* roles (not the assigned ones).
@@ -34,26 +34,29 @@ class InfoCog(commands.Cog):
             await ctx.send("No roles are defined.")
 
 
-    @commands.command(name="info")
+    @commands.command(name="mafiainfo")
     async def show_info(self, ctx):
         """Shows the list of available commands."""
         info_text = (
             "**Available Commands:**\n\n"
             "**Player Commands:**\n"
-            "- `/join <name>` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
-            "- `/status`: Displays the current game status. Will show game names of all signed up players\n"
+            "- `/mafiajoin` : Joins the upcoming game. Enter your game name as a parameter, which can be used during the game\n"
+            "- `/mafiastatus`: Displays the current game status. Will show game names of all signed up players\n"
             "- `/vote <@player>`: Casts a vote during the day phase. Use either the players game name or discord ID (@name) to target\n"
-            "- `/count`: Displays the current vote count.\n"
-            "- `/rules`: Displays the rules of the game.\n"
-            "- `/info`: Shows this help message.\n"
-            "- `/leave : Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
+            "- `/mafiacount`: Displays the current vote count.\n"
+            "- `/mafiarules`: Displays the rules of the game.\n"
+            "- `/mafiainfo`: Shows this help message.\n"
+            "- `/mafiaroles`: Displays the list of possible roles in the game.\n"
+            "- `/mafialeave`: Allows you to leave a game during setup phase only - Once a game starts you cannot use this function\n"
             " \n\n**Player Actions**\n"
             "- `/kill <@player>` (Godfather & Serial Killer only, DM only): Selects a player to be killed by the Mafia.\n"
             "- `/heal <@player>` (Doctor only, DM only): Selects a player to be healed.\n"
             "- `/investigate <@player>` (Town Cop only, DM only): Investigates a player's role.\n"
-            "\n\n**Moderator Commands:**\n"
-            "- `/startmafia <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
-            "- `/stop`: Stops the current game.\n"
+            "- `/block <@player>` (Roleblock only, DM only): Blocks a player's actions for the night.\n"
+            "\n\n**Bot Admin Commands:**\n"
+            "- `/mafiastart <start_datetime>  [phase_hours]`:  Starts a new game at the specified time. Date/time format: `YYYY-MM-DD HH:MM` (UTC).\n"
+            "- `/mafiastop`: Stops the current game.\n"
+            "- `/forcestart`: Forces the current sign-up period to end and the game to start.\n"
         )
         await ctx.send(info_text)
         logger.info("/info was called")
