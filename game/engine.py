@@ -773,7 +773,11 @@ class Game:
             for player_obj in winning_players:
                 role_name = player_obj.role.name if player_obj.role else "Unknown Role"
                 role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
-                status_message += f"- {player_obj.display_name} ({role_alignment}: {role_name})\n"
+                death_phase = player_obj.death_info.get('phase', 'N/A')
+                death_cause = player_obj.death_info.get('how', 'N/A')
+                status_message += f"- {player_obj.display_name} ({role_alignment}: {role_name})"
+                status_message += f" (Died on {death_phase} - {death_cause})\n" if death_phase else "\n"
+                status_message += "\n"
             # Optionally, list any living players who didn't win
             living_losers = sorted([p for p in all_players if p.is_alive and not p.is_winner], key=lambda p: p.display_name)
             if living_losers:
