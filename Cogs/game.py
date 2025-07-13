@@ -20,6 +20,7 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # This is the correct way to manage state within a cog.
         self.game = None
 
+    # --- Game Commands ---
     @commands.command(name="mafiastart")
     @commands.has_permissions(administrator=True) # It's good practice to keep permissions checks.
     async def start_game_command(self, ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime_str: str):
@@ -56,7 +57,6 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # The 'start' method in the Game object now handles all announcements and waiting.
         await self.game.start(start_datetime_obj, phase_hours)
 
-
     @commands.command(name="mafiajoin")
     async def join_game_command(self, ctx):
         """Joins the current game during the sign-up phase."""
@@ -67,6 +67,30 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # This keeps the cog clean and the logic in the engine.
         await self.game.add_player(ctx.author, ctx.author.display_name)
         logger.info(f"{ctx.author.display_name} joined the game.")
+    
+    @commands.command(name="mafialeave")
+    async def leave_game_command(self, ctx):
+        """Allows a player to leave during the sign-up phase."""
+        if self.game is None or self.game.game_settings["current_phase"] != "signup":
+            await ctx.send("There is no game to leave, or sign-ups have already closed.")
+            logger.info(f"{ctx.author.name} tried to leave a game, but no game was running or sign-ups were closed.")
+            return
+        logger.info(f"{ctx.author.name} is leaving the game.")
+        # Call the game's method to remove the player.
+        await self.game.remove_player(ctx.author)
+    
+    @commands.command(name="mafiastatus")
+    async def status_command(self, ctx):
+        """Displays the current game status."""
+        if self.game is None:
+            await ctx.send("No game is currently running.")
+            return
+        # The game object itself should know how to format its status.
+        logger.info(f"Game status requested by {ctx.author.name}.")
+        status_message = self.game.get_status_message()
+        await ctx.send(status_message)
+    
+    ## --- Day Actions for voting channel ---
 
     @commands.command(name="vote")
     async def vote(self, ctx, *, lynch_target_name: str):
@@ -88,17 +112,6 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
         # This method will fetch the current vote count from the game instance.
         logger.info(f"Vote count requested by {ctx.author.name}.")
         await self.game.send_vote_count(ctx.channel)
-
-    @commands.command(name="mafiastatus")
-    async def status_command(self, ctx):
-        """Displays the current game status."""
-        if self.game is None:
-            await ctx.send("No game is currently running.")
-            return
-        # The game object itself should know how to format its status.
-        logger.info(f"Game status requested by {ctx.author.name}.")
-        status_message = self.game.get_status_message()
-        await ctx.send(status_message)
 
     # --- Night Action Commands (DM Only) ---
     @commands.command(name="kill")
@@ -152,17 +165,25 @@ class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
             target_name=target_name
         )
         logger.debug(f"{ctx.author.id} has requested to investigate {target_name}.")
-    
-    @commands.command(name="mafialeave")
-    async def leave_game_command(self, ctx):
-        """Allows a player to leave during the sign-up phase."""
-        if self.game is None or self.game.game_settings["current_phase"] != "signup":
-            await ctx.send("There is no game to leave, or sign-ups have already closed.")
-            logger.info(f"{ctx.author.name} tried to leave a game, but no game was running or sign-ups were closed.")
+
+    @commands.command(name="block")
+    @commands.dm_only()
+    async def heal(self, ctx, *, target_name: str):
+        """(DM Only) Action for the role blocker to block anothers action."""
+        if self.game is None:
+            await ctx.author.send("No game is currently running.")
             return
-        logger.info(f"{ctx.author.name} is leaving the game.")
-        # Call the game's method to remove the player.
-        await self.game.remove_player(ctx.author)
+        # The game engine handles all the logic and permissions checks.
+        # This method records the night action for the blocker.
+        await self.game.record_night_action(
+            ctx,
+            player_id=ctx.author.id, 
+            action_type='block', 
+            target_name=target_name
+        )
+        logger.debug(f"{ctx.author.id} has requested to block {target_name}.")
+    
+    
 
 # This function is called by mafiabot.py to load the cog.
 async def setup(bot):

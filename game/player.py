@@ -14,24 +14,29 @@ class Player:
         self.display_name = display_name
         self.is_npc = (user_id <= 0)
 
-        # --- Game State Attributes ---
+         # --- Game State Attributes ---
         self.role: GameRole = None
         self.is_alive = True
+        self.night_immune = False # NEW: Flag for night immunity
         self.action_target = None
         self.previous_target = None
         self.death_info = {} # e.g., {"phase": "Night 1", "how": "Killed by Mafia"}
         self.votes_on = 0
         self.missed_votes = 0
+        self.is_winner = None
 
     def __str__(self):
         """String representation for easy debugging."""
-        return f"{self.display_name} (ID: {self.id}, Role: {self.role.name if self.role else 'None'}, Alive: {self.is_alive})"
+        return f"{self.display_name} (ID: {self.id}, Role: {self.role.name if self.role else 'None'}, Alive: {self.is_alive}, Winner: {self.is_winner}, Deaths: {self.death_info})"
 
     # --- Methods for Game Logic ---
 
     def assign_role(self, role: GameRole):
         """Assigns a role to this player."""
         self.role = role
+        # Set initial night immunity based on the role's property
+        if role.is_night_immune:
+            self.night_immune = True
         logger.info(f"Assigned role {role.name} to player {self.display_name}.")
 
     def kill(self, phase_str: str, cause_of_death: str):

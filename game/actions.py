@@ -61,6 +61,11 @@ def handle_kill(game, killer_id, target_id):
     if not killer or not target or not target.is_alive:
         logger.warning(f"Kill action failed: Killer/target not found, or target already dead. Killer ID: {killer_id}, Target ID: {target_id}")
         return
+    # NEW: Check for role-based night immunity first
+    if target.night_immune:
+        game.narration_manager.add_event('immune_kill', victim=target)
+        logger.info(f"{killer.display_name}'s kill on {target.display_name} failed due to night immunity.")
+        return
     # Check if the target was protected by a heal that occurred earlier
     # In game/actions.py, inside the handle_kill function
     logger.debug(f"Checking if {target.display_name} is protected by a heal.")
@@ -83,6 +88,8 @@ def handle_kill(game, killer_id, target_id):
         phase_str = f"Night {game.game_settings['phase_number']}"
         # If the target is not protected, we proceed with the kill
         target.kill(phase_str, f"Killed by the {killer.role.name}")
+        # Check if mafia promotion needed
+        game._handle_promotions(target)
         game.narration_manager.add_event('kill', killer=killer, victim=target)
         logger.debug(f"{killer.display_name} successfully killed {target.display_name}.")
 

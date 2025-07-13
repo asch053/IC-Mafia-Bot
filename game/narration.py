@@ -23,15 +23,17 @@ class NarrationManager:
 
     def construct_story(self):
         """Builds the final story string from the recorded events."""
+        logger.info("Constructing the narrative story.")
         if not self.events:
+            logger.info("No events to construct a story from.")
             return None # Return nothing if there are no events
-
+        # Construct the story from the events logged so far
         story_parts = []
         for event in self.events:
             story_part = self._generate_story_part(event)
             if story_part:
                 story_parts.append(story_part)
-        
+        logger.info(f"Narrative story constructed.\n{story_parts}")
         return "\n\n".join(story_parts) if story_parts else None
 
     def _generate_story_part(self, event):
@@ -50,13 +52,12 @@ class NarrationManager:
                 voters = lynch_details.get(victim, [])
                 voter_names = ", ".join([v.display_name for v in voters])
                 return (
-                    f"The town square fell silent as the crowd, led by **{voter_names}**, "
-                    f"pointed their fingers at one individual. A verdict was reached. "
-                    f"**{victim.display_name}** has been lynched by the town.\n"
-                    f"Flipping over their role card, the town discovered they were the **{victim.role.name}** ({victim.role.alignment})."
+                    f"The town square fell silent as the crowd pointed their fingers at one individual. A verdict had been reached."
+                    f"**{victim.display_name}** was dragged out into the middle of the town square and strung up.\n"
+                    f"**{victim.display_name}, ({victim.role.alignment} - {victim.role.name}) has been lynched.**"
                 )
             else:
-                victim_names = [f"**{v.display_name}** (the **{v.role.name}**)" for v in victims]
+                victim_names = [f"**{v.display_name}** (the **{victim.role.alignment} - {v.role.name}**)" for v in victims]
                 return (
                     f"A heated argument resulted in a shocking outcome! The town couldn't decide on a single target, "
                     f"and in the ensuing chaos, a mob turned on multiple people.\n"

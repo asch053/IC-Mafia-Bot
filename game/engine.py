@@ -188,6 +188,12 @@ class Game:
         self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
         await self.ctx.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
         logger.info(f"{user.name} ({player_name}) has joined the game.")
+        await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
+        status_message = self.get_status_message() # Generate a status message with players listed
+        try:
+            await self.ctx.send(status_message) # Send the status message to the sign-up channel
+        except Exception as e:
+            logger.error(f"Failed to send status message: {e}")
     
     async def remove_player(self, user):
         """Removes a player from the game during the signup phase."""
@@ -528,13 +534,14 @@ class Game:
         # Inside tally_votes, after identifying the lynched player(s)
         if len(lynched_players) == 1:
             lynched_player = lynched_players[0]
-        # NEW: Check for Jester win condition
-        if lynched_player.role.name == "Jester":
-            self.narration_manager.add_event('jester_win', victim=lynched_player)
-            # The game ends immediately in a Jester victory
-            self.game_settings['winning_team'] = "Jester" 
-            logger.info(f"Jester {lynched_player.display_name} has won the game by being lynched.")
-            return # End the tallying process
+            logger.info(f"Lynched_player = {lynched_player.display_name}")
+            # NEW: Check for Jester win condition
+            if lynched_player.role.name == "Jester":
+                self.narration_manager.add_event('jester_win', victim=lynched_player)
+                # The game ends immediately in a Jester victory
+                self.game_settings['winning_team'] = "Jester" 
+                logger.info(f"Jester {lynched_player.display_name} has won the game by being lynched.")
+                return # End the tallying process
         # Create a dictionary to hold the details for the narration manager.
         # Format: {victim_object: [voter_objects]}
         lynch_details = {}
@@ -542,6 +549,8 @@ class Game:
         for victim in lynched_players:
             # Mark the player as dead.
             victim.kill(phase_str, "Lynched by the town")
+            # Check if was Mob godfather and thus someone needs to be promoted
+            self._handle_promotions(victim)
             # Get the list of players who voted for this victim.
             voters = [self.players.get(voter_id) for voter_id in self.lynch_votes.get(victim.id, [])]
             lynch_details[victim] = voters 
@@ -611,7 +620,9 @@ class Game:
     
     def _handle_promotions(self, dead_player):
         """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
+        logger.info(f"Checking for promotion of {dead_player.display_name}.")
         if dead_player.role and dead_player.role.name == "Godfather":
+            logger.info(f"{dead_player.display_name} is the {dead_player.role.name}.")
             # Find a living Mafioso to promote
             mafioso_to_promote = None
             for player in self.players.values():
@@ -625,21 +636,16 @@ class Game:
                     if player.is_alive and player.role and player.role.alignment == "Mafia":
                         mafioso_to_promote = player
                         break
-        # If a Mafioso was found, promote them to Godfather
-        if mafioso_to_promote:
-            logger.info(f"Promoting {mafioso_to_promote.display_name} to Godfather.")
-            # Assign the Godfather role to the Mafioso
-            godfather_role = get_role_instance("Godfather")
-            mafioso_to_promote.assign_role(godfather_role)
-            self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
-            # Send a DM to the newly promoted Godfather
-            try:   
-                send_role_dm(self.bot, mafioso_to_promote.id, godfather_role)
-                logger.info(f"Sent promotion DM to {mafioso_to_promote.display_name}.")
-            except Exception as e:
-                logger.error(f"Failed to send promotion DM to {mafioso_to_promote.display_name}: {e}")
-                return # If DM fails, just log the error and return
-            logger.info(f"Promoted {mafioso_to_promote.display_name} to Godfather successfully.")
+            # If a Mafioso was found, promote them to Godfather
+            if mafioso_to_promote and 'kill' not in mafioso_to_promote.role.abilities:
+                logger.info(f"Promoting {mafioso_to_promote.display_name} to Godfather.")
+                # Assign the Godfather role to the Mafioso
+                mafioso_to_promote.role.abilities['kill'] = "Choose a player for the Mafia to kill."
+                self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
+                # Send a DM to the newly promoted Godfather
+                dm_message = "The Godfather is dead! You have been promoted and now have the ability to kill."
+                self.bot.loop.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
+                logger.info(f"Promoted {mafioso_to_promote.display_name} to have kill ability.")
     
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""
@@ -710,6 +716,12 @@ class Game:
 
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
+        logger.info(f"Announcing winner: {winner}")
+        # Set all members if winning team as is_winner = True
+        for player_obj in self.players.values():
+            player_obj.is_winner = True if player_obj.role.alignment == winner else False
+            logger.info(f"{player_obj.display_name} of {player_obj.role.alignment} is_winner: {player_obj.is_winner}")
+        # Generate a status message
         status_message = self.get_status_message() # Generate a final status message
         self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager
         story = self.narration_manager.construct_story() # Construct the final story
@@ -740,28 +752,53 @@ class Game:
         logger.info(f"Game {self.game_settings['game_id']} has been reset.")
 
     def get_status_message(self):
-        """Generates a formatted status message string."""
-        """Generates a status message with the current game state, players, and time remaining."""
-        #construct the status message with game settings and player information
-        status_message = f"**Game Status: {self.game_settings['game_id']}**\n" # Add game ID to the status message
-        status_message += f"**Phase:** {self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}\n" # Add current phase and phase number to the status message
-        if self.game_settings['current_phase'] in ['day', 'night', 'signup']: # Add time remaining only for active phases
+        """Generates a formatted status message with the current game state."""
+        # Construct the base status message
+        logger.info("Generating status message.")
+        status_message = f"**Game Status: {self.game_settings['game_id']}**\n"
+        status_message += f"**Phase:** {self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}\n"
+        # Add time remaining only for active phases
+        if self.game_settings['current_phase'] in ['day', 'night', 'signup']:
             time_left = format_time_remaining(self.game_settings['phase_end_time'])
             status_message += f"**Time Remaining:** {time_left}\n"
-        # Add list of players
-        status_message += "\n**Players:**\n"
-        living_players = sorted([p for p in self.players.values() if p.is_alive], key=lambda p: p.display_name)
-        dead_players = sorted([p for p in self.players.values() if not p.is_alive], key=lambda p: p.display_name)
-        for player_obj in living_players: # Only display that a living player is alive (no role information)
-            status_message += f"- {player_obj.display_name} (Alive)\n"  
-        for player_obj in dead_players: # For dead players, include their role, allignment, and death information
-            # Get role information, defaulting to 'Unknown Role' and 'Unknown Alignment' if not available
-            role_name = player_obj.role.name if player_obj.role else "Unknown Role"
-            role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
-            # Get death information, defaulting to 'N/A' if not available
-            death_phase = player_obj.death_info.get('phase', 'N/A')
-            death_cause = player_obj.death_info.get('how', 'N/A')
-            status_message += f"- ~~{player_obj.display_name}~~ (Dead, was {role_name} for {role_alignment}, Died {death_phase} - {death_cause})\n"
+        # --- Player Status Section ---
+        # Get categorized player lists
+        all_players = list(self.players.values())
+        winning_players = sorted([p for p in all_players if p.is_winner], key=lambda p: p.display_name)
+        dead_players = sorted([p for p in all_players if not p.is_alive], key=lambda p: p.display_name)
+        # Check if the game has ended by seeing if there are any winners
+        if winning_players:
+            # Game Over: Display winners and their roles
+            status_message += f"\n**🏆 Winners:** ({len(winning_players)})\n"
+            for player_obj in winning_players:
+                role_name = player_obj.role.name if player_obj.role else "Unknown Role"
+                role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
+                status_message += f"- {player_obj.display_name} ({role_alignment}: {role_name})\n"
+            # Optionally, list any living players who didn't win
+            living_losers = sorted([p for p in all_players if p.is_alive and not p.is_winner], key=lambda p: p.display_name)
+            if living_losers:
+                status_message += f"\n**Other Living Players:** ({len(living_losers)})\n"
+                for player_obj in living_losers:
+                    # Reveal roles of living losers since the game is over
+                    role_name = player_obj.role.name if player_obj.role else "Unknown Role"
+                    role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
+                    status_message += f"- {player_obj.display_name} ({role_alignment}: {role_name})\n"
+        else:
+            # Game Ongoing: Display living players without revealing roles
+            living_players = sorted([p for p in all_players if p.is_alive], key=lambda p: p.display_name)
+            status_message += f"\n**Living Players:** ({len(living_players)})\n"
+            for player_obj in living_players:
+                status_message += f"- {player_obj.display_name}\n"
+        # Always display the list of dead players
+        if dead_players:
+            status_message += f"\n**Dead Players:** ({len(dead_players)})\n"
+            for player_obj in dead_players:
+                role_name = player_obj.role.name if player_obj.role else "Unknown Role"
+                role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
+                death_phase = player_obj.death_info.get('phase', 'N/A')
+                death_cause = player_obj.death_info.get('how', 'N/A')
+                status_message += f"- ~~{player_obj.display_name}~~ (Dead, {role_alignment}: {role_name}, Died on {death_phase} - {death_cause})\n"
         logger.info(f"Generated status message for game {self.game_settings['game_id']}.")
         return status_message
 
+ 
