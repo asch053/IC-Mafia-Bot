@@ -5,6 +5,7 @@ import json
 import logging
 import io
 import random
+import os
 
 from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
@@ -43,6 +44,8 @@ class Game:
         self.game_settings = {
             "game_id": None, #date-time string of time signups ended
             "game_started": False,
+            "start_time": None,
+            "end_time": None,
             "current_phase": "setup", # Phases: setup, signup, preparation, night, day, finished
             "phase_number": 0,
             "phase_end_time": None,
@@ -52,6 +55,7 @@ class Game:
         self.lynch_votes = {} # This will store votes for lynching: {player_id: target_id}
         self.game_roles = [] # This will store GameRole objects assigned to players
         self.night_actions = {} # Stores night actions: {player_id: {"action": "type", "target": id}}
+        self.vote_history = [] # NEW: To store every single vote
         # --- Control Flags ---
         self.force_start_flag = False
         self.reminders_sent = set() # Tracks sent reminders for the current phase
@@ -83,6 +87,7 @@ class Game:
         """Announces the sign-up phase and starts the signup_loop."""
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
         self.game_settings["game_started"] = True #set game_started to True
+        self.game_settings["start_time"] = start_datetime_obj #set start_time to the start time
         self.game_settings["current_phase"] = "signup" #set current phase to signup
         self.game_settings["phase_end_time"] = start_datetime_obj #set when the phase ends
         self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
@@ -463,6 +468,15 @@ class Game:
         # Add the voter's ID to the target's list of voters
         if voter_obj.id not in self.lynch_votes[target_obj.id]:
             self.lynch_votes[target_obj.id].append(voter_obj.id)
+        # NEW: Log the vote to the history
+        self.vote_history.append({
+            "voter_id": voter_obj.id,
+            "voter_name": voter_obj.display_name,
+            "target_id": target_obj.id,
+            "target_name": target_obj.display_name,
+            "phase": f"Day {self.game_settings['phase_number']}",
+            "timestamp_utc": datetime.now(timezone.utc).isoformat()
+        })
         # 4. Announce the vote in the voting channel
         voting_channel = self.bot.get_channel(config.VOTING_CHANNEL_ID)
         if voting_channel:
@@ -549,6 +563,9 @@ class Game:
         for victim in lynched_players:
             # Mark the player as dead.
             victim.kill(phase_str, "Lynched by the town")
+            # NEW: Get voters and add them to the victim's death info
+            voters = [self.players.get(voter_id) for voter_id in self.lynch_votes.get(victim.id, [])]
+            victim.death_info['voters'] = [v.display_name for v in voters if v]
             # Check if was Mob godfather and thus someone needs to be promoted
             self._handle_promotions(victim)
             # Get the list of players who voted for this victim.
@@ -647,6 +664,69 @@ class Game:
                 self.bot.loop.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
                 logger.info(f"Promoted {mafioso_to_promote.display_name} to have kill ability.")
     
+    # Add this new method to the Game class, for example, before check_win_conditions
+    async def _save_game_summary(self, winner):
+        """Gathers all game data and saves it to a JSON file in the 'logs' directory."""
+        logger.info(f"Saving game summary for game_id: {self.game_settings['game_id']}")
+        end_time = datetime.now(timezone.utc)
+        # 1. --- Game Overall Data ---
+        alignments = Counter(p.role.alignment for p in self.players.values() if p.role)
+        game_data = {
+            "game_id": self.game_settings.get('game_id'),
+            "number_of_players": len(self.players),
+            "player_counts": {
+                "town": alignments.get("Town", 0),
+                "mafia": alignments.get("Mafia", 0),
+                "neutral": alignments.get("Neutral", 0)
+            },
+            "start_date_utc": self.game_settings.get('start_time').isoformat() if self.game_settings.get('start_time') else None,
+            "end_date_utc": end_time.isoformat(),
+            "total_days": self.game_settings.get('phase_number'),
+            "phase_hours": self.game_settings.get('phase_hours'),
+            "winning_faction": winner,
+            "winning_players": sorted([p.display_name for p in self.players.values() if p.is_winner])
+        }
+        # 2. --- Player Data ---
+        player_data = []
+        for player in sorted(self.players.values(), key=lambda p: p.display_name):
+            player_data.append({
+                "discord_name": player.discord_name,
+                "player_name": player.display_name,
+                "alignment": player.role.alignment if player.role else "Unknown",
+                "role": player.role.name if player.role else "Unknown",
+                "status": "Dead" if not player.is_alive else "Alive",
+                "is_winner": player.is_winner,
+                "death_phase": player.death_info.get('phase'),
+                "death_cause": player.death_info.get('how'),
+                "lynched_by_voters": player.death_info.get('voters') # From step 4
+            })
+        # 3. --- Lynch Data ---
+        # This comes from the vote_history we captured in step 3
+        lynch_data = self.vote_history
+        # --- Final Compilation ---
+        final_summary = {
+            "game_summary": game_data,
+            "player_data": player_data,
+            "lynch_vote_history": lynch_data
+        }
+        # --- Save to File ---
+        try:
+            game_id = game_data.get('game_id')
+            if not game_id:
+                logger.error("Cannot save summary, game_id is missing.")
+                return
+            # Construct the new directory path: Stats/<game_id>
+            game_log_dir = os.path.join("Stats", game_id)
+            # Create the directory (and the parent 'Stats' dir if it doesn't exist)
+            os.makedirs(game_log_dir, exist_ok=True)
+            # Define the file path inside the new directory
+            file_path = os.path.join(game_log_dir, "summary.json")
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(final_summary, f, ensure_ascii=False, indent=4)
+            logger.info(f"Game summary saved successfully to {file_path}")
+        except Exception as e:
+            logger.error(f"Failed to save game summary: {e}")
+
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""
         living_players = [p for p in self.players.values() if p.is_alive]
@@ -725,6 +805,8 @@ class Game:
         status_message = self.get_status_message() # Generate a final status message
         self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager
         story = self.narration_manager.construct_story() # Construct the final story
+        # NEW: Call the summary function here
+        await self._save_game_summary(winner)
         if story:
               story += f"\n\n{status_message}" # Add the status message to the story
         try:
