@@ -1,190 +1,119 @@
+# cogs/game.py
 import discord
-import asyncio
 import config
 import logging
-
+from discord import app_commands # Import app_commands
 from discord.ext import commands
-# Import the Game class, but not the standalone functions that will be deprecated
 from game.engine import Game
-import utils.utilities
 from datetime import datetime, timezone
 
-# Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')
 
-class GameCog(commands.Cog, name="GameCog"): # Added a name for clarity
-    """Cog for all player-facing game commands."""
+# A helper function to check if a game is active
+def is_game_active(interaction: discord.Interaction) -> bool:
+    cog = interaction.client.get_cog("GameCog")
+    return cog and cog.game is not None
+
+class GameCog(commands.Cog, name="GameCog"):
     def __init__(self, bot):
         self.bot = bot
-        # This instance variable will hold the single, running Game object.
-        # This is the correct way to manage state within a cog.
         self.game = None
 
-    # --- Game Commands ---
-    @commands.command(name="mafiastart")
-    @commands.has_permissions(administrator=True) # It's good practice to keep permissions checks.
-    async def start_game_command(self, ctx, phase_hours: float = config.PHASE_HOURS, *, start_datetime_str: str):
-        """
-        Starts a new Mafia game with a scheduled start time.
-        Args:
-            phase_hours: The number of hours each phase (day/night) will last.
-            start_datetime_str: The datetime for the game start, format 'YYYY-MM-DD HH:MM' (UTC).
-        """
+    # --- Game Management Commands ---
+    @app_commands.command(name="mafiastart", description="[Admin] Schedules a new Mafia game.")
+    @app_commands.describe(
+        phase_hours="The duration of each day/night phase in hours.",
+        start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC)."
+    )
+    @app_commands.checks.has_permissions(administrator=True)
+    async def start_game_command(self, interaction: discord.Interaction, phase_hours: float, start_datetime: str):
         if self.game is not None:
-            await ctx.send("A game is already in progress!")
+            await interaction.response.send_message("A game is already in progress!", ephemeral=True)
             return
-        # --- Input Validation ---
         try:
-            # Add seconds to the format string for more precision if needed
-            start_datetime_obj = datetime.strptime(start_datetime_str, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
+            start_datetime_obj = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
         except ValueError:
-            await ctx.send("Invalid date/time format. Please use 'YYYY-MM-DD HH:MM' format in UTC.")
+            await interaction.response.send_message("Invalid date/time format. Please use 'YYYY-MM-DD HH:MM' format in UTC.", ephemeral=True)
             return
         if start_datetime_obj <= datetime.now(timezone.utc):
-            await ctx.send("The start time must be in the future.")
+            await interaction.response.send_message("The start time must be in the future.", ephemeral=True)
             return
-        try:
-            phase_hours = float(phase_hours)
-            if phase_hours <= 0:
-                raise ValueError("Phase duration must be positive.")
-        except ValueError:
-            await ctx.send("Invalid phase hours. Please provide a positive number.")
-            return
-        # --- Create and Start Game ---
-        # Create a new Game instance and store it in this cog's state.
-        self.game = Game(self.bot, ctx)
-        logger.info(f"New game instance created by {ctx.author.name}.")
-        # The 'start' method in the Game object now handles all announcements and waiting.
+        self.game = Game(self.bot, interaction.guild) # Pass the guild 
+        logger.info(f"New game instance created by {interaction.user.name}.")
+        await interaction.response.send_message(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
         await self.game.start(start_datetime_obj, phase_hours)
 
-    @commands.command(name="mafiajoin")
-    async def join_game_command(self, ctx):
-        """Joins the current game during the sign-up phase."""
-        if self.game is None:
-            await ctx.send("No game is currently running or accepting sign-ups.")
-            return
-        # We call a method on the game instance to handle the logic.
-        # This keeps the cog clean and the logic in the engine.
-        await self.game.add_player(ctx.author, ctx.author.display_name)
-        logger.info(f"{ctx.author.display_name} joined the game.")
-    
-    @commands.command(name="mafialeave")
-    async def leave_game_command(self, ctx):
-        """Allows a player to leave during the sign-up phase."""
+    # --- Player Commands (available in channels) ---
+    @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")
+    async def join_game_command(self, interaction: discord.Interaction):
         if self.game is None or self.game.game_settings["current_phase"] != "signup":
-            await ctx.send("There is no game to leave, or sign-ups have already closed.")
-            logger.info(f"{ctx.author.name} tried to leave a game, but no game was running or sign-ups were closed.")
+            await interaction.response.send_message("No game is currently accepting sign-ups.", ephemeral=True)
             return
-        logger.info(f"{ctx.author.name} is leaving the game.")
-        # Call the game's method to remove the player.
-        await self.game.remove_player(ctx.author)
-    
-    @commands.command(name="mafiastatus")
-    async def status_command(self, ctx):
-        """Displays the current game status."""
-        if self.game is None:
-            await ctx.send("No game is currently running.")
+        # Use interaction.channel to send public messages
+        await self.game.add_player(interaction.user, interaction.user.display_name, interaction.channel)
+        logger.info(f"{interaction.user.display_name} joined the game.")
+        await interaction.response.send_message("You've joined the game!", ephemeral=True)
+
+    @app_commands.command(name="mafialeave", description="Leave the game during the sign-up phase.")
+    async def leave_game_command(self, interaction: discord.Interaction):
+        if self.game is None or self.game.game_settings["current_phase"] != "signup":
+            await interaction.response.send_message("There is no game to leave, or sign-ups are closed.", ephemeral=True)
             return
-        # The game object itself should know how to format its status.
-        logger.info(f"Game status requested by {ctx.author.name}.")
+        await self.game.remove_player(interaction.user, interaction.channel)
+        logger.info(f"{interaction.user.name} is leaving the game.")
+        await interaction.response.send_message("You've left the game.", ephemeral=True)
+
+    @app_commands.command(name="mafiastatus", description="Displays the current game status.")
+    @app_commands.check(is_game_active)
+    async def status_command(self, interaction: discord.Interaction):
         status_message = self.game.get_status_message()
-        await ctx.send(status_message)
+        await interaction.response.send_message(status_message, ephemeral=True)
+
+    @app_commands.command(name="vote", description="Vote to lynch a player during the day.")
+    @app_commands.describe(player="The player you want to lynch.")
+    @app_commands.check(is_game_active)
+    async def vote(self, interaction: discord.Interaction, player: str):
+        # We pass the interaction object to the engine, which can use interaction.channel
+        await self.game.process_lynch_vote(interaction, interaction.user, player)
+
+    @app_commands.command(name="mafiacount", description="Displays the current vote tally.")
+    @app_commands.check(is_game_active)
+    async def count_votes_command(self, interaction: discord.Interaction):
+        await self.game.send_vote_count(interaction.channel)
+        await interaction.response.send_message("Vote count displayed.", ephemeral=True)
     
-    ## --- Day Actions for voting channel ---
-
-    @commands.command(name="vote")
-    async def vote(self, ctx, *, lynch_target_name: str):
-        """Votes for a player during the day phase."""
-        if self.game is None:
-            await ctx.send("No game is currently running.")
+    # --- Night Action Commands (intended for DMs) ---
+    async def _handle_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
+        """Helper function to reduce code duplication for night actions."""
+        if not is_game_active(interaction):
+            await interaction.response.send_message("No game is currently running.", ephemeral=True)
             return
-        # All logic is now handled by methods on the game instance.
-        # This makes the code much more readable and less error-prone.
-        await self.game.process_lynch_vote(ctx, ctx.author, lynch_target_name)
-        logger.info(f"{ctx.author.name} voted to lynch {lynch_target_name}.")
-
-    @commands.command(name="mafiacount")
-    async def count_votes_command(self, ctx):
-        """Displays the current vote count."""
-        if self.game is None:
-            await ctx.send("No game is currently running.")
+        if interaction.guild:
+            await interaction.response.send_message("Night actions must be used in DMs.", ephemeral=True)
             return
-        # This method will fetch the current vote count from the game instance.
-        logger.info(f"Vote count requested by {ctx.author.name}.")
-        await self.game.send_vote_count(ctx.channel)
+        # The game engine handles all the logic.
+        await self.game.record_night_action(interaction, action_type, target_name)
+        logger.debug(f"{interaction.user.id} has requested to {action_type} {target_name}.")
 
-    # --- Night Action Commands (DM Only) ---
-    @commands.command(name="kill")
-    @commands.dm_only()
-    async def kill(self, ctx, *, target_name: str):
-        """(DM Only) Action for roles that can kill, like Godfather or Serial Killer."""
-        if self.game is None:
-            await ctx.author.send("No game is currently running.")
-            return
-        # The game engine handles all the logic and permissions checks.
-        # This method records the night action for the killer.
-        # Note: The target_name should be validated to ensure it exists in the game.
-        await self.game.record_night_action(
-            ctx,
-            player_id=ctx.author.id, 
-            action_type='kill', 
-            target_name=target_name
-        )
-        logger.debug(f"{ctx.author.id} has requested to kill {target_name}.")
+    @app_commands.command(name="kill", description="[DM Only] Action for roles that can kill.")
+    @app_commands.describe(player="The player you want to kill.")
+    async def kill(self, interaction: discord.Interaction, player: str):
+        await self._handle_night_action(interaction, 'kill', player)
         
-    @commands.command(name="heal")
-    @commands.dm_only()
-    async def heal(self, ctx, *, target_name: str):
-        """(DM Only) Action for the Doctor to heal a player."""
-        if self.game is None:
-            await ctx.author.send("No game is currently running.")
-            return
-        # The game engine handles all the logic and permissions checks.
-        # This method records the night action for the healer.
-        await self.game.record_night_action(
-            ctx,
-            player_id=ctx.author.id, 
-            action_type='heal', 
-            target_name=target_name
-        )
-        logger.debug(f"{ctx.author.id} has requested to heal {target_name}.")
+    @app_commands.command(name="heal", description="[DM Only] Action for the Doctor to heal a player.")
+    @app_commands.describe(player="The player you want to heal.")
+    async def heal(self, interaction: discord.Interaction, player: str):
+        await self._handle_night_action(interaction, 'heal', player)
     
-    @commands.command(name="investigate")
-    @commands.dm_only()
-    async def investigate(self, ctx, *, target_name: str):
-        """(DM Only) Action for the Town Cop to investigate a player."""
-        if self.game is None:
-            await ctx.author.send("No game is currently running.")
-            return
-        # The game engine handles all the logic and permissions checks.
-        # This method records the night action for the investigator.
-        await self.game.record_night_action(
-            ctx,
-            player_id=ctx.author.id, 
-            action_type='investigate', 
-            target_name=target_name
-        )
-        logger.debug(f"{ctx.author.id} has requested to investigate {target_name}.")
+    @app_commands.command(name="investigate", description="[DM Only] Action for the Cop to investigate a player.")
+    @app_commands.describe(player="The player you want to investigate.")
+    async def investigate(self, interaction: discord.Interaction, player: str):
+        await self._handle_night_action(interaction, 'investigate', player)
 
-    @commands.command(name="block")
-    @commands.dm_only()
-    async def heal(self, ctx, *, target_name: str):
-        """(DM Only) Action for the role blocker to block anothers action."""
-        if self.game is None:
-            await ctx.author.send("No game is currently running.")
-            return
-        # The game engine handles all the logic and permissions checks.
-        # This method records the night action for the blocker.
-        await self.game.record_night_action(
-            ctx,
-            player_id=ctx.author.id, 
-            action_type='block', 
-            target_name=target_name
-        )
-        logger.debug(f"{ctx.author.id} has requested to block {target_name}.")
-    
-    
+    @app_commands.command(name="block", description="[DM Only] Action for the Role Blocker to block an action.")
+    @app_commands.describe(player="The player you want to block.")
+    async def block(self, interaction: discord.Interaction, player: str):
+        await self._handle_night_action(interaction, 'block', player)
 
-# This function is called by mafiabot.py to load the cog.
 async def setup(bot):
     await bot.add_cog(GameCog(bot))

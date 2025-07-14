@@ -1,108 +1,89 @@
+# Cogs/admin.py
 import discord
+from discord import app_commands
 from discord.ext import commands
 import logging
-# Import the Player class to create new player objects
-from game.player import Player
 
-# Get the same logger instance as in mafiabot.py
+from game.player import Player # Keep this import for the re-init command
+
 logger = logging.getLogger('discord')
 
 class AdminCog(commands.Cog, name="AdminCog"):
-    """Cog for all administrator and owner commands."""
-    def __init__(self, bot):
+    """Cog for all administrator-only game commands."""
+
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
+
     def get_game_instance(self):
-        """A helper method to safely get the game instance from GameCog."""
+        """Helper to safely get the game instance from GameCog."""
+        game_cog = self.bot.get_cog('GameCog')
+        return game_cog.game if game_cog else None
+
+    def set_game_instance(self, new_instance):
+        """Helper to safely set the game instance in GameCog."""
         game_cog = self.bot.get_cog('GameCog')
         if game_cog:
-            return game_cog.game
-        return None
-    def set_game_instance(self, new_game_instance):
-        """A helper method to safely set the game instance in GameCog."""
-        game_cog = self.bot.get_cog('GameCog')
-        if game_cog:
-            game_cog.game = new_game_instance
+            game_cog.game = new_instance
             return True
         return False
-    @commands.command(name="mafiastop")
-    @commands.has_permissions(administrator=True)
-    async def stop_game_command(self, ctx):
-        """
-        Stops the currently running game, resets all roles, and cleans up.
-        """
-        # Get the current game instance from the GameCog.
+
+    @app_commands.command(name="mafiastop", description="[Admin] Forcibly stops and resets the current game.")
+    @app_commands.checks.has_permissions(administrator=True)
+    async def stop_game_command(self, interaction: discord.Interaction):
         game = self.get_game_instance()
         if game is None:
-            await ctx.send("No game is currently running.")
-            logger.info(f"/stop command used by {ctx.author.name}, but no game was running.")
+            await interaction.response.send_message("No game is currently running.", ephemeral=True)
             return
-        # We call the game's own reset method. The game engine knows best how to clean itself up.
-        await game.reset()
-        # IMPORTANT: We now set the game instance in the GameCog back to None.
-        # This frees up memory and allows a new game to be started.
-        self.set_game_instance(None)
-        await ctx.send("The current game has been stopped and all variables have been reset.")
-        logger.info(f"The game was stopped by {ctx.author.name}.")
 
-    @commands.command(name="mafiareinit")
-    @commands.has_permissions(administrator=True)
-    async def reinitialize_players(self, ctx):
-        """
-        (Mod Only) A debug tool to refresh the player list from Discord roles.
-        This is useful for recovering from a crash or inconsistent state.
-        """
-        game = self.get_game_instance()
-
-        if game is None:
-            await ctx.send("No game is currently running to re-initialize.")
-            return
+        await interaction.response.send_message("🚨 **Game is being stopped by an administrator...**")
         
-        if not ctx.guild:
-            await ctx.send("This command must be used in a server.")
+        await game.reset()
+        self.set_game_instance(None) # Clear the game instance
+        
+        await interaction.channel.send("**Game has been stopped and reset.**")
+        logger.warning(f"Game was forcibly stopped by {interaction.user.name}.")
+    
+    @app_commands.command(name="forcestart", description="[Admin] Ends sign-ups and starts the game immediately.")
+    @app_commands.checks.has_permissions(administrator=True)
+    async def force_start_command(self, interaction: discord.Interaction):
+        game = self.get_game_instance()
+        if game:
+            await game.force_start(interaction)
+        else:
+            await interaction.response.send_message("No game is in the sign-up phase to force start.", ephemeral=True)
+
+    @app_commands.command(name="mafiareinit", description="[Admin] Debug tool to refresh the player list from Discord roles.")
+    @app_commands.checks.has_permissions(administrator=True)
+    async def reinitialize_players(self, interaction: discord.Interaction):
+        game = self.get_game_instance()
+        if game is None:
+            await interaction.response.send_message("No game is running to re-initialize.", ephemeral=True)
+            return
+        if not interaction.guild:
+            await interaction.response.send_message("This command must be used in a server.", ephemeral=True)
             return
 
-        living_role = ctx.guild.get_role(game.discord_role_data.get("living", {}).get("id", 0))
-        dead_role = ctx.guild.get_role(game.discord_role_data.get("dead", {}).get("id", 0))
+        living_role = interaction.guild.get_role(game.discord_role_data.get("living", {}).get("id", 0))
+        dead_role = interaction.guild.get_role(game.discord_role_data.get("dead", {}).get("id", 0))
 
         if not living_role or not dead_role:
-            await ctx.send("Error: 'Living Players' or 'Dead Players' roles could not be found.")
+            await interaction.response.send_message("Error: 'Living' or 'Dead' roles not found.", ephemeral=True)
             return
 
         new_players = {}
-        for member in ctx.guild.members:
+        for member in interaction.guild.members:
             if living_role in member.roles or dead_role in member.roles:
-                # Get the old player object to preserve role and death info if it exists
-                old_player_obj = game.players.get(member.id)
+                old_player = game.players.get(member.id)
+                new_player = Player(user_id=member.id, discord_name=member.name, display_name=member.display_name)
+                new_player.is_alive = living_role in member.roles
+                if old_player:
+                    new_player.role = old_player.role
+                    new_player.death_info = old_player.death_info
+                new_players[member.id] = new_player
 
-                # Create a new Player object
-                new_player_obj = Player(user_id=member.id, discord_name=member.name, display_name=member.display_name)
-                
-                # Set the alive status based on their Discord role
-                new_player_obj.is_alive = living_role in member.roles
-                
-                # If we have data from the old object, transfer it
-                if old_player_obj:
-                    new_player_obj.role = old_player_obj.role
-                    new_player_obj.death_info = old_player_obj.death_info
-
-                new_players[member.id] = new_player_obj
-
-        # Replace the game's player dictionary with our newly constructed one
         game.players = new_players
-        
-        await ctx.send(f"Player dictionary re-initialized. Found {len(new_players)} players.")
-        logger.warning(f"Player dictionary was manually re-initialized by {ctx.author.name}.")
-
-    # In cogs/admin.py, inside the AdminCog class:
-    @commands.command(name="forcestart")
-    @commands.has_permissions(administrator=True)
-    async def force_start_command(self, ctx):
-        """Forces the current sign-up period to end and the game to start."""
-        game = self.get_game_instance()
-        if game:
-            await game.force_start(ctx)
-        else:
-            await ctx.send("No game is currently in the sign-up phase.")
+        await interaction.response.send_message(f"Player list re-initialized. Found {len(new_players)} players.", ephemeral=True)
+        logger.warning(f"Player list was manually re-initialized by {interaction.user.name}.")
 
 async def setup(bot):
     await bot.add_cog(AdminCog(bot))

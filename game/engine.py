@@ -32,12 +32,11 @@ logger = logging.getLogger('discord')
 
 class Game:
     """Manages the entire state and lifecycle of a single Mafia game."""
-    def __init__(self, bot, ctx):
+    def __init__(self, bot, guild):
         logger.info("Initializing new Game instance.")
         self.narration_manager = NarrationManager()
         self.bot = bot
-        self.ctx = ctx  # The context from the '/startmafia' command
-        self.guild = ctx.guild
+        self.guild = guild  # The context from the '/startmafia' command
         self.last_reminder_time = None  # Track the last time a reminder was sent
         # --- Game State Variables ---
         logger.debug("Setting up initial game settings and player data.")
@@ -164,47 +163,49 @@ class Game:
                     f"Use `/mafiajoin` to participate!\n"
             )
 
-    async def force_start(self, ctx):
+    # In game/engine.py
+
+    async def force_start(self, interaction: discord.Interaction):
         """Admin command to force the signup phase to end and the game to start."""
-        """Force starts the game if the current phase is 'signup'."""
-        if self.game_settings["current_phase"] != "signup": # Check if the command is being used during the sign-up phase
-            await ctx.send("This command can only be used during the sign-up phase.")
-            logger.error("Force start command attempted outside of sign-up phase.") 
+        if self.game_settings["current_phase"] != "signup":
+            await interaction.response.send_message("This command can only be used during the sign-up phase.", ephemeral=True)
             return
         self.force_start_flag = True
-        await ctx.send(f"Force start flag has been set. The game will begin on the next loop iteration (within {config.signup_loop_interval_seconds} seconds).")
-        logger.warning(f"Game force start initiated by {ctx.author.name}.")
+        await interaction.response.send_message(
+            f"Force start flag set. The game will begin on the next loop iteration (within {config.signup_loop_interval_seconds} seconds).",
+            ephemeral=True
+        )
 
-    async def add_player(self, user, player_name):
+    async def add_player(self, user, player_name, channel):
         """Adds a player to the game during the signup phase."""
         if self.game_settings["current_phase"] != "signup": # Check if the game is currently in the sign-up phase
-            await self.ctx.send("Sorry, the game is not currently accepting new players.") # Can't join if not in signup phase
+            await channel.send("Sorry, the game is not currently accepting new players.") # Can't join if not in signup phase
             logger.error(f"{user.name} tried to join the game outside of the sign-up phase.")
             return
         if user.id in self.players: # Check if the player is already in the game
-            await self.ctx.send("You have already joined the game!")
+            await channel.send("You have already joined the game!")
             logger.warning(f"{user.name} tried to join the game again with player name {player_name}.")
             return
         if len(self.players) >= self.max_players: # Check if the game is already full
-            await self.ctx.send(f"Sorry, the game is full with {self.max_players} players.")
+            await channel.send(f"Sorry, the game is full with {self.max_players} players.")
             logger.warning(f"{user.name} tried to join the game but it is already full.")
             return
         # Create a Player object
         self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
-        await self.ctx.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
+        await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
         logger.info(f"{user.name} ({player_name}) has joined the game.")
         await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
         status_message = self.get_status_message() # Generate a status message with players listed
         try:
-            await self.ctx.send(status_message) # Send the status message to the sign-up channel
+            await channel.send(status_message) # Send the status message to the sign-up channel
         except Exception as e:
             logger.error(f"Failed to send status message: {e}")
     
-    async def remove_player(self, user):
+    async def remove_player(self, user, channel):
         """Removes a player from the game during the signup phase."""
         # Check if the game is currently in the sign-up phase
         if self.game_settings["current_phase"] != "signup":
-            await self.ctx.send("You can only leave the game during the sign-up phase.")
+            await channel.send("You can only leave the game during the sign-up phase.")
             logger.error(f"{user.name} tried to leave the game outside of the sign-up phase.")
             return
         if user.id in self.players: # Check if the player is in the game
@@ -212,12 +213,12 @@ class Game:
             # Remove the player from the game
             del self.players[user.id]
             # send a confirmation message
-            await self.ctx.send(f"**{player_name}** has left the game.")
+            await channel.send(f"**{player_name}** has left the game.")
             logger.info(f"{user.name} ({player_name}) has left the game.")
             #update player roles in Discord
             await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
         else:
-            await self.ctx.send("You are not currently in the game.")
+            await channel.send("You are not currently in the game.")
             logger.warning(f"{user.name} tried to leave the game but was not a participant.")
 
     # --- 2. GAME PREPARATION ---
@@ -347,7 +348,7 @@ class Game:
             logger.debug("Checking win conditions after phase end.")
             winner = self.check_win_conditions()
             # Construct the story from all collected events
-            story = self.narration_manager.construct_story()
+            story = self.narration_manager.construct_story(self.game_settings['current_phase'], self.game_settings['phase_number'])
             if story:
                 #send story to the stories channel
                 logger.debug("Story constructed from narration manager events.")
@@ -419,35 +420,35 @@ class Game:
         logger.info("Sign-up loop is starting.")
 
     # --- 4. ACTION & VOTE PROCESSING ---    
-    async def process_lynch_vote(self, ctx, voter_user, target_name):
+    async def process_lynch_vote(self, interaction, voter_user, target_name):
         """Processes a single vote to lynch a player, sent from a cog."""
         logger.info(f"Processing lynch vote from {voter_user.name} for target '{target_name}'")
         # 1. Validation Checks
         if self.game_settings["current_phase"] != "day": # Check if the current phase is 'day'
             # If not, send a message and log the attempt
-            await ctx.send("You can only vote during the day phase.")
+            await interaction.send("You can only vote during the day phase.")
             logger.warning(f"{voter_user.name} tried to vote outside of the day phase.")
             return
         voter_obj = self.players.get(voter_user.id) # Get the Player object for the voter
         logger.debug(f"Got Voter object: {voter_obj}")
         if not voter_obj or not voter_obj.is_alive: # Check if the voter is a valid player and is alive
             # If not, send a message and log the attempt
-            await ctx.send("You are not currently able to vote in this game.")
+            await interaction.send("You are not currently able to vote in this game.")
             logger.warning(f"{voter_user.name} tried to vote but is not a valid player or is dead.")
             return
         target_obj = self.get_player_by_name(target_name) # Get the Player object for the target by name
         if not target_obj: # If the target is not found, send a message and log the attempt
-            await ctx.send(f"Could not find a player named '{target_name}'.")
+            await interaction.send(f"Could not find a player named '{target_name}'.")
             logger.warning(f"{voter_obj.display_name} tried to vote for a non-existent player: {target_name}.")
             return
         if not target_obj.is_alive: # Check if the target is alive
             # If the target is dead, send a message and log the attempt
-            await ctx.send(f"**{target_obj.display_name}** is already dead and cannot be voted for.")
+            await interaction.send(f"**{target_obj.display_name}** is already dead and cannot be voted for.")
             logger.warning(f"{voter_obj.display_name} tried to vote for a dead player: {target_obj.display_name}.")
             return
         if voter_obj.id == target_obj.id: # Check if the voter is trying to vote for themselves
             # If so, send a message and log the attempt
-            await ctx.send("You cannot vote for yourself.")
+            await interaction.send("You cannot vote for yourself.")
             logger.warning(f"{voter_obj.display_name} tried to vote for themselves.")
             return
         logger.info(f"Vote from {voter_obj.display_name} for target {target_obj.display_name} is valid.")
@@ -484,7 +485,7 @@ class Game:
             await self.send_vote_count(voting_channel)
         else:
             logger.error(f"Could not find voting channel with ID: {config.VOTING_CHANNEL_ID}")
-            await ctx.send("Vote recorded, but could not find the voting channel to post an update.")
+            await interaction.send("Vote recorded, but could not find the voting channel to post an update.")
         logger.info(f"Vote processed successfully: {voter_obj.display_name} -> {target_obj.display_name}\n{self.lynch_votes}")
 
     async def send_vote_count(self, channel):
@@ -575,36 +576,38 @@ class Game:
         # the story is about a single victim or multiple victims.
         self.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
            
-    async def record_night_action(self, ctx, player_id, action_type, target_name):
+    async def record_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
         """Validates and records a night action from a player's DM."""
+        # Get the player ID directly from the interaction object
+        player_id = interaction.user.id
         player_obj = self.players.get(player_id)
         logger.info(f"Recording night action from player {player_id} ({player_obj.display_name if player_obj else 'Unknown'}) for action '{action_type}' on target '{target_name}'")
         # --- Validation ---
         if self.game_settings["current_phase"] != "night":
-            await ctx.author.send("You can only perform actions during the night.")
+            await interaction.response.send_message("You can only perform actions during the night.", ephemeral=True)
             return
         if not player_obj or not player_obj.is_alive:
-            await ctx.author.send("You are not able to perform actions in the game.")
+            await interaction.response.send_message("You are not able to perform actions in the game.")
             return
         if not player_obj.can_perform_action(action_type):
-            await ctx.author.send(f"Your role does not have the '{action_type}' ability.")
+            await interaction.response.send_message(f"Your role does not have the '{action_type}' ability.")
             return
         target_obj = self.get_player_by_name(target_name)
         if not target_obj:
-            await ctx.author.send(f"Could not find a player named '{target_name}'.")
+            await interaction.response.send_message(f"Could not find a player named '{target_name}'.")
             return
         if not target_obj.is_alive:
-            await ctx.author.send(f"{target_obj.display_name} is already dead.")
+            await interaction.response.send_message(f"{target_obj.display_name} is already dead.")
             return
         if target_obj.id == player_obj.id:
-            await ctx.author.send("You cannot target yourself.")
+            await interaction.response.send_message("You cannot target yourself.")
             return
         # --- Record Action ---
         self.night_actions[player_id] = {
             "type": action_type,
             "target_id": target_obj.id
         }
-        await ctx.author.send(f"Your action (**{action_type}** on **{target_obj.display_name}**) has been recorded for the night.")
+        await interaction.response.send_message(f"Your action (**{action_type}** on **{target_obj.display_name}**) has been recorded for the night.")
         logger.info(f"Recorded night action: {player_obj.display_name} -> {action_type} on {target_obj.display_name}")
 
     async def process_night_actions(self):
@@ -690,7 +693,7 @@ class Game:
         player_data = []
         for player in sorted(self.players.values(), key=lambda p: p.display_name):
             player_data.append({
-                "discord_name": player.discord_name,
+                "player_id": player.id,
                 "player_name": player.display_name,
                 "alignment": player.role.alignment if player.role else "Unknown",
                 "role": player.role.name if player.role else "Unknown",
@@ -716,11 +719,11 @@ class Game:
                 logger.error("Cannot save summary, game_id is missing.")
                 return
             # Construct the new directory path: Stats/<game_id>
-            game_log_dir = os.path.join("Stats", game_id)
+            game_log_dir = os.path.join("Stats/alpha_testing", game_id)
             # Create the directory (and the parent 'Stats' dir if it doesn't exist)
             os.makedirs(game_log_dir, exist_ok=True)
             # Define the file path inside the new directory
-            file_path = os.path.join(game_log_dir, "summary.json")
+            file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(final_summary, f, ensure_ascii=False, indent=4)
             logger.info(f"Game summary saved successfully to {file_path}")
@@ -804,7 +807,7 @@ class Game:
         # Generate a status message
         status_message = self.get_status_message() # Generate a final status message
         self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager
-        story = self.narration_manager.construct_story() # Construct the final story
+        story = self.narration_manager.construct_story(self.game_settings['current_phase'], self.game_settings['phase_number']) # Construct the final story
         # NEW: Call the summary function here
         await self._save_game_summary(winner)
         if story:
@@ -855,11 +858,14 @@ class Game:
             for player_obj in winning_players:
                 role_name = player_obj.role.name if player_obj.role else "Unknown Role"
                 role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
-                death_phase = player_obj.death_info.get('phase', 'N/A')
-                death_cause = player_obj.death_info.get('how', 'N/A')
+                # Start the base string
                 status_message += f"- {player_obj.display_name} ({role_alignment}: {role_name})"
-                status_message += f" (Died on {death_phase} - {death_cause})\n" if death_phase else "\n"
-                status_message += "\n"
+                # Only add death info if the player is dead
+                if not player_obj.is_alive:
+                    death_phase = player_obj.death_info.get('phase', 'N/A')
+                    death_cause = player_obj.death_info.get('how', 'N/A')
+                    status_message += f" (Died on {death_phase} - {death_cause})"
+                status_message += "\n" # Add the newline at the end
             # Optionally, list any living players who didn't win
             living_losers = sorted([p for p in all_players if p.is_alive and not p.is_winner], key=lambda p: p.display_name)
             if living_losers:
@@ -886,5 +892,3 @@ class Game:
                 status_message += f"- ~~{player_obj.display_name}~~ (Dead, {role_alignment}: {role_name}, Died on {death_phase} - {death_cause})\n"
         logger.info(f"Generated status message for game {self.game_settings['game_id']}.")
         return status_message
-
- 
