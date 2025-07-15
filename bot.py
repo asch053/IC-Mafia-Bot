@@ -8,6 +8,7 @@ import os
 import config  # Import the config module directly
 from datetime import datetime, timedelta, timezone
 
+# Version without smart narration
 
 # --- 1. Logging Setup ---
 def setup_logging():
