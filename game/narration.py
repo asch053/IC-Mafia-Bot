@@ -82,34 +82,54 @@ class NarrationManager:
             killer = details.get('killer')
             victim = details.get('victim')
             logger.info(f"Generating kill story for {killer} + {victim}")
-            return f"Under the cover of darkness, a figure strikes! **{victim.display_name}** has been found dead, killed by the **{killer.role.name}**!"
+            if not killer or not victim:
+                logger.error("Kill event missing killer or victim data")
+                return None
+            else:
+                return f"Under the cover of darkness, a figure strikes! **{victim.display_name}** has been found dead, killed by the **{killer.role.name}**!"
         
         if event_type == 'heal':
             doctor = details.get('doctor')
             patient = details.get('patient')
             healer_name = doctor.display_name if doctor else "a mysterious figure"
             logger.info(f"Generating heal story for {healer_name} + {patient}")
-            return f"A doctor rushed to the aid of **{patient.display_name}**, saving them from a grisly fate."
+            if not patient:
+                logger.error("Heal event missing patient data")
+                return None
+            else:
+                return f"A doctor rushed to the aid of **{patient.display_name}**, saving them from a grisly fate."
 
         if event_type == 'block':
             blocker = details.get('blocker')
             target = details.get('target')
             logger.info(f"Generating block story for {blocker} + {target}")
-            return f"**{blocker.display_name}** paid a visit to **{target.display_name}** last night, preventing them from performing their action."
+            if not blocker or not target:
+                logger.error("Block event missing blocker or target data")
+                return None
+            else:
+                return f"A shadowy figure paid a visit to **{target.role.name}** last night, preventing them from performing their action."
 
         # --- Game State Events ---
         if event_type == 'promotion':
             promoted_player = details.get('promoted_player')
             logger.info(f"Generating promotion story for {promoted_player}")
-            return "With the death of the latest head of the Mafia , a power vacuum has formed.\nWho will step up to become the new Godfather?"
+            if not promoted_player:
+                logger.error("Promotion event missing promoted_player data")
+                return None
+            else:
+                return "With the death of the latest head of the Mafia , a power vacuum has formed.\nWho will step up to become the new Godfather?"
 
         if event_type == 'jester_win':
             victim = details.get('victim')
             logger.info(f"Generating jester win story for {victim}")
-            return (
-                f"As the town lynched **{victim.display_name}**, a wicked grin spread across their face. "
-                f"They were the **Jester**! Their goal was to be executed, and the town has foolishly granted their wish."
-            )
+            if not victim:
+                logger.error("Jester win event missing victim data")
+                return None
+            else:
+                return (
+                    f"As the town lynched **{victim.display_name}**, a wicked grin spread across their face. "
+                    f"They were the **Jester**! Their goal was to be executed, and the town has foolishly granted their wish."
+                )
 
         if event_type == 'game_over':
             winner = details.get('winner', 'An unknown force')

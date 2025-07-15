@@ -55,6 +55,8 @@ class Game:
         self.game_roles = [] # This will store GameRole objects assigned to players
         self.night_actions = {} # Stores night actions: {player_id: {"action": "type", "target": id}}
         self.vote_history = [] # NEW: To store every single vote
+        self.player_lock = asyncio.Lock() # Create lock to ensure one person at a time for joining and exiting game
+        self.vote_lock = asyncio.Lock() # Create lock to ensure one vote at a time 
         # --- Control Flags ---
         self.force_start_flag = False
         self.reminders_sent = set() # Tracks sent reminders for the current phase
@@ -178,48 +180,50 @@ class Game:
 
     async def add_player(self, user, player_name, channel):
         """Adds a player to the game during the signup phase."""
-        if self.game_settings["current_phase"] != "signup": # Check if the game is currently in the sign-up phase
-            await channel.send("Sorry, the game is not currently accepting new players.") # Can't join if not in signup phase
-            logger.error(f"{user.name} tried to join the game outside of the sign-up phase.")
-            return
-        if user.id in self.players: # Check if the player is already in the game
-            await channel.send("You have already joined the game!")
-            logger.warning(f"{user.name} tried to join the game again with player name {player_name}.")
-            return
-        if len(self.players) >= self.max_players: # Check if the game is already full
-            await channel.send(f"Sorry, the game is full with {self.max_players} players.")
-            logger.warning(f"{user.name} tried to join the game but it is already full.")
-            return
-        # Create a Player object
-        self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
-        await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
-        logger.info(f"{user.name} ({player_name}) has joined the game.")
-        await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
-        status_message = self.get_status_message() # Generate a status message with players listed
-        try:
-            await channel.send(status_message) # Send the status message to the sign-up channel
-        except Exception as e:
-            logger.error(f"Failed to send status message: {e}")
+        async with self.player_lock: # Add this lock
+            if self.game_settings["current_phase"] != "signup": # Check if the game is currently in the sign-up phase
+                await channel.send("Sorry, the game is not currently accepting new players.") # Can't join if not in signup phase
+                logger.error(f"{user.name} tried to join the game outside of the sign-up phase.")
+                return
+            if user.id in self.players: # Check if the player is already in the game
+                await channel.send("You have already joined the game!")
+                logger.warning(f"{user.name} tried to join the game again with player name {player_name}.")
+                return
+            if len(self.players) >= self.max_players: # Check if the game is already full
+                await channel.send(f"Sorry, the game is full with {self.max_players} players.")
+                logger.warning(f"{user.name} tried to join the game but it is already full.")
+                return
+            # Create a Player object
+            self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
+            await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
+            logger.info(f"{user.name} ({player_name}) has joined the game.")
+            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
+            status_message = self.get_status_message() # Generate a status message with players listed
+            try:
+                await channel.send(status_message) # Send the status message to the sign-up channel
+            except Exception as e:
+                logger.error(f"Failed to send status message: {e}")
     
     async def remove_player(self, user, channel):
         """Removes a player from the game during the signup phase."""
-        # Check if the game is currently in the sign-up phase
-        if self.game_settings["current_phase"] != "signup":
-            await channel.send("You can only leave the game during the sign-up phase.")
-            logger.error(f"{user.name} tried to leave the game outside of the sign-up phase.")
-            return
-        if user.id in self.players: # Check if the player is in the game
-            player_name = self.players[user.id].display_name
-            # Remove the player from the game
-            del self.players[user.id]
-            # send a confirmation message
-            await channel.send(f"**{player_name}** has left the game.")
-            logger.info(f"{user.name} ({player_name}) has left the game.")
-            #update player roles in Discord
-            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
-        else:
-            await channel.send("You are not currently in the game.")
-            logger.warning(f"{user.name} tried to leave the game but was not a participant.")
+        async with self.player_lock: # Add this lock    
+            # Check if the game is currently in the sign-up phase
+            if self.game_settings["current_phase"] != "signup":
+                await channel.send("You can only leave the game during the sign-up phase.")
+                logger.error(f"{user.name} tried to leave the game outside of the sign-up phase.")
+                return
+            if user.id in self.players: # Check if the player is in the game
+                player_name = self.players[user.id].display_name
+                # Remove the player from the game
+                del self.players[user.id]
+                # send a confirmation message
+                await channel.send(f"**{player_name}** has left the game.")
+                logger.info(f"{user.name} ({player_name}) has left the game.")
+                #update player roles in Discord
+                await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
+            else:
+                await channel.send("You are not currently in the game.")
+                logger.warning(f"{user.name} tried to leave the game but was not a participant.")
 
     # --- 2. GAME PREPARATION ---
     async def prepare_game(self):
@@ -422,71 +426,72 @@ class Game:
     # --- 4. ACTION & VOTE PROCESSING ---    
     async def process_lynch_vote(self, interaction, voter_user, target_name):
         """Processes a single vote to lynch a player, sent from a cog."""
-        logger.info(f"Processing lynch vote from {voter_user.name} for target '{target_name}'")
-        # 1. Validation Checks
-        if self.game_settings["current_phase"] != "day": # Check if the current phase is 'day'
-            # If not, send a message and log the attempt
-            await interaction.send("You can only vote during the day phase.")
-            logger.warning(f"{voter_user.name} tried to vote outside of the day phase.")
-            return
-        voter_obj = self.players.get(voter_user.id) # Get the Player object for the voter
-        logger.debug(f"Got Voter object: {voter_obj}")
-        if not voter_obj or not voter_obj.is_alive: # Check if the voter is a valid player and is alive
-            # If not, send a message and log the attempt
-            await interaction.send("You are not currently able to vote in this game.")
-            logger.warning(f"{voter_user.name} tried to vote but is not a valid player or is dead.")
-            return
-        target_obj = self.get_player_by_name(target_name) # Get the Player object for the target by name
-        if not target_obj: # If the target is not found, send a message and log the attempt
-            await interaction.send(f"Could not find a player named '{target_name}'.")
-            logger.warning(f"{voter_obj.display_name} tried to vote for a non-existent player: {target_name}.")
-            return
-        if not target_obj.is_alive: # Check if the target is alive
-            # If the target is dead, send a message and log the attempt
-            await interaction.send(f"**{target_obj.display_name}** is already dead and cannot be voted for.")
-            logger.warning(f"{voter_obj.display_name} tried to vote for a dead player: {target_obj.display_name}.")
-            return
-        if voter_obj.id == target_obj.id: # Check if the voter is trying to vote for themselves
-            # If so, send a message and log the attempt
-            await interaction.send("You cannot vote for yourself.")
-            logger.warning(f"{voter_obj.display_name} tried to vote for themselves.")
-            return
-        logger.info(f"Vote from {voter_obj.display_name} for target {target_obj.display_name} is valid.")
-        # 2. Handle vote changes (un-vote previous target)
-        if voter_obj.action_target is not None: # First check if the voter has a previous target
-            # If they do, remove their vote from the previous target
-            previous_target_id = voter_obj.action_target
-            if previous_target_id in self.lynch_votes and voter_obj.id in self.lynch_votes[previous_target_id]:
-                self.lynch_votes[previous_target_id].remove(voter_obj.id)
-                # If the list for the previous target is now empty, remove the key
-                if not self.lynch_votes[previous_target_id]:
-                    del self.lynch_votes[previous_target_id]
-        # 3. Record the new vote
-        voter_obj.action_target = target_obj.id # Store the ID of the new target
-        logger.info(f"Recording vote: {voter_obj.display_name} -> {target_obj.display_name}")
-        if target_obj.id not in self.lynch_votes: # If the target does not have a vote list yet, create it
-            self.lynch_votes[target_obj.id] = []
-        # Add the voter's ID to the target's list of voters
-        if voter_obj.id not in self.lynch_votes[target_obj.id]:
-            self.lynch_votes[target_obj.id].append(voter_obj.id)
-        # NEW: Log the vote to the history
-        self.vote_history.append({
-            "voter_id": voter_obj.id,
-            "voter_name": voter_obj.display_name,
-            "target_id": target_obj.id,
-            "target_name": target_obj.display_name,
-            "phase": f"Day {self.game_settings['phase_number']}",
-            "timestamp_utc": datetime.now(timezone.utc).isoformat()
-        })
-        # 4. Announce the vote in the voting channel
-        voting_channel = self.bot.get_channel(config.VOTING_CHANNEL_ID)
-        if voting_channel:
-            await voting_channel.send(f"**{voter_obj.display_name}** has voted for **{target_obj.display_name}**.")
-            await self.send_vote_count(voting_channel)
-        else:
-            logger.error(f"Could not find voting channel with ID: {config.VOTING_CHANNEL_ID}")
-            await interaction.send("Vote recorded, but could not find the voting channel to post an update.")
-        logger.info(f"Vote processed successfully: {voter_obj.display_name} -> {target_obj.display_name}\n{self.lynch_votes}")
+        async with self.vote_lock: # Add this lock
+            logger.info(f"Processing lynch vote from {voter_user.name} for target '{target_name}'")
+            # 1. Validation Checks
+            if self.game_settings["current_phase"] != "day": # Check if the current phase is 'day'
+                # If not, send a message and log the attempt
+                await interaction.send("You can only vote during the day phase.")
+                logger.warning(f"{voter_user.name} tried to vote outside of the day phase.")
+                return
+            voter_obj = self.players.get(voter_user.id) # Get the Player object for the voter
+            logger.debug(f"Got Voter object: {voter_obj}")
+            if not voter_obj or not voter_obj.is_alive: # Check if the voter is a valid player and is alive
+                # If not, send a message and log the attempt
+                await interaction.send("You are not currently able to vote in this game.")
+                logger.warning(f"{voter_user.name} tried to vote but is not a valid player or is dead.")
+                return
+            target_obj = self.get_player_by_name(target_name) # Get the Player object for the target by name
+            if not target_obj: # If the target is not found, send a message and log the attempt
+                await interaction.send(f"Could not find a player named '{target_name}'.")
+                logger.warning(f"{voter_obj.display_name} tried to vote for a non-existent player: {target_name}.")
+                return
+            if not target_obj.is_alive: # Check if the target is alive
+                # If the target is dead, send a message and log the attempt
+                await interaction.send(f"**{target_obj.display_name}** is already dead and cannot be voted for.")
+                logger.warning(f"{voter_obj.display_name} tried to vote for a dead player: {target_obj.display_name}.")
+                return
+            if voter_obj.id == target_obj.id: # Check if the voter is trying to vote for themselves
+                # If so, send a message and log the attempt
+                await interaction.send("You cannot vote for yourself.")
+                logger.warning(f"{voter_obj.display_name} tried to vote for themselves.")
+                return
+            logger.info(f"Vote from {voter_obj.display_name} for target {target_obj.display_name} is valid.")
+            # 2. Handle vote changes (un-vote previous target)
+            if voter_obj.action_target is not None: # First check if the voter has a previous target
+                # If they do, remove their vote from the previous target
+                previous_target_id = voter_obj.action_target
+                if previous_target_id in self.lynch_votes and voter_obj.id in self.lynch_votes[previous_target_id]:
+                    self.lynch_votes[previous_target_id].remove(voter_obj.id)
+                    # If the list for the previous target is now empty, remove the key
+                    if not self.lynch_votes[previous_target_id]:
+                        del self.lynch_votes[previous_target_id]
+            # 3. Record the new vote
+            voter_obj.action_target = target_obj.id # Store the ID of the new target
+            logger.info(f"Recording vote: {voter_obj.display_name} -> {target_obj.display_name}")
+            if target_obj.id not in self.lynch_votes: # If the target does not have a vote list yet, create it
+                self.lynch_votes[target_obj.id] = []
+            # Add the voter's ID to the target's list of voters
+            if voter_obj.id not in self.lynch_votes[target_obj.id]:
+                self.lynch_votes[target_obj.id].append(voter_obj.id)
+            # NEW: Log the vote to the history
+            self.vote_history.append({
+                "voter_id": voter_obj.id,
+                "voter_name": voter_obj.display_name,
+                "target_id": target_obj.id,
+                "target_name": target_obj.display_name,
+                "phase": f"Day {self.game_settings['phase_number']}",
+                "timestamp_utc": datetime.now(timezone.utc).isoformat()
+            })
+            # 4. Announce the vote in the voting channel
+            voting_channel = self.bot.get_channel(config.VOTING_CHANNEL_ID)
+            if voting_channel:
+                await voting_channel.send(f"**{voter_obj.display_name}** has voted for **{target_obj.display_name}**.")
+                await self.send_vote_count(voting_channel)
+            else:
+                logger.error(f"Could not find voting channel with ID: {config.VOTING_CHANNEL_ID}")
+                await interaction.send("Vote recorded, but could not find the voting channel to post an update.")
+            logger.info(f"Vote processed successfully: {voter_obj.display_name} -> {target_obj.display_name}\n{self.lynch_votes}")
 
     async def send_vote_count(self, channel):
         """Constructs and Sends the current vote count to the specified channel."""
@@ -620,10 +625,18 @@ class Game:
             self.night_actions.items(), 
             key=lambda item: action_priority.get(item[1]['type'], 99)
         )
-        self.protected_players_this_night = set()
+        self.protected_players_this_night = set() # Track protected players (i.e. heal) 
+        self.blocked_players_this_night = set() # NEW: Track blocked players
         for player_id, action in sorted_actions:
             action_type = action.get('type')
             target_id = action.get('target_id')
+            # NEW: Check if the action's user was blocked before running their action.
+            # The 'block' action itself cannot be blocked.
+            if action_type != 'block' and player_id in self.blocked_players_this_night:
+                logger.info(f"Player {player_id}'s action '{action_type}' was blocked.")
+                # Optional: Add a narration event for the block
+                #self.narration_manager.add_event('block', player_id=player_id)
+                continue # Skip to the next action
             if action_type not in actions.ACTION_HANDLERS:
                 logger.error(f"Unknown action type: '{action_type}' from player {player_id}.")
                 continue

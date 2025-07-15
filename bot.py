@@ -3,41 +3,60 @@ from discord.ext import commands
 import asyncio
 import logging
 import logging.handlers
+import logging
 import os
 import config  # Import the config module directly
 from datetime import datetime, timedelta, timezone
 
+
 # --- 1. Logging Setup ---
 def setup_logging():
-    """Configures logging for the bot."""
-    log_dir = os.path.join(".", "logs")
-    os.makedirs(log_dir, exist_ok=True)
-    dt_fmt = '%Y-%m-%d %H:%M:%S'
-    formatter = logging.Formatter('[{asctime}] [{levelname:<8}] {name}: {message}', dt_fmt, style='{')
-
+    """Configures logging into a date-stamped folder with separate files."""
+    # 1. Define the formatter
+    # Using a more detailed formatter for better debug info
+    formatter = logging.Formatter(
+        '[{asctime}] [{levelname:<8}] {name} - {funcName}:{lineno}: {message}',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        style='{'
+    )
+    # 2. Get the main logger and set its level to the lowest (DEBUG)
+    # This allows it to pass all messages to the handlers, which will do their own filtering.
     logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG)
-
-    # File handler
-    file_handler = logging.handlers.RotatingFileHandler(
-        filename=os.path.join(log_dir, 'mafiabot.log'),
-        encoding='utf-8',
-        maxBytes=10 * 1024 * 1024,
+    # 3. Create the date-stamped directory (e.g., logs/2025-07-15/)
+    # Using a fixed timezone as per your old code
+    now = datetime.now(timezone(timedelta(hours=12)))
+    log_dir = os.path.join("logs", now.strftime('%Y-%m-%d'))
+    os.makedirs(log_dir, exist_ok=True)
+    # 4. Create handler for ALL messages (debug.log)
+    debug_handler = logging.handlers.RotatingFileHandler(
+        filename=os.path.join(log_dir, f'{now.strftime("%Y-%m-%d")}_debug.log'),
+        maxBytes=10*1024*1024,  # 10 MB
         backupCount=5,
+        encoding='utf-8'
     )
-    file_handler.setFormatter(formatter)
-    logger.addHandler(file_handler)
-
-    # Console handler
+    debug_handler.setFormatter(formatter)
+    debug_handler.setLevel(logging.DEBUG) # This handler accepts everything.
+    # 5. Create handler for INFO and up (error.log, as per your old naming)
+    info_handler = logging.handlers.RotatingFileHandler(
+        filename=os.path.join(log_dir, f'{now.strftime("%Y-%m-%d")}_error.log'),
+        maxBytes=10*1024*1024,  # 10 MB
+        backupCount=5,
+        encoding='utf-8'
+    )
+    info_handler.setFormatter(formatter)
+    info_handler.setLevel(logging.INFO) # This handler only accepts INFO, WARNING, ERROR, etc.
+    # 6. Create console handler for INFO and up
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
-    console_handler.setLevel(logging.INFO) # Only show INFO and above in console
+    console_handler.setLevel(logging.INFO)
+    # 7. Add all handlers to the main logger
+    logger.addHandler(debug_handler)
+    logger.addHandler(info_handler)
     logger.addHandler(console_handler)
-    
     return logger
-
+# This line at the bottom of the setup section remains the same
 logger = setup_logging()
-
 
 # --- 2. Bot Intents and Initialization ---
 # REMOVED: The first, redundant bot and intents definition is gone.
