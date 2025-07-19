@@ -1,0 +1,75 @@
+{
+    "game_summary": {
+        "game_id": "20250719-110100",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 3,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-07-19T11:01:00+00:00",
+        "end_date_utc": "2025-07-19T11:03:43.723569+00:00",
+        "total_days": 1,
+        "phase_hours": 0.01667,
+        "winning_faction": "Draw",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": -1,
+            "player_name": "Botty McBotface",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -2,
+            "player_name": "Definitely Not Sus",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -3,
+            "player_name": "Innocent Bystander",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -5,
+            "player_name": "Just a Regular Townie",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -4,
+            "player_name": "One More Time",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": []
+}
