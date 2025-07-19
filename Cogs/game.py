@@ -142,6 +142,7 @@ class GameCog(commands.Cog, name="GameCog"):
     @app_commands.command(name="mafiastatus", description="Displays the current game status.")
     @app_commands.check(is_game_active)
     async def status_command(self, interaction: discord.Interaction):
+        logger.info(f"`/mafiastatus` command was called - {self.game}.")
         if self.game is None:
             await interaction.response.send_message("No game is currently running.", ephemeral=True)
             logger.info("`/mafiastatus` command was used but no game is currently running.")
