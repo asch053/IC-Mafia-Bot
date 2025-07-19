@@ -1,144 +1,130 @@
-# utils/narration.py
 import logging
 
+# Get the same logger instance as in the main bot file
 logger = logging.getLogger('discord')
 
 class NarrationManager:
-    """Collects game events and constructs a narrative story."""
-
+    """
+    Collects events throughout a game phase and constructs a narrative story from them.
+    """
     def __init__(self):
+        """Initializes the NarrationManager with an empty list of events."""
         self.events = []
 
-    def add_event(self, event_type, **details):
-        """
-        Adds a single game event to the list.
-        'details' is a dictionary containing relevant objects.
-        """
-        self.events.append({"type": event_type, "details": details})
+    def add_event(self, event_type: str, **details):
+        """Adds a new event to the list using a flat structure."""
+        event = {'type': event_type, **details}
+        self.events.append(event)
         logger.info(f"Narration event added: {event_type}")
 
     def clear(self):
-        """Clears all recorded events for the next phase."""
-        self.events = []
+        """Clears all events, typically after a story has been told."""
+        self.events.clear()
+        logger.info("Narration events cleared.")
 
-    def construct_story(self, current_phase, phase_number):
+    def construct_story(self, phase: str, number: int) -> str | None:
         """Builds the final story string from the recorded events."""
         logger.info("Constructing the narrative story.")
         if not self.events:
             logger.info("No events to construct a story from.")
-            return None # Return nothing if there are no events
-        # Construct the story from the events logged so far
-        story_parts = []
-        story_parts.append(f"======={current_phase} {phase_number}=========")
+            return None
+
+        story_parts = [f"**--- {phase.capitalize()} {number} ---**"]
+        
         for event in self.events:
             story_part = self._generate_story_part(event)
             if story_part:
                 story_parts.append(story_part)
-        logger.info(f"Narrative story constructed.\n{story_parts}")
-        return "\n\n".join(story_parts) if story_parts else None
+                
+        logger.info("Narrative story constructed.")
+        return "\n\n".join(story_parts) if len(story_parts) > 1 else None
 
-    def _generate_story_part(self, event):
-        """Generates the text for a single event using simple templates."""
-        event_type = event["type"]
-        details = event["details"]
+    def _generate_story_part(self, event: dict) -> str | None:
+        """Generates a single paragraph of the story for a given event."""
+        event_type = event.get('type')
 
-        # --- Lynch Events ---
+        # --- Night Events ---
+        if event_type == 'no_actions':
+            return "The night was eerily quiet. No one seemed to make a move."
+
+        if event_type == 'block':
+            target = event.get('target')
+            if not target or not target.role: return None
+            return f"A shadowy figure paid a visit to the **{target.role.name}** last night, preventing them from performing their action."
+
+        if event_type == 'save':
+            victim = event.get('victim')
+            if not victim: return None
+            return (
+                f"Someone launched a deadly attack on **{victim.display_name}** in the dead of night... "
+                f"but a Doctor was standing guard and saved their life!"
+            )
+
+        if event_type == 'immune_kill':
+            victim = event.get('victim')
+            if not victim: return None
+            return f"An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect!"
+
+        if event_type == 'kill':
+            victim = event.get('victim')
+            if not victim or not victim.role: return None
+            return (
+                f"A scream pierced the night! When the sun rose, the body of **{victim.display_name}** was found. "
+                f"They were the **{victim.role.alignment} - {victim.role.name}**."
+            )
+
+        if event_type == 'investigate':
+            return #"A lone figure was seen snooping around someone's house, trying to uncover secrets."
+
+        if event_type == 'promotion':
+            return "In the mafia underground, a power vacuum has been filled. A new leader has risen to command the night's dark deeds."
+
+        # --- Day Events ---
         if event_type == 'lynch':
-            victims = details.get('victims', [])
-            lynch_details = details.get('details', {})
+            victims = event.get('victims', [])
+            details = event.get('details', {})
             if not victims: return None
-            logger.info(f"Generating lynch story for {victims} + {lynch_details}")
+
             if len(victims) == 1:
                 victim = victims[0]
-                voters = lynch_details.get(victim, [])
-                voter_names = ", ".join([v.display_name for v in voters])
+                voters = details.get(victim, [])
+                voter_names = ", ".join([f"**{v.display_name}**" for v in voters])
+                if not voter_names: voter_names = "an angry mob"
+                
                 return (
-                    f"The town square fell silent as the crowd pointed their fingers at one individual. A verdict had been reached."
-                    f"**{victim.display_name}** was dragged out into the middle of the town square and strung up.\n"
-                    f"**{victim.display_name}, ({victim.role.alignment} - {victim.role.name}) has been lynched.**"
+                    f"The town square fell silent as the crowd, led by {voter_names}, pointed their fingers at one individual. A verdict had been reached.\n\n"
+                    f"**{victim.display_name}** was dragged into the middle of the town square and strung up. They were the **{victim.role.alignment} - {victim.role.name}**."
                 )
             else:
                 victim_names = [f"**{v.display_name}** (the **{v.role.alignment} - {v.role.name}**)" for v in victims]
                 return (
-                    f"A heated argument resulted in a shocking outcome! The town couldn't decide on a single target, "
-                    f"and in the ensuing chaos, a mob turned on multiple people.\n"
+                    f"A heated argument resulted in a shocking outcome! The town couldn't decide on a single target, and in the ensuing chaos, a mob turned on multiple people.\n\n"
                     f"**{', '.join(victim_names)}** have all been lynched by the town!"
                 )
-
+    
         if event_type == 'no_lynch':
-            logger.info("No Lynch")
-            return "The sun sets on a tense but indecisive town. No votes were cast, and no one was lynched."
+            return "The sun sets on a tense but indecisive town. With no consensus, no one was lynched."
 
-        if event_type == 'no_lynch_tie':
-            logger.info("No Lynch -> Tie")
-            return "The town was divided. With the votes tied, the crowd dispersed in a stalemate. No one was lynched."
-
-        # --- Night Action Events ---
-        if event_type == 'no_actions':
-            logger.info("No actions logged")
-            return "It was a quiet night. Nothing seemed to happen."
-            
-        if event_type == 'kill':
-            killer = details.get('killer')
-            victim = details.get('victim')
-            logger.info(f"Generating kill story for {killer} + {victim}")
-            if not killer or not victim:
-                logger.error("Kill event missing killer or victim data")
-                return None
-            else:
-                return f"Under the cover of darkness, a figure strikes! **{victim.display_name}** has been found dead, killed by the **{killer.role.name}**!"
-        
-        if event_type == 'heal':
-            doctor = details.get('doctor')
-            patient = details.get('patient')
-            healer_name = doctor.display_name if doctor else "a mysterious figure"
-            logger.info(f"Generating heal story for {healer_name} + {patient}")
-            if not patient:
-                logger.error("Heal event missing patient data")
-                return None
-            else:
-                return f"A doctor rushed to the aid of **{patient.display_name}**, saving them from a grisly fate."
-
-        if event_type == 'block':
-            blocker = details.get('blocker')
-            target = details.get('target')
-            logger.info(f"Generating block story for {blocker} + {target}")
-            if not blocker or not target:
-                logger.error("Block event missing blocker or target data")
-                return None
-            else:
-                return f"A shadowy figure paid a visit to **{target.role.name}** last night, preventing them from performing their action."
-
-        # --- Game State Events ---
-        if event_type == 'promotion':
-            promoted_player = details.get('promoted_player')
-            logger.info(f"Generating promotion story for {promoted_player}")
-            if not promoted_player:
-                logger.error("Promotion event missing promoted_player data")
-                return None
-            else:
-                return "With the death of the latest head of the Mafia , a power vacuum has formed.\nWho will step up to become the new Godfather?"
-
+        # Inactive player killed story
+        if event_type == 'inactivity_kill':
+            victims = event.get('victims', [])
+            if not victims: return None
+            victim_names = ", ".join([f"**{v.display_name}**" for v in victims])
+            return f"The town has no patience for silence. For failing to participate in the day's crucial vote, {victim_names} is/are executed for inactivity!"
+          
+        # --- Game End Events ---
         if event_type == 'jester_win':
-            victim = details.get('victim')
-            logger.info(f"Generating jester win story for {victim}")
-            if not victim:
-                logger.error("Jester win event missing victim data")
-                return None
-            else:
-                return (
-                    f"As the town lynched **{victim.display_name}**, a wicked grin spread across their face. "
-                    f"They were the **Jester**! Their goal was to be executed, and the town has foolishly granted their wish."
-                )
-
-        if event_type == 'game_over':
-            winner = details.get('winner', 'An unknown force')
-            logger.info(f"Generating game over story for {winner}")
-            return f"The game has ended. The **{winner}** team is victorious!"
+            victim = event.get('victim')
+            if not victim: return None
+            return (
+                f"**{victim.display_name}** cackles madly as the town realizes its mistake. "
+                f"By lynching the Jester, the town has signed its own death warrant! The Jester wins!"
+            )
         
-        # This is for actions that have no public story, like an investigation
-        if event_type == 'investigate':
-            logger.info("Investigation action captured, but currently not added to story")
-            return None
-        logger.critical(f"Event type for {event} not found, returning nothing")
+        if event_type == 'game_over':
+            winner = event.get('winner')
+            return f"\n**The game is over! The {winner} has won!**"
+    
+
+        
         return None

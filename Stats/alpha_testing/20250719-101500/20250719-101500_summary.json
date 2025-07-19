@@ -1,0 +1,75 @@
+{
+    "game_summary": {
+        "game_id": "20250719-101500",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 3,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-07-19T10:15:00+00:00",
+        "end_date_utc": "2025-07-19T10:15:32.460249+00:00",
+        "total_days": 1,
+        "phase_hours": 0.03333,
+        "winning_faction": "Draw",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": 1393506472079655024,
+            "player_name": "ANZAC Leader",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393539112031752244,
+            "player_name": "Antal Flower-River",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393505435948027937,
+            "player_name": "Evil^Princess^Sara",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 627444776245002260,
+            "player_name": "Hiroshi_Sato",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": []
+}

@@ -1,0 +1,90 @@
+{
+    "game_summary": {
+        "game_id": "20250719-104800",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 3,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-07-19T10:48:00+00:00",
+        "end_date_utc": "2025-07-19T10:47:35.795473+00:00",
+        "total_days": 1,
+        "phase_hours": 0.001667,
+        "winning_faction": "Town",
+        "winning_players": [
+            "MafiaBot 9000",
+            "Sneaky McSneakface",
+            "You_Fool"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": -2,
+            "player_name": "Definitely Not Sus",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": [
+                "You_Fool"
+            ]
+        },
+        {
+            "player_id": -4,
+            "player_name": "MafiaBot 9000",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -5,
+            "player_name": "Sneaky McSneakface",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -3,
+            "player_name": "Totally Harmless",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": -2,
+            "target_name": "Definitely Not Sus",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-07-19T10:47:24.671576+00:00"
+        }
+    ]
+}

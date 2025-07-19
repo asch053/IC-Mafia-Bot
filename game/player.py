@@ -15,15 +15,16 @@ class Player:
         self.is_npc = (user_id <= 0)
 
          # --- Game State Attributes ---
-        self.role: GameRole = None
-        self.is_alive = True
+        self.role: GameRole = None # will be used to attach game role 
+        self.is_alive = True # Flag to determine if player is alive or dead
         self.night_immune = False # NEW: Flag for night immunity
-        self.action_target = None
-        self.previous_target = None
+        self.action_target = None # Stores current action target
+        self.previous_target = None # stores previous action target
         self.death_info = {} # e.g., {"phase": "Night 1", "how": "Killed by Mafia"}
-        self.votes_on = 0
-        self.missed_votes = 0
-        self.is_winner = None
+        self.last_action_target_id = None # Records target ID of last action so can determine if targetting same player 2 nights in a row
+        self.missed_votes = 0 # Stores missed lynch votes so can determine if need to be killed for inactivity
+        self.votes_on = 0 # an attribute to count how many votes player recieved during lynching
+        self.is_winner = None # Flag to determine if player won the game - used at end to help with final narration story
 
     def __str__(self):
         """String representation for easy debugging."""

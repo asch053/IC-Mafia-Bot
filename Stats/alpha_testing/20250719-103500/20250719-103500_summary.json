@@ -1,0 +1,90 @@
+{
+    "game_summary": {
+        "game_id": "20250719-103500",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 3,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-07-19T10:35:00+00:00",
+        "end_date_utc": "2025-07-19T10:36:55.930777+00:00",
+        "total_days": 1,
+        "phase_hours": 0.03333,
+        "winning_faction": "Town",
+        "winning_players": [
+            "Evil^Princess^Sara",
+            "Hiroshi_Sato",
+            "You_Fool"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 1393506472079655024,
+            "player_name": "ANZAC Leader",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": [
+                "You_Fool"
+            ]
+        },
+        {
+            "player_id": 1393539112031752244,
+            "player_name": "Antal Flower-River",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393505435948027937,
+            "player_name": "Evil^Princess^Sara",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 627444776245002260,
+            "player_name": "Hiroshi_Sato",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 1393506472079655024,
+            "target_name": "ANZAC Leader",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-07-19T10:35:00.145044+00:00"
+        }
+    ]
+}
