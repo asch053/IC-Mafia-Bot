@@ -3,6 +3,7 @@ config.py
 
 # discord roles
 Data/discord_roles.json
+data/discord_roles.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -175,35 +176,13 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
-/Stats/Alpha Testing
-Stats/Alpha Testing/game_20250127-140000/game_20250127-140000.json
-Stats/Alpha Testing/game_20250128-150000/game_20250128-150000.json
-Stats/Alpha Testing/game_20250129-160000/game_20250129-160000.json
-Stats/Alpha Testing/game_20250130-160000/game_20250130-160000.json
-Stats/Alpha Testing/game_20250202-095800/game_20250202-095800.json
-Stats/Alpha Testing/game_20250202-230000/game_20250202-230000.json
-Stats/alpha_testing/20250622-054100/game_20250622-054100.json
-Stats/alpha_testing/20250622-054400/20250622-054400_Game_Data.json
-Stats/alpha_testing/20250622-054400/game_20250622-054400.json
-Stats/alpha_testing/20250622-054500/20250622-054500_Game_Data.json
-Stats/alpha_testing/20250622-054500/game_20250622-054500.json
-Stats/alpha_testing/20250622-055700/game_20250622-055700.json
-Stats/alpha_testing/20250622-055800/game_20250622-055800.json
-Stats/alpha_testing/20250622-060200/20250622-060200_Game_Data.json
-Stats/alpha_testing/20250622-060200/20250622-060200_Lynch_Data.json
-Stats/alpha_testing/20250622-060200/game_20250622-060200.json
-Stats/alpha_testing/20250622-070700/20250622-070700_Game_Data.json
-Stats/alpha_testing/20250622-070700/20250622-070700_Lynch_Data.json
-Stats/alpha_testing/20250622-070700/game_20250622-070700.json
-Stats/alpha_testing/20250628-034400/20250628-034400_Game_Data.json
-Stats/alpha_testing/20250628-034400/game_20250628-034400.json
-Stats/alpha_testing/20250628-034600/20250628-034600_Game_Data.json
-Stats/alpha_testing/20250628-034600/game_20250628-034600.json
-Stats/alpha_testing/20250713-085400/summary.json
-Stats/alpha_testing/game_20250127-140000/game_20250127-140000.json
-Stats/alpha_testing/game_20250128-150000/game_20250128-150000.json
-Stats/alpha_testing/game_20250129-160000/game_20250129-160000.json
-Stats/alpha_testing/game_20250130-160000/game_20250130-160000.json
-Stats/alpha_testing/game_20250202-095800/game_20250202-095800.json
-Stats/alpha_testing/game_20250202-230000/game_20250202-230000.json
+
+#nohup file
+nohup.out 
+nohup.log
+nohup.err
+
+# Alpha and Beta Stats
+/Stats/Alpha Testing/
+/Stats/BETA Testing/
 /Stats/alpha_testing
