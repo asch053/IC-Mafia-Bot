@@ -149,7 +149,7 @@ class GameCog(commands.Cog, name="GameCog"):
             return
         logger.info(f"`/mafiastatus` command was used by {interaction.user.name}.")
         status_message = self.game.get_status_message()
-        await interaction.response.send_message(status_message, ephemeral=True)
+        await interaction.response.send_message(status_message, ephemeral=False)
 
     @app_commands.command(name="vote", description="Vote to lynch a player during the day.")
     @app_commands.describe(player="The player you want to lynch.")
@@ -166,7 +166,7 @@ class GameCog(commands.Cog, name="GameCog"):
     @app_commands.check(is_game_active)
     async def count_votes_command(self, interaction: discord.Interaction):
         await self.game.send_vote_count(interaction.channel)
-        await interaction.response.send_message("Vote count displayed.", ephemeral=True)
+        await interaction.response.send_message("Vote count displayed.", ephemeral=False)
     
     # --- Night Action Commands (intended for DMs) ---
     async def _handle_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
@@ -178,9 +178,9 @@ class GameCog(commands.Cog, name="GameCog"):
             await interaction.response.send_message("Night actions must be used in DMs.", ephemeral=True)
             return
         # The game engine handles all the logic.
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=False)
         message = await self.game.record_night_action(interaction, action_type, target_name)
-        await interaction.followup.send(message, ephemeral=True)
+        await interaction.followup.send(message, ephemeral=False)
         logger.debug(f"{interaction.user.id} has requested to {action_type} {target_name}.")
 
     @app_commands.command(name="kill", description="[DM Only] Action for roles that can kill.")
@@ -212,3 +212,4 @@ class GameCog(commands.Cog, name="GameCog"):
 
 async def setup(bot):
     await bot.add_cog(GameCog(bot))
+    logger.info("GameCog loaded.")

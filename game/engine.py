@@ -477,10 +477,6 @@ class Game:
                 # If the target is dead, send a message and log the attempt
                 logger.warning(f"{voter_obj.display_name} tried to vote for a dead player: {target_obj.display_name}.")
                 return f"**{target_obj.display_name}** is already dead and cannot be voted for."
-            if voter_obj.id == target_obj.id: # Check if the voter is trying to vote for themselves
-                # If so, send a message and log the attempt
-                logger.warning(f"{voter_obj.display_name} tried to vote for themselves.")
-                return "You cannot vote for yourself."
             logger.info(f"Vote from {voter_obj.display_name} for target {target_obj.display_name} is valid.")
             # 2. Handle vote changes (un-vote previous target)
             if voter_obj.action_target is not None: # First check if the voter has a previous target
