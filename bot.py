@@ -1179,39 +1179,65 @@ async def announce_winner(bot, winner):
     gameprocess.stop()
 
 async def process_role_block(bot):
-    """Check if RB players blocked themselves and cancel their target if they did"""
+    """
+    Resolves role blocker actions for the night. It first determines all outcomes
+    (mutual blocks, single blocks) and then applies them to avoid logic errors.
+    """
     global players, story_text, town_block_target, mob_block_target
     logger.info("process_role_block called")
     story_parts = []
+    # Get player ID for town and mob Role Blockers 
     town_rb_id = get_specific_player_id(players, "Town Role Blocker")
-    mob_rb_id = get_specific_player_id(players,"Mob Role Blocker")
-    if mob_rb_id and town_rb_id:
-        if mob_rb_id is not None and town_rb_id is not None:
-            if players[mob_rb_id]["alive"] == True and  players[town_rb_id]["alive"]  == True:
-                if mob_rb_id == players[town_rb_id]["action_target"]:
-                    players[mob_rb_id]["action_target"] = None
-                    logger.info("Mob RB was blocked by Town RB")
-                    story_parts.append("One of the mob went out to see if they could cause some trouble.\nHowever as they drove across the town they could see a set of headlights in their mirrors.\n They decided to head back home, unable to fulfill their mission.\n")
-                elif town_rb_id == players[mob_rb_id]["action_target"]:
-                    players[town_rb_id]["action_target"] = None
-                    logger.info("Town RB was blocked by Mob RB")
-                    story_parts.append("One of the townsfolk went out to see if they could help their besieged town.\nHowever as they drove across the town they could see a set of headlights in their mirrors.\n They decided to head back home, unable to fulfill their mission.\n")
+    mob_rb_id = get_specific_player_id(players, "Mob Role Blocker")
+    # --- Step 1: Read all initial targets BEFORE making any changes ---
+    town_target = None
+    if town_rb_id and players[town_rb_id]["alive"]:
+        town_target = players[town_rb_id]["action_target"]
+        logger.info("Town Roleblock target found")
+    mob_target = None
+    if mob_rb_id and players[mob_rb_id]["alive"]:
+        mob_target = players[mob_rb_id]["action_target"]
+        logger.info("Mob Roleblock target found")
+    # --- Step 2: Determine the outcomes based on initial targets ---
+    # These variables track if a blocker's action was successful
+    town_block_succeeds = town_target is not None
+    mob_block_succeeds = mob_target is not None
+    # Check for mutual blocks, which nullify the actions
+    if town_target == mob_rb_id and mob_target == town_rb_id:
+        logger.info("Mutual block between Town RB and Mob RB. Both actions are nullified.")
+        story_parts.append("Two shadowy figures spent the entire night chasing each other in circles, accomplishing nothing.")
+        town_block_succeeds = False
+        mob_block_succeeds = False
+    elif town_target == mob_rb_id:
+        logger.info("Town RB blocked Mob RB.")
+        story_parts.append("One of the mob went out to see if they could cause some trouble.\nHowever, as they drove across town, they could see a set of headlights in their mirrors.\nThey decided to head back home, unable to fulfill their mission.")
+        mob_block_succeeds = False
+    elif mob_target == town_rb_id:
+        logger.info("Mob RB blocked Town RB.")
+        story_parts.append("One of the townsfolk went out to see if they could help their besieged town.\nHowever, as they drove across town, they could see a set of headlights in their mirrors.\nThey decided to head back home, unable to fulfill their mission.")
+        town_block_succeeds = False
+    # --- Step 3: Apply the final, determined outcomes ---
+    # Apply Town RB's block if it was successful
+    if town_block_succeeds:
+        # Safety check to ensure the target is a valid player ID
+        if isinstance(town_target, int) and town_target in players:
+            players[town_target]["action_target"] = None # Nullify the target's action
+            town_block_target = town_target # Set global for other actions to check
+            logger.debug(f"Town RB successfully blocked {players[town_target]['display_name']} (ID: {town_target})")
+        else:
+            logger.warning(f"Town RB had an invalid target: {town_target}")
+    # Apply Mob RB's block if it was successful
+    if mob_block_succeeds:
+        # Safety check to ensure the target is a valid player ID
+        if isinstance(mob_target, int) and mob_target in players:
+            players[mob_target]["action_target"] = None # Nullify the target's action
+            mob_block_target = mob_target # Set global for other actions to check
+            logger.debug(f"Mob RB successfully blocked {players[mob_target]['display_name']} (ID: {mob_target})")
+        else:
+            logger.warning(f"Mob RB had an invalid target: {mob_target}")
     story_text = "\n".join(story_parts)
-    logger.debug(story_text)
-    if town_rb_id is not None and players[town_rb_id]["alive"] == True:
-        target_id = players[town_rb_id]["action_target"]
-        if target_id:
-            players[target_id]["action_target"] = "Blocked by Town RB"
-            logger.debug(f"Town RB blocked {target_id} ({players[target_id]['role'].name})")
-            town_block_target = target_id
-    if mob_rb_id is not None and players[mob_rb_id]["alive"] == True:
-        # Check if the target is a valid player ID
-        target_id = players[mob_rb_id]["action_target"]
-        if target_id:
-            players[target_id]["action_target"] = "Blocked by Mob RB"
-            logger.debug(f"Mob RB blocked {target_id} ({players[target_id]['role'].name})")
-            mob_block_target = target_id
-    return(story_text)
+    logger.info("process_role_block completed")
+    return story_text
 
 async def process_sk_night_kill(bot):
     global current_phase, phase_number, players, town_block_target, mob_block_target, story_text
