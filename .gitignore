@@ -3,6 +3,7 @@ config.py
 
 # discord roles
 Data/discord_roles.json
+data/discord_roles.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -185,3 +186,4 @@ nohup.err
 /Stats/Alpha Testing/
 /Stats/BETA Testing/
 /Stats/alpha_testing
+Data/discord_roles.json

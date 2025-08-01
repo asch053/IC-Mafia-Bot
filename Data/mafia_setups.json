@@ -1,102 +1,74 @@
 {
   "5": [
     {
-      "id": "5_players_test_setup_1",
+      "id": "5_players_balanced_1",
       "roles": [
         {
           "name": "Godfather",
           "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
+          "quantity": 1,
+          "action": "Kill",
           "short_description": "Immune, chooses Mafia target.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
+          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions."
         },
         {
           "name": "Town Doctor",
           "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+          "quantity": 1,
+          "action": "Heal",
           "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
+          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead."
         },
         {
-          "name": "Town Role Blocker",
-          "alignment": "Town",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
+          "name": "Mob Goon",
+          "alignment": "Mafia",
           "quantity": 1,
-          "action": "Block"
+          "action": "",
+          "short_description": "Standard Mafia member.",
+          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions."
         },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
-          "quantity": 1,
-          "action": "Kill"
-        }
+        { "name": "Town Cop", "alignment": "Town", "short_description": "Can investigates one player each night to learn their alignment." ,"description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 }
       ]
     }
   ],
   "6": [
     {
-      "id": "6_players_test_setup_1",
+      "id": "6_players_balanced_1",
       "roles": [
         {
           "name": "Godfather",
           "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
+          "quantity": 1,
+          "action": "Kill",
           "short_description": "Immune, chooses Mafia target.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Role Blocker",
-          "alignment": "Mafia",
-          "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-           "action":"Block"
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
+          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions."
         },
         {
           "name": "Town Doctor",
           "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+          "quantity": 1,
+          "action": "Heal",
           "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
+          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead."
         },
         {
-          "name": "Town Role Blocker",
+          "name": "Mob Goon",
+          "alignment": "Mafia",
+          "quantity": 1,
+          "action": "",
+          "short_description": "Standard Mafia member.",
+          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions."
+        },
+        { "name": "Town Cop", "alignment": "Town", "short_description": "Can investigates one player each night to learn their alignment." ,"description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        {
+          "name": "Plain Townie",
           "alignment": "Town",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
           "quantity": 1,
-          "action": "Block"
-        },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
-          "quantity": 1,
-          "action": "Kill"
+          "action": "",
+          "short_description": "Normal member of town.",
+          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead."
         }
       ]
     }
@@ -105,54 +77,12 @@
     {
       "id": "7_players_setup_1",
       "roles": [
-        {
-          "name": "Godfather",
-          "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "Immune, chooses Mafia target.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Goon",
-          "alignment": "Mafia",
-          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "Standard Mafia member.",
-          "quantity": 1,
-          "action": ""
-        },
-        {
-          "name": "Town Role Blocker",
-          "alignment": "Town",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-          "action": "Block"
-        },
-        {
-          "name": "Town Doctor",
-          "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
-        },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Normal member of town.",
-          "quantity": 2,
-          "action": ""
-        },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
-          "quantity": 1,
-          "action": "Kill"
-        }
+        { "name": "Godfather", "alignment": "Mafia","short_description": "Chooses the Mafia's target each night." ,"description": "Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bot to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Mob Goon", "alignment": "Mafia","short_description": "A member of the Mafia." ,"description": "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Town Cop", "alignment": "Town", "short_description": "Can investigates one player each night to learn their alignment." ,"description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Doctor", "alignment": "Town","short_description": "Can heal one player each night" ,"description": "You are town alligned and can protect one player each night from being killed.\n Use _heal player-name_ during the night phase in this DM with the bot to heal your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Plain Townie", "alignment": "Town","short_description": "Normal member of town" , "description": "A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 2 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 }
       ]
     }
   ],
@@ -160,54 +90,13 @@
     {
       "id": "8_players_setup_1",
       "roles": [
-        {
-          "name": "Godfather",
-          "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob members. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "Immune, chooses Mafia target.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Goon",
-          "alignment": "Mafia",
-          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob members. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "A member of the Mafia.",
-          "quantity": 1,
-          "action": ""
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can investigate one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
-        {
-          "name": "Town Doctor",
-          "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
-        },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Normal member of town.",
-          "quantity": 3,
-          "action": ""
-        },
-        {
-          "name": "Mob Role Blocker",
-          "alignment": "Mafia",
-          "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-           "action":"Block"
-        }
+        { "name": "Godfather", "alignment": "Mafia","short_description": "Chooses the Mafia's target each night.", "description": "Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bo to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Mob Goon", "alignment": "Mafia","short_description": "A member of the Mafia." , "description": "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Town Cop", "alignment": "Town","short_description": "Can investigates one player each night to learn their alignment." , "description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Doctor", "alignment": "Town","short_description": "Can heal one player each night", "description": "You are town alligned and can protect one player each night from being killed.\n Use _heal player-name_ during the night phase in this DM with the bot to heal your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Plain Townie", "alignment": "Town","short_description": "Normal member of town" , "description": "A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 2 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        { "name": "Serial Killer", "alignment": "Neutral","short_description": "Kills one player each night.", "description": "Kills one player each night.\n Use _/kill player-name_ in this DM with the bot to kill your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and town players are dead", "quantity": 1 }
       ]
     }
   ],
@@ -215,62 +104,13 @@
     {
       "id": "9_players_setup_1",
       "roles": [
-        {
-          "name": "Godfather",
-          "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "Chooses the Mafia's target each night.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Goon",
-          "alignment": "Mafia",
-          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "A member of the Mafia.",
-          "quantity": 1,
-          "action": ""
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can investigate one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
-        {
-          "name": "Town Doctor",
-          "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
-        },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Normal member of town.",
-          "quantity": 3,
-          "action": ""
-        },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Town Role Blocker",
-          "alignment": "Town",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-          "action": "Block"
-        }
+        { "name": "Godfather", "alignment": "Mafia","short_description": "Chooses the Mafia's target each night.", "description": "Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bo to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Mob Goon", "alignment": "Mafia","short_description": "A member of the Mafia.", "description": "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Town Cop", "alignment": "Town","short_description": "Can investigates one player each night to learn their alignment." , "description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Doctor", "alignment": "Town","short_description": "Can heal one player each night", "description": "You are town alligned and can protect one player each night from being killed.\n Use _heal player-name_ during the night phase in this DM with the bot to heal your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Plain Townie", "alignment": "Town","short_description": "Normal member of town" , "description": "A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 3 },
+        { "name": "Serial Killer", "alignment": "Neutral","short_description": "Kills one player each night.", "description": "Kills one player each night.\n Use _/kill player-name_ in this DM with the bot to kill your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and town players are dead", "quantity": 1 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 }
       ]
     }
   ],
@@ -278,70 +118,14 @@
     {
       "id": "10_players_setup_1",
       "roles": [
-        {
-          "name": "Godfather",
-          "alignment": "Mafia",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob members. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "Chooses the Mafia's target each night.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Role Blocker",
-          "alignment": "Mafia",
-          "description": "Prevents one player from performing their night action each night. Cannot target the same player twice in a row. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-           "action":"Block"
-        },
-        {
-          "name": "Mob Goon",
-          "alignment": "Mafia",
-          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob members. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "short_description": "A member of the Mafia.",
-          "quantity": 1,
-          "action": ""
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
-        {
-          "name": "Town Doctor",
-          "alignment": "Town",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Can heal one player each night.",
-          "quantity": 1,
-          "action": "Heal"
-        },
-        {
-          "name": "Town Role Blocker",
-          "alignment": "Town",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Prevents one player from performing their night action.",
-          "quantity": 1,
-          "action": "Block"
-        },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "short_description": "Normal member of town.",
-          "quantity": 3,
-          "action": ""
-        },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "short_description": "Kills one player each night.",
-          "quantity": 1,
-          "action": "Kill"
-        }
+        { "name": "Godfather", "alignment": "Mafia","short_description": "Chooses the Mafia's target each night.", "description": "Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bo to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Mob Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        { "name": "Mob Goon", "alignment": "Mafia","short_description": "A member of the Mafia.", "description": "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Town Cop", "alignment": "Town","short_description": "Can investigates one player each night to learn their alignment." , "description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Doctor", "alignment": "Town","short_description": "Can heal one player each night", "description": "You are town alligned and can protect one player each night from being killed.\n Use _heal player-name_ during the night phase in this DM with the bot to heal your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        { "name": "Plain Townie", "alignment": "Town","short_description": "Normal member of town" , "description": "A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 3 },
+        { "name": "Serial Killer", "alignment": "Neutral","short_description": "Kills one player each night.", "description": "Kills one player each night.\n Use _/kill player-name_ in this DM with the bot to kill your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and town players are dead", "quantity": 1 }
       ]
     }
   ],
@@ -349,70 +133,14 @@
     {
       "id": "11_players_setup_1",
       "roles": [
-        {
-          "name": "Godfather",
-          "alignment": "Mafia",
-          "short_description": "Chooses the Mafia's target each night.",
-          "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "quantity": 1,
-          "action": "Kill"
-        },
-        {
-          "name": "Mob Role Blocker",
-          "alignment": "Mafia",
-          "short_description": "Prevents one player from performing their night action.",
-          "description": "You are Mafia aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "quantity": 1,
-          "action": "Block"
-        },
-        {
-          "name": "Mob Goon",
-          "alignment": "Mafia",
-          "short_description": "A member of the Mafia.",
-          "description": "A member of the Mafia. A separate message will be sent with the identity of the other mob member. You will be promoted to Godfather if the Godfather dies. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions.",
-          "quantity": 1,
-          "action": ""
-        },
-        {
-          "name": "Town Cop",
-          "alignment": "Town",
-          "short_description": "Investigates one player each night to learn their alignment.",
-          "description": "You are town aligned and can investigate one player each night to learn their alignment. Use `/investigate player-name` during the night phase in this DM with the bot to investigate your chosen player. Results will be sent as soon as the day phase starts. Use them wisely. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "quantity": 1,
-          "action": "Investigate"
-        },
-        {
-          "name": "Town Doctor",
-          "alignment": "Town",
-          "short_description": "Can heal one player each night.",
-          "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "quantity": 1,
-          "action": "Heal"
-        },
-        {
-          "name": "Town Role Blocker",
-          "alignment": "Town",
-          "short_description": "Prevents one player from performing their night action.",
-          "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "quantity": 1,
-          "action": "Block"
-        },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "short_description": "Normal member of town.",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
-          "quantity": 4,
-          "action": ""
-        },
-        {
-          "name": "Serial Killer",
-          "alignment": "Neutral",
-          "short_description": "Kills one player each night.",
-          "description": "Kills one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and town players are dead.",
-          "quantity": 1,
-          "action": "Kill"
-        }
+        { "name": "Godfather", "alignment": "Mafia","short_description": "Chooses the Mafia's target each night.", "description": "Chooses the Mafia's target each night. \n Use _/kill player-name_ in this DM with the bo to kill your chosen player. \n A seperate message will be sent with the identity of the other mob member. \n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Mob Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        { "name": "Mob Goon", "alignment": "Mafia","short_description": "A member of the Mafia.", "description": "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions", "quantity": 1 },
+        { "name": "Town Cop", "alignment": "Town","short_description": "Can investigates one player each night to learn their alignment." , "description": "You are town alligned and can investigates one player each night to learn their alignment.\n Use _investigate player-name_ during the night phase in this DM with the bot to investigate your chosen player.\n Results will be sent as soon as day phase starts. Use them wisely.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Doctor", "alignment": "Town","short_description": "Can heal one player each night", "description": "You are town alligned and can protect one player each night from being killed.\n Use _heal player-name_ during the night phase in this DM with the bot to heal your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 1 },
+        { "name": "Town Role Blocker", "alignment": "Town", "short_description": "Prevents one player from performing their night action.","description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.", "quantity": 1 },
+        { "name": "Plain Townie", "alignment": "Town","short_description": "Normal member of town" , "description": "A regular member of the town.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and the SK are dead", "quantity": 4 },
+        { "name": "Serial Killer", "alignment": "Neutral","short_description": "Kills one player each night.", "description": "Kills one player each night.\n Use _/kill player-name_ in this DM with the bot to kill your chosen player.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when all mob and town players are dead", "quantity": 1 }
       ]
     }
   ]
