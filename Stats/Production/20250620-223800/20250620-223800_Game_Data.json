@@ -1,0 +1,130 @@
+[
+    {
+        "game_id": "20250620-223800",
+        "total_phases": 6,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            {
+                "player_id": -5,
+                "name": "MafiaBot 9000",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            {
+                "player_id": -1,
+                "name": "Botty McBotface",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 3",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 3",
+                    "phase num": 3,
+                    "total phases": 6,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680
+                    ]
+                }
+            },
+            {
+                "player_id": -4,
+                "name": "Definitely Not Sus",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 2",
+                    "phase num": 2,
+                    "total phases": 4,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680
+                    ]
+                }
+            },
+            {
+                "player_id": -3,
+                "name": "Innocent Bystander",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            {
+                "player_id": -7,
+                "name": "Sneaky McSneakface",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": {
+                    "phase": "Day 1",
+                    "phase num": 1,
+                    "total phases": 2,
+                    "how": "Lynched",
+                    "voters": [
+                        225405842235719680
+                    ]
+                }
+            },
+            {
+                "player_id": -6,
+                "name": "TownieBot 3000",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            }
+        ]
+    }
+]

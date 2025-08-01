@@ -6,6 +6,7 @@ from discord import app_commands # Import app_commands
 from discord.ext import commands
 from game.engine import Game
 from datetime import datetime, timezone
+import utils.utilities as utilities
 
 
 logger = logging.getLogger('discord')
@@ -142,13 +143,14 @@ class GameCog(commands.Cog, name="GameCog"):
     @app_commands.command(name="mafiastatus", description="Displays the current game status.")
     @app_commands.check(is_game_active)
     async def status_command(self, interaction: discord.Interaction):
+        logger.info(f"`/mafiastatus` command was called - {self.game}.")
         if self.game is None:
             await interaction.response.send_message("No game is currently running.", ephemeral=True)
             logger.info("`/mafiastatus` command was used but no game is currently running.")
             return
         logger.info(f"`/mafiastatus` command was used by {interaction.user.name}.")
         status_message = self.game.get_status_message()
-        await interaction.response.send_message(status_message, ephemeral=True)
+        await interaction.response.send_message(status_message, ephemeral=False)
 
     @app_commands.command(name="vote", description="Vote to lynch a player during the day.")
     @app_commands.describe(player="The player you want to lynch.")
@@ -165,8 +167,30 @@ class GameCog(commands.Cog, name="GameCog"):
     @app_commands.check(is_game_active)
     async def count_votes_command(self, interaction: discord.Interaction):
         await self.game.send_vote_count(interaction.channel)
-        await interaction.response.send_message("Vote count displayed.", ephemeral=True)
+        await interaction.response.send_message("Vote count displayed.", ephemeral=False)
     
+    # --- Player Commands DM only ---
+    @app_commands.command(name="myrole", description="[DM Only] Resends your current role information.")
+    @app_commands.check(is_game_active)
+    async def myrole_command(self, interaction: discord.Interaction):
+        """(DM Only) Allows a player to have their role card resent."""
+        if interaction.guild:
+            await interaction.response.send_message("This command can only be used in DMs.", ephemeral=True)
+            return
+        game = self.get_game_instance()
+        player_obj = game.players.get(interaction.user.id)
+        if not player_obj or not player_obj.role:
+            await interaction.response.send_message("You are not currently in the game or have not been assigned a role.", ephemeral=True)
+            return
+        await interaction.response.defer(ephemeral=True)
+        # Call the updated utility function, passing the game's guild
+        success = await utilities.send_role_dm(self.bot, player_obj.id, player_obj.role, game.guild)
+        if success:
+            await interaction.followup.send("Your role information has been resent to you.", ephemeral=True)
+        else:
+            await interaction.followup.send("I was unable to send your role information. Please check your privacy settings and try again. A moderator has been notified.", ephemeral=True)
+
+
     # --- Night Action Commands (intended for DMs) ---
     async def _handle_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
         """Helper function to reduce code duplication for night actions."""
@@ -177,9 +201,9 @@ class GameCog(commands.Cog, name="GameCog"):
             await interaction.response.send_message("Night actions must be used in DMs.", ephemeral=True)
             return
         # The game engine handles all the logic.
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=False)
         message = await self.game.record_night_action(interaction, action_type, target_name)
-        await interaction.followup.send(message, ephemeral=True)
+        await interaction.followup.send(message, ephemeral=False)
         logger.debug(f"{interaction.user.id} has requested to {action_type} {target_name}.")
 
     @app_commands.command(name="kill", description="[DM Only] Action for roles that can kill.")
@@ -211,3 +235,4 @@ class GameCog(commands.Cog, name="GameCog"):
 
 async def setup(bot):
     await bot.add_cog(GameCog(bot))
+    logger.info("GameCog loaded.")

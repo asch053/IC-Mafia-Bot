@@ -108,7 +108,68 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
         except discord.HTTPException as e:
             logger.error(f"Failed to update non-player roles for {member.name}: {e}")
 
-async def send_role_dm(bot, player_id, role):
+async def send_role_dm(bot, player_id, role, guild):
+    """
+    Sends a DM to the player with their role information.
+    Includes timeout handling and moderator alerts on failure.
+    Returns True on success, False on failure.
+    """
+    try:
+        player = await bot.fetch_user(player_id)
+        message = f"**Your Role: {role.name}**\n\n**Alignment:** {role.alignment}\n\n**Description:** {role.description}"
+        logger.debug(f"Attempting to send role DM to {player.name} ({player_id})")
+        # Use asyncio.wait_for to add a timeout as specified in the config file
+        await asyncio.wait_for(player.send(message), timeout=config.DM_TIMEOUT)
+        logger.info(f"Successfully sent role DM to {player.name} ({player_id}).")
+        return True
+    except (discord.Forbidden, discord.HTTPException) as e:
+        logger.error(f"Could not send role DM to player {player_id} due to privacy settings or other Discord error.")
+        # Alert moderators
+        mod_channel = bot.get_channel(config.MOD_CHANNEL_ID)
+        if mod_channel:
+            member = guild.get_member(player_id)
+            await mod_channel.send(
+                f"⚠️ **DM Failed:** Could not send role information to {member.mention if member else f'user ID `{player_id}`'}. "
+                f"Their DMs are likely closed. Please contact them."
+            )
+        return False
+    except asyncio.TimeoutError:
+        logger.error(f"Timed out while trying to send role DM to player {player_id}.")
+        # Alert moderators
+        mod_channel = bot.get_channel(config.MOD_CHANNEL_ID)
+        if mod_channel:
+            member = guild.get_member(player_id)
+            await mod_channel.send(
+                f"⚠️ **DM Timed Out:** Timed out trying to send role information to {member.mention if member else f'user ID `{player_id}`'}. "
+                f"They may need to be contacted."
+            )
+    # --- FALLBACK LOGIC ---
+        member = guild.get_member(player_id)
+        if not member:
+            logger.error(f"Could not find member {player_id} in guild for fallback channel.")
+            return False
+        # Find or create a private channel for the user
+        failsafe_category = discord.utils.get(guild.categories, name="Mafia Game DMs") # Or your chosen category name
+        if not failsafe_category:
+            # Create the category if it doesn't exist
+            overwrites = {guild.default_role: discord.PermissionOverwrite(read_messages=False)}
+            failsafe_category = await guild.create_category("Mafia Game DMs", overwrites=overwrites)
+        channel_name = f"mafia-role-{member.name}"
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            member: discord.PermissionOverwrite(read_messages=True)
+        }
+        channel = await guild.create_text_channel(channel_name, category=failsafe_category, overwrites=overwrites)
+        await channel.send(
+            f"Hello {member.mention}, I couldn't send you a Direct Message. This is a private channel for your role information.\n\n"
+            f"You are a **{role.name}**.\n{role.description}"
+        )
+        return False # Indicate DM failed but fallback was attempted
+    except Exception as e:
+        logger.exception(f"An unexpected error occurred while sending role DM to player {player_id}: {e}")
+        return False
+
+async def send_role_dm(bot, player_id, role, guild):
     """Sends a DM to the player with their role information."""
     try:
         player = await bot.fetch_user(player_id)

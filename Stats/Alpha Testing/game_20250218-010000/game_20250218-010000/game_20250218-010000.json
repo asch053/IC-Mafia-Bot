@@ -1,0 +1,71 @@
+{
+    "game_id": "20250218-010000",
+    "start_time": "2025-02-18T01:00:00.559706+00:00",
+    "players": {
+        "225405842235719680": {
+            "name": ".you_fool",
+            "display_name": "You_Fool",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "216918396539764737": {
+            "name": "ordos.",
+            "display_name": "Ordos",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "479362336264683520": {
+            "name": "mrblonde3442",
+            "display_name": "Mrblonde",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "469571706898350080": {
+            "name": "jason.wills",
+            "display_name": "Soul",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "295040267973820416": {
+            "name": "bar.at",
+            "display_name": "Nut",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "220142891027136512": {
+            "name": "pandabbear",
+            "display_name": "Panda",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        },
+        "502496057192742932": {
+            "name": "apunypenguin",
+            "display_name": "~APunyPenguin~",
+            "role": null,
+            "alive": true,
+            "votes": 0,
+            "action_target": null,
+            "previous_target": null
+        }
+    },
+    "phases": [],
+    "winner": null
+}

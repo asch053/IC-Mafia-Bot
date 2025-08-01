@@ -65,20 +65,20 @@ class Game:
         # --- Data Loading ---
         logger.debug("Loading game data from JSON files.")
         try:
-            self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
+            self.discord_role_data = load_data("Data/discord_roles.json") #loads discord roles data
         except Exception as e:
             logger.error(f"Error loading discord roles data: {e}")
         try:
-            self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
+            self.npc_names = load_data("Data/bot_names.txt") #load NPC bot names
         except Exception as e:
             logger.error(f"Error loading NPC names: {e}")
         try:    
-            self.rules_text = "\n".join(load_data("data/rules.txt"))
+            self.rules_text = "\n".join(load_data("Data/rules.txt"))
         except Exception as e:
             logger.error(f"Error loading rules text: {e}")
             self.rules_text = "No rules text found. Please check the rules.txt file."
         try:    
-            self.mafia_setups = load_data("data/mafia_setups.json")
+            self.mafia_setups = load_data("Data/mafia_setups.json")
         except Exception as e:
             logger.error(f"Error loading mafia setups: {e}")
             logger.critical("No mafia setups loaded. The game cannot start.")
@@ -153,7 +153,7 @@ class Game:
         # Check if it's time to send a reminder message
         if self.last_reminder_time is None: # If no reminders have been sent yet, send the first one
             time_for_reminder = True
-        elif (datetime.now(timezone.utc) - self.last_reminder_time).total_seconds() >= config.start_message_send_delay * 60:
+        elif (datetime.now(timezone.utc) - self.last_reminder_time).total_seconds() >= (config.start_message_send_delay * 60):
             # If enough time has passed (parameter is start_message_send_delay in config.py) since the last reminder, send another one
             time_for_reminder = True
         if time_for_reminder: # If it's time to send a reminder then send it to sign-up channel and @spectator role
@@ -161,10 +161,11 @@ class Game:
             if not spectator_role:
                 return # Can't send reminders without the role
             time_left_str = format_time_remaining(self.game_settings["phase_end_time"])
-            await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(
-                    f"**Reminder!** {spectator_role.mention}  There's still time to join! Sign-ups close in **{time_left_str}**.\n"
-                    f"Use `/mafiajoin` to participate!\n"
-            )
+            #await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(
+            #        f"**Reminder!** {spectator_role.mention}  There's still time to join! Sign-ups close in **{time_left_str}**.\n"
+            #        f"Use `/mafiajoin` to participate!\n"
+            #)
+            self.last_reminder_time = datetime.now(timezone.utc)
 
     # In game/engine.py
 
@@ -326,7 +327,7 @@ class Game:
                 role = self.game_roles[i]
                 player_obj.assign_role(role) # Use the Player object's method
                 if not player_obj.is_npc:
-                    await send_role_dm(self.bot, player_id, role)
+                    await send_role_dm(self.bot, player_id, role, self.guild)
             else:
                 logger.warning(f"More players than available roles. Player {player_obj.display_name} was not assigned a role.")
         logger.info("Roles assigned to players successfully.")
@@ -476,10 +477,6 @@ class Game:
                 # If the target is dead, send a message and log the attempt
                 logger.warning(f"{voter_obj.display_name} tried to vote for a dead player: {target_obj.display_name}.")
                 return f"**{target_obj.display_name}** is already dead and cannot be voted for."
-            if voter_obj.id == target_obj.id: # Check if the voter is trying to vote for themselves
-                # If so, send a message and log the attempt
-                logger.warning(f"{voter_obj.display_name} tried to vote for themselves.")
-                return "You cannot vote for yourself."
             logger.info(f"Vote from {voter_obj.display_name} for target {target_obj.display_name} is valid.")
             # 2. Handle vote changes (un-vote previous target)
             if voter_obj.action_target is not None: # First check if the voter has a previous target

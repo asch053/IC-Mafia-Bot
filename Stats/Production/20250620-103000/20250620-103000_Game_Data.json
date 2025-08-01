@@ -1,0 +1,79 @@
+[
+    {
+        "game_id": "20250620-103000",
+        "total_phases": 2,
+        "winner": "Mafia",
+        "players": [
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase num": 1,
+                    "total phases": 0,
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": 331831967723159566,
+                "name": "Schniepel",
+                "role": "Town Role Blocker",
+                "alignment": "Town",
+                "status": "Dead",
+                "won": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": {
+                    "phase": "Night 1",
+                    "phase num": 1,
+                    "total phases": 0,
+                    "how": "Killed by Mob"
+                }
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 1039345137928646688,
+                "name": "sCriv",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 377879725894533121,
+                "name": "Squatch",
+                "role": "Mob Role Blocker",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            }
+        ]
+    }
+]

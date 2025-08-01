@@ -89,16 +89,13 @@ async def setup_hook():
             logger.info(f"Successfully loaded extension: {extension}")
         except Exception as e:
             logger.error(f"Failed to load extension {extension}.", exc_info=True)
-    # Sync the slash commands to your specific test server for instant updates
+    # In your setup_hook function for the BETA BOT
     try:
-        # Create a discord.Object for your guild
-        guild = discord.Object(id=config.SERVER_ID)
-        # Sync to this specific guild only
-        bot.tree.copy_global_to(guild=guild)
-        synced = await bot.tree.sync(guild=guild)
-        logger.info(f"Synced {len(synced)} slash command(s) to guild {config.SERVER_ID}.")
+        # This syncs commands globally to all servers and DMs
+        synced = await bot.tree.sync()
+        logger.info(f"Synced {len(synced)} global slash command(s).")
     except Exception as e:
-        logger.error("Failed to sync slash commands.", exc_info=True)
+        logger.error("Failed to sync global slash commands.", exc_info=True)
 
 
 # --- 5. on_ready Event (Simplified) ---

@@ -1,0 +1,85 @@
+[
+    {
+        "game_id": "20250629-100000",
+        "total_phases": 6,
+        "winner": "Draw",
+        "players": [
+            {
+                "player_id": 220142891027136512,
+                "name": "Panda",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": "You_Fool",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {}
+            },
+            {
+                "player_id": 746540828432007225,
+                "name": "LisaMVP",
+                "role": "Serial Killer",
+                "alignment": "Neutral",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            {
+                "player_id": -5,
+                "name": "MafiaBot 9000",
+                "role": "Town Role Blocker",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            {
+                "player_id": -9,
+                "name": "Totally Harmless",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "status": "Alive",
+                "won": false,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            }
+        ]
+    },
+    {
+        "game_id": "20250629-100000",
+        "total_phases": 0,
+        "winner": "Draw",
+        "players": []
+    }
+]
