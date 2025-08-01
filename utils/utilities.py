@@ -108,6 +108,47 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
         except discord.HTTPException as e:
             logger.error(f"Failed to update non-player roles for {member.name}: {e}")
 
+async def send_role_dm(bot, player_id, role, guild):
+    """
+    Sends a DM to the player with their role information.
+    Includes timeout handling and moderator alerts on failure.
+    Returns True on success, False on failure.
+    """
+    try:
+        player = await bot.fetch_user(player_id)
+        message = f"**Your Role: {role.name}**\n\n**Alignment:** {role.alignment}\n\n**Description:** {role.description}"
+        
+        # Use asyncio.wait_for to add a 15-second timeout
+        await asyncio.wait_for(player.send(message), timeout=15.0)
+        
+        logger.info(f"Successfully sent role DM to {player.name} ({player_id}).")
+        return True
+    except (discord.Forbidden, discord.HTTPException) as e:
+        logger.error(f"Could not send role DM to player {player_id} due to privacy settings or other Discord error.")
+        # Alert moderators
+        mod_channel = bot.get_channel(config.MOD_CHANNEL_ID)
+        if mod_channel:
+            member = guild.get_member(player_id)
+            await mod_channel.send(
+                f"⚠️ **DM Failed:** Could not send role information to {member.mention if member else f'user ID `{player_id}`'}. "
+                f"Their DMs are likely closed. Please contact them."
+            )
+        return False
+    except asyncio.TimeoutError:
+        logger.error(f"Timed out while trying to send role DM to player {player_id}.")
+        # Alert moderators
+        mod_channel = bot.get_channel(config.MOD_CHANNEL_ID)
+        if mod_channel:
+            member = guild.get_member(player_id)
+            await mod_channel.send(
+                f"⚠️ **DM Timed Out:** Timed out trying to send role information to {member.mention if member else f'user ID `{player_id}`'}. "
+                f"They may need to be contacted."
+            )
+        return False
+    except Exception as e:
+        logger.exception(f"An unexpected error occurred while sending role DM to player {player_id}: {e}")
+        return False
+
 async def send_role_dm(bot, player_id, role):
     """Sends a DM to the player with their role information."""
     try:

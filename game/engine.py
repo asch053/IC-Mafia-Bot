@@ -107,7 +107,7 @@ class Game:
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
         announcement = (
             f"**A new game of Mafia has been scheduled!**\n\n"
-            f"Sign-ups are now open for **{time_left_str}**! {spectator_role.mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
+            f"Sign-ups are now open for **{time_left_str}**! @{spectator_role} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
             f"The game will officially begin at: **{start_time_str}** (or when {self.max_players} players join)."
         )
         logger.info(f"Game announcement: {announcement}")
@@ -426,7 +426,7 @@ class Game:
         for minutes, text in reminder_points.items():
             if total_minutes_left <= minutes and minutes not in self.reminders_sent:
                 await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(
-                    f"**Reminder:** There is **{text}** left in the phase! {living_role.mention}"
+                    f"**Reminder:** There is **{text}** left in the phase! @{living_role}"
                 )
                 self.reminders_sent.add(minutes) # Add this reminder to the set of sent reminders so can avoid sending it again
                 logger.info(f"Sent reminder for {text} remaining in the phase.")

@@ -6,6 +6,7 @@ from discord import app_commands # Import app_commands
 from discord.ext import commands
 from game.engine import Game
 from datetime import datetime, timezone
+import utils.utilities as utilities
 
 
 logger = logging.getLogger('discord')
@@ -168,6 +169,28 @@ class GameCog(commands.Cog, name="GameCog"):
         await self.game.send_vote_count(interaction.channel)
         await interaction.response.send_message("Vote count displayed.", ephemeral=False)
     
+    # --- Player Commands DM only ---
+    @app_commands.command(name="myrole", description="[DM Only] Resends your current role information.")
+    @app_commands.check(is_game_active)
+    async def myrole_command(self, interaction: discord.Interaction):
+        """(DM Only) Allows a player to have their role card resent."""
+        if interaction.guild:
+            await interaction.response.send_message("This command can only be used in DMs.", ephemeral=True)
+            return
+        game = self.get_game_instance()
+        player_obj = game.players.get(interaction.user.id)
+        if not player_obj or not player_obj.role:
+            await interaction.response.send_message("You are not currently in the game or have not been assigned a role.", ephemeral=True)
+            return
+        await interaction.response.defer(ephemeral=True)
+        # Call the updated utility function, passing the game's guild
+        success = await utilities.send_role_dm(self.bot, player_obj.id, player_obj.role, game.guild)
+        if success:
+            await interaction.followup.send("Your role information has been resent to you.", ephemeral=True)
+        else:
+            await interaction.followup.send("I was unable to send your role information. Please check your privacy settings and try again. A moderator has been notified.", ephemeral=True)
+
+
     # --- Night Action Commands (intended for DMs) ---
     async def _handle_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
         """Helper function to reduce code duplication for night actions."""
