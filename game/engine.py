@@ -107,7 +107,7 @@ class Game:
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
         announcement = (
             f"**A new game of Mafia has been scheduled!**\n\n"
-            f"Sign-ups are now open for **{time_left_str}**! @{spectator_role} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
+            f"Sign-ups are now open for **{time_left_str}**! {spectator_role.mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
             f"The game will officially begin at: **{start_time_str}** (or when {self.max_players} players join)."
         )
         logger.info(f"Game announcement: {announcement}")
@@ -327,7 +327,7 @@ class Game:
                 role = self.game_roles[i]
                 player_obj.assign_role(role) # Use the Player object's method
                 if not player_obj.is_npc:
-                    await send_role_dm(self.bot, player_id, role)
+                    await send_role_dm(self.bot, player_id, role, self.guild)
             else:
                 logger.warning(f"More players than available roles. Player {player_obj.display_name} was not assigned a role.")
         logger.info("Roles assigned to players successfully.")
@@ -426,7 +426,7 @@ class Game:
         for minutes, text in reminder_points.items():
             if total_minutes_left <= minutes and minutes not in self.reminders_sent:
                 await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(
-                    f"**Reminder:** There is **{text}** left in the phase! @{living_role}"
+                    f"**Reminder:** There is **{text}** left in the phase! {living_role.mention}"
                 )
                 self.reminders_sent.add(minutes) # Add this reminder to the set of sent reminders so can avoid sending it again
                 logger.info(f"Sent reminder for {text} remaining in the phase.")

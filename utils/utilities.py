@@ -117,10 +117,9 @@ async def send_role_dm(bot, player_id, role, guild):
     try:
         player = await bot.fetch_user(player_id)
         message = f"**Your Role: {role.name}**\n\n**Alignment:** {role.alignment}\n\n**Description:** {role.description}"
-        
-        # Use asyncio.wait_for to add a 15-second timeout
-        await asyncio.wait_for(player.send(message), timeout=15.0)
-        
+        logger.debug(f"Attempting to send role DM to {player.name} ({player_id})")
+        # Use asyncio.wait_for to add a timeout as specified in the config file
+        await asyncio.wait_for(player.send(message), timeout=config.DM_TIMEOUT)
         logger.info(f"Successfully sent role DM to {player.name} ({player_id}).")
         return True
     except (discord.Forbidden, discord.HTTPException) as e:
@@ -144,12 +143,33 @@ async def send_role_dm(bot, player_id, role, guild):
                 f"⚠️ **DM Timed Out:** Timed out trying to send role information to {member.mention if member else f'user ID `{player_id}`'}. "
                 f"They may need to be contacted."
             )
-        return False
+    # --- FALLBACK LOGIC ---
+        member = guild.get_member(player_id)
+        if not member:
+            logger.error(f"Could not find member {player_id} in guild for fallback channel.")
+            return False
+        # Find or create a private channel for the user
+        failsafe_category = discord.utils.get(guild.categories, name="Mafia Game DMs") # Or your chosen category name
+        if not failsafe_category:
+            # Create the category if it doesn't exist
+            overwrites = {guild.default_role: discord.PermissionOverwrite(read_messages=False)}
+            failsafe_category = await guild.create_category("Mafia Game DMs", overwrites=overwrites)
+        channel_name = f"mafia-role-{member.name}"
+        overwrites = {
+            guild.default_role: discord.PermissionOverwrite(read_messages=False),
+            member: discord.PermissionOverwrite(read_messages=True)
+        }
+        channel = await guild.create_text_channel(channel_name, category=failsafe_category, overwrites=overwrites)
+        await channel.send(
+            f"Hello {member.mention}, I couldn't send you a Direct Message. This is a private channel for your role information.\n\n"
+            f"You are a **{role.name}**.\n{role.description}"
+        )
+        return False # Indicate DM failed but fallback was attempted
     except Exception as e:
         logger.exception(f"An unexpected error occurred while sending role DM to player {player_id}: {e}")
         return False
 
-async def send_role_dm(bot, player_id, role):
+async def send_role_dm(bot, player_id, role, guild):
     """Sends a DM to the player with their role information."""
     try:
         player = await bot.fetch_user(player_id)
