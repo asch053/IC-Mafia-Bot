@@ -1,0 +1,403 @@
+[
+    {
+        "game_id": "20250731-220000",
+        "start_time": "2025-07-31T22:00:00.036805+00:00",
+        "players": {
+            "469571706898350080": {
+                "name": "jason.wills",
+                "display_name": "Soul",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "549657242170032154": {
+                "name": "yourgoddessdivine",
+                "display_name": "Goddess",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "225405842235719680": {
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "1039345137928646688": {
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "220666545544626177": {
+                "name": "arby3.",
+                "display_name": "Arby3",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "292241540687069186": {
+                "name": "kwik3h",
+                "display_name": "Jealous",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "760212300463603752": {
+                "name": "period_vampyr",
+                "display_name": "period_vampyr",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "479197632074612736": {
+                "name": "the_unknown96",
+                "display_name": "The_Unknown",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "1057856572899999744": {
+                "name": "thebigone05",
+                "display_name": "TheBigOne",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "213337264162340864": {
+                "name": "genesis00239",
+                "display_name": "Genesis",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            },
+            "216918396539764737": {
+                "name": "ordos.",
+                "display_name": "Ordos",
+                "role": null,
+                "alive": true,
+                "votes": 0,
+                "action_target": null,
+                "previous_target": null,
+                "missed_votes": 0,
+                "death_info": {
+                    "phase": null,
+                    "phase_num": null,
+                    "total_phases": null,
+                    "how": null
+                }
+            }
+        },
+        "phases": [],
+        "winner": null
+    },
+    {
+        "game_id": "20250731-220000",
+        "total_phases": 8,
+        "winner": "Town",
+        "players": [
+            {
+                "player_id": 469571706898350080,
+                "name": "jason.wills",
+                "display_name": "Soul",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. Use your vote wisely! Wins with Town.",
+                    "short_description": "Regular town member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": false,
+                "death_phase": "Night 3",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 549657242170032154,
+                "name": "yourgoddessdivine",
+                "display_name": "Goddess",
+                "role": {
+                    "name": "Town Role Blocker",
+                    "alignment": "Town",
+                    "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town.",
+                    "short_description": "Prevents a player's night action.",
+                    "action": "Block",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by SK",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 225405842235719680,
+                "name": ".you_fool",
+                "display_name": "You_Fool",
+                "role": {
+                    "name": "Mob Role Blocker",
+                    "alignment": "Mafia",
+                    "description": "Your mob boss has died so you as a member of the Mafia will now be promoted to Mob Godfather.\nyou now choose the Mafia's target each night. \n Use _/kill player-name_ in this DM during the night phase with the bot to kill your chosen player. \n \nDuring the day you can still use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
+                    "short_description": "A member of the Mafia. Can now choose the Mafia's target each night.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 4",
+                "death_cause": "Lynched",
+                "phases_lasted": 8,
+                "votes": []
+            },
+            {
+                "player_id": 1039345137928646688,
+                "name": "scriv88",
+                "display_name": "sCriv",
+                "role": {
+                    "name": "Mob Goon",
+                    "alignment": "Mafia",
+                    "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia.",
+                    "short_description": "Standard Mafia member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 1",
+                "death_cause": "Lynched",
+                "phases_lasted": 2,
+                "votes": []
+            },
+            {
+                "player_id": 220666545544626177,
+                "name": "arby3.",
+                "display_name": "Arby3",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. Use your vote wisely! Wins with Town.",
+                    "short_description": "Regular town member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 292241540687069186,
+                "name": "kwik3h",
+                "display_name": "Jealous",
+                "role": {
+                    "name": "Town Doctor",
+                    "alignment": "Town",
+                    "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town.",
+                    "short_description": "Protects a player each night.",
+                    "action": "Heal",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": false,
+                "death_phase": "Night 4",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 760212300463603752,
+                "name": "period_vampyr",
+                "display_name": "period_vampyr",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. Use your vote wisely! Wins with Town.",
+                    "short_description": "Regular town member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": false,
+                "death_phase": "Night 2",
+                "death_cause": "Killed by Mob",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 479197632074612736,
+                "name": "the_unknown96",
+                "display_name": "The_Unknown",
+                "role": {
+                    "name": "Town Cop",
+                    "alignment": "Town",
+                    "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town.",
+                    "short_description": "Investigates alignment.",
+                    "action": "Investigate",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": true,
+                "death_phase": null,
+                "death_cause": null,
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 1057856572899999744,
+                "name": "thebigone05",
+                "display_name": "TheBigOne",
+                "role": {
+                    "name": "Godfather",
+                    "alignment": "Mafia",
+                    "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia.",
+                    "short_description": "Chooses the Mafia's target.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Mafia",
+                "alive": false,
+                "death_phase": "Day 2",
+                "death_cause": "Lynched",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 213337264162340864,
+                "name": "genesis00239",
+                "display_name": "Genesis",
+                "role": {
+                    "name": "Plain Townie",
+                    "alignment": "Town",
+                    "description": "A regular member of the town. Use your vote wisely! Wins with Town.",
+                    "short_description": "Regular town member.",
+                    "action": "",
+                    "uses": null
+                },
+                "alignment": "Town",
+                "alive": false,
+                "death_phase": "Night 1",
+                "death_cause": "Killed by SK",
+                "phases_lasted": 4,
+                "votes": []
+            },
+            {
+                "player_id": 216918396539764737,
+                "name": "ordos.",
+                "display_name": "Ordos",
+                "role": {
+                    "name": "Serial Killer",
+                    "alignment": "Neutral",
+                    "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive.",
+                    "short_description": "Kills independently.",
+                    "action": "Kill",
+                    "uses": null
+                },
+                "alignment": "Neutral",
+                "alive": false,
+                "death_phase": "Day 3",
+                "death_cause": "Lynched",
+                "phases_lasted": 6,
+                "votes": []
+            }
+        ],
+        "end_time": "2025-08-04T22:05:08.296771+00:00"
+    }
+]

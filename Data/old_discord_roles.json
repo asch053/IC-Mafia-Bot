@@ -1,0 +1,18 @@
+{
+    "living": {
+      "id": 603943459841114112,
+      "name": "Living Players"
+    },
+    "dead": {
+      "id":603943320053481474,
+      "name": "Dead Players"
+    },
+    "mod": {
+      "id": 603942835108184064,
+      "name": "Mod"
+    },
+    "spectator": {
+        "id": 603943866776813603,
+        "name": "Spectator"
+      }
+  }
