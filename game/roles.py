@@ -113,7 +113,7 @@ def create_mob_role_blocker_role():
     """Creates an instance of the Mafioso role."""
     return MafiaSupport(
         name="Mob Role Blocker",
-        description= "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead.",
+        description= "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player.You will be promoted to Mob Godfather when no other mob are alive but you. If this happens you can use /block and /kill\n During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. \nYou win when there are more mob than other factions",
         short_description="Stops a player from acting.",
         abilities={"block": "Prevent a player from performing their night action."}
     )
