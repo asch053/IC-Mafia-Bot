@@ -109,9 +109,12 @@ class GameCog(commands.Cog, name="GameCog"):
             await interaction.response.send_message("The start time must be in the future.", ephemeral=True)
             return
          # UPDATED: Pass the cleanup method when creating the Game instance
+        await interaction.response.defer(ephemeral=True)
+        logger.info(f"Scheduling a new game to start at {start_datetime_obj} with phase duration of {phase_hours} hours.")
+        # Create a new game instance with the specified start time and phase duration
         self.game = Game(self.bot, interaction.guild, cleanup_callback=self._cleanup_game)
         logger.info(f"New game instance created by {interaction.user.name}.")
-        await interaction.response.send_message(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
+        await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
         await self.game.start(start_datetime_obj, phase_hours)
 
     # --- Player Commands (available in channels) ---
