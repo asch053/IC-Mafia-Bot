@@ -50,7 +50,7 @@ def setup_logging():
     # 6. Create console handler for INFO and up
     console_handler = logging.StreamHandler()
     console_handler.setFormatter(formatter)
-    console_handler.setLevel(logging.INFO)
+    console_handler.setLevel(logging.ERROR)
     # 7. Add all handlers to the main logger
     logger.addHandler(debug_handler)
     logger.addHandler(info_handler)
