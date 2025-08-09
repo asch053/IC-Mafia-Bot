@@ -64,15 +64,16 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
     """
     if night_outcomes[investigator_id]['status'] == 'blocked':
         return
-
+   
     investigator = game.players.get(investigator_id)
     target = game.players.get(target_id)
     if not investigator or not target: return
-
+    if investigator.alive is False:
+        logger.info(f"Investigation by {investigator_id} did not happen because the investigator is dead.")
+        return
     # --- Determine the result of the investigation ---
     role_name_result = target.role.name if target.role else "Unknown"
     short_desc_result = target.role.short_description if target.role else "No details."
-
     if target.role and target.role.investigation_result:
         result_data = target.role.investigation_result
         try:
@@ -80,7 +81,6 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
         except (IndexError, ValueError):
             logger.warning(f"Malformed investigation_result for role {target.role.name}")
             pass
-
     result_message = (
         f"Your investigation of **{target.display_name}** reveals they are **{role_name_result}**."
         f"\n> *{short_desc_result}*"

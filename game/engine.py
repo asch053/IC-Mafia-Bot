@@ -383,11 +383,12 @@ class Game:
             self.narration_manager.clear()
             if winner: #if there is a winner, announce them and stop the game loop
                 await self.announce_winner(winner)
-                self.game_loop.stop()
+                
                 logger.info(f"Game ended with winner: {winner}")
-                 
+                await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
+                await self.reset() # Reset the game state 
                 return
-            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
+            
             logger.info("Updated player roles in Discord based on current game state.")
             # Generate a status message with players listed and send it to the Rules channel
             status_message = self.get_status_message() 
@@ -889,6 +890,8 @@ class Game:
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
         logger.info(f"Announcing winner: {winner}")
+        # Calculate the total number of elapsed phases
+        total_phases_at_end = (self.game_settings['phase_number'] * 2) - (1 if self.game_settings['current_phase'].lower() == 'night' else 0)
         # Set 'is_winner' flag on player objects
         for player_obj in self.players.values():
             player_obj.is_winner = False # Default to not a winner
@@ -900,9 +903,19 @@ class Game:
             # Check for specific role wins (e.g., winner="Jester")
             elif player_obj.role.name == winner:
                 player_obj.is_winner = True
-
             if player_obj.is_winner:
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
+            # If player is NOT a winner AND is still alive, update their status
+            if not player_obj.is_winner and player_obj.is_alive:
+                player_obj.is_alive = False
+                # *** FIX: Check if death_info is None and initialize if needed ***
+                if player_obj.death_info is None:
+                    player_obj.death_info = {}
+                # Set death info for losing players
+                player_obj.kill(self.game_settings['current_phase'], "Game Over - Losing Player")
+                # Log the losing player as dead
+                logger.info(f"Marked losing player {player_obj.display_name} as dead.")
+            
         # Generate a status message
         status_message = self.get_status_message() # Generate a final status message
         self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager

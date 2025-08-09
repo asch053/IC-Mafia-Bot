@@ -63,7 +63,7 @@ class NarrationManager:
         if event_type == 'immune_kill':
             victim = event.get('victim')
             if not victim: return None
-            return f"An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect!"
+            return f"An assailant ambushed **{victim.role.name}** in the dark, but their target was unfazed. The attack had no effect!"
 
         if event_type == 'kill':
             victim = event.get('victim')
