@@ -112,10 +112,10 @@ class Game:
         )
         logger.info(f"Game announcement: {announcement}")
         # Send the announcement to the relevant channels
-        await self.bot.get_channel(config.TALKY_TALKY_CHANNEL_ID).send(announcement) #send announcement to #talky-talky channel
-        await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(announcement) #send announcement to #sign-up-here channel
+        await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(announcement) #send announcement to #announcement channel
+        await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         # Create a different message for the rules and roles channel, including the standard rules text
-        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"##New Game##\n--------------------------\n**Game Starting Soon!**\n\n{self.rules_text}\n")
+        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{self.rules_text}\n")
         logger.debug("Sign-up phase announcement sent to all channels.")
         # Start the sign-up monitoring loop
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
@@ -144,30 +144,30 @@ class Game:
         if game_should_start: # If any of the conditions are met, end the sign-up phase and send message stating signups have closed to the sign-up channel
             logger.info(f"Ending sign-up loop. Reason: {reason}")
             await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
+            await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
             self.signup_loop.stop() # Stop the sign-up loop
             if self.game_settings["current_phase"] == "signup":
                 await self.prepare_game() # Start preparing the game if the sign-up phase is still active
             return
-        # --- Send Reminder Message if game shouldn't start ---
-        time_for_reminder = False
-        # Check if it's time to send a reminder message
-        if self.last_reminder_time is None: # If no reminders have been sent yet, send the first one
-            time_for_reminder = True
-        elif (datetime.now(timezone.utc) - self.last_reminder_time).total_seconds() >= (config.start_message_send_delay * 60):
-            # If enough time has passed (parameter is start_message_send_delay in config.py) since the last reminder, send another one
-            time_for_reminder = True
-        if time_for_reminder: # If it's time to send a reminder then send it to sign-up channel and @spectator role
-            spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
-            if not spectator_role:
-                return # Can't send reminders without the role
-            time_left_str = format_time_remaining(self.game_settings["phase_end_time"])
-            #await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(
-            #        f"**Reminder!** {spectator_role.mention}  There's still time to join! Sign-ups close in **{time_left_str}**.\n"
-            #        f"Use `/mafiajoin` to participate!\n"
-            #)
-            self.last_reminder_time = datetime.now(timezone.utc)
+        # --- If phase has NOT ended, check for reminders ---
+        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
+        time_left = self.game_settings["phase_end_time"] - datetime.now(timezone.utc) #determine how much time is left in the current phase
+        time_left_str = format_time_remaining(self.game_settings["phase_end_time"])
+        total_minutes_left = time_left.total_seconds() / 60 # Convert to total minutes
+        if not spectator_role: return # Can't send reminders without the spectator role
+        reminder_points = config.REMINDER_POINTS # list of times to send reminders
+        # Loop through the times to send reminders and send one if the time left is less than or equal to one of the reminder time and the reminder has not been sent yet
+        logger.debug(f"Checking for reminders. Total minutes left: {total_minutes_left}")
+        for minutes, text in reminder_points.items():
+            if total_minutes_left <= minutes and minutes not in self.reminders_sent:
+                await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(
+                    f"**Reminder!** {spectator_role.mention}  There's still time to join! Sign-ups close in **{time_left_str}**.\n"
+                    f"Use `/mafiajoin` to participate!\n"
+            )
+                self.reminders_sent.add(minutes) # Add this reminder to the set of sent reminders so can avoid sending it again
+                logger.info(f"Sent reminder for {text} remaining in the phase.")
+                break # Only send one reminder per loop iteration
 
-    # In game/engine.py
 
     async def force_start(self, interaction: discord.Interaction):
         """Admin command to force the signup phase to end and the game to start."""

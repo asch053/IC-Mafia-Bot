@@ -68,7 +68,7 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
     investigator = game.players.get(investigator_id)
     target = game.players.get(target_id)
     if not investigator or not target: return
-    if investigator.alive is False:
+    if investigator.is_alive is False:
         logger.info(f"Investigation by {investigator_id} did not happen because the investigator is dead.")
         return
     # --- Determine the result of the investigation ---
