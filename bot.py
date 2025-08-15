@@ -86,14 +86,14 @@ async def setup_hook():
     for extension in initial_extensions:
         try:
             await bot.load_extension(extension)
-            logger.info(f"Successfully loaded extension: {extension}")
+            logger.critical(f"Successfully loaded extension: {extension}")
         except Exception as e:
             logger.error(f"Failed to load extension {extension}.", exc_info=True)
     # In your setup_hook function for the BETA BOT
     try:
         # This syncs commands globally to all servers and DMs
         synced = await bot.tree.sync()
-        logger.info(f"Synced {len(synced)} global slash command(s).")
+        logger.critical(f"Synced {len(synced)} global slash command(s).")
     except Exception as e:
         logger.error("Failed to sync global slash commands.", exc_info=True)
 
@@ -101,7 +101,7 @@ async def setup_hook():
 # --- 5. on_ready Event (Simplified) ---
 @bot.event
 async def on_ready():
-    logger.info(f"Logged in as {bot.user.name} (ID: {bot.user.id})")
+    logger.critical(f"Logged in as {bot.user.name} (ID: {bot.user.id})")
     # REMOVED: All cog loading logic is gone from here. It's not needed.
 
 
