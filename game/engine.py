@@ -20,6 +20,7 @@ from utils.utilities import (
     format_time_remaining,
     send_role_dm,
     send_mafia_info_dm,
+    
 )
 
 from game.narration import NarrationManager # Import the NarrationManager
@@ -32,7 +33,7 @@ logger = logging.getLogger('discord')
 
 class Game:
     """Manages the entire state and lifecycle of a single Mafia game."""
-    def __init__(self, bot, guild, cleanup_callback=None):
+    def __init__(self, bot, guild, cleanup_callback=None, game_type="classic"):
         logger.info("Initializing new Game instance.")
         self.narration_manager = NarrationManager()
         self.bot = bot
@@ -43,6 +44,7 @@ class Game:
         logger.debug("Setting up initial game settings and player data.")
         self.game_settings = {
             "game_id": None, #date-time string of time signups ended
+            "game_type": game_type,
             "game_started": False,
             "start_time": None,
             "end_time": None,
@@ -85,9 +87,10 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, start_datetime_obj, phase_hours, max_players=19):
+    async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19):
         """Announces the sign-up phase and starts the signup_loop."""
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
+        self.game_settings["game_type"] = game_type #set game type to the type of game being played
         self.game_settings["game_started"] = True #set game_started to True
         self.game_settings["start_time"] = start_datetime_obj #set start_time to the start time
         self.game_settings["current_phase"] = "signup" #set current phase to signup
@@ -100,13 +103,15 @@ class Game:
         # Get spectator role mention
         # You need the role's ID from your config
         spectator_role_id = self.discord_role_data.get("spectator", {}).get("id", 0)
+        logger.critical(f"Spectator role ID: {spectator_role_id}")
         # Then, get the actual Role object from the server
         spectator_role = self.guild.get_role(spectator_role_id)
+        logger.critical(f"Spectator role object: {spectator_role}")
         signup_channel_mention = f"<#{config.SIGN_UP_HERE_CHANNEL_ID}>" 
         start_time_str = start_datetime_obj.strftime('%Y-%m-%d %H:%M:%S UTC') # Format the start time as a string
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
         announcement = (
-            f"**A new game of Mafia has been scheduled!**\n\n"
+            f"**A new game of {self.game_settings['game_type']} Mafia has been scheduled!**\n\n"
             f"Sign-ups are now open for **{time_left_str}**! {spectator_role.mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
             f"The game will officially begin at: **{start_time_str}** (or when {self.max_players} players join)."
         )
@@ -269,7 +274,10 @@ class Game:
         logger.info(f"Assigned roles to {len(self.players)} players.")
         # Update player roles in Discord based on their game status (alive, dead, or spectator)
         await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) 
-        status_message = self.get_status_message() # Generate a status message with players listed
+        # Generate a status message with the roles being played
+        status_message = await self.role_status_message() 
+        # Send status message with roles to rules channel
+        logger.info(f"Sending status message to rules channel: {status_message}")
         try:
             await rules_channel.send(status_message)
         except Exception as e:
@@ -294,25 +302,37 @@ class Game:
 
     def generate_game_roles(self):
         """Generates a list of GameRole objects based on player count."""
-        num_players = len(self.players)
-        setup_key = str(num_players)
-        # Check if we have a setup for this number of players
-        if setup_key not in self.mafia_setups:
-            logger.error(f"No setup found for {num_players} players in mafia_setups.json.")
-            return
-        # Randomly select a setup for this player count
-        setup = random.choice(self.mafia_setups[setup_key])
-        logger.info(f"Using setup for {num_players} players: {setup['id']}")
-        # Generate a list of roles based on the setup
-        self.game_roles = []
-        for role_data in setup["roles"]:
-            for _ in range(role_data["quantity"]):
-                role_instance = get_role_instance(role_data["name"])
+        if self.game_settings['game_type'] == "battle_royale":
+            logger.info("Generating roles for Battle Royale mode.")
+            self.game_roles = []
+            logger.critical(f"Generating {len(self.players)} Vigilante roles for Battle Royale mode.\n Current game roles list = {self.game_roles}")
+            for _ in range(len(self.players)):
+                # Create a Vigilante role instance
+                role_instance = get_role_instance("Vigilante")
+                logger.critical(f"Creating Vigilante role for players. {role_instance}")
                 if role_instance:
                     self.game_roles.append(role_instance)
-                else:
-                    logger.warning(f"Could not find or create an instance for role: {role_data['name']}")    
-        logger.info(f"Generated {len(self.game_roles)} roles for {num_players} players.")
+                    logger.critical(f"Vigilante role created successfully: {self.game_roles}")
+        else:
+            num_players = len(self.players)
+            setup_key = str(num_players)
+            # Check if we have a setup for this number of players
+            if setup_key not in self.mafia_setups:
+                logger.error(f"No setup found for {num_players} players in mafia_setups.json.")
+                return
+            # Randomly select a setup for this player count
+            setup = random.choice(self.mafia_setups[setup_key])
+            logger.info(f"Using setup for {num_players} players: {setup['id']}")
+            # Generate a list of roles based on the setup
+            self.game_roles = []
+            for role_data in setup["roles"]:
+                for _ in range(role_data["quantity"]):
+                    role_instance = get_role_instance(role_data["name"])
+                    if role_instance:
+                        self.game_roles.append(role_instance)
+                    else:
+                        logger.warning(f"Could not find or create an instance for role: {role_data['name']}")    
+            logger.info(f"Generated {len(self.game_roles)} roles for {num_players} players.")
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""
@@ -332,8 +352,9 @@ class Game:
                 logger.warning(f"More players than available roles. Player {player_obj.display_name} was not assigned a role.")
         logger.info("Roles assigned to players successfully.")
         # After assigning roles, send Mafia team information to Mafia players
-        await send_mafia_info_dm(self.bot, self.players)
-        logger.info("Mafia team information has been distributed.")
+        if self.game_settings["game_type"] == "classic":
+            await send_mafia_info_dm(self.bot, self.players)
+            logger.info("Mafia team information has been distributed.")
 
     # --- 3. MAIN GAME LOOP ---
     @tasks.loop(seconds=config.game_loop_interval_seconds) # Run every 15 seconds to check phase deadlines
@@ -369,6 +390,8 @@ class Game:
             if not winner:
                 logger.debug("Checking win conditions after phase end.")
                 winner = self.check_win_conditions()
+                if winner:
+                    logger.critical(f"Win conditions met. Winner: {winner}")
             # Construct the story (the narrator function now adds the header)
             story = self.narration_manager.construct_story(
                 self.game_settings['current_phase'],
@@ -724,7 +747,10 @@ class Game:
             target = self.players.get(outcome['target'])
             
             if outcome['action'] == 'kill':
-                self.narration_manager.add_event('kill', killer=actor, victim=target)
+                if self.game_settings['game_type'] == "battle_royale":
+                    self.narration_manager.add_event('kill_battle_royale', killer=actor, victim=target)
+                else:
+                    self.narration_manager.add_event('kill', killer=actor, victim=target)
             elif outcome['action'] == 'investigate':
                 self.narration_manager.add_event('investigate', investigator=actor, target=target)
 
@@ -766,6 +792,7 @@ class Game:
         alignments = Counter(p.role.alignment for p in self.players.values() if p.role)
         game_data = {
             "game_id": self.game_settings.get('game_id'),
+            "game_type": self.game_settings.get('game_type', 'classic'),
             "number_of_players": len(self.players),
             "player_counts": {
                 "town": alignments.get("Town", 0),
@@ -831,15 +858,26 @@ class Game:
         counts = Counter(p.role.alignment for p in living_players if p.role)
         mafia_count = counts.get("Mafia", 0) # Count living mafia players
         town_count = counts.get("Town", 0) # Count living town players
-        neutral_killer_count = sum(1 for p in living_players if p.role and p.role.alignment == "Neutral" and "kill" in p.role.abilities) # Count Neutral Killers specifically (e.g., Serial Killer)
+        neutral_killer_count = sum(1 for p in living_players if p.role and p.role.alignment == "Serial Killer" and "kill" in p.role.abilities) # Count Neutral Killers specifically (e.g., Serial Killer)
         logger.info(f"Living counts - Mafia: {mafia_count}, Town: {town_count}, Neutral Killers: {neutral_killer_count}")
-        
-        # Other Draw conditions
+        # NEW: Add the "Last Person Standing" check here
+        if len(living_players) == 1:
+            last_player = living_players[0]
+            # Return the player's specific role name as the winner
+            if last_player.role:
+                logger.info(f"Win Condition Met: {last_player.display_name} is the last one standing.")
+                if self.game_settings['game_type'] == 'battle_royale':
+                    return last_player.display_name
+                else:
+                    return last_player.role.name
+        # If there are no living players, it's a draw
+        if not living_players:
+            return "Draw" # Everyone is dead
+            # Other Draw conditions
         # If end of night phase has only 2 players, one for each alignment, it's a draw
         if self.game_settings["current_phase"].lower() == "night" and len(living_players) == 2 and ((mafia_count == 1 and town_count == 1) or (neutral_killer_count == 1 and town_count == 1) or (mafia_count == 1 and neutral_killer_count == 1)):
             logger.info("Draw condition met: Only two players left, one from each alignment.")
             return "Draw"
-        
         # --- Check Win Conditions ---
         # Town Win: All Mafia and Neutral Killers are eliminated.
         if mafia_count == 0 and neutral_killer_count == 0:
@@ -882,7 +920,6 @@ class Game:
             if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
                 logger.info("Win Condition Met: Serial Killer wins.")
                 return "Serial Killer"
-
         # No winner yet return none
         logger.info("No win condition met yet.")
         return None
@@ -890,42 +927,37 @@ class Game:
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
         logger.info(f"Announcing winner: {winner}")
-        # Calculate the total number of elapsed phases
-        total_phases_at_end = (self.game_settings['phase_number'] * 2) - (1 if self.game_settings['current_phase'].lower() == 'night' else 0)
-        # Set 'is_winner' flag on player objects
+        # --- Step 1: Determine Winners and Mark Losers as Dead ---
         for player_obj in self.players.values():
-            player_obj.is_winner = False # Default to not a winner
-            if not player_obj.role:
-                continue
-            # Check for faction wins (e.g., winner="Town")
-            if winner in ["Town", "Mafia"] and player_obj.role.alignment == winner:
-                player_obj.is_winner = True
-            # Check for specific role wins (e.g., winner="Jester")
-            elif player_obj.role.name == winner:
-                player_obj.is_winner = True
+            player_obj.is_winner = False
+            if player_obj.role:
+                if winner in ["Town", "Mafia"] and player_obj.role.alignment == winner:
+                    player_obj.is_winner = True
+                elif player_obj.role.name == winner:
+                    player_obj.is_winner = True
+                elif player_obj.display_name == winner:
+                    player_obj.is_winner = True
             if player_obj.is_winner:
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
-            # If player is NOT a winner AND is still alive, update their status
+            # If player is NOT a winner AND is still alive, mark them as dead now.
             if not player_obj.is_winner and player_obj.is_alive:
-                player_obj.is_alive = False
-                # *** FIX: Check if death_info is None and initialize if needed ***
-                if player_obj.death_info is None:
-                    player_obj.death_info = {}
-                # Set death info for losing players
                 player_obj.kill(self.game_settings['current_phase'], "Game Over - Losing Player")
-                # Log the losing player as dead
                 logger.info(f"Marked losing player {player_obj.display_name} as dead.")
-            
-        # Generate a status message
-        status_message = self.get_status_message() # Generate a final status message
-        self.narration_manager.add_event('game_over', winner=winner) # Add game end event to the narration manager
-        story = self.narration_manager.construct_story(self.game_settings['current_phase'], self.game_settings['phase_number']) # Construct the final story
-        # NEW: Call the summary function here
+        # --- Step 2: Now that all player states are final, generate messages and save data ---
+        status_message = self.get_status_message()
+        self.narration_manager.add_event('game_over', winner=winner)
+        story = self.narration_manager.construct_story(
+            self.game_settings['current_phase'],
+            self.game_settings['phase_number']
+        )
+        # Save the final, correct state to the summary file
         await self._save_game_summary(winner)
-        if story:
-              story += f"\n\n{status_message}" # Add the status message to the story
+        # --- Step 3: Announce the results ---
+        final_message = f"**Game Over!**\n{story}"
+        if status_message:
+            final_message += f"\n\n{status_message}"
         try:
-            await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(f"**Game Over!**\n{story}")
+            await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(final_message)
             logger.info(f"Announced winner: {winner}.")
         except Exception as e:
             logger.error(f"Error announcing winner: {e}")
@@ -1003,4 +1035,14 @@ class Game:
                 death_cause = player_obj.death_info.get('how', 'N/A')
                 status_message += f"- ~~{player_obj.display_name}~~ (Dead, {role_alignment}: {role_name}, Died on {death_phase} - {death_cause})\n"
         logger.info(f"Generated status message for game {self.game_settings['game_id']}.")
+        return status_message
+    
+    async def role_status_message(self):
+        """Generates a status message with the roles being played."""
+        logger.debug("Generating role status message for the game.")
+        role_counts = Counter(role.name for role in self.game_roles)
+        status_message = "\n\n---------------------------------------\n"
+        status_message += "\n## Current Roles in the Game: ##\n"
+        for role_name, count in role_counts.items():
+            status_message += f" - **{role_name}**: {count}\n"
         return status_message

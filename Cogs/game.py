@@ -92,11 +92,16 @@ class GameCog(commands.Cog, name="GameCog"):
     # --- Game Management Commands ---
     @app_commands.command(name="mafiastart", description="[Admin] Schedules a new Mafia game.")
     @app_commands.describe(
+        game_type="The type of Mafia game to start (e.g., Classic, Battle Royale).",
         phase_hours="The duration of each day/night phase in hours.",
         start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC)."
     )
+    @app_commands.choices(game_type=[
+        app_commands.Choice(name="Classic", value="classic"),
+        app_commands.Choice(name="Battle Royale", value="battle_royale")
+    ])
     @app_commands.checks.has_permissions(administrator=True)
-    async def start_game_command(self, interaction: discord.Interaction, phase_hours: float, start_datetime: str):
+    async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str):
         if self.game is not None:
             await interaction.response.send_message("A game is already in progress!", ephemeral=True)
             return
@@ -115,7 +120,7 @@ class GameCog(commands.Cog, name="GameCog"):
         self.game = Game(self.bot, interaction.guild, cleanup_callback=self._cleanup_game)
         logger.info(f"New game instance created by {interaction.user.name}.")
         await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
-        await self.game.start(start_datetime_obj, phase_hours)
+        await self.game.start(game_type, start_datetime_obj, phase_hours)
 
     # --- Player Commands (available in channels) ---
     @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")

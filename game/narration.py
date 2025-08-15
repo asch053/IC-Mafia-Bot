@@ -69,9 +69,17 @@ class NarrationManager:
             victim = event.get('victim')
             if not victim or not victim.role: return None
             return (
-                f"A scream pierced the night! When the sun rose, the body of **{victim.display_name}** was found. "
-                f"They were the **{victim.role.alignment} - {victim.role.name}**."
-            )
+                    f"A scream pierced the night! When the sun rose, the body of **{victim.display_name}** was found. "
+                    f"They were the **{victim.role.alignment} - {victim.role.name}**."
+                )
+        if event_type == 'kill_battle_royale':
+            victim = event.get('victim')
+            killer = event.get('killer')
+            if not victim or not killer: return None
+            return (
+                    f"A gunshot rang out in the night! When the sun rose, the body of **{victim.display_name}** was found. "
+                    f"They were killed by **{killer.display_name}**."
+                )
 
         if event_type == 'investigate':
             return #"A lone figure was seen snooping around someone's house, trying to uncover secrets."

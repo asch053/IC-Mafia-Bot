@@ -63,6 +63,11 @@ class NeutralEvil(GameRole):
     def __init__(self, name, **kwargs):
         super().__init__(name, "Jester", **kwargs)
 
+class NeutralRoyale(GameRole):
+    """Base class for Neutral Royale roles."""
+    def __init__(self, name, **kwargs):
+        super().__init__(name, "Vigilante", **kwargs)
+
 # --- Specific Role Instances (Examples) ---
 
 def create_town_cop_role():
@@ -146,6 +151,17 @@ def create_town_role_blocker_role():
         abilities={"block": "Prevent a player from performing their night action."}
     )
 
+def create_vigilante_role():
+    """Create an instance of a neutral vigilante role for battle royales"""
+    return NeutralRoyale(
+        name="Vigilante",
+        description="You can kill one player each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. You win when all other factions are dead.",
+        short_description="Kills one player each night.",
+        abilities={"kill": "Choose a player to kill."},
+        win_condition="Be the last player alive.",
+        is_night_immune=False  # Vigilante is not night immune to kills
+    )
+
 # --- Role Setup Function ---
 def get_role_instance(role_name):
     """Returns an instance of the specified role class."""
@@ -159,6 +175,7 @@ def get_role_instance(role_name):
         "Town Role Blocker": create_town_role_blocker_role,
         "Jester": create_jester_role,
         "Serial Killer": create_serial_killer_role,
+        "Vigilante": create_vigilante_role
         # Add other roles here
     }
     role_creation_function = role_mapping.get(role_name)

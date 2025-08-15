@@ -190,3 +190,4 @@ cython_debug/
 .pypirc
 
 /Data
+Data/discord_roles.json

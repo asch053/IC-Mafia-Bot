@@ -3,6 +3,7 @@ import discord
 import asyncio
 import json
 import os
+import io
 from datetime import datetime, timezone
 import logging
 import config

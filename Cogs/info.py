@@ -39,7 +39,7 @@ class InfoCog(commands.Cog, name="InfoCog"):
         role_counts = Counter(role.name for role in game.game_roles)
         
         # Group roles by alignment
-        roles_by_alignment = {"Town": [], "Mafia": [], "Neutral": []}
+        roles_by_alignment = {"Town": [], "Mafia": [], "Serial Killer": [], "Jester": [], "Vigilante": []}
         for role_name, count in role_counts.items():
             # Find a sample role object to get its alignment
             sample_role = next((r for r in game.game_roles if r.name == role_name), None)

@@ -55,8 +55,12 @@ def handle_kill(game, killer_id, target_id, night_outcomes):
         logger.info(f"Kill by {killer_id} on {target_id} was marked as saved.")
     else:
         phase_str = f"Night {game.game_settings['phase_number']}"
-        target.kill(phase_str, f"Killed by the {killer.role.alignment}")
-        logger.info(f"Kill by {killer_id} on {target_id} was successful.")
+        if game.game_settings['game_type'] == "classic":
+            target.kill(phase_str, f"Killed by the {killer.role.alignment}")
+            logger.info(f"Kill by {killer_id} on {target_id} was successful.")
+        elif game.game_settings['game_type'] == "battle_royale":
+            target.kill(phase_str, f"Killed by {killer.display_name} ({killer.role.name})")
+            logger.info(f"Kill by {killer_id} on {target_id} was successful in battle royale mode.")
 
 def handle_investigation(game, investigator_id, target_id, night_outcomes):
     """
