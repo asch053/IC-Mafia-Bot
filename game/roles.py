@@ -1,6 +1,6 @@
 # game/roles.py
 class GameRole:
-    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None, investigate_result=None, is_night_immune=False):
+    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None, investigate_result=None, is_night_immune=False, night_priority=99):
         self.name = name
         self.alignment = alignment
         self.description = description
@@ -10,6 +10,7 @@ class GameRole:
         self.win_condition = win_condition
         self.investigation_result = investigate_result
         self.is_night_immune = is_night_immune
+        self.night_priority = night_priority
 
     def __str__(self):
         return self.name
@@ -24,7 +25,8 @@ class GameRole:
             "uses": self.uses,
             "win_condition": self.win_condition,
             "investigate_result": self.investigate_result,  # Optional field for investigative roles
-            "is_night_immune": self.is_night_immune # For night immune characters (i.e. original GF + SK)
+            "is_night_immune": self.is_night_immune,  # For night immune characters (i.e. original GF + SK)
+            "night_priority": self.night_priority
         }
 # --- Specific Role Classes ---
 

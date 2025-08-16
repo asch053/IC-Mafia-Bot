@@ -92,6 +92,8 @@ class Game:
     # --- 1. SIGN-UP PHASE ---
     async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19):
         """Announces the sign-up phase and starts the signup_loop."""
+        logger.info("Starting the sign-up phase for the game.")
+        logger.debug("Setting up game settings.")
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
         self.game_settings["game_type"] = game_type #set game type to the type of game being played
         self.game_settings["game_started"] = True #set game_started to True
@@ -100,6 +102,9 @@ class Game:
         self.game_settings["phase_end_time"] = start_datetime_obj #set when the phase ends
         self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
+        # Set all players to spectators
+        #logger.info("Setting all players to spectators.")
+        #await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
         # Announce the game in multiple channels
         # Build the announcement message
         logger.debug("Building announcement message for the sign-up phase.")
@@ -389,6 +394,9 @@ class Game:
                         if acting_player:
                             acting_player.last_action_target_id = action_data['target_id']
             logger.info(f"{self.game_settings['current_phase'].capitalize()} phase ended. Events processed, creating story...")
+            # update discord roles
+            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) 
+            logger.info("Updated player roles in Discord based on current game state.")
             # Check for win conditions if win conditions not already met (i.e. Jester win)
             if not winner:
                 logger.debug("Checking win conditions after phase end.")
@@ -412,10 +420,9 @@ class Game:
                 
                 logger.info(f"Game ended with winner: {winner}")
                 await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
+                logger.info("Updated player roles in Discord based on current game state.")
                 await self.reset() # Reset the game state 
                 return
-            
-            logger.info("Updated player roles in Discord based on current game state.")
             # Generate a status message with players listed and send it to the Rules channel
             status_message = self.get_status_message() 
             try:
@@ -762,12 +769,9 @@ class Game:
         logger.info(f"Final night outcomes: {night_outcomes}")
         # 7. Generate the story based on the final outcomes.
         if hasattr(self, '_generate_narration_from_outcomes') and callable(self._generate_narration_from_outcomes):
-            self._generate_narration_from_outcomes(night_outcomes)
+            self._generate_narration_from_outcomes(night_outcomes, final_processing_order)
         else:
             logger.warning("Narration generation method not found.")
-    def _generate_narration_from_outcomes(self, outcomes):
-        # This is a placeholder for your actual narration logic
-        print("Generating narration from the following outcomes:", outcomes)
 
     # --- 5. GAME END & UTILITIES ---
     def get_player_by_name(self, name):
@@ -777,27 +781,42 @@ class Game:
                 return player_obj
         return None
     
-    # In the Game class, you can add this method after process_night_actions
-
-    def _generate_narration_from_outcomes(self, night_outcomes):
+    def _generate_narration_from_outcomes(self, night_outcomes, processing_order):
         """
         Looks at the final outcomes and generates stories ONLY for actions
         that were successful, as blocked/saved/immune stories are handled elsewhere.
         """
-        for player_id, outcome in night_outcomes.items():
-            if outcome['status'] != 'success':
+        # First, iterate through the correctly ordered list
+        logger.info("Generating narration from night outcomes.")
+        for player_id in processing_order:
+            outcome = night_outcomes.get(player_id)
+            logger.debug(f"Processing outcome for player {player_id}: {outcome['status']} - {outcome['status']}")
+            # Skip if there's no outcome for this player or if the action was not successful.
+            # Stories for blocked/saved actions are handled by their respective handlers.
+            if not outcome or outcome['status'] != 'success':
+                logger.debug(f"Skipping player {player_id} due to no outcome or unsuccessful action.")
                 continue
-
+            # Get the player object and their target player object
             actor = self.players.get(player_id)
             target = self.players.get(outcome['target'])
-            
-            if outcome['action'] == 'kill':
-                if self.game_settings['game_type'] == "battle_royale":
+            # Ensure actor and target exist before narrating to prevent errors
+            if not actor or not target:
+                logger.warning(f"Could not find actor ({player_id}) or target ({outcome['target']}) for narration.")
+                continue
+            logger.debug(f"Actor: {actor.display_name if actor else 'Unknown'}, Target: {target.display_name if target else 'Unknown'}")
+            # Determine action type in outcomes
+            action_type = outcome['action']
+            #if action type is a kill then check if battle royale game mode and send that story
+            if action_type == 'kill':
+                if self.game_settings.get('game_type') == "battle_royale":
                     self.narration_manager.add_event('kill_battle_royale', killer=actor, victim=target)
+            # Else send normal story type
                 else:
                     self.narration_manager.add_event('kill', killer=actor, victim=target)
-            elif outcome['action'] == 'investigate':
+            # Send narration type for investigate 
+            elif action_type == 'investigate':
                 self.narration_manager.add_event('investigate', investigator=actor, target=target)
+            # Add other 'elif' blocks here for other successful actions you want to narrate.
 
     def _handle_promotions(self, dead_player):
         """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
@@ -914,7 +933,7 @@ class Game:
                 if self.game_settings['game_type'] == 'battle_royale':
                     return last_player.display_name
                 else:
-                    return last_player.role.name
+                    return last_player.role.alignment  # Return the alignment of the last player
         # If there are no living players, it's a draw
         if not living_players:
             return "Draw" # Everyone is dead
@@ -1015,9 +1034,27 @@ class Game:
             self.signup_loop.cancel()
         if self.game_loop.is_running():
             self.game_loop.cancel()
-        # Reset Discord roles for all players involved
-        logger.info(f"Resetting player roles in Discord.")
-        await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
+        # set all players to spectators
+        # Get discord roles
+        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
+        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0))
+        dead_role = self.guild.get_role(self.discord_role_data.get("dead", {}).get("id", 0))
+        # Cycle through each player and change discord role to spectator
+        # Update roles for players in the game
+        logger.info("Updating Discord roles for all players to spectator.")
+        logger.info(f"Spectator Role: {spectator_role}, Living Role: {living_role}, Dead Role: {dead_role}")
+        logger.info(f"Total players to update: {len(self.players)}")
+        for player_id, player_obj in self.players.items():
+            # Update Discord role
+            logger.info(f"Updating roles for player ID: {player_id} ({player_obj.display_name})")
+            if player_obj.is_npc: continue # Skip NPCs
+            # Fetch the member object from the guild
+            logger.info(f"Updating roles for player {player_obj.display_name} (ID: {player_id})")
+            member = self.guild.get_member(player_id)
+            await member.add_roles(spectator_role)
+            await member.remove_roles(living_role, dead_role)
+            logger.info(f"Updated roles for player {player_obj.display_name} (ID: {player_id}) to spectator.")
+        # Reset game settings      
         # Clear game state
         logger.info("Clearing game state variables.")
         self.players.clear()
