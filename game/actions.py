@@ -13,12 +13,10 @@ def handle_block(game, blocker_id, target_id, night_outcomes):
     if target_id in night_outcomes:
         # The block is successful and meaningful.
         night_outcomes[target_id]['status'] = 'blocked'
-        
         # Now, create the story event immediately with the correct players.
         blocker = game.players.get(blocker_id)
         target = game.players.get(target_id)
         game.narration_manager.add_event('block', blocker=blocker, target=target)
-        
         logger.info(f"Action by {target.display_name} was blocked by {blocker.display_name}.")
 
 def handle_heal(game, healer_id, target_id, night_outcomes):
@@ -38,17 +36,17 @@ def handle_kill(game, killer_id, target_id, night_outcomes):
     """
     if night_outcomes[killer_id]['status'] == 'blocked':
         return
-
     killer = game.players.get(killer_id)
     target = game.players.get(target_id)
     if not killer or not target: return
-
+    if killer.is_alive is False:
+        logger.info(f"Kill by {killer_id} did not happen because the killer is dead.")
+        return
     if getattr(target.role, 'is_night_immune', False):
         night_outcomes[killer_id]['status'] = 'immune'
         game.narration_manager.add_event('immune_kill', killer=killer, victim=target)
         logger.info(f"Kill by {killer_id} on {target_id} failed due to night immunity.")
         return
-
     if target_id in game.protected_players_this_night:
         night_outcomes[killer_id]['status'] = 'saved'
         game.narration_manager.add_event('save', victim=target, killer=killer)
@@ -68,7 +66,6 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
     """
     if night_outcomes[investigator_id]['status'] == 'blocked':
         return
-   
     investigator = game.players.get(investigator_id)
     target = game.players.get(target_id)
     if not investigator or not target: return
@@ -89,7 +86,6 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
         f"Your investigation of **{target.display_name}** reveals they are **{role_name_result}**."
         f"\n> *{short_desc_result}*"
     )
-
     # Send the message via DM to the investigator in the background
     async def send_investigation_dm():
         try:
@@ -98,7 +94,6 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
             logger.info(f"Sent investigation result to {investigator.display_name}.")
         except Exception as e:
             logger.error(f"Failed to send investigation DM to {investigator.display_name}: {e}")
-
     # Create a task to avoid blocking the game loop
     game.bot.loop.create_task(send_investigation_dm())
 

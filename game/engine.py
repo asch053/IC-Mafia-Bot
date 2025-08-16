@@ -9,7 +9,10 @@ import os
 
 from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
-from collections import Counter
+from collections import (
+    Counter,
+    defaultdict
+)
 
 import config
 import game.actions as actions
@@ -689,40 +692,82 @@ class Game:
         # --- Record Action ---
         self.night_actions[player_id] = {
             "type": action_type,
-            "target_id": target_obj.id
+            "target_id": target_obj.id,
+            'night_priority': player_obj.role.night_priority if hasattr(player_obj.role, 'night_priority') else 99, # Default to 99 if no priority set
         }
         #await interaction.response.send_message(f"Your action (**{action_type}** on **{target_obj.display_name}**) has been recorded for the night.")
         logger.info(f"Recorded night action: {player_obj.display_name} -> {action_type} on {target_obj.display_name}")
         return f"Your action (**{action_type}** on **{self.get_player_by_name(target_name).display_name}**) has been recorded."
 
     async def process_night_actions(self):
-        """Processes all recorded night actions using the ACTION_HANDLERS dictionary."""
+        """
+        Processes all recorded night actions, handling priority and randomization for game modes.
+        """
+        # --- Check if there are any actions to process ---
         if not self.night_actions:
-            self.narration_manager.add_event('no_actions')
+            if self.narration_manager:
+                self.narration_manager.add_event('no_actions')
+            logger.info("No night actions were submitted.")
             return
-        # 1. Initialize outcomes for all submitted actions
+        # 1. Initialize outcomes for all submitted actions.
+        # This dictionary will be modified by action handlers.
         night_outcomes = {
             player_id: {'action': data['type'], 'target': data['target_id'], 'status': 'success'}
             for player_id, data in self.night_actions.items()
         }
-        logger.info(f"Processing night actions: {night_outcomes}")
+        logger.info(f"Initial night actions to process: {self.night_actions}")
+        # Reset per-night state variables
         self.protected_players_this_night = set()
-        self.blocked_players_this_night = set() # NEW: Track blocked players
-        # 2. Process actions by priority to determine final outcomes
+        self.blocked_players_this_night = set()
+        # 2. Define action priority. Lower numbers are processed first.
         action_priority = {"block": 1, "heal": 2, "kill": 3, "investigate": 4}
-        sorted_player_ids = sorted(
-            self.night_actions.keys(),
-            key=lambda pid: action_priority.get(self.night_actions[pid]['type'], 99)
-        )        
-        for player_id in sorted_player_ids:
-            action = self.night_actions[player_id]
-            handler = actions.ACTION_HANDLERS.get(action['type'])
+        # 3. Group players by their action's priority.
+        # This is the core logic for ensuring actions happen in the right order.
+        actions_by_priority = defaultdict(list)
+        for player_id, data in self.night_actions.items():
+            priority = action_priority.get(data['type'], 99) # Default to a low priority
+            actions_by_priority[priority].append(player_id)
+        # 4. For Battle Royale mode, shuffle players *within* each priority group.
+        # This randomizes the order of identical actions (e.g., multiple kills)
+        # without breaking the overall priority system.
+        if self.game_settings.get('game_type') == "battle_royale":
+            logger.info("Battle Royale mode: Shuffling actions within priority groups.")
+            for priority_group in actions_by_priority.values():
+                random.shuffle(priority_group)
+        else:
+            logger.info("Classic mode: Ordering of actions within priority groups by night_priority.")
+            for priority_group in actions_by_priority.values():
+                # This sort is stable, so players with the same priority remain in their original order.
+                # It assumes 'night_priority' was added when the action was recorded.
+                # We use a high default (99) so roles without a priority go last.
+                priority_group.sort(key=lambda pid: self.night_actions[pid].get('night_priority', 99))
+        # 5. Flatten the groups back into a single, correctly ordered list for processing.
+        final_processing_order = []
+        for priority in sorted(actions_by_priority.keys()):
+            final_processing_order.extend(actions_by_priority[priority])
+        logger.info(f"Final action processing order: {final_processing_order}")
+        # 6. Execute each action handler in the final, determined order.
+        for player_id in final_processing_order:
+            action_data = self.night_actions[player_id]
+            handler = actions.ACTION_HANDLERS.get(action_data['type'])
             if handler:
-                # Pass the night_outcomes dict to the handlers
-                handler(self, player_id, action['target_id'], night_outcomes)
-        logger.info(f"Processed night actions: {night_outcomes}\nReady to send to be prepped for narration")
-        # 3. Generate the story based on the final outcomes
-        self._generate_narration_from_outcomes(night_outcomes)
+                try:
+                    # The handler function will directly modify the 'night_outcomes' dictionary
+                    # to reflect changes (e.g., a kill being blocked or a target being saved).
+                    handler(self, player_id, action_data['target_id'], night_outcomes)
+                except Exception as e:
+                    logger.error(f"Error processing action for player {player_id}: {e}", exc_info=True)
+            else:
+                logger.warning(f"No handler found for action type '{action_data['type']}'")
+        logger.info(f"Final night outcomes: {night_outcomes}")
+        # 7. Generate the story based on the final outcomes.
+        if hasattr(self, '_generate_narration_from_outcomes') and callable(self._generate_narration_from_outcomes):
+            self._generate_narration_from_outcomes(night_outcomes)
+        else:
+            logger.warning("Narration generation method not found.")
+    def _generate_narration_from_outcomes(self, outcomes):
+        # This is a placeholder for your actual narration logic
+        print("Generating narration from the following outcomes:", outcomes)
 
     # --- 5. GAME END & UTILITIES ---
     def get_player_by_name(self, name):

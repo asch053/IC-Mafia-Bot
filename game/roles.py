@@ -104,7 +104,8 @@ def create_godfather_role():
         short_description="Chooses the Mafia's target each night.",
         abilities={"kill": "Choose a player for the Mafia to kill."},
         investigate_result = {"Plain Townie": "Normal Member of town"},  # Godfather appears as Town to investigators
-        is_night_immune = True # Original godfather is night immune to kills
+        is_night_immune = True, # Original godfather is night immune to kills
+        night_priority = 4
     )
 
 def create_mafioso_role():
@@ -113,6 +114,7 @@ def create_mafioso_role():
         name="Mob Goon",
         description="A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You will be promoted to Mob Godfather if the Mob Godfather dies.\n During the day you can use _/vote player-name_ in the voting channel to cast your vote on who should be lynched for that day.\n You win when there are more mob than other factions",
         short_description="Standard Mafia member.",
+        night_priority = 4
     )
 def create_mob_role_blocker_role():
     """Creates an instance of the Mafioso role."""
@@ -120,7 +122,8 @@ def create_mob_role_blocker_role():
         name="Mob Role Blocker",
         description= "A member of the Mafia.\n A seperate message will be sent with the identity of the other mob member.\n You can prevent one player from performing their night action each night. Use `/block player-name` during the night phase in this DM with the bot to block your chosen player.You will be promoted to Mob Godfather when no other mob are alive but you. If this happens you can use /block and /kill\n During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. \nYou win when there are more mob than other factions",
         short_description="Stops a player from acting.",
-        abilities={"block": "Prevent a player from performing their night action."}
+        abilities={"block": "Prevent a player from performing their night action."},
+        night_priority = 4
     )
 
 def create_serial_killer_role():
@@ -132,7 +135,8 @@ def create_serial_killer_role():
         abilities={"kill": "Choose a player to kill."},
         win_condition="Be the last player alive.",
         investigate_result = {"Plain Townie": "Normal Member of town"},  # Serial Killer appears as Town to investigators
-        is_night_immune = True # Serial killer is night immune to kills
+        is_night_immune = True, # Serial killer is night immune to kills
+        night_priority = 3
     )
 def create_jester_role():
     """Creates an instance of the Jester role."""
