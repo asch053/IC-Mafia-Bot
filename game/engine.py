@@ -943,48 +943,48 @@ class Game:
             logger.info("Draw condition met: Only two players left, one from each alignment.")
             return "Draw"
         # --- Check Win Conditions ---
-        # Town Win: All Mafia and Neutral Killers are eliminated.
-        if mafia_count == 0 and neutral_killer_count == 0:
-            # Check if there are any other hostile neutrals left (e.g. Jester doesn't count)
-            # This is a more advanced check for later. For now, this is sufficient.
-            if town_count > 0:
-                logger.info("Win Condition Met: Town wins.")
-                return "Town"
-            
-        # Mafia Win: 
-        # Mafia outnumber Town, and no Neutral Killers remain.
-        if mafia_count > town_count and neutral_killer_count == 0:
-            if mafia_count > 0:
-                logger.info("Win Condition Met: Mafia wins.")
-                return "Mafia"
-        # Mafia equal to Town and is end of day phase and no doc or or protective role exists
-        if mafia_count == town_count and neutral_killer_count == 0 and self.game_settings["current_phase"].lower() == "day" :
-            # Check if there are no protective roles left (e.g., Doctor)
-            protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
-            if not protective_roles:
-                logger.info("Win Condition Met: Mafia wins.")
-                return "Mafia"
-            
-        # Neutral Killer Win: Only the Neutral Killer(s) remain.
-        if neutral_killer_count > 0 and town_count == 0 and mafia_count == 0:
-            logger.info("Win Condition Met: Neutral Killer wins.")
-            # You might want to return the specific role name, e.g., "Serial Killer"
-            return "Serial Killer"  
-        # Or SK wins if SK alive at end of day phase and no doc or protective role exists
-        if neutral_killer_count == 1 and town_count == 1 and mafia_count == 0 and self.game_settings["current_phase"].lower() == "day":
-            # Check if there are no protective roles left (e.g., Doctor)
-            protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
-            if not protective_roles:
-                logger.info("Win Condition Met: Serial Killer wins.")
-                return "Serial Killer"
-        # SK wins if SK alive at end of day phase and only 1 Mafia alive and not godfather
-        if neutral_killer_count == 1 and mafia_count == 1 and town_count == 0 and self.game_settings["current_phase"].lower() == "day":
-            # Check if there is only one Mafia left and it's not the Godfather
-            mafia_roles = [p.role for p in living_players if p.role and p.role.alignment == "Mafia"]
-            if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
-                logger.info("Win Condition Met: Serial Killer wins.")
-                return "Serial Killer"
-        # No winner yet return none
+        if self.game_settings["game_type"] != "battle_royale":
+            # Town Win: All Mafia and Neutral Killers are eliminated.
+            if mafia_count == 0 and neutral_killer_count == 0:
+                # Check if there are any other hostile neutrals left (e.g. Jester doesn't count)
+                # This is a more advanced check for later. For now, this is sufficient.
+                if town_count > 0:
+                    logger.info("Win Condition Met: Town wins.")
+                return "Town"    
+            # Mafia Win: 
+            # Mafia outnumber Town, and no Neutral Killers remain.
+            if mafia_count > town_count and neutral_killer_count == 0:
+                if mafia_count > 0:
+                    logger.info("Win Condition Met: Mafia wins.")
+                    return "Mafia"
+            # Mafia equal to Town and is end of day phase and no doc or or protective role exists
+            if mafia_count == town_count and neutral_killer_count == 0 and self.game_settings["current_phase"].lower() == "day" :
+                # Check if there are no protective roles left (e.g., Doctor)
+                protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
+                if not protective_roles:
+                    logger.info("Win Condition Met: Mafia wins.")
+                    return "Mafia"
+            # Serial Killer or other Neutral Win
+            # Neutral Killer Win: Only the Neutral Killer(s) remain.
+            if neutral_killer_count > 0 and town_count == 0 and mafia_count == 0:
+                logger.info("Win Condition Met: Neutral Killer wins.")
+                # You might want to return the specific role name, e.g., "Serial Killer"
+                return "Serial Killer"  
+            # Or SK wins if SK alive at end of day phase and no doc or protective role exists
+            if neutral_killer_count == 1 and town_count == 1 and mafia_count == 0 and self.game_settings["current_phase"].lower() == "day":
+                # Check if there are no protective roles left (e.g., Doctor)
+                protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
+                if not protective_roles:
+                    logger.info("Win Condition Met: Serial Killer wins.")
+                    return "Serial Killer"
+            # SK wins if SK alive at end of day phase and only 1 Mafia alive and not godfather
+            if neutral_killer_count == 1 and mafia_count == 1 and town_count == 0 and self.game_settings["current_phase"].lower() == "day":
+                # Check if there is only one Mafia left and it's not the Godfather
+                mafia_roles = [p.role for p in living_players if p.role and p.role.alignment == "Mafia"]
+                if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
+                    logger.info("Win Condition Met: Serial Killer wins.")
+                    return "Serial Killer"
+            # No winner yet return none
         logger.info("No win condition met yet.")
         return None
 
