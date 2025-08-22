@@ -3,7 +3,7 @@ import discord
 from discord import app_commands
 from discord.ext import commands
 import logging
-
+import utils.utilities as utilities
 from game.player import Player # Keep this import for the re-init command
 
 logger = logging.getLogger('discord')
@@ -28,8 +28,33 @@ class AdminCog(commands.Cog, name="AdminCog"):
         return False
 
     @app_commands.command(name="mafiastop", description="[Admin] Forcibly stops and resets the current game.")
-    @app_commands.checks.has_permissions(administrator=True)
+    
     async def stop_game_command(self, interaction: discord.Interaction):
+         # --- MANUAL ROLE CHECK ---
+        # 1. Get the required admin role ID from your loaded JSON data.
+        #    The exact path might be different depending on how you store it.
+        try:    
+            discord_role_data = utilities.load_data("Data/discord_roles.json")
+        except Exception as e:
+            logger.error(f"Error loading discord roles: {e}")
+            logger.critical("No discord roles loaded. The game cannot start.")
+        if discord_role_data:
+            logger.info("Discord roles loaded successfully.")
+        admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
+        logger.critical(f"Admin role ID: {admin_role_id.id if admin_role_id else 'None'}")
+        # 2. Check if the user has the role.
+        #    We get the user's roles from the interaction object.
+        user_roles = [role.id for role in interaction.user.roles]
+        logger.critical(f"User roles: {user_roles}")
+        if admin_role_id.id not in user_roles:
+            # 3. If they don't have the role, send an error and stop.
+            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
+            await interaction.response.send_message(
+                "You do not have the required role to start a game.", 
+                ephemeral=True
+            )
+            return
         game = self.get_game_instance()
         if game is None:
             await interaction.response.send_message("No game is currently running.", ephemeral=True)
@@ -44,8 +69,32 @@ class AdminCog(commands.Cog, name="AdminCog"):
         logger.warning(f"Game was forcibly stopped by {interaction.user.name}.")
     
     @app_commands.command(name="forcestart", description="[Admin] Ends sign-ups and starts the game immediately.")
-    @app_commands.checks.has_permissions(administrator=True)
     async def force_start_command(self, interaction: discord.Interaction):
+         # --- START: MANUAL ROLE CHECK ---
+        # 1. Get the required admin role ID from your loaded JSON data.
+        #    The exact path might be different depending on how you store it.
+        try:    
+            discord_role_data = utilities.load_data("Data/discord_roles.json")
+        except Exception as e:
+            logger.error(f"Error loading discord roles: {e}")
+            logger.critical("No discord roles loaded. The game cannot start.")
+        if discord_role_data:
+            logger.info("Discord roles loaded successfully.")
+        admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
+        logger.critical(f"Admin role ID: {admin_role_id.id if admin_role_id else 'None'}")
+        # 2. Check if the user has the role.
+        #    We get the user's roles from the interaction object.
+        user_roles = [role.id for role in interaction.user.roles]
+        logger.critical(f"User roles: {user_roles}")
+        if admin_role_id.id not in user_roles:
+            # 3. If they don't have the role, send an error and stop.
+            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
+            await interaction.response.send_message(
+                "You do not have the required role to start a game.", 
+                ephemeral=True
+            )
+            return
         game = self.get_game_instance()
         if game:
             await game.force_start(interaction)
@@ -53,8 +102,32 @@ class AdminCog(commands.Cog, name="AdminCog"):
             await interaction.response.send_message("No game is in the sign-up phase to force start.", ephemeral=True)
 
     @app_commands.command(name="mafiareinit", description="[Admin] Debug tool to refresh the player list from Discord roles.")
-    @app_commands.checks.has_permissions(administrator=True)
     async def reinitialize_players(self, interaction: discord.Interaction):
+         # --- START: MANUAL ROLE CHECK ---
+        # 1. Get the required admin role ID from your loaded JSON data.
+        #    The exact path might be different depending on how you store it.
+        try:    
+            discord_role_data = utilities.load_data("Data/discord_roles.json")
+        except Exception as e:
+            logger.error(f"Error loading discord roles: {e}")
+            logger.critical("No discord roles loaded. The game cannot start.")
+        if discord_role_data:
+            logger.info("Discord roles loaded successfully.")
+        admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
+        logger.critical(f"Admin role ID: {admin_role_id.id if admin_role_id else 'None'}")
+        # 2. Check if the user has the role.
+        #    We get the user's roles from the interaction object.
+        user_roles = [role.id for role in interaction.user.roles]
+        logger.critical(f"User roles: {user_roles}")
+        if admin_role_id.id not in user_roles:
+            # 3. If they don't have the role, send an error and stop.
+            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
+            await interaction.response.send_message(
+                "You do not have the required role to start a game.", 
+                ephemeral=True
+            )
+            return
         game = self.get_game_instance()
         if game is None:
             await interaction.response.send_message("No game is running to re-initialize.", ephemeral=True)
