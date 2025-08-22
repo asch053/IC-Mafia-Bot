@@ -37,7 +37,7 @@ class AdminCog(commands.Cog, name="AdminCog"):
             discord_role_data = utilities.load_data("Data/discord_roles.json")
         except Exception as e:
             logger.error(f"Error loading discord roles: {e}")
-            logger.critical("No discord roles loaded. The game cannot start.")
+            logger.critical("No discord roles loaded. The game cannot be stopped.")
         if discord_role_data:
             logger.info("Discord roles loaded successfully.")
         admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
@@ -48,10 +48,10 @@ class AdminCog(commands.Cog, name="AdminCog"):
         logger.critical(f"User roles: {user_roles}")
         if admin_role_id.id not in user_roles:
             # 3. If they don't have the role, send an error and stop.
-            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.warning(f"{interaction.user.name} attempted to stop a game without the required role.")
             logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
             await interaction.response.send_message(
-                "You do not have the required role to start a game.", 
+                "You do not have the required role to stop a game.", 
                 ephemeral=True
             )
             return
@@ -88,10 +88,10 @@ class AdminCog(commands.Cog, name="AdminCog"):
         logger.critical(f"User roles: {user_roles}")
         if admin_role_id.id not in user_roles:
             # 3. If they don't have the role, send an error and stop.
-            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.warning(f"{interaction.user.name} attempted to force start a game without the required role.")
             logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
             await interaction.response.send_message(
-                "You do not have the required role to start a game.", 
+                "You do not have the required role to force start a game.", 
                 ephemeral=True
             )
             return
@@ -110,7 +110,7 @@ class AdminCog(commands.Cog, name="AdminCog"):
             discord_role_data = utilities.load_data("Data/discord_roles.json")
         except Exception as e:
             logger.error(f"Error loading discord roles: {e}")
-            logger.critical("No discord roles loaded. The game cannot start.")
+            logger.critical("No discord roles loaded. The game cannot be reinitialized.")
         if discord_role_data:
             logger.info("Discord roles loaded successfully.")
         admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
@@ -121,10 +121,10 @@ class AdminCog(commands.Cog, name="AdminCog"):
         logger.critical(f"User roles: {user_roles}")
         if admin_role_id.id not in user_roles:
             # 3. If they don't have the role, send an error and stop.
-            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
+            logger.warning(f"{interaction.user.name} attempted to reinitialise a game without the required role.")
             logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
             await interaction.response.send_message(
-                "You do not have the required role to start a game.", 
+                "You do not have the required role to reinitialize a game.", 
                 ephemeral=True
             )
             return
