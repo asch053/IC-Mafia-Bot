@@ -1,0 +1,87 @@
+{
+    "game_summary": {
+        "game_id": "20250913-101100",
+        "game_type": "battle_royale",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 0,
+            "mafia": 0,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-09-13T10:11:00+00:00",
+        "end_date_utc": "2025-09-13T10:12:03.162273+00:00",
+        "total_days": 1,
+        "phase_hours": 0.0167,
+        "winning_faction": "You_Fool",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": -5,
+            "player_name": "Botty McBotface",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -3,
+            "player_name": "Innocent Bystander",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -2,
+            "player_name": "One More Time",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by You_Fool (Vigilante)",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -4,
+            "player_name": "Totally Harmless",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": [
+                "You_Fool"
+            ]
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "day",
+            "death_cause": "Game Over - Losing Player",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": -4,
+            "target_name": "Totally Harmless",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-13T10:11:24.525644+00:00"
+        }
+    ]
+}

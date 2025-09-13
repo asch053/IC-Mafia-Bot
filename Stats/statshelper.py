@@ -67,3 +67,31 @@ def save_lynch_data(lynch_data):
     with open("stats/testgames/lynch_data.json", "w") as f:
         json.dump(all_games, f, indent=4)
 
+def format_stats_embed(player_allignment_data, player_role_data, win_rate_data):
+    """Formats the statistics into a Discord embed."""
+    import discord
+    from discord import Embed
+
+    embed = Embed(title="Mafia Game Statistics", color=0x3498db)
+    
+    # Win Rates
+    win_rates_text = "\n".join([f"**{team}**: {rate:.2f}%" for team, rate in win_rate_data.items()])
+    embed.add_field(name="Win Rates", value=win_rates_text or "No data available", inline=False)
+    
+    # Player Alignments
+    alignment_text = ""
+    for player, alignments in player_allignment_data.items():
+        alignment_details = ", ".join([f"{align}: {percent:.2f}%" for align, percent in alignments.items()])
+        alignment_text += f"**{player}**: {alignment_details}\n"
+    embed.add_field(name="Player Alignments", value=alignment_text or "No data available", inline=False)
+    
+    # Player Roles
+    role_text = ""
+    for player, roles in player_role_data.items():
+        role_details = ", ".join([f"{role}: {percent:.2f}%" for role, percent in roles.items()])
+        role_text += f"**{player}**: {role_details}\n"
+    embed.add_field(name="Player Roles", value=role_text or "No data available", inline=False)
+    
+    return embed
+    
+

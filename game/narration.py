@@ -51,6 +51,12 @@ class NarrationManager:
             target = event.get('target')
             if not target or not target.role: return None
             return f"A shadowy figure paid a visit to the **{target.role.name}** last night, preventing them from performing their action."
+        
+        if event_type == 'battle_royale_block':
+            target = event.get('target')
+            blocker = event.get('blocker')
+            if not target or not target.role or not blocker: return None
+            return f"In the chaos of the night, **{target.display_name}** was ambushed by **{blocker.display_name}** and unable to act."
 
         if event_type == 'save':
             victim = event.get('victim')
@@ -58,6 +64,16 @@ class NarrationManager:
             return (
                 f"Someone launched a deadly attack on **{victim.display_name}** in the dead of night... "
                 f"but a Doctor was standing guard and saved their life!"
+            )
+        
+        if event_type == 'battle_royale_save':
+            victim = event.get('victim')
+            killer = event.get('killer')
+            healer = event.get('healer')
+            if not victim or not killer or not healer: return None
+            return (
+                f"Amidst the turmoil of the night, **{victim.display_name}** was targeted for elimination by {killer.display_name}... "
+                f"but {healer.display_name} proved to be a kind and quick-thinking ally who intervened and saved them!"
             )
 
         if event_type == 'immune_kill':
@@ -131,7 +147,11 @@ class NarrationManager:
         
         if event_type == 'game_over':
             winner = event.get('winner')
-            return f"\n**The game is over! The {winner} has won!**"
+            if not winner: return None
+            if winner == 'draw':
+                return "\n**The game is over! The game has ended in a draw! No one wins!**"
+            else:
+                return f"\n**The game is over! The {winner} has won!**"
     
 
         

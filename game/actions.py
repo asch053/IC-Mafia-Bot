@@ -16,7 +16,12 @@ def handle_block(game, blocker_id, target_id, night_outcomes):
         # Now, create the story event immediately with the correct players.
         blocker = game.players.get(blocker_id)
         target = game.players.get(target_id)
-        game.narration_manager.add_event('block', blocker=blocker, target=target)
+        if not blocker or not target: return
+        game.blocked_players_this_night[target_id] = blocker_id
+        if game.game_settings.get('game_type') == "battle_royale":
+            game.narration_manager.add_event('battle_royale_block', blocker=blocker, target=target)
+        else:
+            game.narration_manager.add_event('block', blocker=blocker, target=target)
         logger.info(f"Action by {target.display_name} was blocked by {blocker.display_name}.")
 
 def handle_heal(game, healer_id, target_id, night_outcomes):
@@ -27,7 +32,7 @@ def handle_heal(game, healer_id, target_id, night_outcomes):
         logger.info(f"Heal by {healer_id} was blocked.")
         return
 
-    game.protected_players_this_night.add(target_id)
+    game.protected_players_this_night[target_id] = healer_id
     logger.info(f"Player {target_id} was marked as protected.")
 
 def handle_kill(game, killer_id, target_id, night_outcomes):
@@ -49,7 +54,14 @@ def handle_kill(game, killer_id, target_id, night_outcomes):
         return
     if target_id in game.protected_players_this_night:
         night_outcomes[killer_id]['status'] = 'saved'
-        game.narration_manager.add_event('save', victim=target, killer=killer)
+        # We can now look up who the healer was!
+        healer_id = game.protected_players_this_night.get(target_id)
+        healer = game.players.get(healer_id)
+        if not healer: return
+        if game.game_settings.get('game_type') == "battle_royale":
+            game.narration_manager.add_event('battle_royale_save', victim=target, killer=killer, healer=healer)
+        else:
+            game.narration_manager.add_event('save', victim=target, killer=killer, healer=healer)
         logger.info(f"Kill by {killer_id} on {target_id} was marked as saved.")
     else:
         phase_str = f"Night {game.game_settings['phase_number']}"

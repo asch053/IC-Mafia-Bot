@@ -2,92 +2,94 @@
 import discord
 import config
 import logging
-from discord import app_commands # Import app_commands
+from discord import app_commands
 from discord.ext import commands
 from game.engine import Game
 from datetime import datetime, timezone
-import utils.utilities as utilities
+from utils import utilities
+from utils.admincheck import is_admin
 
-
+# Get the logger instance from the main bot file
 logger = logging.getLogger('discord')
 
-# A helper function to check if a game is active
 def is_game_active(interaction: discord.Interaction) -> bool:
+    """
+    A global check function for slash commands to verify if a game is currently running.
+    This prevents commands like /vote from being used when no game is active.
+    """
+    # Get the GameCog instance from the bot
     cog = interaction.client.get_cog("GameCog")
+    # Return True only if the cog exists and its 'game' attribute is not None
     return cog and cog.game is not None
 
 class GameCog(commands.Cog, name="GameCog"):
+    """
+    This cog manages the main gameplay commands and the lifecycle of the game instance.
+    It acts as the primary interface between Discord users and the game engine.
+    """
     def __init__(self, bot):
+        """Initializes the GameCog, setting the game instance to None initially."""
         self.bot = bot
         self.game = None
     
-    # Add this helper function
     def get_game_instance(self):
-        """A helper method to safely get the game instance."""
+        """A helper method to safely get the active game instance."""
         return self.game
     
-    # Game cleanup utility
     def _cleanup_game(self):
-        """Callback function to reset the game instance in the cog."""
-        logger.info("GameCog: Cleaning up and resetting game instance.")
+        """
+        A callback function passed to the game engine.
+        It's called when the game loop ends to reset the cog's state.
+        """
+        logger.info("GameCog: Cleaning up and resetting game instance after game conclusion.")
         self.game = None
 
-    # --- Cog Utility Functions
-    # This is the new autocomplete function
+    # --- Autocomplete Function ---
     async def player_autocomplete(self, interaction: discord.Interaction, current: str) -> list[app_commands.Choice[str]]:
-        """An autocomplete function that shows living players, with added logging."""
-        logger.debug(f"--- Autocomplete triggered for player: '{current}' ---")
+        """
+        An autocomplete provider for slash commands. It dynamically suggests the names
+        of living players as the user types in a command option.
+        """
         game = self.get_game_instance()
         if not game:
-            logger.debug("Autocomplete failed: No active game instance found.")
-            return []
-        logger.debug("Autocomplete: Found active game instance.")
+            return [] # Return no choices if there is no game running
         choices = []
-        # Get a list of living player names
+        # Create a list of names for all living players
         living_players = [p.display_name for p in game.players.values() if p.is_alive]
-        logger.debug(f"Autocomplete: Found living players: {living_players}")
-        if not living_players:
-            logger.debug("Autocomplete finished: No living players to suggest.")
-            return []
-        # Filter choices based on what the user has typed so far
+        # Filter the list based on the user's current input (case-insensitive)
         for player_name in living_players:
             if current.lower() in player_name.lower():
                 choices.append(app_commands.Choice(name=player_name, value=player_name))
-        logger.debug(f"Autocomplete finished. Returning {len(choices)} choices: {[c.name for c in choices]}")
-        # Discord shows a maximum of 25 choices
+        # Return the top 25 matches, as per Discord's limit
         return choices[:25]
     
-    # --- Channel Listening Helper ---
-    # In cogs/game.py, inside the GameCog class
-
+    # --- Event Listener ---
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        # Ignore bots and DMs
+        """
+        Listens for messages in specific game channels to guide users
+        towards using the correct slash commands instead of chatting.
+        """
+        # Ignore messages from bots and all Direct Messages
         if message.author.bot or not message.guild:
             return
-        # Check if a game is running and the message is in the voting channel
         game = self.get_game_instance()
-        if game and message.channel.id == config.VOTING_CHANNEL_ID:
-            content = message.content.lower().strip()
-            # If the user types a command that looks like a slash command
-            if content.startswith(f"{config.BOT_PREFIX}vote"):
-                await message.reply(
-                    "It looks like you're trying to vote! Please use the **slash command** `/vote`, press tab and select a player from the list that appears."
-                )
-            else:
-                await message.reply(
-                    f"Please do not talk in the voting channel. Use the slash command `/vote` to vote, or keep the talky-talky to <#{config.TALKY_TALKY_CHANNEL_ID}>."
-                )
-        if game and message.channel.id == config.SIGN_UP_HERE_CHANNEL_ID:
-            content = message.content.lower().strip()
-            if content.startswith(f"{config.BOT_PREFIX}join"):
-                await message.reply(
-                    "It looks like you're trying to join the game! Please use the **slash command** `/mafiajoin`"
-                )
-            else:
-                await message.reply(
-                    f"Please do not talk in the sign-up channel. Use the slash command `/mafiajoin` to join, or keep the talky-talky to <#{config.TALKY_TALKY_CHANNEL_ID}>."
-                )
+        if not game:
+            return # Do nothing if no game is running
+        # Check if the message is in the voting channel
+        if message.channel.id == config.VOTING_CHANNEL_ID:
+            # Politely redirect users trying to chat or use old prefix commands
+            logger.info(f"Redirecting user {message.author.name} from chatting in voting channel.")
+            await message.reply(
+                f"Please do not chat in the voting channel. Use the slash command `/vote` to vote, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
+            )
+        # Check if the message is in the sign-up channel
+        elif message.channel.id == config.SIGN_UP_HERE_CHANNEL_ID:
+            # Politely redirect users trying to chat or use old prefix commands
+            logger.info(f"Redirecting user {message.author.name} from chatting in sign-up channel.")
+            await message.reply(
+                f"Please do not chat in the sign-up channel. Use the slash command `/mafiajoin` to join, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
+            )
 
     # --- Game Management Commands ---
     @app_commands.command(name="mafiastart", description="[Admin] Schedules a new Mafia game.")
@@ -100,174 +102,162 @@ class GameCog(commands.Cog, name="GameCog"):
         app_commands.Choice(name="Classic", value="classic"),
         app_commands.Choice(name="Battle Royale", value="battle_royale")
     ])
+    @is_admin() # Decorator: This command can only be used by admins.
     async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str):
-        """
-        Starts a new Mafia game with the specified settings.
-        """
-         # --- START: MANUAL ROLE CHECK ---
-        # 1. Get the required admin role ID from your loaded JSON data.
-        #    The exact path might be different depending on how you store it.
-        try:    
-            discord_role_data = utilities.load_data("Data/discord_roles.json")
-        except Exception as e:
-            logger.error(f"Error loading discord roles: {e}")
-            logger.critical("No discord roles loaded. The game cannot start.")
-        if discord_role_data:
-            logger.info("Discord roles loaded successfully.")
-        admin_role_id = interaction.guild.get_role(discord_role_data.get("mod", {}).get("id", 0))
-        logger.critical(f"Admin role ID: {admin_role_id.id if admin_role_id else 'None'}")
-        # 2. Check if the user has the role.
-        #    We get the user's roles from the interaction object.
-        user_roles = [role.id for role in interaction.user.roles]
-        logger.critical(f"User roles: {user_roles}")
-        if admin_role_id.id not in user_roles:
-            # 3. If they don't have the role, send an error and stop.
-            logger.warning(f"{interaction.user.name} attempted to start a game without the required role.")
-            logger.critical(f"{user_roles} // {admin_role_id.id if admin_role_id else 'None'}")
-            await interaction.response.send_message(
-                "You do not have the required role to start a game.", 
-                ephemeral=True
-            )
-            return
+        """Command for admins to schedule a new game."""
+        logger.info(f"'/mafiastart' command invoked by {interaction.user.name} with args: type={game_type}, hours={phase_hours}, start='{start_datetime}'.")
+        # Prevent starting a game if one is already running
         if self.game is not None:
             await interaction.response.send_message("A game is already in progress!", ephemeral=True)
             return
+        # Validate the date and time format provided by the admin
+        logger.error(f"Validating start date/time: '{start_datetime}'.")    
         try:
             start_datetime_obj = datetime.strptime(start_datetime, "%Y-%m-%d %H:%M").replace(tzinfo=timezone.utc)
         except ValueError:
             await interaction.response.send_message("Invalid date/time format. Please use 'YYYY-MM-DD HH:MM' format in UTC.", ephemeral=True)
             return
+        # Ensure the start time is in the future to prevent immediate, accidental starts
         if start_datetime_obj <= datetime.now(timezone.utc):
             await interaction.response.send_message("The start time must be in the future.", ephemeral=True)
             return
-         # UPDATED: Pass the cleanup method when creating the Game instance
+        # Acknowledge the command while the bot prepares the game announcement
         await interaction.response.defer(ephemeral=True)
-        logger.info(f"Scheduling a new game to start at {start_datetime_obj} with phase duration of {phase_hours} hours.")
-        # Create a new game instance with the specified start time and phase duration
+        # Create a new Game instance and store it in the cog
         self.game = Game(self.bot, interaction.guild, cleanup_callback=self._cleanup_game)
-        logger.info(f"New game instance created by {interaction.user.name}.")
+        logger.info(f"New game instance created by admin: {interaction.user.name}.")
+        # Confirm to the admin that the game has been scheduled successfully
         await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
+        # Call the game engine's start method to begin the sign-up phase
         await self.game.start(game_type, start_datetime_obj, phase_hours)
 
-    # --- Player Commands (available in channels) ---
+    # --- Player Commands (Channel) ---
     @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")
     async def join_game_command(self, interaction: discord.Interaction):
+        """Allows a player to join an active game during sign-ups."""
+        logger.info(f"'/mafiajoin' command invoked by {interaction.user.name}.")
         if self.game is None or self.game.game_settings["current_phase"] != "signup":
             await interaction.response.send_message("No game is currently accepting sign-ups.", ephemeral=True)
             return
-        # Defer the interaction immediately
         await interaction.response.defer(ephemeral=True)
-        # Use interaction.channel to send public messages
+        # Delegate the actual player-adding logic to the game engine
         await self.game.add_player(interaction.user, interaction.user.display_name, interaction.channel)
-        # Send the follow-up
         await interaction.followup.send("You've joined the game!", ephemeral=True)
-        logger.info(f"{interaction.user.display_name} joined the game.")
 
     @app_commands.command(name="mafialeave", description="Leave the game during the sign-up phase.")
     async def leave_game_command(self, interaction: discord.Interaction):
+        """Allows a player to leave the game during sign-ups."""
+        logger.info(f"'/mafialeave' command invoked by {interaction.user.name}.")
         if self.game is None or self.game.game_settings["current_phase"] != "signup":
             await interaction.response.send_message("There is no game to leave, or sign-ups are closed.", ephemeral=True)
             return
         await interaction.response.defer(ephemeral=True)
-        # Do the work
+        # Delegate the logic to the game engine
         await self.game.remove_player(interaction.user, interaction.channel)
-        # Send the follow-up
         await interaction.followup.send("You've left the game.", ephemeral=True)
-        logger.info(f"{interaction.user.name} is leaving the game.")
 
     @app_commands.command(name="mafiastatus", description="Displays the current game status.")
-    @app_commands.check(is_game_active)
+    @app_commands.check(is_game_active) # Check: Only works if a game is running.
     async def status_command(self, interaction: discord.Interaction):
-        logger.info(f"`/mafiastatus` command was called - {self.game}.")
-        if self.game is None:
-            await interaction.response.send_message("No game is currently running.", ephemeral=True)
-            logger.info("`/mafiastatus` command was used but no game is currently running.")
-            return
-        logger.info(f"`/mafiastatus` command was used by {interaction.user.name}.")
+        """Displays a public summary of the game state (living/dead players)."""
+        logger.info(f"'/mafiastatus' command invoked by {interaction.user.name}.")
         status_message = self.game.get_status_message()
         await interaction.response.send_message(status_message, ephemeral=False)
 
     @app_commands.command(name="vote", description="Vote to lynch a player during the day.")
     @app_commands.describe(player="The player you want to lynch.")
-    @app_commands.autocomplete(player=player_autocomplete) # Provides a list of names as auto-complete
-    @app_commands.check(is_game_active)
+    @app_commands.autocomplete(player=player_autocomplete) # Autocomplete: Suggests living players.
+    @app_commands.check(is_game_active) # Check: Only works if a game is running.
     async def vote(self, interaction: discord.Interaction, player: str):
+        """Processes a player's vote during the day phase."""
+        logger.info(f"'/vote' command invoked by {interaction.user.name}, targeting '{player}'.")
         await interaction.response.defer(ephemeral=True)
-        # We pass the interaction object to the engine, which can use interaction.channel
+        # The game engine handles all validation and state changes
         message = await self.game.process_lynch_vote(interaction, interaction.user, player)
-        # Send it as a follow-up
         await interaction.followup.send(message, ephemeral=True)
 
     @app_commands.command(name="mafiacount", description="Displays the current vote tally.")
-    @app_commands.check(is_game_active)
+    @app_commands.check(is_game_active) # Check: Only works if a game is running.
     async def count_votes_command(self, interaction: discord.Interaction):
+        """Publicly displays the current vote count."""
+        logger.info(f"'/mafiacount' command invoked by {interaction.user.name}.")
         await self.game.send_vote_count(interaction.channel)
-        await interaction.response.send_message("Vote count displayed.", ephemeral=False)
+        # Send a small, ephemeral confirmation so Discord doesn't think the command failed
+        await interaction.response.send_message("Vote count displayed.", ephemeral=True)
     
-    # --- Player Commands DM only ---
+    # --- Player Commands (DM) ---
     @app_commands.command(name="myrole", description="[DM Only] Resends your current role information.")
-    @app_commands.check(is_game_active)
+    @app_commands.check(is_game_active) # Check: Only works if a game is running.
     async def myrole_command(self, interaction: discord.Interaction):
-        """(DM Only) Allows a player to have their role card resent."""
+        """Allows a player to have their role card resent in a DM."""
+        logger.info(f"'/myrole' command invoked by {interaction.user.name} in DMs.")
+        # Ensure the command is used in a DM, not in a server channel
         if interaction.guild:
             await interaction.response.send_message("This command can only be used in DMs.", ephemeral=True)
             return
+        # Safely get the game instance and the player object
         game = self.get_game_instance()
         player_obj = game.players.get(interaction.user.id)
         if not player_obj or not player_obj.role:
-            await interaction.response.send_message("You are not currently in the game or have not been assigned a role.", ephemeral=True)
+            await interaction.response.send_message("You are not in the game or have no role.", ephemeral=True)
             return
         await interaction.response.defer(ephemeral=True)
-        # Call the updated utility function, passing the game's guild
+        # Use the utility function to handle the complexities of sending a DM
         success = await utilities.send_role_dm(self.bot, player_obj.id, player_obj.role, game.guild)
         if success:
-            await interaction.followup.send("Your role information has been resent to you.", ephemeral=True)
+            await interaction.followup.send("Your role information has been resent.", ephemeral=True)
         else:
-            await interaction.followup.send("I was unable to send your role information. Please check your privacy settings and try again. A moderator has been notified.", ephemeral=True)
+            await interaction.followup.send("I was unable to resend your role. Please check your privacy settings.", ephemeral=True)
 
-
-    # --- Night Action Commands (intended for DMs) ---
+    # --- Night Action Commands (DM Only) ---
     async def _handle_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
-        """Helper function to reduce code duplication for night actions."""
+        """
+        A generic handler for all night actions to reduce code duplication.
+        It performs initial checks and then passes the action to the game engine.
+        """
+        logger.info(f"Handling night action '{action_type}' from {interaction.user.name} on target '{target_name}'.")
         if not is_game_active(interaction):
             await interaction.response.send_message("No game is currently running.", ephemeral=True)
             return
+        # Ensure night actions are only used in DMs where they are secret
         if interaction.guild:
             await interaction.response.send_message("Night actions must be used in DMs.", ephemeral=True)
             return
-        # The game engine handles all the logic.
-        await interaction.response.defer(ephemeral=False)
+        await interaction.response.defer(ephemeral=True)
+        # The game engine handles all the complex logic (role checks, timing, etc.)
         message = await self.game.record_night_action(interaction, action_type, target_name)
-        await interaction.followup.send(message, ephemeral=False)
-        logger.debug(f"{interaction.user.id} has requested to {action_type} {target_name}.")
+        await interaction.followup.send(message, ephemeral=True)
 
     @app_commands.command(name="kill", description="[DM Only] Action for roles that can kill.")
     @app_commands.describe(player="The player you want to kill.")
     @app_commands.autocomplete(player=player_autocomplete)
     async def kill(self, interaction: discord.Interaction, player: str):
+        """Kill command, delegates to the generic action handler."""
         await self._handle_night_action(interaction, 'kill', player)
         
     @app_commands.command(name="heal", description="[DM Only] Action for the Doctor to heal a player.")
     @app_commands.describe(player="The player you want to heal.")
     @app_commands.autocomplete(player=player_autocomplete)
     async def heal(self, interaction: discord.Interaction, player: str):
+        """Heal command, delegates to the generic action handler."""
         await self._handle_night_action(interaction, 'heal', player)
     
     @app_commands.command(name="investigate", description="[DM Only] Action for the Cop to investigate a player.")
     @app_commands.describe(player="The player you want to investigate.")
     @app_commands.autocomplete(player=player_autocomplete)
     async def investigate(self, interaction: discord.Interaction, player: str):
+        """Investigate command, delegates to the generic action handler."""
         await self._handle_night_action(interaction, 'investigate', player)
 
     @app_commands.command(name="block", description="[DM Only] Action for the Role Blocker to block an action.")
     @app_commands.describe(player="The player you want to block.")
     @app_commands.autocomplete(player=player_autocomplete)
     async def block(self, interaction: discord.Interaction, player: str):
+        """Block command, delegates to the generic action handler."""
         await self._handle_night_action(interaction, 'block', player)
 
-    
-  
-
 async def setup(bot):
+    """The setup function required by discord.py to load the cog."""
     await bot.add_cog(GameCog(bot))
     logger.info("GameCog loaded.")
+

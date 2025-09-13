@@ -60,6 +60,8 @@ class Game:
         self.lynch_votes = {} # This will store votes for lynching: {player_id: target_id}
         self.game_roles = [] # This will store GameRole objects assigned to players
         self.night_actions = {} # Stores night actions: {player_id: {"action": "type", "target": id}}
+        self.protected_players_this_night = {} # Tracks players protected during the night & who protected them {player_id: protector_id}
+        self.blocked_players_this_night = {} # Tracks players who were blocked this night
         self.vote_history = [] # NEW: To store every single vote
         self.player_lock = asyncio.Lock() # Create lock to ensure one person at a time for joining and exiting game
         self.vote_lock = asyncio.Lock() # Create lock to ensure one vote at a time 
@@ -605,18 +607,13 @@ class Game:
         if inactivity_deaths:
             self.narration_manager.add_event('inactivity_kill', victims=inactivity_deaths)
             logger.info(f"Sent inactivity deaths for narration: {inactivity_deaths}")
-        # If no votes were cast, add the 'no_lynch' event and stop.
-        if not self.lynch_votes:
+        # Check if there are any votes at all
+        # This single check handles both "no votes" and "all votes retracted".
+        if not self.lynch_votes or not any(self.lynch_votes.values()):
             self.narration_manager.add_event('no_lynch')
-            logger.info("No votes were cast, adding 'no_lynch' event.")
+            logger.info("No votes were cast or all were retracted, adding 'no_lynch' event.")
             return
-        # Find the maximum number of votes any player received.
         max_votes = len(max(self.lynch_votes.values(), key=len))
-        # If the highest vote count is 0 (e.g., votes were cast and then retracted), treat as no lynch.
-        if max_votes == 0:
-            self.narration_manager.add_event('no_lynch')
-            logger.info("No votes received, adding 'no_lynch' event.")
-            return
         # Get a list of all player IDs who are tied for the most votes.
         lynched_player_ids = [
             target_id for target_id, voter_ids in self.lynch_votes.items() 
@@ -724,8 +721,8 @@ class Game:
         }
         logger.info(f"Initial night actions to process: {self.night_actions}")
         # Reset per-night state variables
-        self.protected_players_this_night = set()
-        self.blocked_players_this_night = set()
+        self.protected_players_this_night.clear()
+        self.blocked_players_this_night.clear()
         # 2. Define action priority. Lower numbers are processed first.
         action_priority = {"block": 1, "heal": 2, "kill": 3, "investigate": 4}
         # 3. Group players by their action's priority.
@@ -900,10 +897,12 @@ class Game:
                 logger.error("Cannot save summary, game_id is missing.")
                 return
             # Construct the new directory path: Stats/<game_id>
-            game_log_dir = os.path.join("Stats/alpha_testing", game_id)
-            # Create the directory (and the parent 'Stats' dir if it doesn't exist)
+            # Dynamically build the path based on the game type
+            game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title()
+            base_dir = os.path.join("Stats", game_type_dir)
+            game_log_dir = os.path.join(base_dir, game_id)
+            # Create the directories
             os.makedirs(game_log_dir, exist_ok=True)
-            # Define the file path inside the new directory
             file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
             with open(file_path, 'w', encoding='utf-8') as f:
                 json.dump(final_summary, f, ensure_ascii=False, indent=4)
@@ -991,7 +990,8 @@ class Game:
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
         logger.info(f"Announcing winner: {winner}")
-        # --- Step 1: Determine Winners and Mark Losers as Dead ---
+        # --- Step 1: Determine Winners (this part is the same) ---
+        winning_players = []
         for player_obj in self.players.values():
             player_obj.is_winner = False
             if player_obj.role:
@@ -999,30 +999,39 @@ class Game:
                     player_obj.is_winner = True
                 elif player_obj.role.name == winner:
                     player_obj.is_winner = True
-                elif player_obj.display_name == winner:
-                    player_obj.is_winner = True
             if player_obj.is_winner:
+                winning_players.append(player_obj)
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
             # If player is NOT a winner AND is still alive, mark them as dead now.
             if not player_obj.is_winner and player_obj.is_alive:
                 player_obj.kill(self.game_settings['current_phase'], "Game Over - Losing Player")
                 logger.info(f"Marked losing player {player_obj.display_name} as dead.")
-        # --- Step 2: Now that all player states are final, generate messages and save data ---
-        status_message = self.get_status_message()
-        self.narration_manager.add_event('game_over', winner=winner)
+        # --- Step 2: Save the summary with the CLEAN data for stats ---
+        await self._save_game_summary(winner)
+        # --- Step 3: Create a BEAUTIFUL display name for the story ---
+        winner_display_name = ""
+        if winner in ["Town", "Mafia"]:
+            winner_display_name = f"The {winner}"
+        elif winner == "Draw":
+            winner_display_name = "game has ended in a draw! No one"
+        elif winning_players: # This will catch our Vigilante, SK, etc.
+            winner_display_name = f"**{winning_players[0].display_name}**"
+        else:
+            winner_display_name = winner # Fallback
+        # --- Step 4: Announce the results using the new display name ---
+        self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
         story = self.narration_manager.construct_story(
             self.game_settings['current_phase'],
             self.game_settings['phase_number']
         )
-        # Save the final, correct state to the summary file
-        await self._save_game_summary(winner)
-        # --- Step 3: Announce the results ---
         final_message = f"**Game Over!**\n{story}"
+        status_message = self.get_status_message()
         if status_message:
             final_message += f"\n\n{status_message}"
+        # Send the final message to the stories channel 
         try:
             await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(final_message)
-            logger.info(f"Announced winner: {winner}.")
+            logger.info(f"Announced winner: {winner_display_name}.")
         except Exception as e:
             logger.error(f"Error announcing winner: {e}")
 
@@ -1048,12 +1057,18 @@ class Game:
             # Update Discord role
             logger.info(f"Updating roles for player ID: {player_id} ({player_obj.display_name})")
             if player_obj.is_npc: continue # Skip NPCs
-            # Fetch the member object from the guild
-            logger.info(f"Updating roles for player {player_obj.display_name} (ID: {player_id})")
+           # This check prevents a crash if the player has left the server
             member = self.guild.get_member(player_id)
-            await member.add_roles(spectator_role)
-            await member.remove_roles(living_role, dead_role)
-            logger.info(f"Updated roles for player {player_obj.display_name} (ID: {player_id}) to spectator.")
+            if member:
+                try:
+                    # Check roles exist before using them to be extra safe
+                    if spectator_role: await member.add_roles(spectator_role)
+                    await member.remove_roles(living_role, dead_role)
+                    logger.info(f"Updated roles for player {player_obj.display_name} to spectator.")
+                except discord.HTTPException as e:
+                    logger.error(f"Failed to update roles for {member.display_name}: {e}")
+            else:
+                logger.warning(f"Player '{player_obj.display_name}' (ID: {player_id}) not found in server, skipping role update.")
         # Reset game settings      
         # Clear game state
         logger.info("Clearing game state variables.")
@@ -1128,3 +1143,16 @@ class Game:
         for role_name, count in role_counts.items():
             status_message += f" - **{role_name}**: {count}\n"
         return status_message
+    
+    # Admin command to forcibly end the current phase
+    async def force_end_phase(self, interaction: discord.Interaction):
+        """[ADMIN ONLY] Forcibly ends the current day or night phase."""
+        if self.game_settings["current_phase"] in ["day", "night"]:
+            self.game_settings["phase_end_time"] = datetime.now(timezone.utc)
+            logger.warning(f"Phase forcibly ended by admin: {interaction.user.name}")
+            await interaction.response.send_message(
+                "Phase end time has been set to now. The game will advance on the next loop.", 
+                ephemeral=False
+            )
+        else:
+            await interaction.response.send_message("A day or night phase is not currently active.", ephemeral=True)
