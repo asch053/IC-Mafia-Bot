@@ -20,7 +20,8 @@ class StatsCog(commands.Cog, name="StatsCog"):
     def __init__(self, bot: commands.Bot):
         """Initializes the StatsCog."""
         self.bot = bot
-        self.stats_directory = os.path.join("Stats", config.game_type)
+        # This is the fix! We point it to the main directory.
+        self.stats_directory = "Stats"
         logger.info(f"StatsCog initialized. Watching directory: {self.stats_directory}")
 
     # --- Autocomplete Function ---

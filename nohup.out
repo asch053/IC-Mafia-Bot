@@ -3509,3 +3509,242 @@ Ready to send to be prepped for narration
 [2025-07-21 07:06:34] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 4f86ad429e092972bc8f061d9c1015ed.
 [2025-07-21 09:52:38] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 4f86ad429e092972bc8f061d9c1015ed.
 [2025-07-21 10:53:09] [INFO    ] discord.gateway - received_message:567: Shard ID None has successfully RESUMED session 4f86ad429e092972bc8f061d9c1015ed.
+[2025-08-22 10:56:55] [CRITICAL] discord - setup_hook:89: Successfully loaded extension: Cogs.game
+[2025-08-22 10:56:55] [CRITICAL] discord - setup_hook:89: Successfully loaded extension: Cogs.admin
+[2025-08-22 10:56:55] [CRITICAL] discord - setup_hook:89: Successfully loaded extension: Cogs.info
+[2025-08-22 10:56:55] [CRITICAL] discord - setup_hook:96: Synced 17 global slash command(s).
+[2025-08-22 10:56:58] [CRITICAL] discord - on_ready:104: Logged in as IC_MafiaBot (ID: 1362723554923118763)
+[2025-08-22 11:01:25] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-08-22 11:01:25] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 819649801364176897, 819649350538887250, 655815152960012328, 603943320053481474, 603942835108184064, 1389566810277285908, 1361649931668160522]
+[2025-08-22 11:01:28] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-08-22 11:01:28] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-08-26 10:08:59] [CRITICAL] discord - game_loop:405: Win conditions met. Winner: Mafia
+[2025-08-27 02:44:00] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-08-27 02:44:00] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 819649801364176897, 819649350538887250, 655815152960012328, 603943320053481474, 603943459841114112, 603942835108184064, 1389566810277285908]
+[2025-08-27 02:44:02] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-08-27 02:44:02] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-08-27 16:26:24] [ERROR   ] discord.app_commands.tree - on_error:832: Ignoring exception in command 'mafiajoin'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/Cogs/game.py", line 159, in join_game_command
+    await interaction.response.defer(ephemeral=True)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 844, in defer
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'mafiajoin' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-28 08:33:27] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "heall" is not found
+[2025-08-29 18:52:49] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "vote" is not found
+[2025-08-30 04:02:20] [ERROR   ] discord.app_commands.tree - _call:1305: Ignoring exception in autocomplete for 'kill'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1302, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 927, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1279, in autocomplete
+    await adapter.create_interaction_response(
+    ...<6 lines>...
+    )
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-30 10:54:40] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "vote" is not found
+[2025-08-30 22:05:55] [ERROR   ] discord.app_commands.tree - on_error:832: Ignoring exception in command 'mafiastatus'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/Cogs/game.py", line 188, in status_command
+    await interaction.response.send_message(status_message, ephemeral=False)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1004, in send_message
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'mafiastatus' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-30 22:06:53] [ERROR   ] discord.app_commands.tree - on_error:832: Ignoring exception in command 'mafiastatus'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/Cogs/game.py", line 188, in status_command
+    await interaction.response.send_message(status_message, ephemeral=False)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1004, in send_message
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'mafiastatus' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-30 22:06:55] [ERROR   ] discord.app_commands.tree - on_error:832: Ignoring exception in command 'mafiastatus'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 857, in _do_call
+    return await self._callback(self.binding, interaction, **params)  # type: ignore
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/Cogs/game.py", line 188, in status_command
+    await interaction.response.send_message(status_message, ephemeral=False)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1004, in send_message
+    response = await adapter.create_interaction_response(
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1310, in _call
+    await command._invoke_with_namespace(interaction, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 883, in _invoke_with_namespace
+    return await self._do_call(interaction, transformed_values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 876, in _do_call
+    raise CommandInvokeError(self, e) from e
+discord.app_commands.errors.CommandInvokeError: Command 'mafiastatus' raised an exception: NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-30 22:09:16] [ERROR   ] discord.app_commands.tree - _call:1305: Ignoring exception in autocomplete for 'block'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1302, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 927, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1279, in autocomplete
+    await adapter.create_interaction_response(
+    ...<6 lines>...
+    )
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-08-31 22:09:32] [CRITICAL] discord - game_loop:405: Win conditions met. Winner: Mafia
+[2025-09-03 03:43:15] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-09-03 03:43:15] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 819649350538887250, 655815152960012328, 603943459841114112, 603942835108184064]
+[2025-09-03 03:43:16] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-09-03 03:43:16] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-09-06 00:14:53] [ERROR   ] discord.app_commands.tree - _call:1305: Ignoring exception in autocomplete for 'kill'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1302, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 927, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1279, in autocomplete
+    await adapter.create_interaction_response(
+    ...<6 lines>...
+    )
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-09-06 00:14:57] [ERROR   ] discord.app_commands.tree - _call:1305: Ignoring exception in autocomplete for 'kill'
+Traceback (most recent call last):
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/tree.py", line 1302, in _call
+    await command._invoke_autocomplete(interaction, focused, namespace)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/app_commands/commands.py", line 927, in _invoke_autocomplete
+    await interaction.response.autocomplete(choices)
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/interactions.py", line 1279, in autocomplete
+    await adapter.create_interaction_response(
+    ...<6 lines>...
+    )
+  File "/home/opc/IC-Mafia-Bot/.venv/lib/python3.13/site-packages/discord/webhook/async_.py", line 224, in request
+    raise NotFound(response, data)
+discord.errors.NotFound: 404 Not Found (error code: 10062): Unknown interaction
+[2025-09-08 10:08:40] [CRITICAL] discord - game_loop:405: Win conditions met. Winner: Draw
+[2025-09-08 20:45:06] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-09-08 20:45:06] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 655815152960012328, 603943320053481474, 603942835108184064, 1389566810277285908, 1361649931668160522]
+[2025-09-08 20:45:07] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-09-08 20:45:07] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-09-08 22:24:16] [CRITICAL] discord - on_ready:104: Logged in as IC_MafiaBot (ID: 1362723554923118763)
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:316: Generating 10 Vigilante roles for Battle Royale mode.
+ Current game roles list = []
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>, <game.roles.NeutralRoyale object at 0x7f87e2458710>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>, <game.roles.NeutralRoyale object at 0x7f87e2458710>, <game.roles.NeutralRoyale object at 0x7f87e23a2140>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>, <game.roles.NeutralRoyale object at 0x7f87e2458710>, <game.roles.NeutralRoyale object at 0x7f87e23a2140>, <game.roles.NeutralRoyale object at 0x7f87e23a3ac0>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>, <game.roles.NeutralRoyale object at 0x7f87e2458710>, <game.roles.NeutralRoyale object at 0x7f87e23a2140>, <game.roles.NeutralRoyale object at 0x7f87e23a3ac0>, <game.roles.NeutralRoyale object at 0x7f87e2d9da50>]
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:320: Creating Vigilante role for players. Vigilante
+[2025-09-09 21:00:09] [CRITICAL] discord - generate_game_roles:323: Vigilante role created successfully: [<game.roles.NeutralRoyale object at 0x7f87e381ae40>, <game.roles.NeutralRoyale object at 0x7f87e2d4b110>, <game.roles.NeutralRoyale object at 0x7f87e24482d0>, <game.roles.NeutralRoyale object at 0x7f87e2d8b100>, <game.roles.NeutralRoyale object at 0x7f87e2d8b360>, <game.roles.NeutralRoyale object at 0x7f87e2458710>, <game.roles.NeutralRoyale object at 0x7f87e23a2140>, <game.roles.NeutralRoyale object at 0x7f87e23a3ac0>, <game.roles.NeutralRoyale object at 0x7f87e2d9da50>, <game.roles.NeutralRoyale object at 0x7f87e23d1250>]
+[2025-09-11 21:05:25] [CRITICAL] discord - game_loop:405: Win conditions met. Winner: Draw
+[2025-09-12 14:03:01] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "mafia" is not found
+[2025-09-12 14:05:58] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-09-12 14:05:58] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 819649801364176897, 819649350538887250, 655815152960012328, 603943320053481474, 603942835108184064]
+[2025-09-12 14:05:59] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-09-12 14:05:59] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-09-12 14:10:16] [CRITICAL] discord - stop_game_command:44: Admin role ID: 603942835108184064
+[2025-09-12 14:10:16] [CRITICAL] discord - stop_game_command:48: User roles: [603941471242158092, 819649801364176897, 819649350538887250, 655815152960012328, 603943459841114112, 603942835108184064]
+[2025-09-12 14:12:29] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-09-12 14:12:29] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 819649801364176897, 819649350538887250, 655815152960012328, 603943866776813603, 603942835108184064]
+[2025-09-12 14:12:29] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-09-12 14:12:29] [CRITICAL] discord - start:117: Spectator role object: Spectators
+[2025-09-13 21:02:40] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "signyo" is not found
+[2025-09-13 21:33:06] [ERROR   ] discord.ext.commands.bot - on_command_error:355: Ignoring exception in command None
+discord.ext.commands.errors.CommandNotFound: Command "j/join" is not found
+[2025-09-16 22:07:53] [CRITICAL] discord - game_loop:405: Win conditions met. Winner: Town
+[2025-09-17 07:48:54] [CRITICAL] discord - start_game_command:118: Admin role ID: 603942835108184064
+[2025-09-17 07:48:54] [CRITICAL] discord - start_game_command:122: User roles: [603941471242158092, 655815152960012328, 603943320053481474, 603942835108184064, 1389566810277285908, 1361649931668160522]
+[2025-09-17 07:48:56] [CRITICAL] discord - start:114: Spectator role ID: 603943866776813603
+[2025-09-17 07:48:56] [CRITICAL] discord - start:117: Spectator role object: Spectators
