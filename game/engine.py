@@ -6,6 +6,7 @@ import logging
 import io
 import random
 import os
+import secrets
 
 from discord.ext import tasks
 from datetime import datetime, timedelta, timezone
@@ -65,6 +66,11 @@ class Game:
         self.vote_history = [] # NEW: To store every single vote
         self.player_lock = asyncio.Lock() # Create lock to ensure one person at a time for joining and exiting game
         self.vote_lock = asyncio.Lock() # Create lock to ensure one vote at a time 
+        # --- Night Action Tracking ---
+        self.night_outcomes = {}
+        self.heals_on_players = {}
+        self.kill_attempts_on = {}
+        self.blocked_players_this_night = {}
         # --- Control Flags ---
         self.force_start_flag = False
         self.reminders_sent = set() # Tracks sent reminders for the current phase
@@ -346,21 +352,27 @@ class Game:
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""
-        player_ids = list(self.players.keys()) # Get a list of player IDs
-        random.shuffle(player_ids) # Shuffle the player IDs to randomize role assignment
-        random.shuffle(self.game_roles) # Shuffle the roles to randomize assignment
-        # Assign a role from game_roles to each player in player_ids
-        logger.info(f"Assigning {len(self.game_roles)} roles to {len(player_ids)} players.")
-        for i, player_id in enumerate(player_ids):
-            player_obj = self.players.get(player_id)
-            if i < len(self.game_roles):
-                role = self.game_roles[i]
-                player_obj.assign_role(role) # Use the Player object's method
-                if not player_obj.is_npc:
-                    await send_role_dm(self.bot, player_id, role, self.guild)
-            else:
-                logger.warning(f"More players than available roles. Player {player_obj.display_name} was not assigned a role.")
+        player_pool = list(self.players.values())
+        role_pool = self.game_roles[:]  # Create a copy
+
+        logger.info(f"Securely shuffling {len(role_pool)} roles for {len(player_pool)} players.")
+
+        # Fisher-Yates shuffle using a cryptographically secure random number generator.
+        # This is the most robust way to ensure a truly random permutation.
+        for i in range(len(role_pool) - 1, 0, -1):
+            # Pick an index j from 0 to i (inclusive).
+            j = secrets.randbelow(i + 1)
+            # Swap the elements at positions i and j.
+            role_pool[i], role_pool[j] = role_pool[j], role_pool[i]
+
+        # Pair the unshuffled list of players with the now-shuffled list of roles.
+        for player_obj, role in zip(player_pool, role_pool):
+            player_obj.assign_role(role)
+            if not player_obj.is_npc:
+                await send_role_dm(self.bot, player_obj.id, role, self.guild)
+
         logger.info("Roles assigned to players successfully.")
+        
         # After assigning roles, send Mafia team information to Mafia players
         if self.game_settings["game_type"] == "classic":
             await send_mafia_info_dm(self.bot, self.players)
@@ -952,7 +964,7 @@ class Game:
                 return "Town"    
             # Mafia Win: 
             # Mafia outnumber Town, and no Neutral Killers remain.
-            if mafia_count > town_count and neutral_killer_count == 0:
+            if mafia_count >= town_count and neutral_killer_count == 0:
                 if mafia_count > 0:
                     logger.info("Win Condition Met: Mafia wins.")
                     return "Mafia"

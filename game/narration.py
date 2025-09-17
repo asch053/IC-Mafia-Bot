@@ -52,11 +52,23 @@ class NarrationManager:
             if not target or not target.role: return None
             return f"A shadowy figure paid a visit to the **{target.role.name}** last night, preventing them from performing their action."
         
+        if event_type == 'block_missed':
+            target = event.get('target')
+            blocker = event.get('blocker')
+            if not target or not target.role or not blocker: return None
+            return f"A shadowy figure stalked the **{target.role.name}**.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
+        
         if event_type == 'battle_royale_block':
             target = event.get('target')
             blocker = event.get('blocker')
             if not target or not target.role or not blocker: return None
             return f"In the chaos of the night, **{target.display_name}** was ambushed by **{blocker.display_name}** and unable to act."
+        
+        if event_type == 'block_missed_royale':
+            target = event.get('target')
+            blocker = event.get('blocker')
+            if not target or not target.role or not blocker: return None
+            return f"**{blocker.display_name}** attempted to ambush **{target.display_name}**, but they had already completed their actions and returned home to safety."
 
         if event_type == 'save':
             victim = event.get('victim')
