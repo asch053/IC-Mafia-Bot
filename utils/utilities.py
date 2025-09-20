@@ -76,13 +76,11 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
     for player_id, player_obj in players.items():
         if player_obj.is_npc: continue # Skip NPCs
         # Fetch the member object from the guild
-        logger.debug(f"Updating roles for player {player_obj.display_name} (ID: {player_id})")
         member = guild.get_member(player_id)
         if not member:
             logger.warning(f"Could not find player with ID {player_id} in the server.")
             continue
         user_roles = [role.id for role in member.roles]
-        logger.warning(f"User roles for {member.name} (ID: {member.id}): {user_roles}")
         try:
             if player_obj.is_alive:
                 await member.add_roles(living_role)
@@ -92,18 +90,15 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
                 await member.remove_roles(living_role, spectator_role)
         except discord.HTTPException as e:
             logger.error(f"Failed to update roles for {member.name}: {e}")
-        logger.debug(f"Updated roles for {member.name} (ID: {member.id}) - Alive: {player_obj.is_alive}")
         user_roles = [role.id for role in member.roles]
-        logger.warning(f"User roles for {member.name} (ID: {member.id}): {user_roles}")
+    logger.info("Finished updating roles for all players in the game.")
     # Ensure non-players are spectators
     player_ids = {pid for pid, p_obj in players.items() if not p_obj.is_npc}
     async for member in guild.fetch_members(limit=None):
-        logger.debug(f"Checking non-player roles for {member.name} (ID: {member.id})")
         # Skip bots and already known players
         if member.bot or member.id in player_ids:
             continue
         user_roles = [role.id for role in member.roles]
-        logger.warning(f"User roles for {member.name} (ID: {member.id}): {user_roles}")
         try:
             if living_role in member.roles or dead_role in member.roles:
                 await member.remove_roles(living_role, dead_role)
@@ -115,6 +110,7 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
             logger.warning(f"User roles for {member.name} (ID: {member.id}): {user_roles}")
         except discord.HTTPException as e:
             logger.error(f"Failed to update non-player roles for {member.name}: {e}")
+    logger.info("Finished ensuring non-players are spectators.")
 
 async def send_role_dm(bot, player_id, role, guild):
     """

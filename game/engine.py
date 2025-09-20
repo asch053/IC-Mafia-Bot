@@ -395,6 +395,7 @@ class Game:
             elif self.game_settings["current_phase"].lower() == "night":
                 logger.debug("Night phase ended. Processing night actions...")
                 await self.process_night_actions() # If night phase has ended, process all night actions
+                await self._resolve_night_deaths() # Resolve deaths after processing actions
                 # NEW: Update last_action_target for players who acted
                 processed_actions = self.night_actions.copy()
                 # First, reset the memory for players who didn't act this night
@@ -431,7 +432,6 @@ class Game:
             self.narration_manager.clear()
             if winner: #if there is a winner, announce them and stop the game loop
                 await self.announce_winner(winner)
-                
                 logger.info(f"Game ended with winner: {winner}")
                 await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
                 logger.info("Updated player roles in Discord based on current game state.")
@@ -654,25 +654,20 @@ class Game:
         # Format: {victim_object: [voter_objects]}
         phase_str = f"Day {self.game_settings['phase_number']}"
         lynch_details = {}
-
         for victim in lynched_players:
             # Kill the player and record details FIRST
             victim.kill(phase_str, "Lynched by the town")
             victim.death_info['voters'] = [p.display_name for p in [self.players.get(v_id) for v_id in self.lynch_votes.get(victim.id, [])] if p]
             self._handle_promotions(victim)
-            
             voters = [self.players.get(v_id) for v_id in self.lynch_votes.get(victim.id, [])]
             lynch_details[victim] = voters
-
         # Add the lynch event for the story
         self.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
-
         # NOW, check if the lynch resulted in a Jester win
         if len(lynched_players) == 1 and lynched_players[0].role and lynched_players[0].role.name == "Jester":
             self.narration_manager.add_event('jester_win', victim=lynched_players[0])
             logger.info(f"Jester {lynched_players[0].display_name} has won.")
             return "Jester"  # Return the winner directly
-
         return None  # No special winner from this lynch
            
     async def record_night_action(self, interaction: discord.Interaction, action_type: str, target_name: str):
@@ -711,76 +706,73 @@ class Game:
             "target_id": target_obj.id,
             'night_priority': player_obj.role.night_priority if hasattr(player_obj.role, 'night_priority') else 99, # Default to 99 if no priority set
         }
-        #await interaction.response.send_message(f"Your action (**{action_type}** on **{target_obj.display_name}**) has been recorded for the night.")
         logger.info(f"Recorded night action: {player_obj.display_name} -> {action_type} on {target_obj.display_name}")
         return f"Your action (**{action_type}** on **{self.get_player_by_name(target_name).display_name}**) has been recorded."
 
     async def process_night_actions(self):
-        """
-        Processes all recorded night actions, handling priority and randomization for game modes.
-        """
-        # --- Check if there are any actions to process ---
+        """Processes all recorded night actions in the correct priority order."""
         if not self.night_actions:
-            if self.narration_manager:
-                self.narration_manager.add_event('no_actions')
-            logger.info("No night actions were submitted.")
+            self.narration_manager.add_event('no_actions')
             return
-        # 1. Initialize outcomes for all submitted actions.
-        # This dictionary will be modified by action handlers.
         night_outcomes = {
-            player_id: {'action': data['type'], 'target': data['target_id'], 'status': 'success'}
+            player_id: {'action': data['type'], 'target': data['target_id'], 'status': None}
             for player_id, data in self.night_actions.items()
         }
-        logger.info(f"Initial night actions to process: {self.night_actions}")
-        # Reset per-night state variables
-        self.protected_players_this_night.clear()
-        self.blocked_players_this_night.clear()
-        # 2. Define action priority. Lower numbers are processed first.
+        self.heals_on_players.clear()
         action_priority = {"block": 1, "heal": 2, "kill": 3, "investigate": 4}
-        # 3. Group players by their action's priority.
-        # This is the core logic for ensuring actions happen in the right order.
         actions_by_priority = defaultdict(list)
         for player_id, data in self.night_actions.items():
-            priority = action_priority.get(data['type'], 99) # Default to a low priority
+            priority = action_priority.get(data['type'], 99)
             actions_by_priority[priority].append(player_id)
-        # 4. For Battle Royale mode, shuffle players *within* each priority group.
-        # This randomizes the order of identical actions (e.g., multiple kills)
-        # without breaking the overall priority system.
-        if self.game_settings.get('game_type') == "battle_royale":
-            logger.info("Battle Royale mode: Shuffling actions within priority groups.")
-            for priority_group in actions_by_priority.values():
-                random.shuffle(priority_group)
-        else:
-            logger.info("Classic mode: Ordering of actions within priority groups by night_priority.")
-            for priority_group in actions_by_priority.values():
-                # This sort is stable, so players with the same priority remain in their original order.
-                # It assumes 'night_priority' was added when the action was recorded.
-                # We use a high default (99) so roles without a priority go last.
-                priority_group.sort(key=lambda pid: self.night_actions[pid].get('night_priority', 99))
-        # 5. Flatten the groups back into a single, correctly ordered list for processing.
+        # Sort and flatten actions into a final processing order
         final_processing_order = []
         for priority in sorted(actions_by_priority.keys()):
-            final_processing_order.extend(actions_by_priority[priority])
+            priority_group = actions_by_priority[priority]
+            # Step 1: Shuffle the group to ensure fairness among roles with the same sub-priority.
+            random.shuffle(priority_group)
+            # Step 2: Sort the now-shuffled group by the role's specific night_priority.
+            # This allows for fine-grained control (e.g., Town Blocker before Mafia Blocker).
+            # The sort is stable, maintaining the shuffled order for ties.
+            priority_group.sort(key=lambda pid: self.night_actions[pid].get('night_priority', 99))
+        # Step 3: Extend the final processing order with this sorted group.
+            final_processing_order.extend(priority_group)
         logger.info(f"Final action processing order: {final_processing_order}")
-        # 6. Execute each action handler in the final, determined order.
+        # Process each action in the final determined order
         for player_id in final_processing_order:
             action_data = self.night_actions[player_id]
             handler = actions.ACTION_HANDLERS.get(action_data['type'])
             if handler:
                 try:
-                    # The handler function will directly modify the 'night_outcomes' dictionary
-                    # to reflect changes (e.g., a kill being blocked or a target being saved).
                     handler(self, player_id, action_data['target_id'], night_outcomes)
                 except Exception as e:
                     logger.error(f"Error processing action for player {player_id}: {e}", exc_info=True)
+        logger.info(f"Final night outcomes after handlers: {night_outcomes}")
+    
+    async def _resolve_night_deaths(self):
+        """
+        Final step of the night. Compares kill attempts against heals to determine
+        who dies, and generates the definitive kill/save narration events.
+        """
+        logger.info("Resolving final night deaths...")
+        phase_str = f"Night {self.game_settings['phase_number']}"
+        for victim_id, killer_ids in list(self.kill_attempts_on.items()):
+            victim_obj = self.players.get(victim_id)
+            if not victim_obj: continue
+            if victim_id in self.heals_on_players:
+                healer_id = self.heals_on_players[victim_id][0]
+                healer_obj = self.players.get(healer_id)
+                self.narration_manager.add_event('save', healer=healer_obj, victim=victim_obj)
+                logger.info(f"{victim_obj.display_name} was saved by {healer_obj.display_name}.")
             else:
-                logger.warning(f"No handler found for action type '{action_data['type']}'")
-        logger.info(f"Final night outcomes: {night_outcomes}")
-        # 7. Generate the story based on the final outcomes.
-        if hasattr(self, '_generate_narration_from_outcomes') and callable(self._generate_narration_from_outcomes):
-            self._generate_narration_from_outcomes(night_outcomes, final_processing_order)
-        else:
-            logger.warning("Narration generation method not found.")
+                killer_id = killer_ids[0]
+                killer_obj = self.players.get(killer_id)
+                victim_obj.kill(phase_str, f"Killed by {killer_obj.role.name if killer_obj.role else 'Unknown'}")
+                self._handle_promotions(victim_obj)
+                event_type = 'kill_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'kill'
+                self.narration_manager.add_event(event_type, killer=killer_obj, victim=victim_obj)
+                logger.info(f"{victim_obj.display_name} was killed by {killer_obj.display_name}.")
+        self.kill_attempts_on.clear()
+        logger.info("Night deaths resolved.")
 
     # --- 5. GAME END & UTILITIES ---
     def get_player_by_name(self, name):
@@ -789,43 +781,6 @@ class Game:
             if player_obj.display_name.lower() == name.lower():
                 return player_obj
         return None
-    
-    def _generate_narration_from_outcomes(self, night_outcomes, processing_order):
-        """
-        Looks at the final outcomes and generates stories ONLY for actions
-        that were successful, as blocked/saved/immune stories are handled elsewhere.
-        """
-        # First, iterate through the correctly ordered list
-        logger.info("Generating narration from night outcomes.")
-        for player_id in processing_order:
-            outcome = night_outcomes.get(player_id)
-            logger.debug(f"Processing outcome for player {player_id}: {outcome['status']} - {outcome['status']}")
-            # Skip if there's no outcome for this player or if the action was not successful.
-            # Stories for blocked/saved actions are handled by their respective handlers.
-            if not outcome or outcome['status'] != 'success':
-                logger.debug(f"Skipping player {player_id} due to no outcome or unsuccessful action.")
-                continue
-            # Get the player object and their target player object
-            actor = self.players.get(player_id)
-            target = self.players.get(outcome['target'])
-            # Ensure actor and target exist before narrating to prevent errors
-            if not actor or not target:
-                logger.warning(f"Could not find actor ({player_id}) or target ({outcome['target']}) for narration.")
-                continue
-            logger.debug(f"Actor: {actor.display_name if actor else 'Unknown'}, Target: {target.display_name if target else 'Unknown'}")
-            # Determine action type in outcomes
-            action_type = outcome['action']
-            #if action type is a kill then check if battle royale game mode and send that story
-            if action_type == 'kill':
-                if self.game_settings.get('game_type') == "battle_royale":
-                    self.narration_manager.add_event('kill_battle_royale', killer=actor, victim=target)
-            # Else send normal story type
-                else:
-                    self.narration_manager.add_event('kill', killer=actor, victim=target)
-            # Send narration type for investigate 
-            elif action_type == 'investigate':
-                self.narration_manager.add_event('investigate', investigator=actor, target=target)
-            # Add other 'elif' blocks here for other successful actions you want to narrate.
 
     def _handle_promotions(self, dead_player):
         """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
