@@ -75,7 +75,8 @@ def handle_heal(game, healer_id, target_id, night_outcomes):
     game.heals_on_players.setdefault(target_id, []).append(healer_id)
 
     # Add a narration event for the healer's personal story.
-    game.narration_manager.add_event('heal', healer=healer, target=target)
+    #event_type = 'battle_royale_save' if game.game_settings.get('game_type') == "battle_royale" else 'save' # use battle royale event if in that mode
+    #game.narration_manager.add_event(event_type, healer=healer, target=target)
     logger.info(f"{healer.display_name} successfully healed {target.display_name}.")
 
 
