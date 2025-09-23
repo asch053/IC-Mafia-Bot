@@ -1,7 +1,7 @@
 {
   "5": [
     {
-      "id": "5_players_balanced_1",
+      "id": "5_players_test_1",
       "roles": [
         {
           "name": "Godfather",
@@ -11,6 +11,7 @@
           "short_description": "Immune, chooses Mafia target.",
           "description": "Chooses the Mafia's target each night. Use `/kill player-name` in this DM with the bot to kill your chosen player. A separate message will be sent with the identity of the other mob member. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when there are more Mafia than other factions."
         },
+        { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         {
           "name": "Town Doctor",
           "alignment": "Town",
@@ -19,14 +20,9 @@
           "short_description": "Can heal one player each night.",
           "description": "You are town aligned and can protect one player each night from being killed. Use `/heal player-name` during the night phase in this DM with the bot to heal your chosen player. During the day you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead."
         },
-        {
-          "name": "Plain Townie",
-          "alignment": "Town",
-          "quantity": 3,
-          "action": "",
-          "short_description": "Normal member of town.",
-          "description": "A regular member of the town. During the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched for that day. You win when all Mafia and the SK are dead."
-        }
+        { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
+
+        { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
   ],
