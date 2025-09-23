@@ -1,0 +1,80 @@
+# This is the name of our workflow. It will show up in the "Actions" tab of your GitHub repository.
+name: Test and Deploy Mafia Bot
+
+# This section defines the trigger for our workflow.
+on:
+  # We want this to run every time someone pushes new code...
+  push:
+    # ...but ONLY if the push is to the 'main' or 'test' branches.
+    branches:
+      - main
+      - test_1
+
+# This section defines the jobs that our workflow will run.
+jobs:
+  # --- JOB 1: RUN THE TESTS ---
+  # This job's only purpose is to ensure our code is healthy.
+  test:
+    # It will run on a standard, fresh Linux virtual machine provided by GitHub.
+    runs-on: ubuntu-latest
+    steps:
+      # Step 1: Check out the repository code so the runner has access to it.
+      - name: Check out repository code
+        uses: actions/checkout@v4
+
+      # Step 2: Set up the specific version of Python we need.
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      # Step 3: Install all the libraries listed in our requirements.txt file.
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # Step 4: Run our entire unit test suite. If any test fails, this job will fail.
+      - name: Run unit tests
+        run: python -m unittest discover Tests
+
+  # --- JOB 2: DEPLOY TO THE BETA SERVER ---
+  # This job will deploy our code to the beta testing virtual machine.
+  deploy-to-beta:
+    runs-on: ubuntu-latest
+    # CRITICAL: This job 'needs' the 'test' job to complete successfully before it will even start.
+    needs: test
+    # CRITICAL: This 'if' condition ensures this job ONLY runs for pushes to the 'test' branch.
+    if: github.ref == 'refs/heads/test_1' 
+    steps:
+      - name: Deploy to Beta VM via SSH
+        # We use a popular, pre-built action to handle the SSH connection securely.
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # These values are pulled from your repository's encrypted secrets.
+          host: ${{ secrets.BETA_HOST }}
+          username: ${{ secrets.BETA_USERNAME }}
+          key: ${{ secrets.BETA_SSH_KEY }}
+          # This is the script that will be run on your VM.
+          script: |
+            cd /home/opc/IC-Mafia-Bot/
+            git pull origin test
+            sudo systemctl restart mafiabot-beta.service
+
+  # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
+  # This job will deploy our code to the main production virtual machine.
+  deploy-to-main:
+    runs-on: ubuntu-latest
+    # It ALSO 'needs' the 'test' job to pass. We never deploy untested code.
+    needs: test
+    # CRITICAL: This 'if' condition ensures this job ONLY runs for pushes to the 'main' branch.
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Deploy to Main VM via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+            host: ${{ secrets.MAIN_HOST }}
+            username: ${{ secrets.MAIN_USERNAME }} 
+            key: ${{ secrets.MAIN_SSH_KEY }}
+            script: |
+                cd /home/opc/IC-Mafia-Bot/
+                git pull origin main
+                sudo systemctl restart mafiabot-main.service
