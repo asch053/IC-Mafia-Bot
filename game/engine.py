@@ -711,39 +711,55 @@ class Game:
 
     async def process_night_actions(self):
         """Processes all recorded night actions in the correct priority order."""
+        # If no actions were taken, add a 'no_actions' event and return
         if not self.night_actions:
             self.narration_manager.add_event('no_actions')
             return
+        # Prepare a structure to hold the outcomes of actions for narration
         night_outcomes = {
             player_id: {'action': data['type'], 'target': data['target_id'], 'status': None}
             for player_id, data in self.night_actions.items()
         }
-        self.heals_on_players.clear()
+        self.heals_on_players.clear() # Reset heals and kills tracking
+        logger.info("Processing night actions...")
+        logger.info(f"Initial night actions: {self.night_actions}")
+        logger.info(f"Initial night outcomes before processing: {night_outcomes}")
+
+        # Group actions by their primary priority
         action_priority = {"block": 1, "heal": 2, "kill": 3, "investigate": 4}
+
+        # Create a mapping of priority to list of player IDs
         actions_by_priority = defaultdict(list)
         for player_id, data in self.night_actions.items():
-            priority = action_priority.get(data['type'], 99)
-            actions_by_priority[priority].append(player_id)
+            priority = action_priority.get(data['type'], 99) # Default to 99 if action type is unknown
+            actions_by_priority[priority].append(player_id) # Group player IDs by action priority
+            logger.debug(f"Action '{data['type']}' from player {player_id} assigned to priority {priority}.")
         # Sort and flatten actions into a final processing order
         final_processing_order = []
+        # Itterate over priority groups in ascending order
         for priority in sorted(actions_by_priority.keys()):
             priority_group = actions_by_priority[priority]
-            # Step 1: Shuffle the group to ensure fairness among roles with the same sub-priority.
+            logger.info(f"Processing priority group {priority} with players: {priority_group}")
+        # Step 1: Shuffle the group to ensure fairness among roles with the same sub-priority.
             random.shuffle(priority_group)
-            # Step 2: Sort the now-shuffled group by the role's specific night_priority.
+        # Step 2: Sort the now-shuffled group by the role's specific night_priority using Python's built-in sort.
             # This allows for fine-grained control (e.g., Town Blocker before Mafia Blocker).
             # The sort is stable, maintaining the shuffled order for ties.
-            priority_group.sort(key=lambda pid: self.night_actions[pid].get('night_priority', 99))
-        # Step 3: Extend the final processing order with this sorted group.
-            final_processing_order.extend(priority_group)
+            sorted_group = sorted(priority_group, key=lambda pid: self.night_actions[pid].get('night_priority', 99))
+        # Step 3: Append the sorted group to the final processing order.           
+            final_processing_order.extend(sorted_group)
+
         logger.info(f"Final action processing order: {final_processing_order}")
+
         # Process each action in the final determined order
         for player_id in final_processing_order:
-            action_data = self.night_actions[player_id]
-            handler = actions.ACTION_HANDLERS.get(action_data['type'])
+            action_data = self.night_actions[player_id] # Get the action data for this player
+            logger.info(f"Processing action for player {player_id}: {action_data}")
+            handler = actions.ACTION_HANDLERS.get(action_data['type']) # Get the handler function for this action type
+            logger.info(f"Found handler for action '{action_data['type']}': {handler}")
             if handler:
                 try:
-                    handler(self, player_id, action_data['target_id'], night_outcomes)
+                    handler(self, player_id, action_data['target_id'], night_outcomes) # Call the handler function
                 except Exception as e:
                     logger.error(f"Error processing action for player {player_id}: {e}", exc_info=True)
         logger.info(f"Final night outcomes after handlers: {night_outcomes}")
@@ -757,15 +773,16 @@ class Game:
         phase_str = f"Night {self.game_settings['phase_number']}"
         for victim_id, killer_ids in list(self.kill_attempts_on.items()):
             victim_obj = self.players.get(victim_id)
+            killer_id = killer_ids[0]
+            killer_obj = self.players.get(killer_id)
             if not victim_obj: continue
             if victim_id in self.heals_on_players:
                 healer_id = self.heals_on_players[victim_id][0]
                 healer_obj = self.players.get(healer_id)
-                self.narration_manager.add_event('save', healer=healer_obj, victim=victim_obj)
+                event_type = 'save_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'save'
+                self.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=killer_obj)
                 logger.info(f"{victim_obj.display_name} was saved by {healer_obj.display_name}.")
             else:
-                killer_id = killer_ids[0]
-                killer_obj = self.players.get(killer_id)
                 victim_obj.kill(phase_str, f"Killed by {killer_obj.role.name if killer_obj.role else 'Unknown'}")
                 self._handle_promotions(victim_obj)
                 event_type = 'kill_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'kill'
