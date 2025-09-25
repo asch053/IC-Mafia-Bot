@@ -426,6 +426,7 @@ class Game:
             if story:
                 #send story to the stories channel
                 logger.debug("Story constructed from narration manager events.")
+                logger.info(f"Story for phase {self.game_settings['current_phase']} {self.game_settings['phase_number']}:\n{story}")
                 await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(story)
             logger.info(f"Phase {self.game_settings['current_phase']} {self.game_settings['phase_number']} ended. Story constructed.")
             # Clear the narration manager for the next phase

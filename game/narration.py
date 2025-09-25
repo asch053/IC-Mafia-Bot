@@ -33,10 +33,11 @@ class NarrationManager:
         
         for event in self.events:
             story_part = self._generate_story_part(event)
+            logger.debug(f"Generated story part: {story_part}")
             if story_part:
                 story_parts.append(story_part)
                 
-        logger.info("Narrative story constructed.")
+        logger.info("Narrative story constructed.\n" + "\n".join(story_parts))
         return "\n\n".join(story_parts) if len(story_parts) > 1 else None
 
     def _generate_story_part(self, event: dict) -> str | None:
