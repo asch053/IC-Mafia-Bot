@@ -414,11 +414,12 @@ class Game:
             logger.info("Updated player roles in Discord based on current game state.")
             # Check for win conditions if win conditions not already met (i.e. Jester win)
             if not winner:
-                logger.debug("Checking win conditions after phase end.")
+                logger.info("Checking win conditions after phase end.")
                 winner = self.check_win_conditions()
                 if winner:
                     logger.critical(f"Win conditions met. Winner: {winner}")
             # Construct the story (the narrator function now adds the header)
+            logger.info("Constructing story from narration manager events...")
             story = self.narration_manager.construct_story(
                 self.game_settings['current_phase'],
                 self.game_settings['phase_number']

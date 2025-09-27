@@ -1,12 +1,18 @@
 import discord
-from discord.ext import commands
 import asyncio
 import logging
 import logging.handlers
 import logging
 import os
-import config  # Import the config module directly
+
+try:
+    import config
+# If it fails (like in GitHub Actions), import the template instead.
+except ImportError:
+    import config_template as config
+
 from datetime import datetime, timedelta, timezone
+from discord.ext import commands
 
 # Version without smart narration
 

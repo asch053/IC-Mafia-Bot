@@ -36,7 +36,7 @@ def handle_block(game, blocker_id, target_id, night_outcomes):
         game.blocked_players_this_night[target_id] = blocker_id
         
         # Determine the correct narration event based on game type.
-        event_type = 'battle_royale_block' if game.game_settings.get('game_type') == "battle_royale" else 'block'
+        event_type = 'block_battle_royale' if game.game_settings.get('game_type') == "battle_royale" else 'block'
         game.narration_manager.add_event(event_type, blocker=blocker, target=target)
         
         logger.info(f"Action by {target.display_name} was blocked by {blocker.display_name}.")
