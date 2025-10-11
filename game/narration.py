@@ -54,6 +54,8 @@ class NarrationManager:
             target = event.get('target')
             logger.info(f"Generating block event story part for target: {target}")
             if not target or not target.role: return None
+            logger.info(f"Target role abilities: {target.role.abilities}")
+            if not target.role.abilities: return None
             return f"A shadowy figure paid a visit to the **{target.role.name}** last night, preventing them from performing their action."
         
         if event_type == 'block_missed':
@@ -61,6 +63,8 @@ class NarrationManager:
             blocker = event.get('blocker')
             logger.info(f"Generating block missed event story part for target: {target} and blocker: {blocker}")
             if not target or not target.role or not blocker: return None
+            logger.info(f"Target role abilities: {target.role.abilities}")
+            if not target.role.abilities: return None
             return f"A shadowy figure stalked the **{target.role.name}**.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
         
         if event_type == 'block_battle_royale':

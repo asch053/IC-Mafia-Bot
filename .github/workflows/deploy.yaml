@@ -65,6 +65,9 @@ jobs:
             cd /home/opc/IC-Mafia-Bot/
             git pull origin test
             sudo systemctl restart mafiabot-beta.service
+            pkill -f 'python.*bot.py'
+            source .venv/bin/activate
+            nohup python bot.py &
 
   # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
   # This job will deploy our code to the main production virtual machine.

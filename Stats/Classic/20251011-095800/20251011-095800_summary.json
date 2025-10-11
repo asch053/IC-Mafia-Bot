@@ -1,0 +1,79 @@
+{
+    "game_summary": {
+        "game_id": "20251011-095800",
+        "game_type": "classic",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 3,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-10-11T09:58:00+00:00",
+        "end_date_utc": "2025-10-11T08:36:01.885321+00:00",
+        "total_days": 1,
+        "phase_hours": 1.0,
+        "winning_faction": "Mafia",
+        "winning_players": [
+            "Antal Flower-River",
+            "Evil^Princess^Sara"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 1393506472079655024,
+            "player_name": "ANZAC Leader",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "night",
+            "death_cause": "Game Over - Losing Player",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393539112031752244,
+            "player_name": "Antal Flower-River",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393505435948027937,
+            "player_name": "Evil^Princess^Sara",
+            "alignment": "Mafia",
+            "role": "Mob Role Blocker",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 627444776245002260,
+            "player_name": "Hiroshi_Sato",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "night",
+            "death_cause": "Game Over - Losing Player",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": []
+}

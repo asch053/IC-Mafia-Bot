@@ -1,0 +1,150 @@
+{
+    "game_summary": {
+        "game_id": "20251011-091400",
+        "game_type": "classic",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 2,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-10-11T09:14:00+00:00",
+        "end_date_utc": "2025-10-11T08:09:51.747348+00:00",
+        "total_days": 2,
+        "phase_hours": 0.01667,
+        "winning_faction": "Draw",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": 1393506472079655024,
+            "player_name": "ANZAC Leader",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Evil^Princess^Sara"
+            ]
+        },
+        {
+            "player_id": 1393539112031752244,
+            "player_name": "Antal Flower-River",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "ANZAC Leader"
+            ]
+        },
+        {
+            "player_id": 1393505435948027937,
+            "player_name": "Evil^Princess^Sara",
+            "alignment": "Serial Killer",
+            "role": "Serial Killer",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Antal Flower-River"
+            ]
+        },
+        {
+            "player_id": 627444776245002260,
+            "player_name": "Hiroshi_Sato",
+            "alignment": "Mafia",
+            "role": "Mob Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Hiroshi_Sato",
+                "ANZAC Leader"
+            ]
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 1393539112031752244,
+            "voter_name": "Antal Flower-River",
+            "target_id": 1393506472079655024,
+            "target_name": "ANZAC Leader",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-11T08:06:22.191588+00:00"
+        },
+        {
+            "voter_id": 627444776245002260,
+            "voter_name": "Hiroshi_Sato",
+            "target_id": 627444776245002260,
+            "target_name": "Hiroshi_Sato",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-11T08:06:27.893603+00:00"
+        },
+        {
+            "voter_id": 1393505435948027937,
+            "voter_name": "Evil^Princess^Sara",
+            "target_id": 1393506472079655024,
+            "target_name": "ANZAC Leader",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-11T08:06:33.344825+00:00"
+        },
+        {
+            "voter_id": 1393506472079655024,
+            "voter_name": "ANZAC Leader",
+            "target_id": 627444776245002260,
+            "target_name": "Hiroshi_Sato",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-11T08:06:38.386997+00:00"
+        },
+        {
+            "voter_id": 1393505435948027937,
+            "voter_name": "Evil^Princess^Sara",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-11T08:06:44.095578+00:00"
+        },
+        {
+            "voter_id": 1393505435948027937,
+            "voter_name": "Evil^Princess^Sara",
+            "target_id": 1393506472079655024,
+            "target_name": "ANZAC Leader",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-10-11T08:08:50.835551+00:00"
+        },
+        {
+            "voter_id": 1393539112031752244,
+            "voter_name": "Antal Flower-River",
+            "target_id": 1393505435948027937,
+            "target_name": "Evil^Princess^Sara",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-10-11T08:09:04.686836+00:00"
+        },
+        {
+            "voter_id": 1393506472079655024,
+            "voter_name": "ANZAC Leader",
+            "target_id": 1393539112031752244,
+            "target_name": "Antal Flower-River",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-10-11T08:09:13.209463+00:00"
+        }
+    ]
+}

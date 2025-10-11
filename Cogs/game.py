@@ -223,10 +223,10 @@ class GameCog(commands.Cog, name="GameCog"):
         if interaction.guild:
             await interaction.response.send_message("Night actions must be used in DMs.", ephemeral=True)
             return
-        await interaction.response.defer(ephemeral=True)
+        await interaction.response.defer(ephemeral=False)
         # The game engine handles all the complex logic (role checks, timing, etc.)
         message = await self.game.record_night_action(interaction, action_type, target_name)
-        await interaction.followup.send(message, ephemeral=True)
+        await interaction.followup.send(message, ephemeral=False)
 
     @app_commands.command(name="kill", description="[DM Only] Action for roles that can kill.")
     @app_commands.describe(player="The player you want to kill.")
