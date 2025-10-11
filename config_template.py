@@ -22,6 +22,7 @@ MOD_CHANNEL_ID = 123456789012345678
 # --- Game Settings ---
 min_players = 6
 signup_loop_interval_seconds = 15
+signup_loop_interval_seconds = 15
 game_loop_interval_seconds = 15
 MAX_MISSED_VOTES = 2
 
