@@ -56,31 +56,24 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover Tests
 
-  # --- JOB 2: DEPLOY TO THE BETA SERVER ---
-  # This job will deploy our code to the beta testing virtual machine.
+      # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER (Using Manual Script) ---
   deploy-to-beta:
     runs-on: ubuntu-latest
-    # CRITICAL: This job 'needs' the 'test' job to complete successfully before it will even start.
     needs: test
-    # CRITICAL: This 'if' condition ensures this job ONLY runs for pushes to the 'test' branch.
-    if: github.ref == 'refs/heads/test_1' 
+    if: github.ref == 'refs/heads/test_1'
     steps:
       - name: Deploy to Beta VM via SSH
-        # We use a popular, pre-built action to handle the SSH connection securely.
         uses: appleboy/ssh-action@v1.0.3
         with:
-          # These values are pulled from your repository's encrypted secrets.
           host: ${{ secrets.BETA_HOST }}
-          username: ${{ secrets.BETA_USERNAME }}
+          username: ${{ secrets.BETA_USERNAME }} 
           key: ${{ secrets.BETA_SSH_KEY }}
-          # This is the script that will be run on your VM.
           script: |
             cd /home/opc/IC-Mafia-Bot/
             git pull origin test_1
-            pip install -r requirements.txt
-            sudo systemctl restart mafiabot-beta.service
-            pkill -f 'python.*bot.py'
             source .venv/bin/activate
+            pip install -r requirements.txt
+            pkill -f "python bot.py" || true
             nohup python bot.py &
 
   # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
