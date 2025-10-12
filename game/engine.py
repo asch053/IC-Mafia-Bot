@@ -385,15 +385,32 @@ class Game:
         The main game loop. Runs every 15 seconds to check phase deadlines and send reminders. - To be updated in production to run every minute
         It handles the transition between phases, processes end-of-phase events, and checks for win conditions
         """
-        # If the phase has ended, process it and start the next one
+         
+        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0)) # Get the living role mention
+        if not living_role:
+            logger.critical("Could not find the living role in the guild. Check the discord_roles.json configuration.")
+            return
+        
+        # --- If the phase has ended, process it and start the next one ---
         if datetime.now(timezone.utc) >= self.game_settings["phase_end_time"]:
+            current_end_time = self.game_settings["phase_end_time"]
+            logger.info(f"Phase {self.game_settings['current_phase']} {self.game_settings['phase_number']} ended at {current_end_time}.")
             # Process end-of-phase events and add them to the narration manager
             winner = None # Initialize winner
-            if self.game_settings["current_phase"].lower() == "day":
+            # Process day or night phase end
+            if self.game_settings["current_phase"].lower() == "day": # Check if current phase is day
+                logger.debug("Day phase ended. Processing lynch votes...")
+                await self.bot.get_channel(config.VOTING_CHANNEL_ID).send(f"**{self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']} has ended!**\n\n{living_role.mention} the day has ended. Processing lynch votes...") # Notify players that the day has ended and votes are being processed
+                self.game_settings["current_phase"] = "pre-night" # Pause to allow the Transition to night phase
+                logger.info(f"Transistioned to pre-night so >> Current phase = {self.game_settings['current_phase']}, phase number = {self.game_settings['phase_number']}")
                 winner = await self.tally_votes() # Capture winner from the lynch vote
                 logger.debug("Day phase ended. Processing lynch votes...")
-            elif self.game_settings["current_phase"].lower() == "night":
-                logger.debug("Night phase ended. Processing night actions...")
+            elif self.game_settings["current_phase"].lower() == "night": # Else check if current phase is night
+                logger.info("Night phase ended. Processing night actions...")
+                logger.info(f"Current phase = {self.game_settings['current_phase']}, phase number = {self.game_settings['phase_number']}")
+                await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(f"{living_role.mention} the night has ended. Processing night actions...") # Notify players that the night has ended and actions are being processed
+                self.game_settings["current_phase"] = "pre-day" # Pause to allow the Transition to day phase
+                logger.info(f"Transistioned to pre-day so >> Current phase = {self.game_settings['current_phase']}, phase number = {self.game_settings['phase_number']}")
                 await self.process_night_actions() # If night phase has ended, process all night actions
                 await self._resolve_night_deaths() # Resolve deaths after processing actions
                 # NEW: Update last_action_target for players who acted
@@ -447,13 +464,13 @@ class Game:
                 logger.error(f"Error sending status message: {e}")
             # Transition to the new phase
             self.reminders_sent.clear() # Reset reminders for the new phase
-            self.game_settings["phase_end_time"] = datetime.now(timezone.utc) + timedelta(hours=self.game_settings["phase_hours"])
-            if self.game_settings["current_phase"] == "night": # If the current phase was 'night', transition to 'day'
+            logger.info(f"Current phase before transition: {self.game_settings['current_phase']}, phase number: {self.game_settings['phase_number']}")
+            if self.game_settings["current_phase"].lower() == "pre-day": # If the current phase that was processed was 'night' (i.e. current phase is 'pre-day'), transition to 'day'
                 self.game_settings["current_phase"] = "day"
                 #announce the start of the new day phase
                 announcement = f"## ☀️ Day {self.game_settings['phase_number']} has begun. You have {format_time_remaining(self.game_settings['phase_end_time'])}  to discuss and vote."
                 logger.info("Transitioning to day phase.")
-            else: # Was 'preparation' or 'day'
+            else: # Was 'preparation' or 'pre-night' or 'day', so transition to 'night'
                 self.game_settings["current_phase"] = "night" # Transition to 'night'
                 self.game_settings["phase_number"] += 1 # Increment the phase number at each night phase transition
                 # Reset night actions and lynch votes for the new night phase
@@ -462,14 +479,17 @@ class Game:
                 announcement = f"## 🌙 Night {self.game_settings['phase_number']} has begun. You have {format_time_remaining(self.game_settings['phase_end_time'])} hours to use your night actions."
                 logger.info("Transitioning to night phase.")
             # Set the end time for the new phase
-            
+            self.game_settings["phase_end_time"] = current_end_time + timedelta(hours=self.game_settings["phase_hours"])
             await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(announcement)
             return # End this loop iteration after phase transition
+        
         # --- If phase has NOT ended, check for reminders ---
         time_left = self.game_settings["phase_end_time"] - datetime.now(timezone.utc) #determine how much time is left in the current phase
         total_minutes_left = time_left.total_seconds() / 60 # Convert to total minutes
         living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0)) # Get the living role mention
-        if not living_role: return # Can't send reminders without the living role
+        if not living_role:
+            logger.critical("Could not find the living role in the guild. Check the discord_roles.json configuration.")
+            return
         reminder_points = config.REMINDER_POINTS # list of times to send reminders
         # Loop through the times to send reminders and send one if the time left is less than or equal to one of the reminder time and the reminder has not been sent yet
         logger.debug(f"Checking for reminders. Total minutes left: {total_minutes_left}")
@@ -481,6 +501,7 @@ class Game:
                 self.reminders_sent.add(minutes) # Add this reminder to the set of sent reminders so can avoid sending it again
                 logger.info(f"Sent reminder for {text} remaining in the phase.")
                 break # Only send one reminder per loop iteration
+       
         
     @game_loop.before_loop
     async def before_game_loop(self):
@@ -924,7 +945,7 @@ class Game:
             return "Draw" # Everyone is dead
             # Other Draw conditions
         # If end of night phase has only 2 players, one for each alignment, it's a draw
-        if self.game_settings["current_phase"].lower() == "night" and len(living_players) == 2 and ((mafia_count == 1 and town_count == 1) or (neutral_killer_count == 1 and town_count == 1) or (mafia_count == 1 and neutral_killer_count == 1)):
+        if self.game_settings["current_phase"].lower() == "pre-day" and len(living_players) == 2 and ((mafia_count == 1 and town_count == 1) or (neutral_killer_count == 1 and town_count == 1) or (mafia_count == 1 and neutral_killer_count == 1)):
             logger.info("Draw condition met: Only two players left, one from each alignment.")
             return "Draw"
         # --- Check Win Conditions ---
@@ -943,7 +964,7 @@ class Game:
                     logger.info("Win Condition Met: Mafia wins.")
                     return "Mafia"
             # Mafia equal to Town and is end of day phase and no doc or or protective role exists
-            if mafia_count == town_count and neutral_killer_count == 0 and self.game_settings["current_phase"].lower() == "day" :
+            if mafia_count == town_count and neutral_killer_count == 0 and self.game_settings["current_phase"].lower() == "pre-night" :
                 # Check if there are no protective roles left (e.g., Doctor)
                 protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
                 if not protective_roles:
@@ -956,14 +977,14 @@ class Game:
                 # You might want to return the specific role name, e.g., "Serial Killer"
                 return "Serial Killer"  
             # Or SK wins if SK alive at end of day phase and no doc or protective role exists
-            if neutral_killer_count == 1 and town_count == 1 and mafia_count == 0 and self.game_settings["current_phase"].lower() == "day":
+            if neutral_killer_count == 1 and town_count == 1 and mafia_count == 0 and self.game_settings["current_phase"].lower() == "pre-night":
                 # Check if there are no protective roles left (e.g., Doctor)
                 protective_roles = [p for p in living_players if p.role and ("heal" in p.role.abilities or "block" in p.role.abilities)]
                 if not protective_roles:
                     logger.info("Win Condition Met: Serial Killer wins.")
                     return "Serial Killer"
             # SK wins if SK alive at end of day phase and only 1 Mafia alive and not godfather
-            if neutral_killer_count == 1 and mafia_count == 1 and town_count == 0 and self.game_settings["current_phase"].lower() == "day":
+            if neutral_killer_count == 1 and mafia_count == 1 and town_count == 0 and self.game_settings["current_phase"].lower() == "pre-night":
                 # Check if there is only one Mafia left and it's not the Godfather
                 mafia_roles = [p.role for p in living_players if p.role and p.role.alignment == "Mafia"]
                 if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
@@ -990,7 +1011,13 @@ class Game:
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
             # If player is NOT a winner AND is still alive, mark them as dead now.
             if not player_obj.is_winner and player_obj.is_alive:
-                player_obj.kill(self.game_settings['current_phase'], "Game Over - Losing Player")
+                if self.game_settings['current_phase'] == 'pre-day':
+                    current_phase = f"Night {self.game_settings['phase_number']}"
+                elif self.game_settings['current_phase'] == 'pre-night':
+                    current_phase = f"Day {self.game_settings['phase_number']}"
+                else:
+                    current_phase = f"{self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}"
+                player_obj.kill(current_phase, "Game Over - Losing Player")
                 logger.info(f"Marked losing player {player_obj.display_name} as dead.")
         # --- Step 2: Save the summary with the CLEAN data for stats ---
         await self._save_game_summary(winner)
@@ -1067,8 +1094,14 @@ class Game:
         """Generates a formatted status message with the current game state."""
         # Construct the base status message
         logger.info("Generating status message.")
+        if self.game_settings["current_phase"] == "pre-day":
+            current_phase = "Night"
+        elif self.game_settings["current_phase"] == "pre-night":
+            current_phase = "Day"
+        else:
+            current_phase = self.game_settings["current_phase"].capitalize()
         status_message = f"**Game Status: {self.game_settings['game_id']}**\n"
-        status_message += f"**Phase:** {self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}\n"
+        status_message += f"**Phase:** {current_phase.capitalize()} {self.game_settings['phase_number']}\n"
         # Add time remaining only for active phases
         if self.game_settings['current_phase'] in ['day', 'night', 'signup']:
             time_left = format_time_remaining(self.game_settings['phase_end_time'])
@@ -1137,7 +1170,7 @@ class Game:
             self.game_settings["phase_end_time"] = datetime.now(timezone.utc)
             logger.warning(f"Phase forcibly ended by admin: {interaction.user.name}")
             await interaction.response.send_message(
-                "Phase end time has been set to now. The game will advance on the next loop.", 
+                "Phase end time has been set to now. The game will advance on the next loop. This will set the next phase end time from now.", 
                 ephemeral=False
             )
         else:

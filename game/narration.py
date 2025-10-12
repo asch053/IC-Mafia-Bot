@@ -22,13 +22,18 @@ class NarrationManager:
         self.events.clear()
         logger.info("Narration events cleared.")
 
-    def construct_story(self, phase: str, number: int) -> str | None:
+    def construct_story(self, current_phase: str, number: int) -> str | None:
         """Builds the final story string from the recorded events."""
         logger.info("Constructing the narrative story.")
         if not self.events:
             logger.info("No events to construct a story from.")
             return None
-
+        if current_phase.lower() == "pre-day":
+            phase = "night"
+        elif current_phase.lower() == "pre-night":
+            phase = "day"
+        else:
+            phase = current_phase.lower()
         story_parts = [f"**--- {phase.capitalize()} {number} ---**"]
         logger.info(f"Starting story construction for phase {phase} {number} with {len(self.events)} events.\n\nEvents: {self.events}")
         for event in self.events:
