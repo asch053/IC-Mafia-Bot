@@ -32,8 +32,21 @@ jobs:
       - name: Create config.py
         run: |
           echo "BOT_TOKEN = '${{ secrets.BOT_TOKEN }}'" > config.py
+          # IMPORTANT: Add echo lines here for ALL variables from config_template.py
+          # This ensures the test environment perfectly mirrors a real run.
           echo "ANNOUNCEMENT_CHANNEL_ID = 123456789012345678" >> config.py
           echo "SIGN_UP_HERE_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "RULES_AND_ROLES_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "STORIES_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "VOTING_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "TALKY_TALKY_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "MOD_CHANNEL_ID = 123456789012345678" >> config.py
+          echo "min_players = 6" >> config.py
+          echo "signup_loop_interval_seconds = 15" >> config.py
+          echo "game_loop_interval_seconds = 15" >> config.py
+          echo "MAX_MISSED_VOTES = 2" >> config.py
+          echo "REMINDER_POINTS = {60: '1 hour', 30: '30 minutes', 15: '15 minutes', 5: '5 minutes'}" >> config.py
+
 
       # Step 3: Install all the libraries listed in our requirements.txt file.
       - name: Install dependencies
@@ -43,31 +56,34 @@ jobs:
       - name: Run unit tests
         run: python -m unittest discover Tests
 
-  # --- JOB 2: DEPLOY TO THE BETA SERVER ---
-  # This job will deploy our code to the beta testing virtual machine.
+      # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER (Using Manual Script) ---
   deploy-to-beta:
     runs-on: ubuntu-latest
-    # CRITICAL: This job 'needs' the 'test' job to complete successfully before it will even start.
     needs: test
-    # CRITICAL: This 'if' condition ensures this job ONLY runs for pushes to the 'test' branch.
-    if: github.ref == 'refs/heads/test_1' 
+    if: github.ref == 'refs/heads/test_1'
     steps:
       - name: Deploy to Beta VM via SSH
-        # We use a popular, pre-built action to handle the SSH connection securely.
         uses: appleboy/ssh-action@v1.0.3
         with:
-          # These values are pulled from your repository's encrypted secrets.
           host: ${{ secrets.BETA_HOST }}
-          username: ${{ secrets.BETA_USERNAME }}
+          username: ${{ secrets.BETA_USERNAME }} 
           key: ${{ secrets.BETA_SSH_KEY }}
-          # This is the script that will be run on your VM.
           script: |
+            #!/bin/bash
             cd /home/opc/IC-Mafia-Bot/
-            git pull origin test
-            sudo systemctl restart mafiabot-beta.service
-            pkill -f 'python.*bot.py'
+            # Pull the latest changes from the 'test_1' branch
+            git pull origin test_1
+            # Activate virtual environment and install dependencies
             source .venv/bin/activate
-            nohup python bot.py &
+            # Install dependencies from requirements.txt
+            pip install -r requirements.txt
+            # Kill any existing bot.py processes
+            pkill -f "python bot.py" || true
+            # Start bot.py in the background using nohup
+            # 1. Redirect stdout AND stderr (2>&1) to nohup.out, run in background (&)
+            nohup python bot.py > nohup.out 2>&1 &
+            # 2. Disown the last background job, detaching it from this shell
+            disown
 
   # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
   # This job will deploy our code to the main production virtual machine.
@@ -87,4 +103,8 @@ jobs:
             script: |
                 cd /home/opc/IC-Mafia-Bot/
                 git pull origin main
-                sudo systemctl restart mafiabot-main.service
+                # Activate virtual environment and install dependencies
+                source .venv/bin/activate
+                # Install dependencies from requirements.txt
+                pip install -r requirements.txt
+                
