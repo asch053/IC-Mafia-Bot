@@ -420,9 +420,13 @@ class Game:
                     logger.critical(f"Win conditions met. Winner: {winner}")
             # Construct the story (the narrator function now adds the header)
             logger.info("Constructing story from narration manager events...")
-            story = self.narration_manager.construct_story(
-                self.game_settings['current_phase'],
-                self.game_settings['phase_number']
+            game_state = {
+                "phase": self.game_settings['current_phase'],
+                "number": self.game_settings['phase_number'],
+                "living_players": [p for p in self.players.values() if p.is_alive]
+            }
+            story = await self.narration_manager.construct_story(
+                game_state=game_state
             )
             if story:
                 #send story to the stories channel
@@ -1006,10 +1010,21 @@ class Game:
             winner_display_name = winner # Fallback
         # --- Step 4: Announce the results using the new display name ---
         self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
-        story = self.narration_manager.construct_story(
-            self.game_settings['current_phase'],
-            self.game_settings['phase_number']
-        )
+       # Step 1: Create the context dictionary for the storyteller.
+        logger.info("Creating storyteller context.")
+        logger.info(f"Game Phase: {self.game_settings['current_phase']}, Phase Number: {self.game_settings['phase_number']}")
+        logger.info(f"Living Players: {[p.display_name for p in self.players.values() if p.is_alive]}")
+        logger.info("Calling NarrationManager to construct the story...")
+        game_state_context = {
+            "phase": self.game_settings['current_phase'],
+            "number": self.game_settings['phase_number'],
+            "living_players": [p for p in self.players.values() if p.is_alive],
+            "theme": "1940s detective noir" # We can make this dynamic later!
+        }
+        # Step 2: Call the NarrationManager with the new context.
+        logger.info(f"Game state context for narration: {game_state_context}")
+        logger.info("Generating final story from NarrationManager...")
+        story = await self.narration_manager.construct_story(game_state_context)
         final_message = f"**Game Over!**\n{story}"
         status_message = self.get_status_message()
         if status_message:

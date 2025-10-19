@@ -33,3 +33,5 @@ REMINDER_POINTS = {
     15: "15 minutes",
     5: "5 minutes"
 }
+
+GOOGLE_AI_API_KEY = "your_secret_api_key_here"  # API key for Google AI services

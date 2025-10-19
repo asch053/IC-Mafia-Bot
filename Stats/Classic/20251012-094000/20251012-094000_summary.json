@@ -1,0 +1,90 @@
+{
+    "game_summary": {
+        "game_id": "20251012-094000",
+        "game_type": "classic",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 2,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-10-12T09:40:00+00:00",
+        "end_date_utc": "2025-10-12T08:41:02.815542+00:00",
+        "total_days": 1,
+        "phase_hours": 0.01667,
+        "winning_faction": "Town",
+        "winning_players": [
+            "Botty McBotface",
+            "You_Fool"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": -2,
+            "player_name": "Botty McBotface",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -5,
+            "player_name": "Innocent Bystander",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -4,
+            "player_name": "Not The Godfather",
+            "alignment": "Serial Killer",
+            "role": "Serial Killer",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -3,
+            "player_name": "Sneaky McSneakface",
+            "alignment": "Mafia",
+            "role": "Mob Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": [
+                "You_Fool"
+            ]
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": -3,
+            "target_name": "Sneaky McSneakface",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-12T08:40:47.458425+00:00"
+        }
+    ]
+}

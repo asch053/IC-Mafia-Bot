@@ -1,0 +1,165 @@
+import logging
+
+logger = logging.getLogger('discord')
+
+def generate_story(header: str, events: list) -> str:
+    """
+    Generates a simple, pre-written story from a list of events.
+    This serves as the reliable fallback if the AI storyteller fails.
+    """
+    logger.info("Generating story using static storyteller...")
+    
+    if not events:
+        return f"{header}\nThe night passed in an unsettling silence. Not a soul stirred."
+
+    story_parts = [header]
+    for event in events:
+        story_part = _generate_static_story_part(event)
+        if story_part:
+            story_parts.append(story_part)
+    
+    return "\n".join(story_parts)
+
+def _generate_static_story_part(event: dict) -> str | None:
+    """Generates a single line of the story based on an event type."""
+    event_type = event.get('type')
+    
+    # --- Night Events ---
+    if event_type == 'no_actions':
+        logger.info("Generating no actions event story part.")
+        return "The night was eerily quiet. No one seemed to make a move."
+    
+    if event_type == 'block':
+        target = event.get('target')
+        logger.info(f"Generating block event story part for target: {target}")
+        if not target or not target.role: return None
+        logger.info(f"Target role abilities: {target.role.abilities}")
+        if not target.role.abilities: return None
+        return f"A shadowy figure paid a visit to the **{target.role.name}** last night, preventing them from performing their action."
+    
+    if event_type == 'block_missed':
+        target = event.get('target')
+        blocker = event.get('blocker')
+        logger.info(f"Generating block missed event story part for target: {target} and blocker: {blocker}")
+        if not target or not target.role or not blocker: return None
+        logger.info(f"Target role abilities: {target.role.abilities}")
+        if not target.role.abilities: return None
+        return f"A shadowy figure stalked the **{target.role.name}**.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
+    
+    if event_type == 'block_battle_royale':
+        target = event.get('target')
+        blocker = event.get('blocker')
+        logger.info(f"Generating battle royale block event story part for target: {target} and blocker: {blocker}")
+        if not target or not target.role or not blocker: return None
+        return f"In the chaos of the night, **{target.display_name}** was ambushed by **{blocker.display_name}** and unable to act."
+    
+    if event_type == 'block_missed_royale':
+        target = event.get('target')
+        blocker = event.get('blocker')
+        logger.info(f"Generating battle royale block missed event story part for target: {target} and blocker: {blocker}")
+        if not target or not target.role or not blocker: return None
+        return f"**{blocker.display_name}** attempted to ambush **{target.display_name}**, but they had already completed their actions and returned home to safety."
+
+    if event_type == 'save':
+        victim = event.get('victim')
+        logger.info(f"Generating save event story part for victim: {victim}")
+        if not victim: return None
+        return (
+            f"Someone launched a deadly attack on **{victim.display_name}** in the dead of night... "
+            f"but a Doctor was standing guard and saved their life!"
+        )
+    
+    if event_type == 'save_battle_royale':
+        victim = event.get('victim')
+        killer = event.get('killer')
+        healer = event.get('healer')
+        logger.info(f"Generating battle royale save event story part for victim: {victim}, killer: {killer}, healer: {healer}")
+        if not victim or not killer or not healer: return None
+        return (
+            f"Amidst the turmoil of the night, **{victim.display_name}** was targeted for elimination by {killer.display_name}... "
+            f"but {healer.display_name} proved to be a kind and quick-thinking ally who intervened and saved them!"
+        )
+
+    if event_type == 'immune_kill':
+        victim = event.get('victim')
+        logger.info(f"Generating immune kill event story part for victim: {victim}")
+        if not victim: return None
+        return f"An assailant ambushed **{victim.role.name}** in the dark, but their target was unfazed. The attack had no effect!"
+
+    if event_type == 'kill':
+        victim = event.get('victim')
+        logger.info(f"Generating kill event story part for victim: {victim}")
+        if not victim or not victim.role: return None
+        return (
+                f"A scream pierced the night! When the sun rose, the body of **{victim.display_name}** was found. "
+                f"They were the **{victim.role.alignment} - {victim.role.name}**."
+            )
+    if event_type == 'kill_battle_royale':
+        victim = event.get('victim')
+        killer = event.get('killer')
+        logger.info(f"Generating battle royale kill event story part for victim: {victim} and killer: {killer}")
+        if not victim or not killer: return None
+        return (
+                f"A gunshot rang out in the night! When the sun rose, the body of **{victim.display_name}** was found. "
+                f"They were killed by **{killer.display_name}**."
+            )
+
+    if event_type == 'investigate':
+        logger.info("Generating investigate event story part.")
+        return #"A lone figure was seen snooping around someone's house, trying to uncover secrets."
+
+    if event_type == 'promotion':
+        logger.info("Generating promotion event story part.")
+        return "In the mafia underground, a power vacuum has been filled. A new leader has risen to command the night's dark deeds."
+
+
+    # --- Day Events ---
+    if event_type == 'lynch':
+        victims = event.get('victims', [])
+        details = event.get('details', {})
+        logger.info(f"Generating lynch event story part for victims: {victims} with details: {details}")
+        if not victims: return None
+        if len(victims) == 1:
+            victim = victims[0]
+            voters = details.get(victim, [])
+            voter_names = ", ".join([f"**{v.display_name}**" for v in voters])
+            if not voter_names: voter_names = "an angry mob"
+            return (
+                f"The town square fell silent as the crowd, led by {voter_names}, pointed their fingers at one individual. A verdict had been reached.\n\n"
+                f"**{victim.display_name}** was dragged into the middle of the town square and strung up. They were the **{victim.role.alignment} - {victim.role.name}**."
+            )
+        else:
+            victim_names = [f"**{v.display_name}** (the **{v.role.alignment} - {v.role.name}**)" for v in victims]
+            return (
+                f"A heated argument resulted in a shocking outcome! The town couldn't decide on a single target, and in the ensuing chaos, a mob turned on multiple people.\n\n"
+                f"**{', '.join(victim_names)}** have all been lynched by the town!"
+            )
+
+    if event_type == 'no_lynch':
+        return "The sun sets on a tense but indecisive town. With no consensus, no one was lynched."
+
+    # Inactive player killed story
+    if event_type == 'inactivity_kill':
+        victims = event.get('victims', [])
+        if not victims: return None
+        victim_names = ", ".join([f"**{v.display_name}**" for v in victims])
+        return f"The town has no patience for silence. For failing to participate in the day's crucial vote, {victim_names} is/are executed for inactivity!"
+
+    # --- Game End Events ---
+    if event_type == 'jester_win':
+        victim = event.get('victim')
+        if not victim: return None
+        return (
+            f"**{victim.display_name}** cackles madly as the town realizes its mistake. "
+            f"By lynching the Jester, the town has signed its own death warrant! The Jester wins!"
+        )
+    
+    if event_type == 'game_over':
+        winner = event.get('winner')
+        if not winner: return None
+        if winner == 'draw':
+            return "\n**The game is over! The game has ended in a draw! No one wins!**"
+        else:
+            return f"\n**The game is over! The {winner} has won!**"
+    # Add other simple, static event descriptions here as needed.
+    return None
