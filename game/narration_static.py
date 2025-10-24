@@ -80,7 +80,7 @@ def _generate_static_story_part(event: dict) -> str | None:
             f"but {healer.display_name} proved to be a kind and quick-thinking ally who intervened and saved them!"
         )
 
-    if event_type == 'immune_kill':
+    if event_type == 'kill_immune':
         victim = event.get('victim')
         logger.info(f"Generating immune kill event story part for victim: {victim}")
         if not victim: return None

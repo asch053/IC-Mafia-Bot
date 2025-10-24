@@ -301,6 +301,16 @@ class Game:
         # Start the main game loop
         self.game_loop.start()
         logger.info(f"Game prepared. Starting main game loop.")
+        story_channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
+        if story_channel:
+            await story_channel.send("\n\n---- ## New Game ## ----\n\n")
+        # Create narration event for game start with a list of active players
+        game_state = {
+            "phase": self.game_settings["current_phase"],
+            "phase_number": self.game_settings['phase_number'],
+            "living_players": [p for p in self.players.values() if p.is_alive]
+        }
+        self.narration_manager.add_event('game_start', game_state=game_state)
 
     def add_npc(self):
         """Adds a single NPC to the game."""
@@ -437,17 +447,28 @@ class Game:
                     logger.critical(f"Win conditions met. Winner: {winner}")
             # Construct the story (the narrator function now adds the header)
             logger.info("Constructing story from narration manager events...")
+            # Send previous game phase events to the narration manager to build the story
+            # Determine if Day or Night phase just ended
+            if self.game_settings['current_phase'] == "pre-day":
+                phase_just_ended = "night"
+            elif self.game_settings['current_phase'] == "pre-night":
+                phase_just_ended = "day"
+            else:
+                phase_just_ended = self.game_settings['current_phase']
+            # Prepare game state for story construction
             game_state = {
-                "phase": self.game_settings['current_phase'],
+                "phase": phase_just_ended,
                 "number": self.game_settings['phase_number'],
                 "living_players": [p for p in self.players.values() if p.is_alive]
             }
+            logger.info(f"Preparing to construct story for phase: {phase_just_ended}, number: {self.game_settings['phase_number']} with {len(game_state['living_players'])} living players.\n{game_state}")
+            # Construct the story
             story = await self.narration_manager.construct_story(
                 game_state=game_state
             )
             if story:
                 #send story to the stories channel
-                logger.debug("Story constructed from narration manager events.")
+                logger.info("Story constructed from narration manager events.")
                 logger.info(f"Story for phase {self.game_settings['current_phase']} {self.game_settings['phase_number']}:\n{story}")
                 await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(story)
             logger.info(f"Phase {self.game_settings['current_phase']} {self.game_settings['phase_number']} ended. Story constructed.")
@@ -1036,7 +1057,7 @@ class Game:
         else:
             winner_display_name = winner # Fallback
         # --- Step 4: Announce the results using the new display name ---
-        self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
+        self.narration_manager.add_event('game_end', winner=winner, winning_players=winning_players)
        # Step 1: Create the context dictionary for the storyteller.
         logger.info("Creating storyteller context.")
         logger.info(f"Game Phase: {self.game_settings['current_phase']}, Phase Number: {self.game_settings['phase_number']}")

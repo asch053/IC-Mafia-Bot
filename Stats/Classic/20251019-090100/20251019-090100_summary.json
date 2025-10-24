@@ -1,0 +1,90 @@
+{
+    "game_summary": {
+        "game_id": "20251019-090100",
+        "game_type": "classic",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 2,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-10-19T09:01:00+00:00",
+        "end_date_utc": "2025-10-19T08:48:07.307870+00:00",
+        "total_days": 1,
+        "phase_hours": 1.0,
+        "winning_faction": "Mafia",
+        "winning_players": [
+            "One More Time",
+            "You_Fool"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": -5,
+            "player_name": "MafiaBot 9000",
+            "alignment": "Serial Killer",
+            "role": "Serial Killer",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": [
+                "You_Fool"
+            ]
+        },
+        {
+            "player_id": -3,
+            "player_name": "One More Time",
+            "alignment": "Mafia",
+            "role": "Mob Role Blocker",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -4,
+            "player_name": "Robo-Mafioso",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": -2,
+            "player_name": "Sneaky McSneakface",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": -5,
+            "target_name": "MafiaBot 9000",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-10-19T08:47:45.920913+00:00"
+        }
+    ]
+}

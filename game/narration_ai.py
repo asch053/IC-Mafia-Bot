@@ -1,44 +1,92 @@
-# game/ai_storyteller.py
 import logging
 import aiohttp
-import config
+try:
+    import config
+except ImportError:
+    import config_template as config
 
-# Use the same logger as the main bot
 logger = logging.getLogger('discord')
 
-# The URL for the Google AI API endpoint.
-# We'll use the gemini-pro model for text generation.
-MODEL_NAME = "gemini-2.0-flash-lite"
-API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent?key={config.GOOGLE_AI_API_KEY}"
+MODEL_NAME = "gemma-3n-e2b-it" 
+API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent"
+
 def _construct_ai_prompt(game_state: dict, events: list) -> str:
-    """
-    Constructs a detailed, structured prompt for the AI model based on game state and events.
-    """
-    # This is where we can get really creative with the AI's persona and instructions.
+    """Constructs a detailed, structured prompt for the AI model."""
+    theme = game_state.get('theme', 'a classic game of Mafia')
+    players = game_state.get('living_players', [])
     prompt_parts = [
-        "You are a master storyteller for a dark, gritty game of Mafia.",
-        "The theme for this story is '1940s detective noir'.",
+        f"You are a master storyteller for a game of Mafia with the theme '{theme}'.",
         f"It is the end of {game_state['phase']} {game_state['number']}.",
-        f"{len(game_state['living_players'])} players are left alive.",
+        f"{len(game_state['living_players'])} players are left alive. Their names and roles are: " +
+        ", ".join([f"{p.display_name} ({p.role.name})" for p in players]),
         "\nHere are the key events that just happened:",
     ]
 
-    # Translate our structured event data into plain English for the AI.
     if not events:
         prompt_parts.append("- The night was eerily quiet. Nothing happened.")
     else:
         for event in events:
+            if event['type'] == 'kill_immune':
+                prompt_parts.append(f"- {event['killer'].role.name} attempted to kill {event['victim'].role.name}, but they were immune to the attack.")
+            
             if event['type'] == 'kill':
-                prompt_parts.append(f"- {event['killer'].display_name} killed {event['victim'].display_name}.")
-            elif event['type'] == 'save':
-                prompt_parts.append(f"- {event['victim'].display_name} was attacked, but was saved by {event['healer'].display_name}.")
-            elif event['type'] == 'block':
-                prompt_parts.append(f"- {event['blocker'].display_name} blocked {event['target'].display_name} from performing their action.")
-            elif event['type'] == 'lynch':
-                victims = ", ".join([v.display_name for v in event.get('victims', [])])
-                prompt_parts.append(f"- The town voted to lynch {victims}.")
-    
-    # Final instructions for the AI's output.
+                prompt_parts.append(f"- {event['killer'].role.name} killed {event['victim'].display_name}.")
+            
+            if event['type'] == 'save':
+                prompt_parts.append(f"- {event['victim'].display_name} was attacked, but was saved by {event['healer'].role.name}.")
+            
+            if event['type'] == 'block':
+                prompt_parts.append(f"- {event['blocker'].role.name} blocked {event['target'].role.name} from performing their action.")
+            
+            if event['type'] == 'lynch':
+                victims = event.get('victims', [])
+                details = event.get('details', {})
+                # Iterate through each victim of the lynch to create a detailed sentence.
+                for victim in victims:
+                    # Find the list of voters for this specific victim from the details dictionary.
+                    voters = details.get(victim, [])
+                    voter_names = ", ".join([v.display_name for v in voters if v])
+                    if not voter_names:
+                        voter_names = "an angry mob with no clear leader"
+                    prompt_parts.append(f"- The town, led by {voter_names}, voted to lynch {victim.display_name}.")
+
+            if event['type'] == 'promotion':
+                prompt_parts.append(f"- A power shift occurred in the mafia. A new leader has risen.")
+            
+            if event['type'] == 'investigate':
+                prompt_parts.append(f"- An investigator snooped around, trying to uncover secrets.")
+            
+            if event['type'] == 'battle_royale_kill':
+                prompt_parts.append(f"- In the chaos of the battle royale, {event['killer'].display_name} eliminated {event['victim'].display_name}.")
+            
+            if event['type'] == 'battle_royale_save':
+                prompt_parts.append(f"- Amidst the turmoil, {event['healer'].display_name} saved {event['victim'].display_name} from elimination by {event['killer'].display_name}.")
+            
+            if event['type'] == 'block_missed':
+                prompt_parts.append(f"- {event['blocker'].role.name} attempted to block {event['target'].role.name}, but the block failed as the target's action had already resolved.")
+            
+            if event['type'] == 'block_missed_royale':
+                prompt_parts.append(f"- In the battle royale, {event['blocker'].role.name} attempted to block {event['target'].role.name}, but the block failed as the target's action had already resolved.")
+            
+            if event['type'] == 'block_battle_royale':
+                prompt_parts.append(f"- In the battle royale, {event['blocker'].role.name} successfully blocked {event['target'].role.name} from performing their action.")
+            
+            if event['type'] == 'game_start':
+                player_names = ", ".join([p.display_name for p in event.get('players', [])])
+                prompt_parts.append(f"- The game has begun. {player_names} are all members of the town. Some are mafia, some are town, one is a lone killer. None trust their neighbours.")
+            
+            if event['type'] == 'game_end':
+                winners = event.get('winners', 'No one')
+                winning_players = ", ".join([p.display_name for p in event.get('winning_players', [])])
+                prompt_parts.append(f"- The game has ended. The victors are {winners}, consisting of {winning_players}.")
+            
+            # This is a new event type from your log! Let's add it.
+            if event['type'] == 'inactivity_kill':
+                victims = event.get('victims', [])
+                victim_names = ", ".join([f"**{v.display_name}**" for v in victims])
+                prompt_parts.append(f"- The town has no patience for silence. {victim_names} was/were executed for inactivity.")
+
+
     prompt_parts.append(
         "\nWrite a short, compelling narrative summarizing these events. "
         "Reveal the names of anyone who died. Do not reveal the roles or identities of any living players. "
@@ -47,29 +95,23 @@ def _construct_ai_prompt(game_state: dict, events: list) -> str:
     return "\n".join(prompt_parts)
 
 async def generate_story(game_state: dict, events: list) -> str | None:
-    """
-    Makes an asynchronous API call to the Google AI model to generate a story.
+    """Makes an asynchronous API call to the Google AI model to generate a story."""
+    if not hasattr(config, 'GOOGLE_AI_API_KEY') or not config.GOOGLE_AI_API_KEY:
+        logger.warning("GOOGLE_AI_API_KEY not found or is empty in config. Cannot generate AI story.")
+        return None
 
-    Returns the generated story as a string, or None if the API call fails.
-    """
+    logger.info("Generating story using AI...")
     prompt = _construct_ai_prompt(game_state, events)
     logger.info("Constructed AI Prompt:\n" + prompt)
 
-    payload = {
-        "contents": [{
-            "parts": [{
-                "text": prompt
-            }]
-        }]
-    }
+    payload = { "contents": [{ "parts": [{"text": prompt}] }] }
+    full_api_url = f"{API_URL}?key={config.GOOGLE_AI_API_KEY}"
 
     try:
         async with aiohttp.ClientSession() as session:
-            # Set a timeout to prevent the game from hanging if the API is slow.
-            async with session.post(API_URL, json=payload, timeout=15.0) as response:
+            async with session.post(full_api_url, json=payload, timeout=20.0) as response:
                 if response.status == 200:
                     data = await response.json()
-                    # Safely navigate the JSON response to get the text.
                     text = data.get('candidates', [{}])[0].get('content', {}).get('parts', [{}])[0].get('text')
                     if text:
                         logger.info("Successfully generated story from AI.")
@@ -84,3 +126,4 @@ async def generate_story(game_state: dict, events: list) -> str | None:
     except Exception as e:
         logger.error(f"An exception occurred during the AI API call: {e}", exc_info=True)
         return None
+
