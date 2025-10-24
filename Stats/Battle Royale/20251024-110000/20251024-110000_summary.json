@@ -1,0 +1,76 @@
+{
+    "game_summary": {
+        "game_id": "20251024-110000",
+        "game_type": "battle_royale",
+        "number_of_players": 5,
+        "player_counts": {
+            "town": 0,
+            "mafia": 0,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-10-24T11:00:00+00:00",
+        "end_date_utc": "2025-10-24T09:58:28.415182+00:00",
+        "total_days": 1,
+        "phase_hours": 1.0,
+        "winning_faction": "Draw",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": 1393506472079655024,
+            "player_name": "ANZAC Leader",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393539112031752244,
+            "player_name": "Antal Flower-River",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1393505435948027937,
+            "player_name": "Evil^Princess^Sara",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 627444776245002260,
+            "player_name": "Hiroshi_Sato",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": []
+}
