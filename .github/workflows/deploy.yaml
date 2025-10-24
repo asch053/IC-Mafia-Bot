@@ -69,12 +69,21 @@ jobs:
           username: ${{ secrets.BETA_USERNAME }} 
           key: ${{ secrets.BETA_SSH_KEY }}
           script: |
+            #!/bin/bash
             cd /home/opc/IC-Mafia-Bot/
+            # Pull the latest changes from the 'test_1' branch
             git pull origin test_1
+            # Activate virtual environment and install dependencies
             source .venv/bin/activate
+            # Install dependencies from requirements.txt
             pip install -r requirements.txt
+            # Kill any existing bot.py processes
             pkill -f "python bot.py" || true
-            nohup python bot.py &
+            # Start bot.py in the background using nohup
+            # 1. Redirect stdout AND stderr (2>&1) to nohup.out, run in background (&)
+            nohup python bot.py > nohup.out 2>&1 &
+            # 2. Disown the last background job, detaching it from this shell
+            disown
 
   # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
   # This job will deploy our code to the main production virtual machine.
@@ -94,4 +103,8 @@ jobs:
             script: |
                 cd /home/opc/IC-Mafia-Bot/
                 git pull origin main
-                sudo systemctl restart mafiabot-main.service
+                # Activate virtual environment and install dependencies
+                source .venv/bin/activate
+                # Install dependencies from requirements.txt
+                pip install -r requirements.txt
+                

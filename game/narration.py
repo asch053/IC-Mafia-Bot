@@ -106,8 +106,8 @@ class NarrationManager:
                 f"but {healer.display_name} proved to be a kind and quick-thinking ally who intervened and saved them!"
             )
 
-        if event_type == 'immune_kill':
-            victim = event.get('victim')
+        if event_type == 'kill_immune':
+            victim = event.get('target')
             logger.info(f"Generating immune kill event story part for victim: {victim}")
             if not victim: return None
             return f"An assailant ambushed **{victim.role.name}** in the dark, but their target was unfazed. The attack had no effect!"
@@ -129,10 +129,17 @@ class NarrationManager:
                     f"A gunshot rang out in the night! When the sun rose, the body of **{victim.display_name}** was found. "
                     f"They were killed by **{killer.display_name}**."
                 )
+        
+        if event_type == 'kill_missed_battle_royale':
+            killer = event.get('killer')
+            victim = event.get('target')
+            logger.info(f"Generating missed kill event story part for killer: {killer} and victim: {victim}")
+            if not killer or not victim: return None
+            return f"An attempt on **{victim.display_name}**'s life by **{killer.display_name}** failed to materialize as the killer was already dead."
 
         if event_type == 'investigate':
             logger.info("Generating investigate event story part.")
-            return #"A lone figure was seen snooping around someone's house, trying to uncover secrets."
+            return None #"A lone figure was seen snooping around someone's house, trying to uncover secrets."
 
         if event_type == 'promotion':
             logger.info("Generating promotion event story part.")
