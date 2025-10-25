@@ -218,15 +218,17 @@ class Game:
                 return
             # Create a Player object
             self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
+            await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
             await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
             logger.info(f"{user.name} ({player_name}) has joined the game.")
             await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
             status_message = self.get_status_message() # Generate a status message with players listed
             try:
-                await channel.send(status_message) # Send the status message to the sign-up channel
+                await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(status_message) # Send the status message to the sign-up channel
             except Exception as e:
                 logger.error(f"Failed to send status message: {e}")
-    
+            return f"You have successfully signed up as **{player_name}**! You are player #{len(self.players)}."
+
     async def remove_player(self, user, channel):
         """Removes a player from the game during the signup phase."""
         async with self.player_lock: # Add this lock    
@@ -662,17 +664,7 @@ class Game:
             logger.error("Could not find player objects for lynching, aborting tally.")
             self.narration_manager.add_event('no_lynch')
             return
-        # Inside tally_votes, after identifying the lynched player(s)
-        if len(lynched_players) == 1:
-            lynched_player = lynched_players[0]
-            logger.info(f"Lynched_player = {lynched_player.display_name}")
-            # NEW: Check for Jester win condition
-            if lynched_player.role.name == "Jester":
-                self.narration_manager.add_event('jester_win', victim=lynched_player)
-                # The game ends immediately in a Jester victory
-                self.game_settings['winning_team'] = "Jester" 
-                logger.info(f"Jester {lynched_player.display_name} has won the game by being lynched.")
-                return # End the tallying process
+        
         # Create a dictionary to hold the details for the narration manager.
         # Format: {victim_object: [voter_objects]}
         phase_str = f"Day {self.game_settings['phase_number']}"
@@ -686,10 +678,13 @@ class Game:
             lynch_details[victim] = voters
         # Add the lynch event for the story
         self.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
+        logger.info(f"Lynched players: {[p.display_name for p in lynched_players]}")
+        
         # NOW, check if the lynch resulted in a Jester win
         if len(lynched_players) == 1 and lynched_players[0].role and lynched_players[0].role.name == "Jester":
             self.narration_manager.add_event('jester_win', victim=lynched_players[0])
-            logger.info(f"Jester {lynched_players[0].display_name} has won.")
+            logger.info(f"Jester {lynched_players[0].display_name} has won the game by being lynched.")
+            self.game_settings['winning_team'] = "Jester" 
             return "Jester"  # Return the winner directly
         return None  # No special winner from this lynch
            
