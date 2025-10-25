@@ -2,6 +2,7 @@
 import logging
 import asyncio
 
+
 logger = logging.getLogger('discord')
 
 def handle_block(game, blocker_id, target_id, night_outcomes):
@@ -166,7 +167,14 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
         except Exception as e:
             logger.error(f"Failed to send investigation DM to {investigator.display_name}: {e}")
 
-    game.bot.loop.create_task(send_investigation_dm())
+    asyncio.create_task(send_investigation_dm())
+
+    # --- Step 5: Log the narration event ---
+    event_type = 'investigate_royale' if game.game_settings.get('game_type') == "battle_royale" else 'investigate'
+    game.narration_manager.add_event(event_type, investigator=investigator, target=target)
+    logger.info(f"{investigator.display_name} investigated {target.display_name}.")
+
+
 
 # This dictionary maps the action type string to the correct handler function.
 ACTION_HANDLERS = {

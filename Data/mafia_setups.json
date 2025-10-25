@@ -22,7 +22,7 @@
         },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
 
-        { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
+        { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." }
       ]
     }
   ],
