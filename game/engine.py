@@ -31,6 +31,8 @@ from game.narration import NarrationManager # Import the NarrationManager
 from utils.randomness_tester import test_role_distribution # Import the test function
 from game.roles import GameRole, get_role_instance
 from game.player import Player # Import the Player class
+from game import setup_generator # Import the setup_generator function
+
 
 # Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')
@@ -78,20 +80,20 @@ class Game:
         # --- Data Loading ---
         logger.debug("Loading game data from JSON files.")
         try:
-            self.discord_role_data = load_data("Data/discord_roles.json") #loads discord roles data
+            self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
         except Exception as e:
             logger.error(f"Error loading discord roles data: {e}")
         try:
-            self.npc_names = load_data("Data/bot_names.txt") #load NPC bot names
+            self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
         except Exception as e:
             logger.error(f"Error loading NPC names: {e}")
         try:    
-            self.rules_text = "\n".join(load_data("Data/rules.txt"))
+            self.rules_text = "\n".join(load_data("data/rules.txt"))
         except Exception as e:
             logger.error(f"Error loading rules text: {e}")
             self.rules_text = "No rules text found. Please check the rules.txt file."
         try:    
-            self.mafia_setups = load_data("Data/mafia_setups.json")
+            self.mafia_setups = load_data("data/mafia_setups.json")
         except Exception as e:
             logger.error(f"Error loading mafia setups: {e}")
             logger.critical("No mafia setups loaded. The game cannot start.")
@@ -273,6 +275,7 @@ class Game:
                 logger.error("No roles generated for the current player count. Aborting game preparation.") 
             await self.reset()
             return  
+        logger.critical(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
         # --- Run Randomness Test and Post Results ---
         logger.info("Running role assignment randomness test...")
         player_names = [p.display_name for p in self.players.values()]
@@ -320,37 +323,31 @@ class Game:
 
     def generate_game_roles(self):
         """Generates a list of GameRole objects based on player count."""
-        if self.game_settings['game_type'] == "battle_royale":
-            logger.info("Generating roles for Battle Royale mode.")
-            self.game_roles = []
-            logger.critical(f"Generating {len(self.players)} Vigilante roles for Battle Royale mode.\n Current game roles list = {self.game_roles}")
-            for _ in range(len(self.players)):
-                # Create a Vigilante role instance
-                role_instance = get_role_instance("Vigilante")
-                logger.critical(f"Creating Vigilante role for players. {role_instance}")
-                if role_instance:
-                    self.game_roles.append(role_instance)
-                    logger.critical(f"Vigilante role created successfully: {self.game_roles}")
-        else:
-            num_players = len(self.players)
-            setup_key = str(num_players)
-            # Check if we have a setup for this number of players
-            if setup_key not in self.mafia_setups:
-                logger.error(f"No setup found for {num_players} players in mafia_setups.json.")
-                return
-            # Randomly select a setup for this player count
-            setup = random.choice(self.mafia_setups[setup_key])
-            logger.info(f"Using setup for {num_players} players: {setup['id']}")
-            # Generate a list of roles based on the setup
-            self.game_roles = []
-            for role_data in setup["roles"]:
-                for _ in range(role_data["quantity"]):
-                    role_instance = get_role_instance(role_data["name"])
-                    if role_instance:
-                        self.game_roles.append(role_instance)
-                    else:
-                        logger.warning(f"Could not find or create an instance for role: {role_data['name']}")    
-            logger.info(f"Generated {len(self.game_roles)} roles for {num_players} players.")
+        # --- 4. Get Role List ---
+        logger.info("Generating dynamic role list...")
+        game_type = self.game_settings['game_type']
+        player_count = len(self.players)
+        if player_count < config.min_players:
+            logger.critical(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.bot.get_channel(config.TALKY_TALKY_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.game_settings['game_type'] = "battle_royale"
+        
+        # New smart way!
+        role_names = setup_generator.generate_roles(player_count, game_type)
+        # We MUST check for an empty list, which our generator
+        # returns if the player count is too low!
+        if not role_names:
+            self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(
+                f"Error: Could not generate a 'Classic' game for {player_count} players. "
+                f"Minimum is {config.min_players}."
+            )
+            self.reset()
+            return
+        logger.critical(f"Generated role names: {role_names}")
+        # Convert role names to GameRole objects
+        self.game_roles = []
+        self.game_roles = [get_role_instance(name) for name in role_names]
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""
@@ -467,6 +464,8 @@ class Game:
             # Transition to the new phase
             self.reminders_sent.clear() # Reset reminders for the new phase
             logger.info(f"Current phase before transition: {self.game_settings['current_phase']}, phase number: {self.game_settings['phase_number']}")
+             # Set the end time for the new phase
+            self.game_settings["phase_end_time"] = current_end_time + timedelta(hours=self.game_settings["phase_hours"])
             if self.game_settings["current_phase"].lower() == "pre-day": # If the current phase that was processed was 'night' (i.e. current phase is 'pre-day'), transition to 'day'
                 self.game_settings["current_phase"] = "day"
                 #announce the start of the new day phase
@@ -480,8 +479,7 @@ class Game:
                 self.lynch_votes = {}
                 announcement = f"## 🌙 Night {self.game_settings['phase_number']} has begun. You have {format_time_remaining(self.game_settings['phase_end_time'])} hours to use your night actions."
                 logger.info("Transitioning to night phase.")
-            # Set the end time for the new phase
-            self.game_settings["phase_end_time"] = current_end_time + timedelta(hours=self.game_settings["phase_hours"])
+           
             await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(announcement)
             return # End this loop iteration after phase transition
         
@@ -928,10 +926,10 @@ class Game:
             if not game_id:
                 logger.error("Cannot save summary, game_id is missing.")
                 return
-            # Construct the new directory path: Stats/<game_id>
+            # Construct the new directory path: stats/<game_id>
             # Dynamically build the path based on the game type
             game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title()
-            base_dir = os.path.join("Stats", game_type_dir)
+            base_dir = os.path.join(config.data_save_path, game_type_dir)
             game_log_dir = os.path.join(base_dir, game_id)
             # Create the directories
             os.makedirs(game_log_dir, exist_ok=True)

@@ -70,7 +70,7 @@ class NarrationManager:
             if not target or not target.role or not blocker: return None
             logger.info(f"Target role abilities: {target.role.abilities}")
             if not target.role.abilities: return None
-            return f"A shadowy figure stalked the **{target.role.name}**.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
+            return f"A shadowy figure stalked their target.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
         
         if event_type == 'block_battle_royale':
             target = event.get('target')

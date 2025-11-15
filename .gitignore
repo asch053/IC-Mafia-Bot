@@ -12,9 +12,14 @@ nohup.err
 
 # Alpha and Beta Stats
 /Stats/Alpha Testing/
-/Stats/BETA Testing/
-/Stats/alpha_testing
+/stats/BETA Testing/
+/stats/alpha_testing
+/stats/alpha_testing
 
+# logs
+/Logs/
+/logs/
+/logs
 
 
 # Byte-compiled / optimized / DLL files
@@ -189,16 +194,21 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-/Data
-Data/discord_roles.json
-/Data
-Data/discord_roles.json
-Data/mafia_setups.json
-Stats/Classic/20250920-111500/20250920-111500_summary.json
-Stats/Classic/20250920-110500/20250920-110500_summary.json
-Data/discord_roles.json
-Data/mafia_setups.json
-Data/discord_roles.json
-Data/mafia_setups.json
-Data/mafia_setups.json
-Data/discord_roles.json
+/data
+data/discord_roles.json
+/data
+data/discord_roles.json
+data/mafia_setups.json
+stats/Classic/20250920-111500/20250920-111500_summary.json
+stats/Classic/20250920-110500/20250920-110500_summary.json
+data/discord_roles.json
+data/mafia_setups.json
+data/discord_roles.json
+data/mafia_setups.json
+data/mafia_setups.json
+data/discord_roles.json
+stats/alpha_testing/
+/Logs/
+
+# Service Account Credentials
+ic-mafia-bot-41a41f61e757.json
