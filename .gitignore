@@ -4,6 +4,17 @@ config.py
 # discord roles
 Data/discord_roles.json
 data/discord_roles.json
+/data/discord_roles.json
+data/discord_roles.json
+
+# mafia setups
+Data/mafia_setups.json
+data/mafia_setups.json
+/data/mafia_setups.json
+data/mafia_setups.json
+
+# stats
+stats/
 
 #nohup file
 nohup.out 
