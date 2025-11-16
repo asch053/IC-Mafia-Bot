@@ -22,7 +22,7 @@
         },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
 
-        { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
+        { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." }
       ]
     }
   ],
@@ -72,7 +72,9 @@
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
         { "name": "Mob Goon", "alignment": "Mafia", "quantity": 1, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 3, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
+        { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 1, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -85,7 +87,8 @@
         { "name": "Mob Goon", "alignment": "Mafia", "quantity": 1, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 3, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 2, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -124,11 +127,10 @@
       "roles": [
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
         { "name": "Mob Goon", "alignment": "Mafia", "quantity": 1, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
-        { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 4, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 5, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -138,12 +140,12 @@
       "id": "12_players_full_basic_sk",
       "roles": [
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
-        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 2, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
+        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 1, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 4, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 5, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -153,12 +155,12 @@
       "id": "13_players_full_basic_sk",
       "roles": [
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
-        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 2, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
+        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 1, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 5, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 6, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -213,12 +215,12 @@
       "id": "17_players_full_basic_sk",
       "roles": [
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
-        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 3, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
+        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 2, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 8, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 9, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }
@@ -243,12 +245,12 @@
       "id": "19_players_full_basic_sk",
       "roles": [
         { "name": "Godfather", "alignment": "Mafia", "quantity": 1, "action": "Kill", "short_description": "Chooses the Mafia's target.", "description": "Chooses the Mafia's target each night. Use `/kill player-name`. Wins with Mafia." },
-        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 4, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
+        { "name": "Mob Goon", "alignment": "Mafia", "quantity": 3, "action": "", "short_description": "Standard Mafia member.", "description": "A member of the Mafia. Gets promoted if Godfather dies. Wins with Mafia." },
         { "name": "Mob Role Blocker", "alignment": "Mafia", "quantity": 1, "action": "Block", "short_description": "Blocks a player's night action.", "description": "Prevents one player from performing their night action each night. Cannot target the same player two nights in a row. Use `/block player-name`. Wins with Mafia." },
         { "name": "Town Cop", "alignment": "Town", "quantity": 1, "action": "Investigate", "short_description": "Investigates alignment.", "description": "Investigates one player each night for alignment (Town/Mafia/Neutral). Use `/investigate player-name`. Wins with Town." },
         { "name": "Town Doctor", "alignment": "Town", "quantity": 1, "action": "Heal", "short_description": "Protects a player each night.", "description": "Protects one player each night from being killed. Use `/heal player-name`. Wins with Town." },
         { "name": "Town Role Blocker", "alignment": "Town", "quantity": 1, "action": "Block", "short_description": "Prevents a player's night action.", "description": "You are town aligned and can prevent one player from performing their night action each night. Use `/block player-name`. Wins with Town." },
-        { "name": "Plain Townie", "alignment": "Town", "quantity": 9, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
+        { "name": "Plain Townie", "alignment": "Town", "quantity": 10, "action": "", "short_description": "Regular town member.", "description": "A regular member of the town. Use your vote wisely! Wins with Town." },
         { "name": "Serial Killer", "alignment": "Neutral", "quantity": 1, "action": "Kill", "short_description": "Kills independently.", "description": "Kills one player each night. Use `/kill player-name`. Wins if last alive." }
       ]
     }

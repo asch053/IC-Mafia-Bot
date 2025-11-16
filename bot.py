@@ -78,10 +78,11 @@ bot = commands.Bot(command_prefix=config.BOT_PREFIX, intents=intents, owner_id=c
 # --- 3. List of Cogs to Load ---
 # This list is now correct with commas.
 initial_extensions = [
-    'Cogs.game',
-    'Cogs.admin',
-    'Cogs.info',
-    'Cogs.stats'
+    'cogs.game',
+    'cogs.admin',
+    'cogs.info',
+    'cogs.stats',
+    'cogs.export'
 ]
 
 # --- 4. Setup Hook (The ONLY place for loading cogs) ---
