@@ -62,7 +62,7 @@ class StatsCog(commands.Cog):
         stats_dir = config.data_save_path
         # Ensure the directory exists
         if not os.path.exists(stats_dir):
-            logger.warning("Stats directory not found.")
+            logger.warning(f"Stats directory not found. => {stats_dir}")
             return []
         # os.walk will go through /Stats/Classic/, /Stats/Battle Royale/, etc.
         for root, dirs, files in os.walk(stats_dir):
