@@ -15,6 +15,15 @@ data/mafia_setups.json
 
 # stats
 stats/
+stats/Production/Classic/20251024-100000
+stats/Production/Classic/20251024-100000/20251024-100000_summary.json
+stats/Production/Battle Royale/20251024-120100
+stats/Production/Battle Royale/20251024-120100/20251024-120100_summary.json
+stats/Production/Battle Royale/20251024-110000
+stats/Production/Battle Royale/20251024-110000/20251024-110000_summary.json
+stats/Production/Battle Royale/20251024-105500
+stats/Production/Battle Royale/20251024-105500/20251024-105500_summary.json
+
 
 #nohup file
 nohup.out 
