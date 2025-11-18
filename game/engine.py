@@ -276,6 +276,14 @@ class Game:
             await self.reset()
             return  
         logger.critical(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
+        # --- SAFETY CHECK: Ensure no roles failed to load ---
+        if any(role is None for role in self.game_roles):
+            error_msg = "CRITICAL ERROR: One or more roles failed to generate. Check setup_generator.py names against role_definition.json."
+            logger.critical(error_msg)
+            await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"⚠️ **Game Error:** {error_msg}")
+            await self.reset()
+            return
+        # ---------------------------------------------------
         # --- Run Randomness Test and Post Results ---
         logger.info("Running role assignment randomness test...")
         player_names = [p.display_name for p in self.players.values()]
