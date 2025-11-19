@@ -15,7 +15,7 @@ import config
 # --- Classic Roles ---
 MAFIA_GF = "Godfather"
 MAFIA_GOON = "Mob Goon"
-MAFIA_RB = "Mafia Role Blocker"
+MAFIA_RB = "Mob Role Blocker"
 SERIAL_KILLER = "Serial Killer"
 TOWN_COP = "Town Cop"
 TOWN_DOCTOR = "Town Doctor"

@@ -196,4 +196,5 @@ class NarrationManager:
     
 
         
-        return None
+       # --- Fallback for unknown events ---
+        return f"A mysterious event ({event_type}) occurred."

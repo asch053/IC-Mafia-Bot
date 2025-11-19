@@ -80,20 +80,20 @@ class Game:
         # --- Data Loading ---
         logger.debug("Loading game data from JSON files.")
         try:
-            self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
+            self.discord_role_data = load_data("Data/discord_roles.json") #loads discord roles data
         except Exception as e:
             logger.error(f"Error loading discord roles data: {e}")
         try:
-            self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
+            self.npc_names = load_data("Data/bot_names.txt") #load NPC bot names
         except Exception as e:
             logger.error(f"Error loading NPC names: {e}")
         try:    
-            self.rules_text = "\n".join(load_data("data/rules.txt"))
+            self.rules_text = "\n".join(load_data("Data/rules.txt"))
         except Exception as e:
             logger.error(f"Error loading rules text: {e}")
             self.rules_text = "No rules text found. Please check the rules.txt file."
         try:    
-            self.mafia_setups = load_data("data/mafia_setups.json")
+            self.mafia_setups = load_data("Data/mafia_setups.json")
         except Exception as e:
             logger.error(f"Error loading mafia setups: {e}")
             logger.critical("No mafia setups loaded. The game cannot start.")
@@ -276,6 +276,14 @@ class Game:
             await self.reset()
             return  
         logger.critical(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
+        # --- SAFETY CHECK: Ensure no roles failed to load ---
+        if any(role is None for role in self.game_roles):
+            error_msg = "CRITICAL ERROR: One or more roles failed to generate. Check setup_generator.py names against role_definition.json."
+            logger.critical(error_msg)
+            await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"⚠️ **Game Error:** {error_msg}")
+            await self.reset()
+            return
+        # ---------------------------------------------------
         # --- Run Randomness Test and Post Results ---
         logger.info("Running role assignment randomness test...")
         player_names = [p.display_name for p in self.players.values()]
@@ -1017,10 +1025,12 @@ class Game:
         logger.info("No win condition met yet.")
         return None
 
+    # game/engine.py
+
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
         logger.info(f"Announcing winner: {winner}")
-        # --- Step 1: Determine Winners (this part is the same) ---
+        # --- Step 1: Determine Winners ---
         winning_players = []
         for player_obj in self.players.values():
             player_obj.is_winner = False
@@ -1030,7 +1040,7 @@ class Game:
                 elif player_obj.role.name == winner:
                     player_obj.is_winner = True
                 elif player_obj.display_name == winner:
-                    player_obj.is_winner = True
+                    player_obj.is_winner = True     
             if player_obj.is_winner:
                 winning_players.append(player_obj)
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
@@ -1044,71 +1054,114 @@ class Game:
                     current_phase = f"{self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}"
                 player_obj.kill(current_phase, "Game Over - Losing Player")
                 logger.info(f"Marked losing player {player_obj.display_name} as dead.")
-        # --- Step 2: Save the summary with the CLEAN data for stats ---
+        # --- Step 2: Save the summary ---
         await self._save_game_summary(winner)
-        # --- Step 3: Create a BEAUTIFUL display name for the story ---
+        # --- Step 3: Create display name ---
         winner_display_name = ""
         if winner in ["Town", "Mafia"]:
             winner_display_name = f"The {winner}"
         elif winner == "Draw":
             winner_display_name = "game has ended in a draw! No one"
-        elif winning_players: # This will catch our Vigilante, SK, etc.
+        elif winning_players:
             winner_display_name = f"**{winning_players[0].display_name}**"
         else:
-            winner_display_name = winner # Fallback
-        # --- Step 4: Announce the results using the new display name ---
+            winner_display_name = winner
+        # --- Step 4: Announce the results ---
         self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
         story = self.narration_manager.construct_story(
             self.game_settings['current_phase'],
             self.game_settings['phase_number']
         )
-        final_message = f"**Game Over!**\n{story}"
-        status_message = self.get_status_message()
-        if status_message:
-            final_message += f"\n\n{status_message}"
-        # Send the final message to the stories channel 
+        # --- THE FIX: Send Messages Separately and Chunked ---
         try:
-            await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(final_message)
+            channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
+            if not channel:
+                logger.error(f"Could not find stories channel {config.STORIES_CHANNEL_ID}")
+                return
+            # 1. Send the Story First
+            await channel.send(f"**Game Over!**\n{story}")
+            # 2. Generate the Status Message
+            status_message = self.get_status_message()
+            if status_message:
+                # 3. Check length. If > 1900 chars, chunk it!
+                if len(status_message) > 1900:
+                    logger.info("Status message is too long, splitting into chunks.")
+                    chunks = []
+                    current_chunk = ""
+                    for line in status_message.split('\n'):
+                        # Check if adding this line would exceed the limit
+                        if len(current_chunk) + len(line) + 1 > 1900:
+                            chunks.append(current_chunk)
+                            current_chunk = line + "\n"
+                        else:
+                            current_chunk += line + "\n"
+                    if current_chunk:
+                        chunks.append(current_chunk)
+                    # Send each chunk as a separate message
+                    for chunk in chunks:
+                        await channel.send(chunk)
+                else:
+                    # It fits! Send it normally.
+                    await channel.send(status_message)
             logger.info(f"Announced winner: {winner_display_name}.")
+
         except Exception as e:
-            logger.error(f"Error announcing winner: {e}")
+            logger.error(f"Error announcing winner: {e}", exc_info=True)
 
     async def reset(self):
         """Resets the game state and cancels any running tasks."""
-        logger.info("Resetting the game state.")
-        # Cancel any running loops
+        logger.info("Resetting the game state.")       
+        # 1. Cancel Loops
         if self.signup_loop.is_running():
             self.signup_loop.cancel()
         if self.game_loop.is_running():
             self.game_loop.cancel()
-        # set all players to spectators
-        # Get discord roles
-        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
-        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0))
-        dead_role = self.guild.get_role(self.discord_role_data.get("dead", {}).get("id", 0))
-        # Cycle through each player and change discord role to spectator
-        # Update roles for players in the game
+        logger.info("Cancelled game loops.")
+        # 2. Get Role Objects
+        try:
+            spectator_role_id = self.discord_role_data.get("spectator", {}).get("id", 0)
+            living_role_id = self.discord_role_data.get("living", {}).get("id", 0)
+            dead_role_id = self.discord_role_data.get("dead", {}).get("id", 0)
+            spectator_role = self.guild.get_role(spectator_role_id)
+            living_role = self.guild.get_role(living_role_id)
+            dead_role = self.guild.get_role(dead_role_id)
+        except Exception as e:
+            logger.error(f"Failed to load Discord role objects for reset: {e}")
+            return
+        logger.info("Loaded Discord role objects for reset.")
+        # 3. Bulk Update Players (Atomic Edit)
         logger.info("Updating Discord roles for all players to spectator.")
-        logger.info(f"Spectator Role: {spectator_role}, Living Role: {living_role}, Dead Role: {dead_role}")
-        logger.info(f"Total players to update: {len(self.players)}")
         for player_id, player_obj in self.players.items():
-            # Update Discord role
-            logger.info(f"Updating roles for player ID: {player_id} ({player_obj.display_name})")
-            if player_obj.is_npc: continue # Skip NPCs
-           # This check prevents a crash if the player has left the server
-            member = self.guild.get_member(player_id)
+            if player_obj.is_npc: 
+                continue # Skip NPCs
+            member = self.guild.get_member(player_id) # Try get_member first for efficiency
+            if not member:
+                # Try fetching if get fails (cache miss)
+                try:
+                    member = await self.guild.fetch_member(player_id)
+                except discord.NotFound:
+                    logger.warning(f"Player {player_obj.display_name} left server, skipping role reset.")
+                    continue
             if member:
                 try:
-                    # Check roles exist before using them to be extra safe
-                    if spectator_role: await member.add_roles(spectator_role)
-                    await member.remove_roles(living_role, dead_role)
-                    logger.info(f"Updated roles for player {player_obj.display_name} to spectator.")
+                    # LOGIC: Keep all current roles EXCEPT Living/Dead, then ADD Spectator
+                    # This preserves 'Admin', 'Mod', etc.
+                    new_roles = [
+                        r for r in member.roles 
+                        if r.id not in (living_role_id, dead_role_id) and r != self.guild.default_role
+                    ]
+                    # Avoid duplicates if they already have spectator
+                    if spectator_role and spectator_role not in new_roles:
+                        new_roles.append(spectator_role)
+                    # ONE API CALL to rule them all
+                    await member.edit(roles=new_roles, reason="Mafia Game Reset")
+                    logger.info(f"Reset roles for {member.display_name} (Atomic).")     
+                except discord.Forbidden:
+                    logger.error(f"Permission denied resetting roles for {member.display_name}.")
                 except discord.HTTPException as e:
-                    logger.error(f"Failed to update roles for {member.display_name}: {e}")
-            else:
-                logger.warning(f"Player '{player_obj.display_name}' (ID: {player_id}) not found in server, skipping role update.")
-        # Reset game settings      
-        # Clear game state
+                    logger.error(f"HTTP error resetting roles for {member.display_name}: {e}")
+
+        # 4. Clear Internal State
         logger.info("Clearing game state variables.")
         self.players.clear()
         self.game_settings["game_started"] = False

@@ -157,10 +157,17 @@ class GameCog(commands.Cog, name="GameCog"):
         await interaction.followup.send("You've left the game.", ephemeral=True)
 
     @app_commands.command(name="mafiastatus", description="Displays the current game status.")
-    @app_commands.check(is_game_active) # Check: Only works if a game is running.
+    # @app_commands.check(is_game_active) # Check: Only works if a game is running.
     async def status_command(self, interaction: discord.Interaction):
         """Displays a public summary of the game state (living/dead players)."""
         logger.info(f"'/mafiastatus' command invoked by {interaction.user.name}.")
+        # --- CHECK for active game ---
+        # Access the game instance (adjust 'GameCog' if your cog name is different)
+        game_cog = self.bot.get_cog("GameCog") 
+        if not game_cog or not game_cog.game or not game_cog.game.game_settings["game_started"]:
+            await interaction.response.send_message("❌ There is no game currently running.", ephemeral=True)
+            return
+        # ------------------------
         status_message = self.game.get_status_message()
         await interaction.response.send_message(status_message, ephemeral=False)
 

@@ -37,14 +37,14 @@ class InfoCog(commands.Cog, name="InfoCog"):
         logger.info(f"'/mafiarules' command invoked by {interaction.user.name}.")
         try:
             # Load the rules text using our utility function
-            rules_text = "\n".join(load_data("data/rules.txt"))
+            rules_text = "\n".join(load_data("Data/rules.txt"))
             # Create a nice-looking embed to display the rules
             embed = discord.Embed(title="📜 Mafia Game Rules", description=rules_text, color=discord.Color.blue())
             await interaction.response.send_message(embed=embed, ephemeral=True)
             logger.info(f"Successfully sent rules to {interaction.user.name}.")
         except Exception as e:
             # Log an error if the rules file can't be loaded for some reason
-            logger.error(f"Failed to load data/rules.txt for '/mafiarules' command.", exc_info=True)
+            logger.error(f"Failed to load Data/rules.txt for '/mafiarules' command.", exc_info=True)
             await interaction.response.send_message("Sorry, I couldn't load the rules file at the moment.", ephemeral=True)
     
     # --- Command to show roles in the current game ---
