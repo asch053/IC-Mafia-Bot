@@ -15,9 +15,15 @@ Directory: f:/IC Mafia Bot
   File: .gitignore
   File: bot.py
   File: config.py
+  File: config_template.py
   File: foldertrace.py
   File: folder_structure.txt
+  File: ic-mafia-bot-41a41f61e757.json
   File: LICENSE
+  File: mafia_narration.prompt.yml
+  File: nohup.out
+  File: randomnumbertest.py
+  File: README.md
   File: requirements.txt
 
 Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
@@ -38,7 +44,6 @@ Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
   File: misc.py
   File: packaging.py
   File: retry.py
-  File: setuptools_build.py
   File: subprocess.py
   File: temp_dir.py
   File: unpacking.py
@@ -52,6 +57,7 @@ Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
 Directory: f:/IC Mafia Bot\Cogs
   Subdirectory: __pycache__
   File: admin.py
+  File: export.py
   File: game.py
   File: info.py
   File: stats.py
@@ -64,6 +70,9 @@ Directory: f:/IC Mafia Bot\Data
   File: injokes.json
   File: mafia_setups.json
   File: no_injoke.json
+  File: old_discord_roles.json
+  File: Old_mafia_setups.json
+  File: role_definition.json
   File: rules.txt
   File: __init__.py
 
@@ -74,10 +83,20 @@ Directory: f:/IC Mafia Bot\game
   File: narration.py
   File: player.py
   File: roles.py
+  File: setup_generator.py
+  File: test_engine.py
+  File: __init__.py
+
+Directory: f:/IC Mafia Bot\Stats
+  Subdirectory: alpha testing
+  Subdirectory: __pycache__
+  File: analysegames.py
+  File: statshelper.py
   File: __init__.py
 
 Directory: f:/IC Mafia Bot\utils
   Subdirectory: __pycache__
+  File: admincheck.py
   File: randomness_tester.py
   File: utilities.py
   File: __init__.py

@@ -5,7 +5,7 @@ def print_folder_structure(root_folder):
     with open("folder_structure.txt", "w", encoding='utf-8') as f:
         for dirpath, dirnames, filenames in os.walk(root_folder):
             # Only include the root folder and specific subfolders
-            if dirpath == root_folder or os.path.basename(dirpath) in ["Cogs", "Data", "game", "utils"]:
+            if dirpath == root_folder or os.path.basename(dirpath) in ["Cogs", "Data", "game", "utils", "Stats"]:
                 f.write(f"Directory: {dirpath}\n")
                 for dirname in dirnames:
                     f.write(f"  Subdirectory: {dirname}\n")
