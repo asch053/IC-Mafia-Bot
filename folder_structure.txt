@@ -1,4 +1,6 @@
-Directory: f:/IC Mafia Bot
+Folder structure generated on: 2025-11-23 21:52:14
+
+Directory: F:\IC Mafia Bot
   Subdirectory: .git
   Subdirectory: .github
   Subdirectory: .venv
@@ -26,7 +28,7 @@ Directory: f:/IC Mafia Bot
   File: README.md
   File: requirements.txt
 
-Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
+Directory: F:\IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
   Subdirectory: __pycache__
   File: appdirs.py
   File: compat.py
@@ -54,7 +56,7 @@ Directory: f:/IC Mafia Bot\.venv\Lib\site-packages\pip\_internal\utils
   File: _log.py
   File: __init__.py
 
-Directory: f:/IC Mafia Bot\Cogs
+Directory: F:\IC Mafia Bot\Cogs
   Subdirectory: __pycache__
   File: admin.py
   File: export.py
@@ -63,7 +65,11 @@ Directory: f:/IC Mafia Bot\Cogs
   File: stats.py
   File: __init__.py
 
-Directory: f:/IC Mafia Bot\Data
+Directory: F:\IC Mafia Bot\Community
+  Subdirectory: __pycache__
+  File: __init__.py
+
+Directory: F:\IC Mafia Bot\Data
   Subdirectory: __pycache__
   File: bot_names.txt
   File: discord_roles.json
@@ -76,7 +82,7 @@ Directory: f:/IC Mafia Bot\Data
   File: rules.txt
   File: __init__.py
 
-Directory: f:/IC Mafia Bot\game
+Directory: F:\IC Mafia Bot\game
   Subdirectory: __pycache__
   File: actions.py
   File: engine.py
@@ -87,14 +93,24 @@ Directory: f:/IC Mafia Bot\game
   File: test_engine.py
   File: __init__.py
 
-Directory: f:/IC Mafia Bot\Stats
+Directory: F:\IC Mafia Bot\Stats
   Subdirectory: alpha testing
   Subdirectory: __pycache__
   File: analysegames.py
   File: statshelper.py
   File: __init__.py
 
-Directory: f:/IC Mafia Bot\utils
+Directory: F:\IC Mafia Bot\Tests
+  Subdirectory: __pycache__
+  File: test.py
+  File: test_action.py
+  File: test_engine.py
+  File: test_narration.py
+  File: test_randomness.py
+  File: test_statistics.py
+  File: _old_test_engine.py
+
+Directory: F:\IC Mafia Bot\utils
   Subdirectory: __pycache__
   File: admincheck.py
   File: randomness_tester.py
