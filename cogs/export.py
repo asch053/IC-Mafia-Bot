@@ -52,7 +52,7 @@ class GoogleExportCog(commands.Cog):
     def _load_and_group_games(self) -> list[dict]:
         """Loads all game summary files from all subdirectories in /Stats/"""
         all_games = []
-        stats_dir = "Stats"
+        stats_dir = config.data_save_path
         if not os.path.exists(stats_dir):
             logger.warning("Stats directory not found.")
             return []

@@ -73,7 +73,7 @@ ROLE_CLASSES = {
 }
 
 # Load all role definitions from the JSON file once when this module is first imported
-ALL_ROLES_DATA = load_data("data/role_definition.json")
+ALL_ROLES_DATA = load_data("Data/role_definition.json")
 
 def get_role_instance(role_name: str) -> GameRole | None:
     """

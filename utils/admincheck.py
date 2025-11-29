@@ -22,7 +22,7 @@ def is_admin():
         
         try:
             # We use our lovely utility function to load the roles data
-            discord_role_data = utilities.load_data("data/discord_roles.json")
+            discord_role_data = utilities.load_data("Data/discord_roles.json")
             if not discord_role_data:
                 logger.error("Admin check failed: Could not load discord_roles.json")
                 await interaction.response.send_message("Error: Role configuration file is missing.", ephemeral=True)
