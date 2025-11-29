@@ -81,7 +81,7 @@ def handle_kill(game, killer_id, victim_id, night_outcomes):
         game.narration_manager.add_event('kill_immune', killer=killer, target=victim)
         logger.info(f"Kill by {killer.display_name} on {victim.display_name} failed due to immunity.")
         return
-        
+    # Record the kill attempt
     game.kill_attempts_on.setdefault(victim_id, []).append(killer_id)
     logger.info(f"{killer.display_name} successfully attempted to kill {victim.display_name}.")
 
@@ -101,6 +101,10 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
     if not investigator or not target: return
     
     if not investigator.is_alive: return
+    # Check if investigator was killed this night
+    if investigator_id in game.kill_attempts_on:
+        logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
+        return
         
     role_name_result = target.role.name if target.role else "Unknown"
     short_desc_result = target.role.short_description if target.role else "No details."

@@ -9,13 +9,25 @@ class NarrationManager:
     """
     def __init__(self):
         """Initializes the NarrationManager with an empty list of events."""
-        self.events = []
+        self.events = [] # List to store events for the current phase
+        self.story_history = [] # To keep track of past stories to be stored for future analysis
+        logger.info("NarrationManager initialized.")
 
     def add_event(self, event_type: str, **details):
         """Adds a new event to the list using a flat structure."""
         event = {'type': event_type, **details}
         self.events.append(event)
         logger.info(f"Narration event added: {event_type}\nEvent: {event}")
+
+    def get_full_story_log(self) -> str:
+        """
+        NEW: Returns the complete history of all stories told in the game so far.
+        This is perfect for saving to a file at the end of the game.
+        """
+        if not self.story_history:
+            return "No stories were generated this game."
+        
+        return "\n\n" + "="*40 + "\n\n".join(self.story_history) + "\n\n" + "="*40
 
     def clear(self):
         """Clears all events, typically after a story has been told."""
@@ -41,7 +53,11 @@ class NarrationManager:
             logger.info(f"Generated story part: {story_part}")
             if story_part:
                 story_parts.append(story_part)
-                
+        # 4. NEW: Save to history!
+        final_story = "\n\n".join(story_parts) if len(story_parts) > 1 else None
+        if final_story:
+            self.story_history.append(final_story)
+            logger.info(f"Story history updated. Total stories so far: {len(self.story_history)}")
         logger.info("Narrative story constructed.\n" + "\n".join(story_parts))
         return "\n\n".join(story_parts) if len(story_parts) > 1 else None
 
