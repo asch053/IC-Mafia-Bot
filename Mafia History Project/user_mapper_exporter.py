@@ -32,7 +32,7 @@ INPUT_FILES = [
     os.path.join(OUTPUT_DIR, "extracted_history.jsonl"), # Old forum
     os.path.join(OUTPUT_DIR, "discourse_history.jsonl"), # New Discourse
     os.path.join(OUTPUT_DIR, "old_discord_history.jsonl"), # Old Discord
-    os.path.join(OUTPUT_DIR, "live_discord_history.jsonl") # Live Discord
+    os.path.join(OUTPUT_DIR, "new_discord_history.jsonl") # New Discord
 ]
 # Local output file for the mapping template (in the output folder)
 OUTPUT_MAPPING_FILE = os.path.join(OUTPUT_DIR, "username_mapping_template.csv")

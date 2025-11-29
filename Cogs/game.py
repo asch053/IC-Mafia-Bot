@@ -91,6 +91,7 @@ class GameCog(commands.Cog, name="GameCog"):
                 f"Please do not chat in the voting channel. Use the slash command `/vote` to vote, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
             )
             return # Stop processing after redirection
+        
         # --- 2. Chat Logging (FR-5.4) ---
         # 2.1 Check if it's the correct discussion channel
         talk_channel_id = config.TALKY_TALKY_CHANNEL_ID # The designated discussion channel for the game
