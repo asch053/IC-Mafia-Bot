@@ -59,6 +59,7 @@ class Game:
             "phase_end_time": None,
             "phase_hours": 12, # Default
         }
+        self.chat_log = [] # To store chat messages during the game FR-5.4: Advanced Data Logging
         self.players = {} # This will now store Player objects: {player_id: Player_Object}
         self.lynch_votes = {} # This will store votes for lynching: {player_id: target_id}
         self.game_roles = [] # This will store GameRole objects assigned to players
@@ -922,11 +923,13 @@ class Game:
         # 3. --- Lynch Data ---
         # This comes from the vote_history we captured in step 3
         lynch_data = self.vote_history
+        chat_activity_logs =  self.chat_log
         # --- Final Compilation ---
         final_summary = {
             "game_summary": game_data,
             "player_data": player_data,
-            "lynch_vote_history": lynch_data
+            "lynch_vote_history": lynch_data,
+            "chat_activity_logs": chat_activity_logs
         }
         # --- Save to File ---
         try:

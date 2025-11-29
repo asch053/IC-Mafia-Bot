@@ -8,6 +8,7 @@ from game.engine import Game
 from datetime import datetime, timezone
 from utils import utilities
 from utils.admincheck import is_admin
+from datetime import datetime, timezone
 
 # Get the logger instance from the main bot file
 logger = logging.getLogger('discord')
@@ -67,29 +68,54 @@ class GameCog(commands.Cog, name="GameCog"):
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         """
-        Listens for messages in specific game channels to guide users
-        towards using the correct slash commands instead of chatting.
+        Handles two primary message events: 
+        1. UX Redirection: Guides users to slash commands in specific channels.
+        2. Chat Logging: Records messages from the designated talk channel for stats/AI.
         """
-        # Ignore messages from bots and all Direct Messages
+        # Ignore messages from bots and all Direct Messages (DRY Principle)
         if message.author.bot or not message.guild:
             return
         game = self.get_game_instance()
         if not game:
-            return # Do nothing if no game is running
-        # Check if the message is in the voting channel
+            # 1. UX Redirection (Even if no game, still redirect if in the signup channel)
+            if message.channel.id == config.SIGN_UP_HERE_CHANNEL_ID:
+                await message.reply(
+                    f"Please use the slash command `/mafiajoin` to join, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
+                )
+            return # Do nothing further if no game is running
+        # --- 1. UX Redirection (Only check channels relevant during an active game) ---
         if message.channel.id == config.VOTING_CHANNEL_ID:
             # Politely redirect users trying to chat or use old prefix commands
             logger.info(f"Redirecting user {message.author.name} from chatting in voting channel.")
             await message.reply(
                 f"Please do not chat in the voting channel. Use the slash command `/vote` to vote, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
             )
-        # Check if the message is in the sign-up channel
-        elif message.channel.id == config.SIGN_UP_HERE_CHANNEL_ID:
-            # Politely redirect users trying to chat or use old prefix commands
-            logger.info(f"Redirecting user {message.author.name} from chatting in sign-up channel.")
-            await message.reply(
-                f"Please do not chat in the sign-up channel. Use the slash command `/mafiajoin` to join, or discuss in <#{config.TALKY_TALKY_CHANNEL_ID}>."
-            )
+            return # Stop processing after redirection
+        # --- 2. Chat Logging (FR-5.4) ---
+        # 2.1 Check if it's the correct discussion channel
+        talk_channel_id = config.TALKY_TALKY_CHANNEL_ID # The designated discussion channel for the game
+        if message.channel.id != talk_channel_id:
+            return # Stop if not in the logging channel
+        # 2.2 Check if a game is active and it's not the signup phase
+        # Note: We ensure 'game.phase' is robustly checked against 'signup'
+        if game.game_settings.get('current_phase', '').lower() == 'signup':
+            return
+        # 2.3 Log the message (Data structure is already great!)
+        log_entry = {
+            'user_id': message.author.id, # Unique Discord user ID
+            'username': message.author.display_name, # For easier log reading
+            'timestamp_utc': message.created_at.isoformat(), # Standardized timestamp
+            'channel_name': message.channel.name, # For easier log reading
+            'message_id': message.id, # Unique message identifier
+            'phase': game.game_settings.get('current_phase', 'N/A'), # Log the current phase for context
+            'phase_number': game.game_settings.get('phase_number', 0), # Log the phase number for context
+            'content': message.content # The actual message text
+        }
+        # We assume the Game object has been extended with an active chat_log attribute
+        game.chat_log.append(log_entry)
+        logger.debug(
+            f"Chat Logged: Game={game.game_settings.get('game_id')} | Phase={log_entry['phase']} | User={message.author.name}"
+        )
 
     # --- Game Management Commands ---
     @app_commands.command(name="mafiastart", description="[Admin] Schedules a new Mafia game.")
