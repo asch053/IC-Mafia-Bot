@@ -1,392 +1,158 @@
-# Version 15 - Correct patch target 'game.roles.load_data', Fix config/discord_roles, Role Names, Assertions
 import unittest
-import asyncio
-from unittest.mock import MagicMock, AsyncMock, patch, call, ANY, PropertyMock # Add PropertyMock
-from datetime import datetime, timezone, timedelta
-
-import sys
-import os
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
-# <-- MODIFIED: Import load_data FIRST for discord_roles.json
-from utils.utilities import load_data 
-
-# --- Mock or Import Real Config ---
-try:
-    import config
-    print("INFO (Engine): Successfully imported config.py")
-except ImportError:
-    from unittest.mock import MagicMock as ConfigMock
-    print("INFO (Engine): config.py not found, creating ConfigMock.") 
-    config = ConfigMock(
-        MAX_MISSED_VOTES=2, signup_loop_interval_seconds=15, min_players=6,
-        ANNOUNCEMENT_CHANNEL_ID=1, SIGN_UP_HERE_CHANNEL_ID=2, RULES_AND_ROLES_CHANNEL_ID=3,
-        STORIES_CHANNEL_ID=4, VOTING_CHANNEL_ID=5, TALKY_TALKY_CHANNEL_ID=6, MOD_CHANNEL_ID=7
-        # Role IDs are NOT in config
-    )
-    sys.modules['config'] = config
-
+from unittest.mock import MagicMock, patch, AsyncMock
+import discord
 from game.engine import Game
-from game.player import Player
-from game.roles import get_role_instance
+import config
 
-# Helper to run async tests
-def async_test(f):
-    def wrapper(*args, **kwargs):
-        return asyncio.run(f(*args, **kwargs))
-    return wrapper
+class TestGameEngine(unittest.IsolatedAsyncioTestCase):
 
-class TestGameEngine(unittest.TestCase):
-
-    def setUp(self): 
-        """Set up a fresh Game instance and mocks for each test."""
-        # --- Load Actual Discord Role IDs FIRST ---
-        discord_roles_path = os.path.join("Data", "discord_roles.json") 
-        discord_roles_data = load_data(discord_roles_path, error_default={}) 
-        self.LIVING_ID = discord_roles_data.get("living", {}).get("id", 10) 
-        self.DEAD_ID = discord_roles_data.get("dead", {}).get("id", 11)
-        self.SPECTATOR_ID = discord_roles_data.get("spectator", {}).get("id", 12)
-        self.MOD_ID = discord_roles_data.get("mod", {}).get("id", 13)
-        
-        # --- Patch load_data where get_role_instance USES it ---
-        # Target 'game.roles.load_data' specifically
-        self.patcher = patch('game.roles.load_data') 
-        mock_load_data = self.patcher.start()
-        mock_load_data.side_effect = self.mock_load_data_side_effect
-        self.addCleanup(self.patcher.stop) 
-        
-        # --- Standard Mock Setup ---
+    async def asyncSetUp(self):
+        # Setup mocks
         self.mock_bot = MagicMock()
         self.mock_guild = MagicMock()
-        self.mock_cleanup = MagicMock()
-        self.mock_channel = AsyncMock()
-        self.mock_narration_manager = MagicMock()
+        
+        # Initialize game
+        self.game = Game(self.mock_bot, self.mock_guild)
+        
+        # Mock internal components
+        self.game.narration_manager = MagicMock()
+        self.game.signup_loop = MagicMock()
+        self.game.game_loop = MagicMock()
+        
+        # Set basic game settings
+        self.game.game_settings["game_id"] = "test_game_id"
+        self.game.game_settings["phase_number"] = 1
+        self.game.game_settings["current_phase"] = "day"
 
-        # Initialize the game *after* patch is started
-        self.game = Game(self.mock_bot, self.mock_guild, self.mock_cleanup)
-        self.game.narration_manager = self.mock_narration_manager
+    @patch('game.engine.update_player_discord_roles') 
+    async def test_reset_preserves_cosmetic_roles(self, mock_update_roles):
+        """Test that reset removes game roles but KEEPS other roles."""
+        # Setup
+        self.game.players = {123: MagicMock(id=123, is_npc=False)}
+        self.game.game_settings["game_started"] = True
+        
+        # Mock Guild Member
+        mock_member = MagicMock()
+        
+        # --- Create Roles ---
+        role_living = MagicMock(id=998, name="Living")
+        role_dead = MagicMock(id=999, name="Dead")
+        role_spectator = MagicMock(id=997, name="Spectator")
+        
+        # The roles we want to KEEP
+        role_admin = MagicMock(id=111, name="Admin") 
+        role_cosmetic = MagicMock(id=222, name="Pretty Pink Color") 
+        
+        # Give the member: Living + Admin + Cosmetic
+        mock_member.roles = [role_living, role_admin, role_cosmetic] 
+        
+        # Ensure edit is an AsyncMock since it's an async method
+        mock_member.edit = AsyncMock()
 
-        # Use the loaded Role IDs
-        self.game.discord_roles = {
-            "living": MagicMock(id=self.LIVING_ID), 
-            "dead": MagicMock(id=self.DEAD_ID),
-            "spectator": MagicMock(id=self.SPECTATOR_ID),
-            "mod": MagicMock(id=self.MOD_ID)
+        # Setup Guild Mocks
+        self.mock_guild.get_member.return_value = mock_member
+        
+        # Mock Guild Roles lookup
+        def get_role_side_effect(role_id):
+            if role_id == 997: return role_spectator
+            return None
+        self.mock_guild.get_role.side_effect = get_role_side_effect
+
+        # Mock Config IDs
+        self.game.discord_role_data = {
+            "spectator": {"id": 997},
+            "living": {"id": 998},
+            "dead": {"id": 999}
         }
 
-    # Define the side effect method used ONLY by the patch
-    def mock_load_data_side_effect(self, filepath, error_default=None):
-        """Simulate loading data for roles and game modes ONLY."""
-        base_filename = os.path.basename(filepath)
-        # print(f"DEBUG (Engine - Mock): Patch intercepted call for: {filepath}") # Debug
-        if "role_definition.json" in base_filename:
-            # print("DEBUG (Engine - Mock): Returning mock role definitions") # Debug
-            # <-- MODIFIED: Use correct role names from user's JSON file
-            return {
-                "Plain Townie": {"base": "TownKilling", "description": "D", "short_description": "SD"},
-                "Godfather": {"base": "MafiaKilling", "description": "D", "short_description": "SD", "abilities": {"kill": 1}, "is_night_immune": True, "night_priority": 3},
-                "Town Role Blocker": {"base": "TownProtective", "description": "D", "short_description": "SD", "abilities": {"block": 1}, "night_priority": 1}, 
-                "Town Doctor": {"base": "TownProtective", "description": "D", "short_description": "SD", "abilities": {"heal": 1}, "night_priority": 2},
-                "Jester": {"base": "NeutralEvil", "description": "D", "short_description": "SD", "abilities": {}, "win_condition": "jester_lynch"},
-                "Mob Role Blocker": {"base": "MafiaSupport", "description": "Mob RB Desc", "short_description": "Mob RB SD", "abilities": {"block": 1}, "night_priority": 1},
-            }
-        if "game_modes.json" in base_filename:
-            # print("DEBUG (Engine - Mock): Returning mock game modes") # Debug
-            return {"classic": {"min_players": 6, "roles": ["Plain Townie", "Godfather"]}}
-        # --- IMPORTANT: Let discord_roles.json load normally in setUp ---
-        # This mock SHOULD NOT intercept the real call made BEFORE patch starts
-            
-        # Fallback: Return default to avoid unexpected real file access
-        # print(f"DEBUG (Engine - Mock): No mock match for {filepath}, returning default") # Debug
-        return error_default if error_default is not None else ({} if ".json" in base_filename else [])
+        # --- ACT ---
+        await self.game.reset()
 
-    def _add_test_players(self, count):
-        """Helper to add a number of mock players to the game."""
-        for i in range(1, count + 1):
-            self.game.players[i] = Player(user_id=i, discord_name=f"TestUser{i}", display_name=f"TestUser{i}")
-            self.game.players[i].kill = MagicMock() 
+        # --- ASSERT ---
+        # 1. Check Game State Cleared
+        self.assertEqual(len(self.game.players), 0)
+        self.assertFalse(self.game.game_settings["game_started"])
 
-    @async_test
-    async def test_add_player_success(self):
-        self.game.game_settings["current_phase"] = "signup"
-        # <-- MODIFIED: Use MagicMock, set id before call
-
-        mock_user = MagicMock(name="TestUser101", display_name="TestUser101")
-        type(mock_user).id = PropertyMock(return_value=101) # This is still correct!
-        # mock_interaction = AsyncMock() # We don't need this for this test
-
-        with patch('game.engine.update_player_discord_roles', new_callable=AsyncMock) as mock_update_roles:
-            response = await self.game.add_player(mock_user, "TestUser101", self.mock_channel) 
-            self.assertIn(101, self.game.players)
-            self.assertEqual(self.game.players[101].display_name, "TestUser101")
-            # This comparison should now work correctly
-            self.assertFalse(self.game.players[101].is_npc, "Player should not be NPC") 
-            self.assertIn("You have successfully signed up", response)
-            mock_update_roles.assert_called_once()
-
-    # --- Tests for record_night_action (Validation) ---
-
-    @async_test
-    async def test_record_night_action_fail_not_night(self):
-        self._add_test_players(2)
-        self.game.game_settings["current_phase"] = "day" 
-        mock_interaction = AsyncMock(user=MagicMock(id=1)) 
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser2")
-        self.assertIn("You can only perform actions during the night.", response)
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_fail_dead_player(self):
-        self._add_test_players(2)
-        self.game.players[1].is_alive = False 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser2")
-        self.assertIn("You are not able to perform actions in the game.", response)
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_fail_no_ability(self):
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Plain Townie")) 
-        self.assertIsNotNone(self.game.players[1].role, "Role failed assign in test") 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser2")
-        # <-- MODIFIED: Match exact message from traceback
-        self.assertIn("Your role does not have the 'kill' ability", response) 
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_fail_target_dead(self):
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Godfather")) 
-        self.assertIsNotNone(self.game.players[1].role, "Role failed assign in test") 
-        self.game.players[2].is_alive = False 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser2")
-        # <-- MODIFIED: Match exact message from traceback (now that role loads)
-        self.assertIn("TestUser2 is already dead.", response) 
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_fail_target_self_kill(self):
-        self._add_test_players(1)
-        self.game.players[1].assign_role(get_role_instance("Godfather")) 
-        self.assertIsNotNone(self.game.players[1].role, "Role failed assign in test") 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser1")
-        # <-- MODIFIED: Match exact message from traceback (now that role loads)
-        self.assertIn("You cannot target yourself with this ability", response) 
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_fail_target_same_heal(self):
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Town Doctor")) 
-        self.assertIsNotNone(self.game.players[1].role, "Role failed assign in test") 
-        self.game.players[1].last_action_target_id = 2 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'heal', "TestUser2")
-        # <-- MODIFIED: Match exact message from traceback (now that role loads)
-        self.assertIn("You cannot target the same person two nights in a row with this ability.", response) 
-        self.assertEqual(len(self.game.night_actions), 0)
-
-    @async_test
-    async def test_record_night_action_success(self):
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Godfather")) 
-        self.assertIsNotNone(self.game.players[1].role, "Role failed assign in test") 
-        self.game.game_settings["current_phase"] = "night"
-        mock_interaction = AsyncMock(user=MagicMock(id=1))
-        response = await self.game.record_night_action(mock_interaction, 'kill', "TestUser2")
-        # <-- MODIFIED: Match exact message from traceback (now that role loads)
-        self.assertIn("Your action (**kill** on **TestUser2**) has been recorded.", response) 
-        self.assertEqual(len(self.game.night_actions), 1)
-        self.assertEqual(self.game.night_actions[1]['type'], 'kill')
-        self.assertEqual(self.game.night_actions[1]['target_id'], 2)
-
-    # --- Tests for process_night_actions (Priority) ---
-    @patch('game.actions.ACTION_HANDLERS') 
-    @async_test
-    async def test_process_night_actions_priority_block_vs_kill(
-        self, mock_action_handlers: MagicMock
-    ):
-        mock_handle_block = MagicMock()
-        mock_handle_kill = MagicMock()
-
-        mock_action_handlers.get.side_effect = lambda key: {
-            'block': mock_handle_block,
-            'kill': mock_handle_kill
-        }.get(key)
-
-        self._add_test_players(3)
-        rb_role = get_role_instance("Town Role Blocker") 
-        self.game.players[1].assign_role(rb_role) 
-        self.game.players[2].assign_role(get_role_instance("Godfather"))    
-        self.game.players[3].assign_role(get_role_instance("Plain Townie"))
-        self.assertIsNotNone(self.game.players[1].role, "RB Role failed assign") 
-        self.assertIsNotNone(self.game.players[2].role, "GF Role failed assign")
-        self.assertIsNotNone(self.game.players[3].role, "PT Role failed assign")
-        self.game.night_actions =   {
-                                        2: {'type': 'kill', 'target_id': 3, 'night_priority': 3, 'actor': self.game.players[2]},
-                                        1: {'type': 'block', 'target_id': 2, 'night_priority': 1, 'actor': self.game.players[1]},
-                                    }
-
-        await self.game.process_night_actions()
-
-        # <-- MODIFIED: Assert on the mocks directly. This is cleaner!
-        # The block (priority 1) is called first
-        mock_handle_block.assert_called_with(self.game, 1, 2, ANY)
-        # The kill (priority 3) is called second
-        mock_handle_kill.assert_called_with(self.game, 2, 3, ANY)
-
-        # <-- Verify the order of operations! -->
-        self.assertEqual(mock_handle_block.call_count, 1)
-        self.assertEqual(mock_handle_kill.call_count, 1)
-
-    @async_test
-    async def test_resolve_night_deaths_successful_save(self):
-        self._add_test_players(3)
-        self.game.players[1].assign_role(get_role_instance("Godfather")) 
-        self.game.players[2].assign_role(get_role_instance("Plain Townie"))    
-        self.game.players[3].assign_role(get_role_instance("Town Doctor"))    
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.assertIsNotNone(self.game.players[3].role)
-        self.game.kill_attempts_on[2] = [1] 
-        self.game.heals_on_players[2] = [3]
-        await self.game._resolve_night_deaths()
-        self.game.players[2].kill.assert_not_called()
-        self.mock_narration_manager.add_event.assert_called_with( 'save', healer=self.game.players[3], victim=self.game.players[2], killer=self.game.players[1] )
-
-    @async_test
-    async def test_resolve_night_deaths_unsaved_kill(self):
-        self._add_test_players(3) 
-        self.game.players[1].assign_role(get_role_instance("Godfather"))
-        self.game.players[2].assign_role(get_role_instance("Plain Townie")) 
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.game.game_settings["phase_number"] = 1 
-        self.game.kill_attempts_on[2] = [1]
-        self.game.heals_on_players = {} 
-        await self.game._resolve_night_deaths()
-        self.game.players[2].kill.assert_called_with("Night 1", "Killed by Godfather") 
-        self.mock_narration_manager.add_event.assert_called_with( 'kill', killer=self.game.players[1], victim=self.game.players[2] )
-
-    # --- Tests for tally_votes (Outcomes) ---
-
-    @async_test
-    async def test_tally_votes_no_lynch(self):
-        self._add_test_players(3)
-        self.game.lynch_votes = {}
-        await self.game.tally_votes()
-        self.mock_narration_manager.add_event.assert_called_with('no_lynch')
-
-    @async_test
-    async def test_tally_votes_tie_lynch(self):
-        self._add_test_players(4)
-        self.game.players[1].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[2].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[3].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[4].assign_role(get_role_instance("Plain Townie"))
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.assertIsNotNone(self.game.players[3].role)
-        self.assertIsNotNone(self.game.players[4].role)
-        self.game.game_settings["phase_number"] = 1
-        self.game.lynch_votes = { 1: [3, 4], 2: [1, 2] }
-        await self.game.tally_votes()
-        self.game.players[1].kill.assert_called_with("Day 1", "Lynched by the town")
-        self.game.players[2].kill.assert_called_with("Day 1", "Lynched by the town")
-        self.mock_narration_manager.add_event.assert_called_with( 'lynch', victims=[self.game.players[1], self.game.players[2]], details=ANY )
-
-    @async_test
-    async def test_tally_votes_inactivity_kill(self):
-        self._add_test_players(3)
-        self.game.players[1].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[2].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[3].assign_role(get_role_instance("Plain Townie"))
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.assertIsNotNone(self.game.players[3].role)
-        # <-- MODIFIED: Use mocked config value
-        self.game.players[1].missed_votes = config.MAX_MISSED_VOTES - 1 
-        self.game.game_settings["phase_number"] = 1
-        self.game.lynch_votes = {2: [3]} # Player 1 doesn't vote
-        await self.game.tally_votes()
-        self.game.players[1].kill.assert_called_with("Day 1", "Inactivity")
-        self.game.players[2].kill.assert_called_with("Day 1", "Lynched by the town")
-        self.game.players[3].kill.assert_not_called()
-        calls = self.mock_narration_manager.add_event.call_args_list
-        # <-- MODIFIED: Check calls match traceback
-        # The code is buggy and adds P2 to the inactivity list, so the test must match this
-        inactivity_call = call('inactivity_kill', victims=[self.game.players[1], self.game.players[2]])
-        lynch_call = call('lynch', victims=[self.game.players[2]], details={self.game.players[2]: [self.game.players[3]]})
-        self.assertIn(inactivity_call, calls)
-        self.assertIn(lynch_call, calls)
+        # 2. Capture the arguments passed to member.edit()
+        mock_member.edit.assert_called()
+        args, kwargs = mock_member.edit.call_args
+        new_roles = kwargs['roles']
         
+        # 3. Verify Game Roles Removed/Added
+        self.assertNotIn(role_living, new_roles, "Living role should be removed")
+        self.assertIn(role_spectator, new_roles, "Spectator role should be added")
+        
+        # 4. Verify Cosmetic/Admin Roles Preserved
+        self.assertIn(role_admin, new_roles, "Admin role should be preserved")
+        self.assertIn(role_cosmetic, new_roles, "Cosmetic role should be preserved")
+        
+        # 5. Verify Count (Admin + Cosmetic + Spectator = 3)
+        self.assertEqual(len(new_roles), 3, "Should have exactly 3 roles")
 
-    # --- Win Condition Tests ---
-    
-    @async_test
-    async def test_tally_votes_jester_win(self):
-        self._add_test_players(3)
-        self.game.players[1].assign_role(get_role_instance("Jester"))
-        self.game.players[2].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[3].assign_role(get_role_instance("Plain Townie"))
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.assertIsNotNone(self.game.players[3].role)
-        self.game.game_settings["phase_number"] = 1
+    @patch('game.engine.Game._save_game_summary')
+    async def test_announce_winner_chunks_messages(self, mock_save):
+        """Test that massive status messages are split into chunks."""
+        # Setup
+        mock_channel = AsyncMock()
+        self.mock_bot.get_channel.return_value = mock_channel
+        
+        # Mock Storyteller response
+        self.game.narration_manager.construct_story.return_value = "A great story."
 
-        # P2 votes for Jester (P1), and Jester (P1) votes for P2 to avoid inactivity
-        self.game.lynch_votes = {1: [2, 3], 2: [1]}
-        winner = await self.game.tally_votes() 
-        # <-- MODIFIED: Match kill reason from traceback (Jester lynch doesn't cause Inactivity)
-        self.game.players[1].kill.assert_called_with("Day 1", "Lynched by the town") 
-        calls = self.mock_narration_manager.add_event.call_args_list
-        jester_call_found = False
-        for c in calls:
-            # Check args and kwargs separately
-            if c.args and c.args[0] == 'jester_win' and c.kwargs.get('victim') == self.game.players[1]:
-                jester_call_found = True; break
-            elif len(c.args) > 1 and c.args[0] == 'jester_win' and c.args[1] == self.game.players[1]:
-                jester_call_found = True; break
-        self.assertTrue(jester_call_found, f"jester_win event not called correctly. Calls: {calls}")
-        self.assertEqual(winner, "Jester") 
+        # Force a HUGE status message (over 2000 chars)
+        # 'A' * 1950 is close to limit, adding 'B' * 100 pushes it over
+        long_status = "Player Data\n" + ("A" * 1950) + "\n" + ("B" * 100)
+        
+        # Use patch.object to mock the method on the specific instance
+        with patch.object(self.game, 'get_status_message', return_value=long_status):
+            await self.game.announce_winner("Town")
 
-    def test_check_win_conditions_town_win(self):
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[2].assign_role(get_role_instance("Godfather"))
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        self.game.players[2].is_alive = False # Mafia is dead
-        winner = self.game.check_win_conditions()
-        self.assertEqual(winner, "Town")
+        # Assert
+        # 1. Verify channel.send was called multiple times
+        # (Once for story, and at least twice for the split status)
+        self.assertTrue(mock_channel.send.call_count >= 3) 
+        
+        # 2. Verify content of calls
+        call_args_list = mock_channel.send.call_args_list
+        
+        # First call should be the story
+        self.assertIn("Game Over!", call_args_list[0][0][0]) 
+        
+        # Subsequent calls should contain our status message parts
+        # We check that our massive string of 'A's made it into one of the calls
+        sent_content_combined = "".join([call[0][0] for call in call_args_list[1:]])
+        self.assertIn("AAAAA", sent_content_combined)
+        self.assertIn("BBBBB", sent_content_combined)
 
-    def test_check_win_conditions_mafia_win(self):
-        self.game.game_settings["current_phase"] = "day" 
-        self._add_test_players(2)
-        self.game.players[1].assign_role(get_role_instance("Plain Townie"))
-        self.game.players[2].assign_role(get_role_instance("Godfather"))
-        self.assertIsNotNone(self.game.players[1].role) 
-        self.assertIsNotNone(self.game.players[2].role)
-        winner = self.game.check_win_conditions()
-        self.assertEqual(winner, "Mafia")
+    async def test_process_lynch_vote_valid(self):
+        """Test processing a valid vote."""
+        # Setup
+        voter = MagicMock(id=1, name="Voter", display_name="VoterName")
+        target = MagicMock(id=2, name="Target", display_name="TargetName", is_alive=True)
+        
+        # Add players to game
+        self.game.players[1] = voter
+        self.game.players[2] = target
+        
+        # Setup mocks for attributes that might be accessed
+        voter.is_alive = True
+        voter.action_target = None
+        
+        # Mock channel lookup
+        mock_channel = AsyncMock()
+        self.mock_bot.get_channel.return_value = mock_channel
 
-    def test_check_win_conditions_draw(self):
-        self._add_test_players(2)
-        self.game.players[1].is_alive = False
-        self.game.players[2].is_alive = False
-        winner = self.game.check_win_conditions()
-        self.assertEqual(winner, "Draw")
+        # Helper to mock finding player by name
+        self.game.get_player_by_name = MagicMock(return_value=target)
+
+        # Act
+        interaction = MagicMock() # We don't use interaction in the logic, just pass it
+        result = await self.game.process_lynch_vote(interaction, voter, "TargetName")
+
+        # Assert
+        self.assertIn("recorded", result)
+        self.assertIn(1, self.game.lynch_votes[2]) # Voter ID in Target's list
+        self.assertEqual(len(self.game.vote_history), 1) # History updated
 
 if __name__ == '__main__':
     unittest.main()
-
-

@@ -31,6 +31,8 @@ from game.narration import NarrationManager # Import the NarrationManager
 from utils.randomness_tester import test_role_distribution # Import the test function
 from game.roles import GameRole, get_role_instance
 from game.player import Player # Import the Player class
+from game import setup_generator # Import the setup_generator function
+
 
 # Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')
@@ -57,6 +59,8 @@ class Game:
             "phase_end_time": None,
             "phase_hours": 12, # Default
         }
+        self.chat_log = [] # To store chat messages during the game FR-5.4: Advanced Data Logging
+        self.game_event_log = [] # To store game events during the game FR-5.4: Advanced Data Logging
         self.players = {} # This will now store Player objects: {player_id: Player_Object}
         self.lynch_votes = {} # This will store votes for lynching: {player_id: target_id}
         self.game_roles = [] # This will store GameRole objects assigned to players
@@ -218,7 +222,7 @@ class Game:
                 return
             # Create a Player object
             self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
-            await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
+            # send a confirmation message
             await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
             logger.info(f"{user.name} ({player_name}) has joined the game.")
             await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
@@ -273,6 +277,15 @@ class Game:
                 logger.error("No roles generated for the current player count. Aborting game preparation.") 
             await self.reset()
             return  
+        logger.critical(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
+        # --- SAFETY CHECK: Ensure no roles failed to load ---
+        if any(role is None for role in self.game_roles):
+            error_msg = "CRITICAL ERROR: One or more roles failed to generate. Check setup_generator.py names against role_definition.json."
+            logger.critical(error_msg)
+            await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"⚠️ **Game Error:** {error_msg}")
+            await self.reset()
+            return
+        # ---------------------------------------------------
         # --- Run Randomness Test and Post Results ---
         logger.info("Running role assignment randomness test...")
         player_names = [p.display_name for p in self.players.values()]
@@ -330,37 +343,31 @@ class Game:
 
     def generate_game_roles(self):
         """Generates a list of GameRole objects based on player count."""
-        if self.game_settings['game_type'] == "battle_royale":
-            logger.info("Generating roles for Battle Royale mode.")
-            self.game_roles = []
-            logger.critical(f"Generating {len(self.players)} Vigilante roles for Battle Royale mode.\n Current game roles list = {self.game_roles}")
-            for _ in range(len(self.players)):
-                # Create a Vigilante role instance
-                role_instance = get_role_instance("Vigilante")
-                logger.critical(f"Creating Vigilante role for players. {role_instance}")
-                if role_instance:
-                    self.game_roles.append(role_instance)
-                    logger.critical(f"Vigilante role created successfully: {self.game_roles}")
-        else:
-            num_players = len(self.players)
-            setup_key = str(num_players)
-            # Check if we have a setup for this number of players
-            if setup_key not in self.mafia_setups:
-                logger.error(f"No setup found for {num_players} players in mafia_setups.json.")
-                return
-            # Randomly select a setup for this player count
-            setup = random.choice(self.mafia_setups[setup_key])
-            logger.info(f"Using setup for {num_players} players: {setup['id']}")
-            # Generate a list of roles based on the setup
-            self.game_roles = []
-            for role_data in setup["roles"]:
-                for _ in range(role_data["quantity"]):
-                    role_instance = get_role_instance(role_data["name"])
-                    if role_instance:
-                        self.game_roles.append(role_instance)
-                    else:
-                        logger.warning(f"Could not find or create an instance for role: {role_data['name']}")    
-            logger.info(f"Generated {len(self.game_roles)} roles for {num_players} players.")
+        # --- 4. Get Role List ---
+        logger.info("Generating dynamic role list...")
+        game_type = self.game_settings['game_type']
+        player_count = len(self.players)
+        if player_count < config.min_players:
+            logger.critical(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.bot.get_channel(config.TALKY_TALKY_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            self.game_settings['game_type'] = "battle_royale"
+        
+        # New smart way!
+        role_names = setup_generator.generate_roles(player_count, game_type)
+        # We MUST check for an empty list, which our generator
+        # returns if the player count is too low!
+        if not role_names:
+            self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(
+                f"Error: Could not generate a 'Classic' game for {player_count} players. "
+                f"Minimum is {config.min_players}."
+            )
+            self.reset()
+            return
+        logger.critical(f"Generated role names: {role_names}")
+        # Convert role names to GameRole objects
+        self.game_roles = []
+        self.game_roles = [get_role_instance(name) for name in role_names]
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""
@@ -492,6 +499,8 @@ class Game:
             # Transition to the new phase
             self.reminders_sent.clear() # Reset reminders for the new phase
             logger.info(f"Current phase before transition: {self.game_settings['current_phase']}, phase number: {self.game_settings['phase_number']}")
+             # Set the end time for the new phase
+            self.game_settings["phase_end_time"] = current_end_time + timedelta(hours=self.game_settings["phase_hours"])
             if self.game_settings["current_phase"].lower() == "pre-day": # If the current phase that was processed was 'night' (i.e. current phase is 'pre-day'), transition to 'day'
                 self.game_settings["current_phase"] = "day"
                 #announce the start of the new day phase
@@ -505,8 +514,7 @@ class Game:
                 self.lynch_votes = {}
                 announcement = f"## 🌙 Night {self.game_settings['phase_number']} has begun. You have {format_time_remaining(self.game_settings['phase_end_time'])} hours to use your night actions."
                 logger.info("Transitioning to night phase.")
-            # Set the end time for the new phase
-            self.game_settings["phase_end_time"] = current_end_time + timedelta(hours=self.game_settings["phase_hours"])
+           
             await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(announcement)
             return # End this loop iteration after phase transition
         
@@ -669,6 +677,9 @@ class Game:
         if inactivity_deaths:
             self.narration_manager.add_event('inactivity_kill', victims=inactivity_deaths)
             logger.info(f"Sent inactivity deaths for narration: {inactivity_deaths}")
+            # check if any deaths require a godfather promotion
+            for dead_player in inactivity_deaths:
+                self._handle_promotions(dead_player)
         # Check if there are any votes at all
         # This single check handles both "no votes" and "all votes retracted".
         if not self.lynch_votes or not any(self.lynch_votes.values()):
@@ -900,7 +911,110 @@ class Game:
                 dm_message = "The Godfather is dead! You have been promoted and now have the ability to kill."
                 self.bot.loop.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
                 logger.info(f"Promoted {mafioso_to_promote.display_name} to have kill ability.")
+
+    async def save_story_log(self, alignments, end_time):
+        """
+        Saves the full narrative history, player manifest, and chat log 
+        to a Markdown file. 
+        Compatible with both v0.5 (Static) and v0.6 (AI).
+        """
+        logger.info("Saving story log...")
+        try:
+            # 1. Get the full story string from the manager
+            full_story = self.narration_manager.get_full_story_log()
+            # 2. Define the filename (e.g., Stats/game_type/game folder/game_12345_story.md)
+            game_id = self.game_settings.get('game_id', 'unknown_game')
+            output_dir = f"Stats/{config.game_type}/{self.game_settings.get('game_type', 'classic')}/{self.game_settings.get('game_id')}" 
+            if not os.path.exists(output_dir):
+                os.makedirs(output_dir)
+                logger.info(f"Created output directory: {output_dir}")
+            else:
+                logger.info(f"Output directory already exists: {output_dir}")
+            # Set the filename
+            game_id = self.game_settings.get('game_id', 'unknown_game')
+            filename = f"{output_dir}/game_{game_id}_story.md"
+            # 3. Build the Player Manifest (Cast of Characters)
+            # This helps the AI associate names with roles and outcomes.
+            manifest_section = "## Cast of Characters\n\n| Player | Role | Status |\n| :--- | :--- | :--- |\n"
+            for player_id, player in self.players.items():
+                status = "Alive" if player.is_alive else f"Dead ({player.death_info.get('phase', 'Unknown')} - {player.death_info.get('how', 'Unknown')})"
+                role_name = player.role.name if player.role else "Unknown"
+                manifest_section += f"| **{player.display_name}** | {role_name} | {status} |\n"
+            logger.info(f"Built player manifest section for story log.{output_dir}/{filename}")
+            # 4. Build Chat Transcript (if self.chat_log exists)
+            chat_section = ""
+            logger.info("Building chat transcript section for story log.")
+            if hasattr(self, 'chat_log') and self.chat_log:
+                chat_section = "\n## Chat Transcript\n\nTimestamp| Channel | Phase | Player ID | Player Name | Message\n:--- | :--- | :--- | :--- | :---\n"
+                for entry in self.chat_log:
+                    # Assuming entry is a dict or string. Adjust based on your chat_log structure.
+                    if isinstance(entry, dict):
+                        timestamp = entry.get('timestamp_utc', '')
+                        id = entry.get('user_id', '')
+                        name = entry.get('username', 'Unknown')
+                        channel = entry.get('channel_name', 'Unknown')
+                        phase = entry.get('phase', 'N/A')
+                        phase_number = entry.get('phase_number', 0)
+                        msg = entry.get('content', '')
+                        chat_section += f"**[{timestamp}], Channel: {channel}, Phase: {phase} - {phase_number}, Player ID: {id}, {name}:** {msg}\n\n"
+                    else:
+                        chat_section += f"{str(entry)}\n\n"
+                logger.info("Chat log included in story log.")
+
+            else:
+                chat_section = "\n## Chat Transcript\n\n_No chat log available._\n"
+                logger.info("No chat log available to include in story log.")
+            # 5. Combine into the final file content
+            file_content = (
+                f"# Game Story Log\n"
+                f"**Game ID:** {game_id}\n"
+                f"**Start date (UTC):** {self.game_settings.get('start_time').isoformat() if self.game_settings.get('start_time') else 'N/A'}\n"
+                f"**End date (UTC):** {end_time.isoformat()}\n"
+                f"Game Type: {self.game_settings.get('game_type', 'classic')}\n"
+                f"Number of players: {len(self.players)}\n"
+                f"Player counts: Town={alignments.get('Town', 0)}, Mafia={alignments.get('Mafia', 0)}, Neutral={alignments.get('Neutral', 0)}\n"
+                f"Total days: {self.game_settings.get('phase_number')}\n"
+                f"Phase hours: {self.game_settings.get('phase_hours')}\n"
+                f"**Winning Team:** {self.game_settings.get('winning_team', 'Unknown')}\n\n"
+                f"**Winning Players:** {sorted([p.display_name for p in self.players.values() if p.is_winner])}\n\n"
+                f"{manifest_section}\n"
+                f"{full_story}"
+                f"{chat_section}"
+            )
+            logger.info(f"Final file content for story log prepared. Saving to {filename}")
+            # 6. Save the file
+            with open(filename, 'w', encoding='utf-8') as f:
+                f.write(file_content)
+            logger.info(f"Story log successfully saved to {filename}")
+            return filename
+        except Exception as e:
+            logger.error(f"Failed to save story log: {e}")
+            return None
     
+    async def save_data_summary(self, game_data, final_summary):
+        """Saves the game summary data to a JSON file in the appropriate stats directory."""
+        logger.info("Saving game data summary...")
+        # --- Save to File ---
+        try:
+            game_id = game_data.get('game_id')
+            if not game_id:
+                logger.error("Cannot save summary, game_id is missing.")
+                return
+            # Construct the new directory path: stats/<game_id>
+            # Dynamically build the path based on the game type
+            game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title()
+            base_dir = os.path.join(config.data_save_path, game_type_dir)
+            game_log_dir = os.path.join(base_dir, game_id)
+            # Create the directories
+            os.makedirs(game_log_dir, exist_ok=True)
+            file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(final_summary, f, ensure_ascii=False, indent=4)
+            logger.info(f"Game summary saved successfully to {file_path}")
+        except Exception as e:
+            logger.error(f"Failed to save game summary: {e}")
+
+
     # Add this new method to the Game class, for example, before check_win_conditions
     async def _save_game_summary(self, winner):
         """Gathers all game data and saves it to a JSON file in the 'logs' directory."""
@@ -941,32 +1055,18 @@ class Game:
         # 3. --- Lynch Data ---
         # This comes from the vote_history we captured in step 3
         lynch_data = self.vote_history
+        chat_activity_logs =  self.chat_log
         # --- Final Compilation ---
         final_summary = {
             "game_summary": game_data,
             "player_data": player_data,
-            "lynch_vote_history": lynch_data
+            "lynch_vote_history": lynch_data,
+            "chat_activity_logs": chat_activity_logs
         }
-        # --- Save to File ---
-        try:
-            game_id = game_data.get('game_id')
-            if not game_id:
-                logger.error("Cannot save summary, game_id is missing.")
-                return
-            # Construct the new directory path: Stats/<game_id>
-            # Dynamically build the path based on the game type
-            game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title()
-            base_dir = os.path.join("Stats", game_type_dir)
-            game_log_dir = os.path.join(base_dir, game_id)
-            # Create the directories
-            os.makedirs(game_log_dir, exist_ok=True)
-            file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
-            with open(file_path, 'w', encoding='utf-8') as f:
-                json.dump(final_summary, f, ensure_ascii=False, indent=4)
-            logger.info(f"Game summary saved successfully to {file_path}")
-        except Exception as e:
-            logger.error(f"Failed to save game summary: {e}")
-
+        # 4. --- Save to File ---
+        await self.save_data_summary(game_data, final_summary)
+        await self.save_story_log(alignments, end_time)
+        
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""
         living_players = [p for p in self.players.values() if p.is_alive]
@@ -1047,7 +1147,7 @@ class Game:
     async def announce_winner(self, winner):
         """Announces the winner and cleans up the game."""
         logger.info(f"Announcing winner: {winner}")
-        # --- Step 1: Determine Winners (this part is the same) ---
+        # --- Step 1: Determine Winners ---
         winning_players = []
         for player_obj in self.players.values():
             player_obj.is_winner = False
@@ -1057,7 +1157,7 @@ class Game:
                 elif player_obj.role.name == winner:
                     player_obj.is_winner = True
                 elif player_obj.display_name == winner:
-                    player_obj.is_winner = True
+                    player_obj.is_winner = True     
             if player_obj.is_winner:
                 winning_players.append(player_obj)
                 logger.info(f"Marked {player_obj.display_name} as a winner.")
@@ -1071,87 +1171,133 @@ class Game:
                     current_phase = f"{self.game_settings['current_phase'].capitalize()} {self.game_settings['phase_number']}"
                 player_obj.kill(current_phase, "Game Over - Losing Player")
                 logger.info(f"Marked losing player {player_obj.display_name} as dead.")
-        # --- Step 2: Save the summary with the CLEAN data for stats ---
+        # --- Step 2: Save the summary ---
         await self._save_game_summary(winner)
-        # --- Step 3: Create a BEAUTIFUL display name for the story ---
+        # --- Step 3: Create display name ---
         winner_display_name = ""
         if winner in ["Town", "Mafia"]:
             winner_display_name = f"The {winner}"
         elif winner == "Draw":
             winner_display_name = "game has ended in a draw! No one"
-        elif winning_players: # This will catch our Vigilante, SK, etc.
+        elif winning_players:
             winner_display_name = f"**{winning_players[0].display_name}**"
         else:
-            winner_display_name = winner # Fallback
-        # --- Step 4: Announce the results using the new display name ---
-        self.narration_manager.add_event('game_end', winner=winner, winning_players=winning_players)
-       # Step 1: Create the context dictionary for the storyteller.
-        logger.info("Creating storyteller context.")
-        logger.info(f"Game Phase: {self.game_settings['current_phase']}, Phase Number: {self.game_settings['phase_number']}")
-        logger.info(f"Living Players: {[p.display_name for p in self.players.values() if p.is_alive]}")
-        logger.info("Calling NarrationManager to construct the story...")
-        game_state_context = {
-            "phase": self.game_settings['current_phase'],
-            "number": self.game_settings['phase_number'],
-            "living_players": [p for p in self.players.values() if p.is_alive],
-            "theme": "1940s detective noir" # We can make this dynamic later!
-        }
-        # Step 2: Call the NarrationManager with the new context.
-        logger.info(f"Game state context for narration: {game_state_context}")
-        logger.info("Generating final story from NarrationManager...")
-        story = await self.narration_manager.construct_story(game_state_context)
-        final_message = f"**Game Over!**\n{story}"
-        status_message = self.get_status_message()
-        if status_message:
-            final_message += f"\n\n{status_message}"
-        # Send the final message to the stories channel 
+            winner_display_name = winner
+        # --- Step 4: Announce the results ---
+        self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
+        story = self.narration_manager.construct_story(
+            self.game_settings['current_phase'],
+            self.game_settings['phase_number']
+        )
+        # --- THE FIX: Send Messages Separately and Chunked ---
         try:
-            await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(final_message)
+            channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
+            if not channel:
+                logger.error(f"Could not find stories channel {config.STORIES_CHANNEL_ID}")
+                return
+            # 1. Send the Story First
+            await channel.send(f"**Game Over!**\n{story}")
+            # 2. Generate the Status Message
+            status_message = self.get_status_message()
+            if status_message:
+                # 3. Check length. If > 1900 chars, chunk it!
+                if len(status_message) > 1900:
+                    logger.info("Status message is too long, splitting into chunks.")
+                    chunks = []
+                    current_chunk = ""
+                    for line in status_message.split('\n'):
+                        # Check if adding this line would exceed the limit
+                        if len(current_chunk) + len(line) + 1 > 1900:
+                            chunks.append(current_chunk)
+                            current_chunk = line + "\n"
+                        else:
+                            current_chunk += line + "\n"
+                    if current_chunk:
+                        chunks.append(current_chunk)
+                    # Send each chunk as a separate message
+                    for chunk in chunks:
+                        await channel.send(chunk)
+                else:
+                    # It fits! Send it normally.
+                    await channel.send(status_message)
             logger.info(f"Announced winner: {winner_display_name}.")
+
         except Exception as e:
-            logger.error(f"Error announcing winner: {e}")
+            logger.error(f"Error announcing winner: {e}", exc_info=True)
 
     async def reset(self):
-        """Resets the game state and cancels any running tasks."""
+        """
+        Resets the game state to prepare for a new game.
+        Removes 'Living'/'Dead' roles from all players and assigns 'Spectator'.
+        """
         logger.info("Resetting the game state.")
-        # Cancel any running loops
-        if self.signup_loop.is_running():
-            self.signup_loop.cancel()
-        if self.game_loop.is_running():
-            self.game_loop.cancel()
-        # set all players to spectators
-        # Get discord roles
+        
+        # 1. Update Discord Roles for ALL players
+        logger.info("getting relevant discord roles.")
         spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
         living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0))
         dead_role = self.guild.get_role(self.discord_role_data.get("dead", {}).get("id", 0))
-        # Cycle through each player and change discord role to spectator
-        # Update roles for players in the game
-        logger.info("Updating Discord roles for all players to spectator.")
-        logger.info(f"Spectator Role: {spectator_role}, Living Role: {living_role}, Dead Role: {dead_role}")
-        logger.info(f"Total players to update: {len(self.players)}")
-        for player_id, player_obj in self.players.items():
-            # Update Discord role
-            logger.info(f"Updating roles for player ID: {player_id} ({player_obj.display_name})")
-            if player_obj.is_npc: continue # Skip NPCs
-           # This check prevents a crash if the player has left the server
-            member = self.guild.get_member(player_id)
-            if member:
+        # Proceed only if all roles are found
+        if spectator_role and living_role and dead_role:
+            logger.info(f"Updating Discord roles for all {len(self.players)} players to spectator.")
+            # Iterate through all players to update roles
+            for player_id, player in self.players.items():
+                if player_id <=0:
+                    continue  # Skip invalid player IDs
                 try:
-                    # Check roles exist before using them to be extra safe
-                    if spectator_role: await member.add_roles(spectator_role)
-                    await member.remove_roles(living_role, dead_role)
-                    logger.info(f"Updated roles for player {player_obj.display_name} to spectator.")
-                except discord.HTTPException as e:
-                    logger.error(f"Failed to update roles for {member.display_name}: {e}")
-            else:
-                logger.warning(f"Player '{player_obj.display_name}' (ID: {player_id}) not found in server, skipping role update.")
-        # Reset game settings      
-        # Clear game state
-        logger.info("Clearing game state variables.")
+                    member = self.guild.get_member(player_id)
+                    if not member:
+                        # Fallback: try fetching if not in cache
+                        logger.warning(f"Member {player_id} not found in cache, fetching from guild.")
+                        try:
+                            member = await self.guild.fetch_member(player_id)
+                        except discord.NotFound:
+                            logger.warning(f"Could not find member {player_id} to reset roles.")
+                            continue
+                    logger.info(f"Updating roles for player {player.display_name} (ID: {player_id})")
+                    # Remove game roles
+                    roles_to_remove = [r for r in member.roles if r.id in [living_role.id, dead_role.id]]
+                    if roles_to_remove:
+                        await member.remove_roles(*roles_to_remove)
+                        logger.info(f"Removed roles {', '.join([r.name for r in roles_to_remove])} from {player.display_name}.")
+                    # Add spectator role
+                    if spectator_role not in member.roles:
+                        await member.add_roles(spectator_role)
+                        logger.info(f"Added role {spectator_role.name} to {player.display_name}.")
+                except discord.Forbidden:
+                    logger.error(f"Permission denied when resetting roles for user {player_id}.")
+                except Exception as e:
+                    logger.error(f"Error resetting roles for user {player_id}: {e}", exc_info=True)
+        # 2. Clear Game State
+        logger.info("Clearing game state.")
         self.players.clear()
+        self.lynch_votes.clear()
+        self.game_roles.clear()
+        self.night_actions.clear()
+        self.vote_history.clear()
+        self.heals_on_players.clear()
+        self.kill_attempts_on.clear()
+        self.night_outcomes.clear()
+        self.heals_on_players.clear()
+        self.kill_attempts_on.clear()
+        self.blocked_players_this_night.clear()
+        self.chat_log.clear()
+        self.game_settings["start_time"] = None
         self.game_settings["game_started"] = False
-        self.game_settings["current_phase"] = "finished"
-        logger.info(f"Game {self.game_settings['game_id']} has been reset.")
+        self.game_settings["current_phase"] = "setup"
+        self.game_settings["phase_number"] = 0
+        self.game_settings["game_id"] = None
+        self.force_start_flag = False
+        self.reminders_sent.clear()
+        self.narration_manager.clear()
+        
+        # 3. Stop Loops
+        if self.game_loop.is_running():
+            self.game_loop.cancel()
+        if self.signup_loop.is_running():
+            self.signup_loop.stop()
+            
+        logger.info("Game state reset complete.")
 
     def get_status_message(self):
         """Generates a formatted status message with the current game state."""
