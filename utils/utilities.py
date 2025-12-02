@@ -191,4 +191,36 @@ def format_time_remaining(end_time):
 
 # --- Game Functions ---
 
-
+# --- Discord Message Functions ---
+async def send_chunked_message(self, channel, message):
+        """
+        Splits a long message into chunks of < 2000 characters and sends them sequentially.
+        Attempts to split cleanly on newlines.
+        """
+        if not message: return
+        
+        if len(message) <= 2000:
+            await channel.send(message)
+            return
+        
+        logger.info(f"Message length {len(message)} exceeds 2000 chars. Chunking...")
+        chunks = []
+        current_chunk = ""
+        
+        # Split by lines to preserve formatting
+        lines = message.split('\n')
+        
+        for line in lines:
+            # Check if adding this line would exceed the limit (plus a newline char)
+            if len(current_chunk) + len(line) + 1 > 1900: # 1900 safety buffer
+                chunks.append(current_chunk)
+                current_chunk = line + "\n"
+            else:
+                current_chunk += line + "\n"
+        
+        if current_chunk:
+            chunks.append(current_chunk)
+            
+        for i, chunk in enumerate(chunks):
+            await channel.send(chunk)
+            logger.info(f"Sent chunk {i+1}/{len(chunks)}")

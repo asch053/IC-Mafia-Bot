@@ -24,6 +24,7 @@ from utils.utilities import (
     format_time_remaining,
     send_role_dm,
     send_mafia_info_dm,
+    send_chunked_message
     
 )
 
@@ -51,6 +52,7 @@ class Game:
         self.game_settings = {
             "game_id": None, #date-time string of time signups ended
             "game_type": game_type,
+            "story_type": None,
             "game_started": False,
             "start_time": None,
             "end_time": None,
@@ -102,7 +104,7 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19):
+    async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19, story_type="Classic Mafia"):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
         logger.debug("Setting up game settings.")
@@ -113,6 +115,7 @@ class Game:
         self.game_settings["current_phase"] = "signup" #set current phase to signup
         self.game_settings["phase_end_time"] = start_datetime_obj #set when the phase ends
         self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
+        self.game_settings["story_type"] = story_type #set story type as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         # Set all players to spectators
         #logger.info("Setting all players to spectators.")
@@ -132,6 +135,7 @@ class Game:
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
         announcement = (
             f"**A new game of {self.game_settings['game_type']} Mafia has been scheduled!**\n\n"
+            f"Theme will be **{self.game_settings['story_type']}**.\n"
             f"Sign-ups are now open for **{time_left_str}**! {spectator_role.mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
             f"The game will officially begin at: **{start_time_str}** (or when {self.max_players} players join)."
         )
@@ -468,18 +472,22 @@ class Game:
             game_state = {
                 "phase": phase_just_ended,
                 "number": self.game_settings['phase_number'],
-                "living_players": [p for p in self.players.values() if p.is_alive]
+                "living_players": [p for p in self.players.values() if p.is_alive],
+                "game_type": self.game_settings.get("game_type", "classic"),
+                "story_type": self.game_settings.get("story_type", "Classic Mafia") # NEW: Pass the theme
             }
             logger.info(f"Preparing to construct story for phase: {phase_just_ended}, number: {self.game_settings['phase_number']} with {len(game_state['living_players'])} living players.\n{game_state}")
             # Construct the story
-            story = await self.narration_manager.construct_story(
-                game_state=game_state
-            )
+            story = await self.narration_manager.construct_story(game_state=game_state)
             if story:
                 #send story to the stories channel
                 logger.info("Story constructed from narration manager events.")
                 logger.info(f"Story for phase {self.game_settings['current_phase']} {self.game_settings['phase_number']}:\n{story}")
-                await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(story)
+                story_channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
+                # Send the story in chunks if it's too long
+                if story_channel:
+                    await send_chunked_message(self, story_channel, story)
+                    logger.info("Story sent to stories channel.")
             logger.info(f"Phase {self.game_settings['current_phase']} {self.game_settings['phase_number']} ended. Story constructed.")
             # Clear the narration manager for the next phase
             self.narration_manager.clear()
@@ -1184,12 +1192,20 @@ class Game:
         else:
             winner_display_name = winner
         # --- Step 4: Announce the results ---
-        self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
-        story = self.narration_manager.construct_story(
-            self.game_settings['current_phase'],
-            self.game_settings['phase_number']
-        )
-        # --- THE FIX: Send Messages Separately and Chunked ---
+        self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")      
+        # FIX: Create the game_state dictionary expected by the new v0.6 NarrationManager
+        game_state = {
+            "phase": self.game_settings['current_phase'],
+            "number": self.game_settings['phase_number'],
+            "living_players": [p for p in self.players.values() if p.is_alive],
+            "game_type": self.game_settings.get('game_type', 'classic'),
+            "story_type": self.game_settings.get('story_type', 'Classic Mafia'), # NEW
+            "theme": "a dramatic finale", # This overrides the prompt's theme usage slightly, or you can remove it to let story_type rule
+            "is_game_over": True 
+        }
+        # Use 'await' and pass the dictionary
+        story = await self.narration_manager.construct_story(game_state)
+        # --- Send Messages Separately and Chunked ---
         try:
             channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
             if not channel:
@@ -1197,6 +1213,8 @@ class Game:
                 return
             # 1. Send the Story First
             await channel.send(f"**Game Over!**\n{story}")
+            logger.info("Sent game over story to channel.")
+            logger.debug(f"Full story content: {story}")
             # 2. Generate the Status Message
             status_message = self.get_status_message()
             if status_message:
