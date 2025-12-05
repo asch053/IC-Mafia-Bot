@@ -894,7 +894,7 @@ class Game:
     def _handle_promotions(self, dead_player):
         """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
         logger.info(f"Checking for promotion of {dead_player.display_name}.")
-        if dead_player.role and dead_player.role.name == "Godfather":
+        if dead_player.role and dead_player.role.abilities.get('kill') and dead_player.alignment == "Mafia":
             logger.info(f"{dead_player.display_name} is the {dead_player.role.name}.")
             # Find a living Mafioso to promote
             mafioso_to_promote = None
