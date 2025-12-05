@@ -859,33 +859,51 @@ class Game:
         return None
 
     def _handle_promotions(self, dead_player):
-        """Checks for and handles promotions (e.g., Mafioso to Godfather)."""
-        logger.info(f"Checking for promotion of {dead_player.display_name}.")
-        if dead_player.role and dead_player.role.name == "Godfather":
-            logger.info(f"{dead_player.display_name} is the {dead_player.role.name}.")
+        """
+        Checks if the dead player was the Mafia's designated killer (Godfather or Promoted Goon)
+        and promotes a new killer if necessary to keep the game going.
+        """
+        # Checks if player is Mafia AND had the kill ability (Godfather or Promoted Goon)
+        # We use .get('kill') to safely handle Mafia roles that don't kill (like Role Blockers)
+        # Access alignment from the ROLE, not the player
+        if dead_player.role and dead_player.role.abilities.get('kill') and dead_player.role.alignment == "Mafia":
+            logger.info(f"Processing promotion because {dead_player.display_name} died.")
             # Find a living Mafioso to promote
             mafioso_to_promote = None
+            # Priority 1: Promote a "Mob Goon" first (Standard cannon fodder promotion)
             for player in self.players.values():
                 if player.is_alive and player.role and player.role.name == "Mob Goon":
                     mafioso_to_promote = player
+                    logger.info(f"Found Mob Goon to promote: {mafioso_to_promote.display_name}")
                     break
+            # Priority 2: If no Goon, promote ANY Mafia member (e.g., Role Blocker, Framer)
+            # This ensures the Mafia team isn't neutered just because the Goons are dead.
             if not mafioso_to_promote:
-                logger.warning("No Mob Goon found to promote to Godfather, trying to find other mob.")
-                # If no Mob Goon found, try to find any Mafia member to promote
+                logger.warning("No Mob Goon found to promote. Searching for any surviving Mafia member.")
                 for player in self.players.values():
                     if player.is_alive and player.role and player.role.alignment == "Mafia":
                         mafioso_to_promote = player
+                        logger.info(f"Found Mafia member to promote: {mafioso_to_promote.display_name} - {mafioso_to_promote.role.name}")
                         break
-            # If a Mafioso was found, promote them to Godfather
-            if mafioso_to_promote and 'kill' not in mafioso_to_promote.role.abilities:
-                logger.info(f"Promoting {mafioso_to_promote.display_name} to Godfather.")
-                # Assign the Godfather role to the Mafioso
-                mafioso_to_promote.role.abilities['kill'] = "Choose a player for the Mafia to kill."
-                self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
-                # Send a DM to the newly promoted Godfather
-                dm_message = "The Godfather is dead! You have been promoted and now have the ability to kill."
-                self.bot.loop.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
-                logger.info(f"Promoted {mafioso_to_promote.display_name} to have kill ability.")
+            # Perform the Promotion
+            if mafioso_to_promote:
+                # Only promote if they don't ALREADY have the kill ability
+                if 'kill' not in mafioso_to_promote.role.abilities:
+                    logger.info(f"Promoting {mafioso_to_promote.display_name} to Godfather status.")
+                    # Grant the kill ability
+                    mafioso_to_promote.role.abilities['kill'] = "Choose a player for the Mafia to kill."
+                    # Add event for story narration
+                    self.narration_manager.add_event('promotion', promoted_player=mafioso_to_promote)
+                    # Notify the player
+                    dm_message = (
+                        "The Godfather is dead! You have been promoted to the head of the family.\n"
+                        "You now have the ability to kill. Use `/kill player-name` in this DM."
+                    )
+                    asyncio.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
+                    logger.critical(f"PROMOTION: {mafioso_to_promote.display_name} now leads the Mafia.")
+            else:
+                logger.info("The Mafia has been wiped out. No one left to promote.")
+                return
 
     async def save_story_log(self, alignments, end_time):
         """
