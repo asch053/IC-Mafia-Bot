@@ -80,8 +80,12 @@ jobs:
             # Kill any existing bot.py processes
             pkill -f "python bot.py" || true
             # Start bot.py in the background using nohup
-            # 1. Redirect stdout AND stderr (2>&1) to nohup.out, run in background (&)
-            nohup python bot.py > nohup.out 2>&1 &
+            # 1. Redirect stdin from /dev/null so SSH doesn't wait for input
+            nohup python bot.py > nohup.out 2>&1 < /dev/null &
+            # 2. Disown the job
+            disown
+            # 3. Wait a moment to ensure the detachment happens cleanly before SSH closes
+            sleep 2
             # 2. Disown the last background job, detaching it from this shell
             disown
 
