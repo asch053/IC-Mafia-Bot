@@ -1,114 +1,152 @@
-# This is the name of our workflow. It will show up in the "Actions" tab of your GitHub repository.
 name: Test and Deploy Mafia Bot
 
-# This section defines the trigger for our workflow.
 on:
-  # We want this to run every time someone pushes new code...
   push:
-    # ...but ONLY if the push is to the 'main' or 'test' branches.
-    branches:
-      - main
-      - test_1
+    branches: [ "main", "test_1" ]
+  pull_request:
+    branches: [ "main", "test_1" ]
 
-# This section defines the jobs that our workflow will run.
 jobs:
-  # --- JOB 1: RUN THE TESTS ---
-  # This job's only purpose is to ensure our code is healthy.
   test:
-    # It will run on a standard, fresh Linux virtual machine provided by GitHub.
     runs-on: ubuntu-latest
     steps:
-      # Step 1: Check out the repository code so the runner has access to it.
-      - name: Check out repository code
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        
+    - name: Create Dummy Config (For Tests Only)
+      run: |
+        # We create a dummy config so imports don't fail.
+        # The actual values are mocked in test_engine.py.
+        echo "BOT_TOKEN = 'mock_token'" > config.py
+        echo "ANNOUNCEMENT_CHANNEL_ID = 1" >> config.py
+        echo "SIGN_UP_HERE_CHANNEL_ID = 2" >> config.py
+        echo "RULES_AND_ROLES_CHANNEL_ID = 3" >> config.py
+        echo "STORIES_CHANNEL_ID = 4" >> config.py
+        echo "VOTING_CHANNEL_ID = 5" >> config.py
+        echo "TALKY_TALKY_CHANNEL_ID = 6" >> config.py
+        echo "MOD_CHANNEL_ID = 7" >> config.py
+        echo "min_players = 3" >> config.py
+        echo "signup_loop_interval_seconds = 5" >> config.py
+        echo "game_loop_interval_seconds = 5" >> config.py
+        echo "MAX_MISSED_VOTES = 2" >> config.py
+        echo "REMINDER_POINTS = {5: '5m'}" >> config.py
+        
+    - name: Run Unit Tests
+      run: |
+        python -m unittest discover Tests
 
-      # Step 2: Set up the specific version of Python we need.
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-      
-      # Step 2.5: Create a config.py file from our secrets.
-      - name: Create config.py
-        run: |
-          echo "BOT_TOKEN = '${{ secrets.BOT_TOKEN }}'" > config.py
-          # IMPORTANT: Add echo lines here for ALL variables from config_template.py
-          # This ensures the test environment perfectly mirrors a real run.
-          echo "ANNOUNCEMENT_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "SIGN_UP_HERE_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "RULES_AND_ROLES_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "STORIES_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "VOTING_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "TALKY_TALKY_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "MOD_CHANNEL_ID = 123456789012345678" >> config.py
-          echo "min_players = 6" >> config.py
-          echo "signup_loop_interval_seconds = 15" >> config.py
-          echo "game_loop_interval_seconds = 15" >> config.py
-          echo "MAX_MISSED_VOTES = 2" >> config.py
-          echo "REMINDER_POINTS = {60: '1 hour', 30: '30 minutes', 15: '15 minutes', 5: '5 minutes'}" >> config.py
-
-
-      # Step 3: Install all the libraries listed in our requirements.txt file.
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-
-      # Step 4: Run our entire unit test suite. If any test fails, this job will fail.
-      - name: Run unit tests
-        run: python -m unittest discover Tests
-
-      # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER (Using Manual Script) ---
   deploy-to-beta:
-    runs-on: ubuntu-latest
     needs: test
     if: github.ref == 'refs/heads/test_1'
-    steps:
-      - name: Deploy to Beta VM via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.BETA_HOST }}
-          username: ${{ secrets.BETA_USERNAME }} 
-          key: ${{ secrets.BETA_SSH_KEY }}
-          script: |
-            #!/bin/bash
-            cd /home/opc/IC-Mafia-Bot/
-            # Pull the latest changes from the 'test_1' branch
-            git pull origin test_1
-            # Activate virtual environment and install dependencies
-            source .venv/bin/activate
-            # Install dependencies from requirements.txt
-            pip install -r requirements.txt
-            # Kill any existing bot.py processes
-            pkill -f "python bot.py" || true
-            # Start bot.py in the background using nohup
-            # 1. Redirect stdin from /dev/null so SSH doesn't wait for input
-            nohup python bot.py > nohup.out 2>&1 < /dev/null &
-            # 2. Disown the job
-            disown
-            # 3. Wait a moment to ensure the detachment happens cleanly before SSH closes
-            sleep 2
-            # 2. Disown the last background job, detaching it from this shell
-            disown
-
-  # --- JOB 3: DEPLOY TO THE PRODUCTION SERVER ---
-  # This job will deploy our code to the main production virtual machine.
-  deploy-to-main:
     runs-on: ubuntu-latest
-    # It ALSO 'needs' the 'test' job to pass. We never deploy untested code.
-    needs: test
-    # CRITICAL: This 'if' condition ensures this job ONLY runs for pushes to the 'main' branch.
-    if: github.ref == 'refs/heads/main'
     steps:
-      - name: Deploy to Main VM via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-            host: ${{ secrets.MAIN_HOST }}
-            username: ${{ secrets.MAIN_USERNAME }} 
-            key: ${{ secrets.MAIN_SSH_KEY }}
-            script: |
-                cd /home/opc/IC-Mafia-Bot/
-                git pull origin main
-                # Activate virtual environment and install dependencies
-                source .venv/bin/activate
-                # Install dependencies from requirements.txt
-                pip install -r requirements.txt
-                
+    - name: Deploy to Beta VM via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.BETA_HOST }}
+        username: ${{ secrets.BETA_USERNAME }}
+        key: ${{ secrets.BETA_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/${{ secrets.BETA_USERNAME }}/IC-Mafia-Bot/
+          
+          # 1. Check for Config File (Crucial Step!)
+          if [ ! -f config.py ]; then
+            echo "CRITICAL ERROR: config.py not found on server!"
+            echo "You must manually SSH in and create config.py based on config_template.py"
+            exit 1
+          fi
+
+          # 2. Stop the old bot
+          echo "Stopping old bot..."
+          pkill -f "python bot.py" || true
+          sleep 2
+          
+          # 3. Update Code
+          echo "Pulling latest code..."
+          git fetch origin test_1
+          git reset --hard origin/test_1
+          
+          # 4. Update Dependencies
+          echo "Updating dependencies..."
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          
+          # 5. Start the new bot (Standard Detachment with Log Check)
+          echo "Starting new bot..."
+          # Redirect all streams including stdin to ensure detachment
+          nohup python bot.py > nohup.out 2>&1 < /dev/null &
+          
+          # 6. Wait and Verify
+          echo "Bot launch command issued. Waiting for stabilization..."
+          sleep 5
+          
+          # Check if the process is still running
+          if pgrep -f "python bot.py" > /dev/null; then
+            echo "SUCCESS: Bot is running!"
+          else
+            echo "FAILURE: Bot failed to start or crashed immediately!"
+            echo "--- DUMPING NOHUP.OUT (Last 20 lines) ---"
+            tail -n 20 nohup.out
+            echo "-----------------------------------------"
+            exit 1
+          fi
+          
+          # Explicitly exit to close the SSH session
+          exit 0
+
+  deploy-to-main:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Deploy to Production VM via SSH
+      uses: appleboy/ssh-action@v1.0.3
+      with:
+        host: ${{ secrets.MAIN_HOST }}
+        username: ${{ secrets.MAIN_USERNAME }}
+        key: ${{ secrets.MAIN_SSH_KEY }}
+        port: 22
+        script: |
+          cd /home/${{ secrets.MAIN_USERNAME }}/IC-Mafia-Bot/
+          
+          if [ ! -f config.py ]; then
+            echo "CRITICAL ERROR: config.py not found!"
+            exit 1
+          fi
+          
+          echo "Stopping old bot..."
+          pkill -f "python bot.py" || true
+          sleep 2
+          
+          echo "Pulling latest code..."
+          git pull origin main
+          
+          echo "Updating dependencies..."
+          source .venv/bin/activate
+          pip install -r requirements.txt
+          
+          echo "Starting new bot..."
+          nohup python bot.py > nohup.out 2>&1 < /dev/null &
+          
+          echo "Bot launch command issued. Waiting..."
+          sleep 5
+          
+          if pgrep -f "python bot.py" > /dev/null; then
+            echo "SUCCESS: Bot is running!"
+          else
+            echo "FAILURE: Bot crashed!"
+            tail -n 20 nohup.out
+            exit 1
+          fi
+          
+          exit 0
