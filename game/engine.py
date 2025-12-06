@@ -81,6 +81,9 @@ class Game:
         self.force_start_flag = False
         self.reminders_sent = set() # Tracks sent reminders for the current phase
         self.max_players = 19 # Default max players
+        # --- Narration Markers ---
+        self.is_prologue = None
+        self.is_epilogue = None 
         # --- Data Loading ---
         logger.debug("Loading game data from JSON files.")
         try:
@@ -117,6 +120,8 @@ class Game:
         self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
         self.game_settings["story_type"] = story_type #set story type as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
+        self.is_prologue = True # Mark that the next story is the prologue
+        self.is_epilogue = False # Not the epilogue yet
         # Set all players to spectators
         #logger.info("Setting all players to spectators.")
         #await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
@@ -145,7 +150,23 @@ class Game:
         await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         # Create a different message for the rules and roles channel, including the standard rules text
         await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{self.rules_text}\n")
-        logger.debug("Sign-up phase announcement sent to all channels.")
+        story_channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
+        if story_channel:
+            await story_channel.send("\n--------------------------\n\n---- ## New Game ## ----\n\n--------------------------\n")
+        self.narration_manager.add_event("prologue", details="The game is starting soon. Players are signing up.")
+        game_state = {
+            "phase": "Prologue",
+            "number": 0,
+            "living_players": [],
+            "is_prologue": True,
+            "is_epilogue": False
+        }
+        story = await self.narration_manager.construct_story(game_state=game_state)
+        if story_channel and story:
+            await story_channel.send(story)
+            logger.info("Prologue story sent to stories channel.")
+        self.is_prologue = False  # Mark that the next story is the prologue
+        logger.info("Sign-up phase announcement sent to all channels.")
         # Start the sign-up monitoring loop
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
         self.signup_loop.start()
@@ -322,12 +343,14 @@ class Game:
         logger.info(f"Game prepared. Starting main game loop.")
         story_channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
         if story_channel:
-            await story_channel.send("\n\n---- ## New Game ## ----\n\n")
+            await story_channel.send("\n\n--- **GAME STARTED** ---\n\n")
         # Create narration event for game start with a list of active players
         game_state = {
             "phase": self.game_settings["current_phase"],
             "phase_number": self.game_settings['phase_number'],
-            "living_players": [p for p in self.players.values() if p.is_alive]
+            "living_players": [p for p in self.players.values() if p.is_alive],
+            "is_prologue": self.is_prologue,
+            "is_epilogue": self.is_epilogue
         }
         self.narration_manager.add_event('game_start', game_state=game_state)
 
@@ -1222,7 +1245,7 @@ class Game:
             "is_game_over": True 
         }
         # Use 'await' and pass the dictionary
-        story = await self.narration_manager.construct_story(game_state)
+        story = await self.narration_manager.construct_story(game_state=game_state)
         # --- Send Messages Separately and Chunked ---
         try:
             channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
@@ -1230,7 +1253,24 @@ class Game:
                 logger.error(f"Could not find stories channel {config.STORIES_CHANNEL_ID}")
                 return
             # 1. Send the Story First
-            await channel.send(f"**Game Over!**\n{story}")
+            full_message = f"**Game Over!**\n{story}"
+            # Discord has a 2000 character limit. We need to chunk the message.
+            # We use 1900 to be safe and allow for markdown overhead.
+            if len(full_message) <= 2000:
+                await channel.send(full_message)
+            else:
+                # Split by lines to preserve formatting where possible
+                lines = full_message.split('\n')
+                chunk = ""
+                for line in lines:
+                    # If adding the next line exceeds the limit, send the current chunk
+                    if len(chunk) + len(line) + 1 > 1900:
+                        await channel.send(chunk)
+                        chunk = "" # Reset chunk
+                    chunk += line + "\n"
+                # Send any remaining text in the buffer
+                if chunk:
+                    await channel.send(chunk)
             logger.info("Sent game over story to channel.")
             logger.debug(f"Full story content: {story}")
             # 2. Generate the Status Message
@@ -1257,7 +1297,6 @@ class Game:
                     # It fits! Send it normally.
                     await channel.send(status_message)
             logger.info(f"Announced winner: {winner_display_name}.")
-
         except Exception as e:
             logger.error(f"Error announcing winner: {e}", exc_info=True)
 
