@@ -916,8 +916,11 @@ class Game:
             # 1. Get the full story string from the manager
             full_story = self.narration_manager.get_full_story_log()
             # 2. Define the filename (e.g., Stats/game_type/game folder/game_12345_story.md)
+            # 2.1 Get the game ID
             game_id = self.game_settings.get('game_id', 'unknown_game')
-            output_dir = f"Stats/{config.game_type}/{self.game_settings.get('game_type', 'classic')}/{self.game_settings.get('game_id')}" 
+            # 2.2 Build the output directory path
+            output_dir = f"{config.data_save_path}/{self.game_settings.get('game_type', 'classic')}/{self.game_settings.get('game_id')}".title().replace('_', ' ')
+            # Create the directory if it doesn't exist
             if not os.path.exists(output_dir):
                 os.makedirs(output_dir)
                 logger.info(f"Created output directory: {output_dir}")
@@ -926,6 +929,7 @@ class Game:
             # Set the filename
             game_id = self.game_settings.get('game_id', 'unknown_game')
             filename = f"{output_dir}/game_{game_id}_story.md"
+            logger.info(f"Story log will be saved to: {filename}")
             # 3. Build the Player Manifest (Cast of Characters)
             # This helps the AI associate names with roles and outcomes.
             manifest_section = "## Cast of Characters\n\n| Player | Role | Status |\n| :--- | :--- | :--- |\n"
@@ -995,7 +999,7 @@ class Game:
                 return
             # Construct the new directory path: stats/<game_id>
             # Dynamically build the path based on the game type
-            game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title()
+            game_type_dir = self.game_settings.get('game_type', 'classic').replace('_', ' ').title() # E.g., "Battle Royale"
             base_dir = os.path.join(config.data_save_path, game_type_dir)
             game_log_dir = os.path.join(base_dir, game_id)
             # Create the directories
