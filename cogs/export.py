@@ -37,12 +37,24 @@ class ExportCog(commands.Cog):
             if self.creds.access_token_expired:
                 self.client.login()
             
-            # Open the sheet by Key or Name (Configurable)
-            # Assuming config has GOOGLE_SHEET_ID, otherwise use name
+            sheet = None
+            # Check for ID first
             if hasattr(config, 'GOOGLE_SHEET_ID'):
-                return self.client.open_by_key(config.GOOGLE_SHEET_ID)
+                try:
+                    sheet = self.client.open_by_key(config.GOOGLE_SHEET_ID)
+                    logger.info(f"✅ Connected by ID. Target Sheet: '{sheet.title}'")
+                except gspread.SpreadsheetNotFound:
+                    logger.error(f"❌ Config has GOOGLE_SHEET_ID ({config.GOOGLE_SHEET_ID}) but sheet was not found.")
+                    raise
             else:
-                return self.client.open("IC Mafia Bot Results") # Default name
+                logger.warning("⚠️ GOOGLE_SHEET_ID not found in config. Falling back to Name search.")
+                sheet = self.client.open("IC Mafia Bot Results")
+                logger.info(f"✅ Connected by Name. Target Sheet: '{sheet.title}'")
+
+            # CRITICAL DEBUG: Log the actual URL so you can see where data is going
+            logger.critical(f"📝 WRITING DATA TO: https://docs.google.com/spreadsheets/d/{sheet.id}")
+            return sheet
+
         except Exception as e:
             logger.error(f"Could not connect to Google Sheet: {e}")
             raise e
