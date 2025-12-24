@@ -144,7 +144,7 @@
             "status": "Dead",
             "is_winner": false,
             "death_phase": "night",
-            "death_cause": "Game Over - Losing Player",
+            "death_cause": "Game Over - Winning Player",
             "lynched_by_voters": null
         },
         {

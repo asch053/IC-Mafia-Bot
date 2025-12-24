@@ -1063,6 +1063,21 @@ class Game:
         # 4. --- Save to File ---
         await self.save_data_summary(game_data, final_summary)
         await self.save_story_log(alignments, end_time)
+        await self.export_game_stats() 
+    
+    # In your Game Engine / Main Cog
+
+    async def export_game_stats(self):
+        """Handles exporting game stats to Google Sheets or other platforms."""
+        logger.info("Exporting game stats...")       
+        # --- 🐍 LYDIA'S INJECTION POINT ---
+        # Trigger the export immediately after saving.
+        # We use create_task so it runs in the background and doesn't freeze the bot.
+        export_cog = self.bot.get_cog("ExportCog")
+        if export_cog:
+            self.bot.loop.create_task(export_cog.run_export_logic())
+        else:
+            logger.warning("Export Cog not found. Stats were not uploaded.")
         
     def check_win_conditions(self):
         """Checks if any team has won. Returns the winning team or None."""
