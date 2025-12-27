@@ -5,6 +5,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from discord.ext import commands
 from discord import app_commands
 import config
+from collections import defaultdict
 
 # Get the logger from the main file
 logger = logging.getLogger('discord')
@@ -51,19 +52,15 @@ class ExportCog(commands.Cog):
                 sheet = self.client.open("IC Mafia Bot Results")
                 logger.info(f"✅ Connected by Name. Target Sheet: '{sheet.title}'")
 
-            # CRITICAL DEBUG: Log the actual URL so you can see where data is going
-            logger.critical(f"📝 WRITING DATA TO: https://docs.google.com/spreadsheets/d/{sheet.id}")
+            # Debug log to ensure we are writing to the right place
+            logger.info(f"📝 WRITING DATA TO: https://docs.google.com/spreadsheets/d/{sheet.id}")
             return sheet
-
         except Exception as e:
             logger.error(f"Could not connect to Google Sheet: {e}")
             raise e
 
     def _compile_standard_data(self, games):
-        """
-        Compiles the original 3 tabs: Games, Players, Votes.
-        Preserves the exact format you used previously.
-        """
+        """Compiles the standard historical tabs (Games, Players, Votes)."""
         games_rows = []
         players_rows = []
         votes_rows = []
@@ -72,19 +69,17 @@ class ExportCog(commands.Cog):
             summ = game.get('game_summary', {})
             gid = summ.get('game_id')
             
-            # 1. Games Tab Row
-            # Headers: Game_ID, Game_Type, Start_Time_UTC, End_Time_UTC, Total_Phases, Winning_Faction
+            # 1. Games Tab
             games_rows.append([
                 gid,
                 summ.get('game_type', 'classic'),
                 summ.get('start_date_utc'),
                 summ.get('end_date_utc'),
-                summ.get('total_days'), # Map total_days to Total_Phases
+                summ.get('total_days'),
                 summ.get('winning_faction')
             ])
 
-            # 2. Players Tab Rows
-            # Headers: Game_ID, Player_ID, Player_Name, Role, Alignment, Is_Winner, Death_Phase, Death_Cause
+            # 2. Players Tab
             for p in game.get('player_data', []):
                 players_rows.append([
                     gid,
@@ -97,9 +92,7 @@ class ExportCog(commands.Cog):
                     p.get('death_cause')
                 ])
 
-            # 3. Votes Tab Rows
-            # Headers: Game_ID, Phase, Voter_ID, Voter_Name, Target_ID, Target_Name
-            # Note: Checking 'lynch_vote_history' or generic 'vote_history'
+            # 3. Votes Tab
             votes = game.get('lynch_vote_history', [])
             for v in votes:
                 votes_rows.append([
@@ -115,23 +108,19 @@ class ExportCog(commands.Cog):
 
     def _compile_analytics_data(self, classic_games, stats_cog):
         """
-        Compiles the NEW Analytics tab using StatsCog logic.
+        Uses StatsCog to calculate Skill Scores and build the Analytics tab.
         """
-        # We reuse the logic we wrote in the previous turn, but return a LIST of LISTS for gspread
-        # instead of a list of dicts.
-        
-        # 1. Get the leaderboard data (List of Dicts) from our helper logic
-        # We will adapt the logic here slightly to output list-of-lists directly
-        
-        from collections import defaultdict
         player_map = defaultdict(lambda: {
             "games": 0, "wins": 0, "phases_lived": 0, "phases_possible": 0,
-            "n1_deaths": 0, "d1_lynches": 0, "death_type_mafia": 0, "death_type_sk": 0, "death_type_lynch": 0,
+            "n1_deaths": 0, "d1_lynches": 0, 
+            "death_type_mafia": 0, "death_type_sk": 0, "death_type_lynch": 0,
             "id": None, "name": None
         })
 
+        # PASS 1: Aggregation
         for game in classic_games:
             total_phases = stats_cog._get_total_phases(game.get('player_data', []))
+            
             for p in game.get('player_data', []):
                 pid = p.get('player_id')
                 name = p.get('player_name')
@@ -143,10 +132,24 @@ class ExportCog(commands.Cog):
                 entry['games'] += 1
                 if p.get('is_winner'): entry['wins'] += 1
                 
+                # Phase Parsing via StatsCog
                 phases_survived = total_phases
                 death = p.get('death_phase')
+                
+                # Survival Logic
                 if p.get('status') != "Alive" and not p.get('is_winner') and death:
-                     phases_survived = max(0, stats_cog._phase_str_to_int(death) - 1)
+                     phase_int = stats_cog._phase_str_to_int(death)
+                     
+                     # Calculate raw survival (died phase X, so survived X-1)
+                     survived_raw = max(0, phase_int - 1)
+                     
+                     # FIX: Ensure a dead player NEVER gets 100% survival.
+                     # We clamp their survived phases to be at most (Total - 1).
+                     # max(0, ...) protects against 1-phase games crashing the math.
+                     phases_survived = min(survived_raw, max(0, total_phases - 1))
+                else:
+                    # Alive or Winner = Full Survival
+                    phases_survived = total_phases
                 
                 entry['phases_lived'] += phases_survived
                 entry['phases_possible'] += total_phases
@@ -160,13 +163,15 @@ class ExportCog(commands.Cog):
                 elif "sk" in cause or "serial" in cause: entry['death_type_sk'] += 1
                 elif "lynch" in cause: entry['death_type_lynch'] += 1
 
+        # PASS 2: Calculation & Formatting
         analytics_rows = []
         for name, data in player_map.items():
+            # Calculate Skill Score using StatsCog
             skill_data = stats_cog._calculate_skill_scores(data['id'], classic_games)
+            
             win_rate = (data['wins'] / data['games'] * 100) if data['games'] > 0 else 0
             surv_rate = (data['phases_lived'] / data['phases_possible'] * 100) if data['phases_possible'] > 0 else 0
 
-            # Headers: Player Name, Skill Score, P, E, U, Games, Win %, Surv %, N1, D1, D_Maf, D_SK, D_Lynch
             analytics_rows.append([
                 name,
                 f"{skill_data['final_score']:.2f}",
@@ -189,79 +194,76 @@ class ExportCog(commands.Cog):
 
     async def run_export_logic(self):
         """
-        The core logic, separated so it can be called by a command OR automatically.
-        Returns a status string.
+        The Master Trigger: Called manually or by the Game Engine.
         """
         if not self.client:
             return "❌ Google Client not authenticated."
 
+        # 1. GET THE STATS COG
         stats_cog = self.bot.get_cog("StatsCog")
         if not stats_cog:
-            return "❌ StatsCog not loaded."
+            return "❌ StatsCog not loaded. Cannot calculate scores."
 
-        # 1. Load Data
+        # 2. LOAD GAMES
         games_by_mode = stats_cog._load_and_group_games()
-        # Flatten all games for the standard tabs (Classic + BR + etc)
+        
+        # Flatten for standard tabs
         all_games = []
         for mode in games_by_mode:
             all_games.extend(games_by_mode[mode])
         
-        # Get only classic for analytics
+        # Get classic only for analytics
         classic_games = games_by_mode.get('classic', [])
 
         if not all_games:
             return "⚠️ No game data found to export."
 
-        # 2. Compile Data
+        # 3. COMPILE ALL DATA
         games_rows, players_rows, votes_rows = self._compile_standard_data(all_games)
         analytics_rows = self._compile_analytics_data(classic_games, stats_cog)
 
-        # 3. Upload to Google Sheets
+        # 4. UPLOAD TO GOOGLE SHEETS
         try:
             sheet = self._connect_to_sheet()
             
-            # A. Update Standard Tabs
-            await self._update_tab(sheet, "Games", [
+            # Helper to update a tab safely
+            async def update_tab(tab_name, headers, data):
+                try:
+                    ws = sheet.worksheet(tab_name)
+                except gspread.WorksheetNotFound:
+                    ws = sheet.add_worksheet(title=tab_name, rows=100, cols=20)
+                ws.clear()
+                if data:
+                    ws.update(range_name='A1', values=[headers] + data)
+                else:
+                    ws.append_row(headers)
+
+            # Update all 4 tabs
+            await update_tab("Games", [
                 "Game_ID", "Game_Type", "Start_Time_UTC", "End_Time_UTC", "Total_Phases", "Winning_Faction"
             ], games_rows)
             
-            await self._update_tab(sheet, "Players", [
+            await update_tab("Players", [
                 "Game_ID", "Player_ID", "Player_Name", "Role", "Alignment", "Is_Winner", "Death_Phase", "Death_Cause"
             ], players_rows)
             
-            await self._update_tab(sheet, "Votes", [
+            await update_tab("Votes", [
                 "Game_ID", "Phase", "Voter_ID", "Voter_Name", "Target_ID", "Target_Name"
             ], votes_rows)
 
-            # B. Update New Analytics Tab
-            await self._update_tab(sheet, "Analytics", [
+            await update_tab("Analytics", [
                 "Player Name", "Skill Score", "Persuasion (P)", "Elusiveness (E)", "Understanding (U)",
                 "Games Played", "Win Rate %", "Survival %", "N1 Deaths", "D1 Lynches",
                 "Deaths by Mafia", "Deaths by SK", "Times Lynched"
             ], analytics_rows)
 
-            return f"✅ Success! Updated Games ({len(games_rows)}), Players ({len(players_rows)}), Votes ({len(votes_rows)}), and Analytics ({len(analytics_rows)})."
+            return f"✅ Export Complete: {len(games_rows)} games processed."
 
         except Exception as e:
             logger.error(f"Export failed: {e}", exc_info=True)
             raise e
 
-    async def _update_tab(self, spreadsheet, tab_name, headers, data):
-        """Helper to clear and replace a specific tab."""
-        try:
-            worksheet = spreadsheet.worksheet(tab_name)
-        except gspread.WorksheetNotFound:
-            worksheet = spreadsheet.add_worksheet(title=tab_name, rows=100, cols=20)
-        
-        worksheet.clear()
-        if data:
-            # Prepend headers
-            all_rows = [headers] + data
-            worksheet.update(range_name='A1', values=all_rows)
-        else:
-            worksheet.append_row(headers)
-
-    @app_commands.command(name="exportstats", description="Force updates the Google Sheet with latest stats.")
+    @app_commands.command(name="exportstats", description="Force update the Google Sheet.")
     async def exportstats(self, interaction: discord.Interaction):
         await interaction.response.defer(ephemeral=True)
         try:
