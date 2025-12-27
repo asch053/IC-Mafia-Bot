@@ -5,13 +5,14 @@ ic-mafia-bot-*.json
 
 # --- Dynamic Data (Ignore these) ---
 # Ignore the specific dynamic roles file, but keep other json files (like role_definition.json)
-data/discord_roles.json
+Data/discord_roles.json
+
 # Ignore current game setups if they are dynamic
-data/mafia_setups.json
+Data/mafia_setups.json
 
 # --- Stats & Logs (Ignore ALL generated data) ---
 # This line ignores the entire stats folder (Alpha, Beta, AND Production)
-stats/
+Stats/
 # This ignores the entire logs folder
 logs/
 Logs/
