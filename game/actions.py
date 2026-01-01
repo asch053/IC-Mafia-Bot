@@ -124,6 +124,7 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
         f"Your investigation of **{target.display_name}** reveals they are **{role_name_result}**."
         f"\n> *{short_desc_result}*"
     )
+    logger.info(f"Sent investigation result: {result_message} to {investigator.display_name}")
 
     async def send_investigation_dm():
         try:

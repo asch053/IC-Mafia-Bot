@@ -75,7 +75,7 @@ class ExportCog(commands.Cog):
                 summ.get('game_type', 'classic'),
                 summ.get('start_date_utc'),
                 summ.get('end_date_utc'),
-                summ.get('total_days'),
+                summ.get('total_phases'),
                 summ.get('winning_faction')
             ])
 
