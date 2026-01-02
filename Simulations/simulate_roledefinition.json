@@ -1,0 +1,79 @@
+{
+    "Town Cop": {
+        "base": "TownInvestigative",
+        "description": "You are town-aligned and can investigate one player each night to learn their alignment.\nUse `/investigate player-name` during the night phase in this DM with the bot.\nResults will be sent as soon as the day phase starts. Use them wisely.\nYou win when all Mafia and the Serial Killer are dead.",
+        "short_description": "Investigates one player each night.",
+        "night_priority": 4,
+        "abilities": { "investigate": "Learn a player's alignment (Town/Mafia/Neutral)." }
+    },
+    "Town Doctor": {
+        "base": "TownProtective",
+        "description": "You are town-aligned and can protect one player each night from being killed.\nUse `/heal player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are dead.",
+        "short_description": "Can heal one player each night.",
+        "night_priority": 2,
+        "abilities": { "heal": "Prevent a player from being killed." }
+    },
+    "Plain Townie": {
+        "base": "TownKilling",
+        "description": "A regular member of the town.\nDuring the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched.\nYou win when all Mafia and the Serial Killer are dead.",
+        "short_description": "Normal member of town."
+    },
+    "Town Role Blocker": {
+        "base": "TownProtective",
+        "description": "You are town-aligned and can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are dead.",
+        "short_description": "Prevents one player from performing their night action.",
+        "night_priority": 1,
+        "abilities": { "block": "Prevent a player from performing their night action." }
+    },
+    "Godfather": {
+        "base": "MafiaKilling",
+        "description": "Chooses the Mafia's target each night.\nUse `/kill player-name` in this DM with the bot.\nA separate message will be sent with the identity of other Mafia members.\nYou win when the Mafia can no longer be eliminated.",
+        "short_description": "Chooses the Mafia's target each night.",
+        "abilities": { "kill": "Choose a player for the Mafia to kill." },
+        "investigate_result": { "Plain Townie": "Normal Member of town" },
+        "is_night_immune": true,
+        "night_priority": 3
+    },
+    "Mob Goon": {
+        "base": "MafiaSupport",
+        "description": "A member of the Mafia.\nYou will be promoted to Godfather if the current one dies.\nYou win when the Mafia can no longer be eliminated.",
+        "short_description": "Standard Mafia member.",
+        "night_priority": 3
+    },
+    "Mob Role Blocker": {
+        "base": "MafiaSupport",
+        "description": "A member of the Mafia.\nYou can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when the Mafia can no longer be eliminated.",
+        "short_description": "Stops a player from acting at night.",
+        "abilities": { "block": "Prevent a player from performing their night action." },
+        "night_priority": 1
+    },
+    "Serial Killer": {
+        "base": "NeutralKilling",
+        "description": "Kills one player each night.\nUse `/kill player-name` in this DM with the bot.\nYou win when you are the last person standing.",
+        "short_description": "Kills one player each night.",
+        "abilities": { "kill": "Choose a player to kill." },
+        "win_condition": "Be the last player alive.",
+        "investigate_result": { "Plain Townie": "Normal Member of town" },
+        "is_night_immune": true,
+        "night_priority": 3
+    },
+    "Jester": {
+        "base": "NeutralEvil",
+        "description": "Your goal is to get yourself lynched by the town. You have no night action.",
+        "short_description": "Wins the game if they are lynched.",
+        "win_condition": "Get yourself lynched by the town."
+    },
+    "Vigilante": {
+        "base": "NeutralRoyale",
+        "description": "You are a lone wolf out for yourself. You can kill, heal, or block one player each night (your last submitted action will be used). Your goal is to be the last person standing.",
+        "short_description": "Can kill, heal, or block. Wins by being the only survivor.",
+        "abilities": {
+            "kill": "Choose one player to kill each night.",
+            
+            "block": "Choose one player to block each night."
+        },
+        "win_condition": "Be the last player alive.",
+        "is_night_immune": false,
+        "noting": true
+    }
+}

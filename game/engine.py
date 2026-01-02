@@ -618,6 +618,7 @@ class Game:
             # 2. Handle vote changes (un-vote previous target)
             if voter_obj.action_target is not None: # First check if the voter has a previous target
                 # If they do, remove their vote from the previous target
+                logger.info(f"{voter_obj.display_name} is changing their vote from previous target ID {voter_obj.action_target} to new target ID {target_obj.id}.")
                 previous_target_id = voter_obj.action_target
                 if previous_target_id in self.lynch_votes and voter_obj.id in self.lynch_votes[previous_target_id]:
                     self.lynch_votes[previous_target_id].remove(voter_obj.id)
@@ -641,6 +642,7 @@ class Game:
                 "phase": f"Day {self.game_settings['phase_number']}",
                 "timestamp_utc": datetime.now(timezone.utc).isoformat()
             })
+            logger.info(f"Vote history updated: {self.vote_history[-1]}") # Log the latest vote
             # 4. Announce the vote in the voting channel
             voting_channel = self.bot.get_channel(config.VOTING_CHANNEL_ID)
             if voting_channel:
@@ -745,7 +747,7 @@ class Game:
             lynch_details[victim] = voters
         # Add the lynch event for the story
         self.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
-        logger.info(f"Lynched players: {[p.display_name for p in lynched_players]}")
+        logger.info(f"Lynched players: {[p.display_name for p in lynched_players]} - {[p.role.name for p in lynched_players]} ")
         
         # NOW, check if the lynch resulted in a Jester win
         if len(lynched_players) == 1 and lynched_players[0].role and lynched_players[0].role.name == "Jester":
@@ -1075,6 +1077,13 @@ class Game:
         end_time = datetime.now(timezone.utc)
         # 1. --- Game Overall Data ---
         alignments = Counter(p.role.alignment for p in self.players.values() if p.role)
+        # Calulate number of phases
+        phase_count = self.game_settings.get('phase_number', 0)
+        last_phase = self.game_settings.get('current_phase', 'unknown').lower()
+        if last_phase == 'day' or last_phase == 'pre-night':
+            total_phases = (phase_count * 2)
+        else:
+            total_phases = (phase_count * 2) - 1
         game_data = {
             "game_id": self.game_settings.get('game_id'),
             "game_type": self.game_settings.get('game_type', 'classic'),
@@ -1088,6 +1097,8 @@ class Game:
             "end_date_utc": end_time.isoformat(),
             "total_days": self.game_settings.get('phase_number'),
             "phase_hours": self.game_settings.get('phase_hours'),
+            "total_phases": total_phases,
+            "last_phase": last_phase,
             "winning_faction": winner,
             "winning_players": sorted([p.display_name for p in self.players.values() if p.is_winner])
         }
@@ -1208,6 +1219,9 @@ class Game:
                 if len(mafia_roles) == 1 and mafia_roles[0].name != "Godfather":
                     logger.info("Win Condition Met: Serial Killer wins.")
                     return "Serial Killer"
+                if len(mafia_roles) == 1 and mafia_roles[0].name == "Godfather":
+                    logger.info("Win Condition Met: Draw.")
+                    return "Draw"
             # No winner yet return none
         logger.info("No win condition met yet.")
         return None
