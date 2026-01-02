@@ -2,7 +2,7 @@
 
 # --- GAME DATA PATHS AND SETTINGS ---
 game_type = "Simulation_Testing"  # Game type for the bot
-data_save_path = f"/Stats/{game_type}"  # Path to save game data
+data_save_path = f"Stats/{game_type}"  # Path to save game data
 
 # --- GAME TIMING CONFIGURATION PARAMETERS ---
 JOIN_HOURS  = 24    # Duration of signup period in hours

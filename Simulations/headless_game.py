@@ -39,23 +39,43 @@ root_config.PROBABILITY_CURIOUS_BANDWAGON = sim_config.PROBABILITY_CURIOUS_BANDW
 
 
 # --- 📝 LOGGING SETUP ---
-LOG_FILE_PATH = os.path.join(current_dir, f"{config.data_save_path}")
+# 1. Strip leading slashes to ensure it stays relative to the current directory
+relative_save_path = config.data_save_path.strip("/").strip("\\")
+
+# 2. Build the full directory path
+LOG_FILE_PATH = os.path.join(current_dir, relative_save_path)
+
+# 3. Create the directory if it doesn't exist
 if not os.path.exists(LOG_FILE_PATH):
-    os.makedirs(LOG_FILE_PATH)
+    try:
+        os.makedirs(LOG_FILE_PATH)
+    except OSError as e:
+        print(f"❌ Error creating directory {LOG_FILE_PATH}: {e}")
+
+# 4. Define the Log File Name inside that directory
 DATETIME = datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
-LOG_FILE = os.path.join(current_dir, f"Stats/{DATETIME}_sim_debug.log")
+LOG_FILE = os.path.join(LOG_FILE_PATH, f"{DATETIME}_sim_debug.log")
+
 print("----- Simulation Logging Setup -----")
-print("Current Directory:", current_dir)
-print("Log Directory:", LOG_FILE_PATH)
-print(f"Simulation log file: {LOG_FILE}")
+print(f"📂 Base Directory: {current_dir}")
+print(f"📂 Log Folder:    {LOG_FILE_PATH}")
+print(f"📝 Log File:      {LOG_FILE}")
+
 logger = logging.getLogger('discord')
 logger.setLevel(logging.INFO)
+
+# Clear old handlers to prevent duplicate logs
 if logger.hasHandlers():
     logger.handlers.clear()
-file_handler = logging.FileHandler(LOG_FILE, mode='w', encoding='utf-8')
-file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s', datefmt='%H:%M:%S'))
-logger.addHandler(file_handler)
-logger.propagate = False
+
+try:
+    file_handler = logging.FileHandler(LOG_FILE, mode='w', encoding='utf-8')
+    file_handler.setFormatter(logging.Formatter('%(asctime)s [%(levelname)s] %(message)s', datefmt='%H:%M:%S'))
+    logger.addHandler(file_handler)
+    logger.propagate = False
+    print("✅ Logger initialized successfully.")
+except Exception as e:
+    print(f"❌ CRITICAL ERROR: Could not create log file: {e}")
 # ------------------------
 
 class SimulatedPlayer(Player):
