@@ -82,7 +82,9 @@ ROLE_CLASSES = {
 }
 
 # Load all role definitions from the JSON file once when this module is first imported
-ALL_ROLES_DATA = load_data("Simulations/simulate_roledefinition.json") 
+# This works 100% of the time because it uses the file's own location
+json_path = os.path.join(current_dir, "simulate_roledefinition.json")
+ALL_ROLES_DATA = load_data(json_path)
 
 def get_role_instance(role_name: str) -> GameRole | None:
     """

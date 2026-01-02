@@ -9,6 +9,7 @@ from collections import Counter
 import datetime
 import simulate_config as config
 from headless_game import HeadlessGame
+import gc
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
 parent_dir = os.path.dirname(current_dir)
@@ -81,11 +82,15 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
                             tune_hard_bandwagon=tune_hard_bandwagon, tune_soft_bandwagon=tune_soft_bandwagon, tune_curious_bandwagon=tune_curious_bandwagon)
         for j in range(player_count): 
             await game.add_simulated_player(f"Bot_{j}")
-            
+        # Run Simulation 
         winner = await game.run_simulation()
+        # Capture Winner
         winners.append(winner)
+        # Capture History
         batch_history[i+1] = game.simulation_history
-        
+        # Clean up
+        del game
+        gc.collect()
         # Capture Setup (First Run)
         if i == 0 and hasattr(game, 'roles') and game.roles:
             role_names = [r.name for r in game.roles]
@@ -152,7 +157,11 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
     save_local_log(counts, total, game_type, player_count, balance_version)
     await upload_batch_data(tuning, game_results, counts, batch_role_counts, game_type, player_count, balance_version, run_timestamp,
                             tune_town_smart, tune_intuition_base, tune_mafia_smart, tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID)
+    
+    
+    
     return batch_history
+
 
 def save_local_log(counts, total, game_type, player_count, version):
     os.makedirs(LOG_FILE_PATH, exist_ok=True)
@@ -254,7 +263,7 @@ if __name__ == "__main__":
     parser.add_argument('--mob-ratio', type=int, default=3)
     parser.add_argument('--tuning', action='store_true') # Parameter to detemrine if running sims for parameter tuning or balancing
     parser.add_argument('--tune_town_smart', type=float, default=config.PROBABILITY_TOWN_SMART)
-    parser.add_argument('--tune_intuition_base', type=float, default=config.BASE_INTUTION)
+    parser.add_argument('--tune_intuition_base', type=float, default=config.BASE_INTUITION)
     parser.add_argument('--tune_mafia_smart', type=float, default=config.PROBABILITY_MAFIA_SMART)
     parser.add_argument('--tune_hard_bandwagon', type=float, default=config.PROBABILITY_HARD_BANDWAGON)
     parser.add_argument('--tune_soft_bandwagon', type=float, default=config.PROBABILITY_SOFT_BANDWAGON)
