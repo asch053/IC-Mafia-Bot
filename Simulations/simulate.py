@@ -94,9 +94,7 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
             role_names = [r.name for r in game.roles]
             batch_role_counts = Counter(role_names)
         
-        # Clean up
-        del game
-        gc.collect()
+        
 
         # --- 1. CAPTURE LISTS ---
         def get_role_list(pid_set):
@@ -109,6 +107,8 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
         net_str = get_role_list(game.knowledge.get('town_network', []))
         mafia_str = get_role_list(game.knowledge.get('known_mafia', []))
         plain_str = get_role_list(game.knowledge.get('known_plain_town', []))
+
+
 
         # --- 2. CAPTURE DEATH PHASES ---
         # Helper to safely get death phase or empty string if alive/not in game
@@ -156,10 +156,14 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
     total = len(winners)
     print(f"🏆 P{player_count} Results: Last Phase: {last_phase} [{phases}] | Town: {counts['Town']} | Mafia: {counts['Mafia']} | SK: {counts['Serial Killer']} | Draws: {counts['Draw']}")
     
+
     save_local_log(counts, total, game_type, player_count, balance_version)
     await upload_batch_data(tuning, game_results, counts, batch_role_counts, game_type, player_count, balance_version, run_timestamp,
                             tune_town_smart, tune_intuition_base, tune_mafia_smart, tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID)
-    
+
+   # Clean up
+    del game
+    gc.collect() 
     
     
     return batch_history
