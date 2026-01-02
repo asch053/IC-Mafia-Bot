@@ -88,13 +88,15 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
         winners.append(winner)
         # Capture History
         batch_history[i+1] = game.simulation_history
-        # Clean up
-        del game
-        gc.collect()
+        
         # Capture Setup (First Run)
         if i == 0 and hasattr(game, 'roles') and game.roles:
             role_names = [r.name for r in game.roles]
             batch_role_counts = Counter(role_names)
+        
+        # Clean up
+        del game
+        gc.collect()
 
         # --- 1. CAPTURE LISTS ---
         def get_role_list(pid_set):
