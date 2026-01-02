@@ -392,7 +392,7 @@ class HeadlessGame(Game):
     def __init__(self, game_type="classic", simnum=None, balance_version="default", gf_investigate=False, doc_player_count=config.min_doctor_players, 
                             cop_player_count=config.min_cop_players, trb_player_count=config.min_town_rb_players, sk_player_count=config.min_sk_players, 
                             mrb_player_count=config.min_mob_rb_mafia_count, mob_ratio=4,
-                            tune_town_smart=config.PROBABILITY_TOWN_SMART, tune_intuition_base=config.BASE_INTUTION, tune_mafia_smart=config.PROBABILITY_MAFIA_SMART,
+                            tune_town_smart=config.PROBABILITY_TOWN_SMART, tune_intuition_base=config.BASE_INTUITION, tune_mafia_smart=config.PROBABILITY_MAFIA_SMART,
                             tune_hard_bandwagon=config.PROBABILITY_HARD_BANDWAGON,tune_soft_bandwagon=config.PROBABILITY_SOFT_BANDWAGON,tune_curious_bandwagon=config.PROBABILITY_CURIOUS_BANDWAGON):
         mock_bot = MagicMock()
         mock_bot.get_channel.return_value = AsyncMock()
