@@ -23,7 +23,7 @@ MAX_MISSED_VOTES = 1 # Player is killed after missing 1 vote
 
 # --- Statistics Tracking Settings ---
 TUNING_GOOGLE_SHEET_ID = "1P4TOTiU_EQHxYnKcuV9sGFddql1XWIiEaXCeZbE02DI"
-SIMUALTION_GOOGLE_SHEET_ID = "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
+SIMUALTION_GOOGLE_SHEET_ID = "1pKufBdummCZ53TLhizXnHSq6Tdzk3qpzlfkSXwCnhQk"
 
 # --- Google Sheets Configuration ---
 GOOGLE_CREDENTIALS_FILE = "ic-mafia-bot-41a41f61e757.json"
@@ -56,8 +56,8 @@ PROBABILITY_MAFIA_SMART = 0.1           # Chance that Mafia can work out town ne
 PROBABILITY_TOWN_SMART = 0.6            # Chance that Town will join Bandwagons
 BASE_INTUITION= 0.8                     # Base Percentage chance that a plain town could work out a mafia member based on chat and deduction
 
-PROBABILITY_HARD_BANDWAGON = 0.8        # Chance that Town will join the biggest bandwagon when no known Mafia members are available
-PROBABILITY_SOFT_BANDWAGON = 0.4        # Chance that Town will join a soft bandwagon 
+PROBABILITY_HARD_BANDWAGON = 0.6        # Chance that Town will join the biggest bandwagon when no known Mafia members are available
+PROBABILITY_SOFT_BANDWAGON = 0.6        # Chance that Town will join a soft bandwagon 
 PROBABILITY_CURIOUS_BANDWAGON = 0.1     # Chance that Town will join a curious bandwagon 
 
 

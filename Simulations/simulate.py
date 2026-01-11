@@ -30,6 +30,7 @@ async def run_suite(game_type, SIMULATION_COUNT, balance_version, gf_investigate
                     sk_player_count, mrb_player_count, mob_ratio, tuning, tune_town_smart, tune_intuition_base, tune_mafia_smart, 
                     tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID=SIM_SHEET_ID):
     # if tuning then load DOE parameters from Json file
+    print(f"Tuning Mode: {tuning}")
     if tuning:
         SIM_SHEET_ID = config.TUNING_GOOGLE_SHEET_ID
         doe_file = os.path.join(current_dir, "DOE Generation", "mafia_doe_scenarios.json")
@@ -55,7 +56,7 @@ async def run_suite(game_type, SIMULATION_COUNT, balance_version, gf_investigate
     else:
         print(f"🏎️  Starting Suite: {len(PLAYER_COUNTS)} batches x {SIMULATION_COUNT} games.") 
         for count in PLAYER_COUNTS:
-            print(f"🔄  Running {count} Players...")
+            print(f"🔄  Running {count} Players...\n Sim Sheet ID == {SIM_SHEET_ID}")
             batch_history = await run_batch(game_type, SIMULATION_COUNT, count, balance_version, gf_investigate, doc_player_count, cop_player_count, trb_player_count, 
                             sk_player_count, mrb_player_count, mob_ratio, tuning, tune_town_smart, tune_intuition_base, tune_mafia_smart, 
                             tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID)
@@ -127,7 +128,6 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
         num_players = len(game.players)
         scenario_type = "Small" if num_players < 13 else "Medium" if num_players < 18 else "Large"
         # if tuning, capture minimal data
-        tuning = True
         if tuning == True:
             game_results.append([
                 game_id,            
@@ -235,14 +235,12 @@ async def upload_batch_data(tuning, game_rows, counts, role_counts, game_type, p
             ws_ver = sheet.worksheet("Balance Versions")
         except:
             ws_ver = sheet.add_worksheet(title="Balance Versions", rows=1000, cols=10)
-            ws_ver.append_row(["Balance Version", "Run Datetime", "Game Type", "Players", "Total Runs", "Town Win %", "Mafia Win %", "SK Win %", "Draw %",
-                               "Probability Town Smart", "Base Intuition", "Probability Mafia Smart", "Probability Hard Bandwagon", "Probability Soft Bandwagon", "Probability Curious Bandwagon"])
+            ws_ver.append_row(["Balance Version", "Run Datetime", "Game Type", "Players", "Total Runs", "Town Win %", "Mafia Win %", "SK Win %", "Draw %"])
         
         total = sum(counts.values())
         ws_ver.append_row([
             balance_version, timestamp, game_type, player_count, total,
-            counts['Town']/total, counts['Mafia']/total, counts['Serial Killer']/total, counts['Draw']/total, 
-            tune_town_smart, tune_intuition_base, tune_mafia_smart, tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon
+            counts['Town']/total, counts['Mafia']/total, counts['Serial Killer']/total, counts['Draw']/total
         ])
 
         # 3. SETUPS TAB
