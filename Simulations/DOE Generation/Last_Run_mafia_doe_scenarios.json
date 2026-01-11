@@ -1,0 +1,125 @@
+[
+
+    {
+        "Scenario_ID": "Scenario_54",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.6,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.4,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_55",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.6,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_56",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.6,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_57",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.6,
+            "PROBABILITY_SOFT_BANDWAGON": 0.4,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_58",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.6,
+            "PROBABILITY_SOFT_BANDWAGON": 0.4,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_59",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.6,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_60",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.6,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_61",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.4,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_62",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.4,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_63",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    },
+    {
+        "Scenario_ID": "Scenario_64",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.4,
+            "PROBABILITY_TOWN_SMART": 0.6,
+            "BASE_INTUITION": 0.8,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.4
+        }
+    }
+    
+]

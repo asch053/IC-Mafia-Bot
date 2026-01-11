@@ -3,12 +3,12 @@ import itertools
 
 # Define the Factors and Levels
 factors = {
-    "Factor_A_Mafia_Smart": [0.1, 0.4],
-    "Factor_B_Town_Smart": [0.4, 0.6],
-    "Factor_C_Base_Intuition": [0.6, 0.8],
-    "Factor_D_Hard_Bandwagon": [0.6, 0.8],
-    "Factor_E_Soft_Bandwagon": [0.4, 0.6],
-    "Factor_F_Curious_Bandwagon": [0.1, 0.4]
+    "Factor_A_Mafia_Smart": [0.1, 0.2],
+    "Factor_B_Town_Smart": [0.6,0.6],
+    "Factor_C_Base_Intuition": [0.65, 0.75],
+    "Factor_D_Hard_Bandwagon": [0.65, 0.75],
+    "Factor_E_Soft_Bandwagon": [0.45, 0.55],
+    "Factor_F_Curious_Bandwagon": [0.1, 0.1]
 }
 
 # Generate all combinations (Cartesian product)

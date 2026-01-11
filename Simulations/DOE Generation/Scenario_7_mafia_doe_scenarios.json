@@ -1,0 +1,12 @@
+[{
+        "Scenario_ID": "Scenario_07",
+        "Parameters": {
+            "PROBABILITY_MAFIA_SMART": 0.1,
+            "PROBABILITY_TOWN_SMART": 0.4,
+            "BASE_INTUITION": 0.6,
+            "PROBABILITY_HARD_BANDWAGON": 0.8,
+            "PROBABILITY_SOFT_BANDWAGON": 0.6,
+            "PROBABILITY_CURIOUS_BANDWAGON": 0.1
+        }
+    }
+]

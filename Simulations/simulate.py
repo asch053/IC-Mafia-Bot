@@ -24,9 +24,11 @@ SIMULATION_COUNT = 1000  # Number of games to simulate per player count
 LOG_FILE_PATH = os.path.join(current_dir, f"{config.data_save_path}")
 PLAYER_COUNTS = config.PLAYER_COUNTS_TO_SIMULATE
 
+
+
 async def run_suite(game_type, SIMULATION_COUNT, balance_version, gf_investigate, doc_player_count, cop_player_count, trb_player_count, 
                     sk_player_count, mrb_player_count, mob_ratio, tuning, tune_town_smart, tune_intuition_base, tune_mafia_smart, 
-                    tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon,SIM_SHEET_ID=SIM_SHEET_ID):
+                    tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID=SIM_SHEET_ID):
     # if tuning then load DOE parameters from Json file
     if tuning:
         SIM_SHEET_ID = config.TUNING_GOOGLE_SHEET_ID
@@ -63,7 +65,7 @@ async def run_suite(game_type, SIMULATION_COUNT, balance_version, gf_investigate
             with open(history_file, "w") as f:
                 json.dump(batch_history, f, indent=2)
             print(f"📜 Batch simulation history for {count} players saved to {history_file}")
-        
+            del batch_history
     print(f"\n✅ SUITE COMPLETE!")
 
 async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, gf_investigate, doc_player_count, cop_player_count, trb_player_count, 
@@ -94,8 +96,6 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
             role_names = [r.name for r in game.roles]
             batch_role_counts = Counter(role_names)
         
-        
-
         # --- 1. CAPTURE LISTS ---
         def get_role_list(pid_set):
             roles = []
@@ -103,24 +103,22 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
                 p = game.players.get(pid)
                 if p and p.role: roles.append(p.role.name)
             return ", ".join(sorted(roles))
-
-        net_str = get_role_list(game.knowledge.get('town_network', []))
-        mafia_str = get_role_list(game.knowledge.get('known_mafia', []))
-        plain_str = get_role_list(game.knowledge.get('known_plain_town', []))
-
-
+        if not tuning: 
+            net_str = get_role_list(game.knowledge.get('town_network', []))
+            mafia_str = get_role_list(game.knowledge.get('known_mafia', []))
+            plain_str = get_role_list(game.knowledge.get('known_plain_town', []))
 
         # --- 2. CAPTURE DEATH PHASES ---
         # Helper to safely get death phase or empty string if alive/not in game
         def get_death(role_name):
             return game.vip_death_phases.get(role_name, "")
-
-        cop_death = get_death("Town Cop")
-        doc_death = get_death("Town Doctor")
-        trb_death = get_death("Town Role Blocker")
-        gf_death  = get_death("Godfather")
-        mrb_death = get_death("Mob Role Blocker")
-        sk_death  = get_death("Serial Killer")
+        if not tuning:
+            cop_death = get_death("Town Cop")
+            doc_death = get_death("Town Doctor")
+            trb_death = get_death("Town Role Blocker")
+            gf_death  = get_death("Godfather")
+            mrb_death = get_death("Mob Role Blocker")
+            sk_death  = get_death("Serial Killer")
 
         # --- 3. BUILD ROW ---
         game_id = f"{balance_version}_{player_count}p_{i+1}"
@@ -128,50 +126,65 @@ async def run_batch(game_type, SIMULATION_COUNT, player_count, balance_version, 
         phases = game.game_settings['phase_number']
         num_players = len(game.players)
         scenario_type = "Small" if num_players < 13 else "Medium" if num_players < 18 else "Large"
-        game_results.append([
-            game_id,            
-            game_type,
-            last_phase,          
-            phases,
-            num_players, 
-            scenario_type,            
-            winner,             
-            balance_version,
-            net_str,    # Town Network
-            mafia_str,  # Known Mafia
-            plain_str,  # Known Plain Town
-            cop_death,  # Phase Town Cop Death
-            doc_death,  # Phase Town Doc Death
-            trb_death,  # Phase Town RB Death
-            gf_death,   # Phase Mob GF Death
-            mrb_death,  # Phase Mob RB Death
-            sk_death    # Phase SK Death
-        ])
-        
+        # if tuning, capture minimal data
+        tuning = True
+        if tuning == True:
+            game_results.append([
+                game_id,            
+                game_type,
+                last_phase,          
+                phases,
+                num_players, 
+                scenario_type,            
+                winner,             
+                balance_version
+            ])
+        else:
+            game_results.append([
+                game_id,            
+                game_type,
+                last_phase,          
+                phases,
+                num_players, 
+                scenario_type,            
+                winner,             
+                balance_version,
+                net_str,    # Town Network
+                mafia_str,  # Known Mafia
+                plain_str,  # Known Plain Town
+                cop_death,  # Phase Town Cop Death
+                doc_death,  # Phase Town Doc Death
+                trb_death,  # Phase Town RB Death
+                gf_death,   # Phase Mob GF Death
+                mrb_death,  # Phase Mob RB Death
+                sk_death    # Phase SK Death
+            ])
+            
         if (i+1) % 250 == 0:
             print(f"   ... {i+1}/{SIMULATION_COUNT}")
+        
+        # Clean up memory
+        await game.reset()
+        del game
+
+    # Clean up
+    gc.collect()
 
     # Stats & Upload
     counts = Counter(winners)
     total = len(winners)
     print(f"🏆 P{player_count} Results: Last Phase: {last_phase} [{phases}] | Town: {counts['Town']} | Mafia: {counts['Mafia']} | SK: {counts['Serial Killer']} | Draws: {counts['Draw']}")
-    
 
     save_local_log(counts, total, game_type, player_count, balance_version)
     await upload_batch_data(tuning, game_results, counts, batch_role_counts, game_type, player_count, balance_version, run_timestamp,
                             tune_town_smart, tune_intuition_base, tune_mafia_smart, tune_hard_bandwagon, tune_soft_bandwagon, tune_curious_bandwagon, SIM_SHEET_ID)
-
-   # Clean up
-    del game
-    gc.collect() 
-    
     
     return batch_history
 
 
 def save_local_log(counts, total, game_type, player_count, version):
     os.makedirs(LOG_FILE_PATH, exist_ok=True)
-    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S").replace(":", "-").replace(" ", "_")
     town_pct = (counts['Town'] / total) * 100
     mafia_pct = (counts['Mafia'] / total) * 100
     sk_pct = (counts['Serial Killer'] / total) * 100
@@ -183,6 +196,7 @@ def save_local_log(counts, total, game_type, player_count, version):
         f"Mafia: {counts['Mafia']} ({mafia_pct:.1f}%) | "
         f"SK: {counts['Serial Killer']} ({sk_pct:.1f}%) | "
         f"Draws: {counts['Draw']}\n"
+        f"Version: {version}\n"
     )
     LOG_FILE_NAME = os.path.join(LOG_FILE_PATH, f"{timestamp}-simulation_history.log").replace(" ", "_")
     print(f"📝 Saving local log to {LOG_FILE_NAME}")
@@ -274,10 +288,14 @@ if __name__ == "__main__":
     parser.add_argument('--tune_hard_bandwagon', type=float, default=config.PROBABILITY_HARD_BANDWAGON)
     parser.add_argument('--tune_soft_bandwagon', type=float, default=config.PROBABILITY_SOFT_BANDWAGON)
     parser.add_argument('--tune_curious_bandwagon', type=float, default=config.PROBABILITY_CURIOUS_BANDWAGON)
-
+    parser.add_argument('--logging', action='store_true', help='Enable verbose game logging (Slows down simulation)')
 
     args = parser.parse_args()
-    
+
+    # 🔄 UPDATE CONFIG BASED ON ARGUMENT
+    config.LOGGING_ENABLED = args.logging
+    print(f"📝 Verbose Logging: {'ENABLED (Slow)' if config.LOGGING_ENABLED else 'DISABLED (Fast)'}")
+
     if not args.version:
         args.version = f"Suite_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}"
 

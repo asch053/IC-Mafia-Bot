@@ -60,3 +60,5 @@ PROBABILITY_HARD_BANDWAGON = 0.8        # Chance that Town will join the biggest
 PROBABILITY_SOFT_BANDWAGON = 0.4        # Chance that Town will join a soft bandwagon 
 PROBABILITY_CURIOUS_BANDWAGON = 0.1     # Chance that Town will join a curious bandwagon 
 
+
+LOGGING_ENABLED = False  # Enable verbose logging for simulations (slows down performance)

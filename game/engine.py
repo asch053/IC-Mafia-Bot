@@ -131,10 +131,10 @@ class Game:
         # Get spectator role mention
         # You need the role's ID from your config
         spectator_role_id = self.discord_role_data.get("spectator", {}).get("id", 0)
-        logger.critical(f"Spectator role ID: {spectator_role_id}")
+        logger.info(f"Spectator role ID: {spectator_role_id}")
         # Then, get the actual Role object from the server
         spectator_role = self.guild.get_role(spectator_role_id)
-        logger.critical(f"Spectator role object: {spectator_role}")
+        logger.info(f"Spectator role object: {spectator_role}")
         signup_channel_mention = f"<#{config.SIGN_UP_HERE_CHANNEL_ID}>" 
         start_time_str = start_datetime_obj.strftime('%Y-%m-%d %H:%M:%S UTC') # Format the start time as a string
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
@@ -302,7 +302,7 @@ class Game:
                 logger.error("No roles generated for the current player count. Aborting game preparation.") 
             await self.reset()
             return  
-        logger.critical(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
+        logger.info(f"Generated {len(self.game_roles)} roles for the game.\n List of roles: {self.game_roles}")
         # --- SAFETY CHECK: Ensure no roles failed to load ---
         if any(role is None for role in self.game_roles):
             error_msg = "CRITICAL ERROR: One or more roles failed to generate. Check setup_generator.py names against role_definition.json."
@@ -324,7 +324,7 @@ class Game:
             # Send the summary message and attach the file
             await rules_channel.send(summary_string, file=text_file)
         else:
-            logger.error("Could not find rules channel to post randomness test results.")
+            logger.warning("Could not find rules channel to post randomness test results.")
         # --- End of Test ---
         await self.assign_roles() #assign roles to players randomly
         logger.info(f"Assigned roles to {len(self.players)} players.")
@@ -375,7 +375,7 @@ class Game:
         game_type = self.game_settings['game_type']
         player_count = len(self.players)
         if player_count < config.min_players:
-            logger.critical(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
+            logger.warning(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
             self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
             self.bot.get_channel(config.TALKY_TALKY_CHANNEL_ID).send(f"Error: Could not generate a 'Classic' game for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
             self.game_settings['game_type'] = "battle_royale"
@@ -389,9 +389,10 @@ class Game:
                 f"Error: Could not generate a 'Classic' game for {player_count} players. "
                 f"Minimum is {config.min_players}."
             )
+            logger.critical(f"Could not generate roles for {player_count} players. Aborting game preparation.")
             self.reset()
             return
-        logger.critical(f"Generated role names: {role_names}")
+        logger.info(f"Generated role names: {role_names}")
         # Convert role names to GameRole objects
         self.game_roles = []
         self.game_roles = [get_role_instance(name) for name in role_names]
@@ -480,7 +481,7 @@ class Game:
                 logger.info("Checking win conditions after phase end.")
                 winner = self.check_win_conditions()
                 if winner:
-                    logger.critical(f"Win conditions met. Winner: {winner}")
+                    logger.info(f"Win conditions met. Winner: {winner}")
             # Construct the story (the narrator function now adds the header)
             logger.info("Constructing story from narration manager events...")
             # Send previous game phase events to the narration manager to build the story
@@ -653,7 +654,7 @@ class Game:
                 logger.info(f"Vote recorded: {voter_obj.display_name} -> {target_obj.display_name}")
                 return f"Your vote for **{self.get_player_by_name(target_name).display_name}** has been recorded."
             else:
-                logger.error(f"Could not find voting channel with ID: {config.VOTING_CHANNEL_ID}")
+                logger.warning(f"Could not find voting channel with ID: {config.VOTING_CHANNEL_ID}")
                 return("Vote recorded, but could not find the voting channel to post an update.")
 
 
@@ -730,7 +731,7 @@ class Game:
         lynched_players = [self.players.get(pid) for pid in lynched_player_ids if self.players.get(pid)] # Filter out any None values in case a player ID was not found.
         # If for some reason we have IDs but no player objects, stop.
         if not lynched_players:
-            logger.error("Could not find player objects for lynching, aborting tally.")
+            logger.warning("Could not find player objects for lynching, aborting tally.")
             self.narration_manager.add_event('no_lynch')
             return
         
@@ -958,7 +959,7 @@ class Game:
                         "You now have the ability to kill. Use `/kill player-name` in this DM."
                     )
                     asyncio.create_task(mafioso_to_promote.send_dm(self.bot, dm_message))
-                    logger.critical(f"PROMOTION: {mafioso_to_promote.display_name} now leads the Mafia.")
+                    logger.info(f"PROMOTION: {mafioso_to_promote.display_name} now leads the Mafia.")
             else:
                 logger.info("The Mafia has been wiped out. No one left to promote.")
                 return

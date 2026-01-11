@@ -37,7 +37,6 @@ root_config.PROBABILITY_SOFT_BANDWAGON = sim_config.PROBABILITY_SOFT_BANDWAGON
 root_config.PROBABILITY_CURIOUS_BANDWAGON = sim_config.PROBABILITY_CURIOUS_BANDWAGON
 
 
-
 # --- 📝 LOGGING SETUP ---
 # 1. Strip leading slashes to ensure it stays relative to the current directory
 relative_save_path = config.data_save_path.strip("/").strip("\\")
@@ -62,7 +61,7 @@ print(f"📂 Log Folder:    {LOG_FILE_PATH}")
 print(f"📝 Log File:      {LOG_FILE}")
 
 logger = logging.getLogger('discord')
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.CRITICAL)  # Only log critical issues from discord library
 
 # Clear old handlers to prevent duplicate logs
 if logger.hasHandlers():
@@ -411,6 +410,14 @@ class HeadlessGame(Game):
         self.balance_version = balance_version
         self.roles = []
 
+        # 🔄 DYNAMICALLY SET LOG LEVEL
+        # This ensures the --logging flag overrides any import-time defaults
+        sim_logger = logging.getLogger('discord')
+        if config.LOGGING_ENABLED:
+            sim_logger.setLevel(logging.INFO)  # Write everything (Slow)
+        else:
+            sim_logger.setLevel(logging.CRITICAL) # Write errors only (Fast)
+
         # Create dictonary of game setup parameters
         self.game_parameters = {
             'gf_investigate': gf_investigate,
@@ -581,6 +588,42 @@ class HeadlessGame(Game):
         # Clear attempts AFTER the loop is finished
         self.kill_attempts_on.clear()
         logger.info("Night deaths resolved.")
+
+    async def reset(self):
+        """
+        Resets the game state for a new simulation. This is a lightweight version
+        of the parent's reset, omitting Discord API calls for performance.
+        """
+        # 1. Clear all game state collections
+        self.players.clear()
+        self.lynch_votes.clear()
+        self.roles.clear()
+        self.night_actions.clear()
+        self.knowledge['town_network'].clear()
+        self.knowledge['known_plain_town'].clear()
+        self.knowledge['known_mafia'].clear()
+        self.game_history.clear()
+        self.simulation_history.clear()
+        self.vip_death_phases.clear()
+        self.night_outcomes.clear()
+        self.successful_saves.clear()
+        self.captured_investigation_results.clear()
+        self.heals_on_players.clear()
+        self.kill_attempts_on.clear()
+        self.blocked_players_this_night.clear()
+
+        # 2. Reset game settings to defaults
+        self.game_settings["current_phase"] = "setup"
+        self.game_settings["phase_number"] = 0
+        
+        # 3. Clear narration
+        self.narration_manager.clear()
+
+        # The loops are not started in HeadlessGame, so no need to stop them.
+        # No need to call super().reset() as we are intentionally replacing it.
+        # This is now a synchronous method since all operations are synchronous.
+        # We keep it async to match the parent's signature, avoiding errors.
+        await asyncio.sleep(0) # Yield control to the event loop briefly.
 
     # --- SIMULATION LOOP ---
     async def run_simulation(self):
