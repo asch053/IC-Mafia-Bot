@@ -75,7 +75,7 @@ class ExportCog(commands.Cog):
                 summ.get('game_type', 'classic'),
                 summ.get('start_date_utc'),
                 summ.get('end_date_utc'),
-                summ.get('total_phases'),
+                summ.get('total_days'),
                 summ.get('winning_faction')
             ])
 
@@ -89,7 +89,8 @@ class ExportCog(commands.Cog):
                     p.get('alignment'),
                     p.get('is_winner'),
                     p.get('death_phase'),
-                    p.get('death_cause')
+                    p.get('death_cause'),
+                    p.get('death_phase_number')
                 ])
 
             # 3. Votes Tab
