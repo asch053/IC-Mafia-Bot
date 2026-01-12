@@ -798,57 +798,44 @@ class Game:
     async def _resolve_night_deaths(self):
         """
         Final step of the night. Compares kill attempts against heals to determine
-        who dies, and generates the definitive kill/save narration events.
-        Checks if the killer is still alive before processing the kill.
+        who dies. Updated to handle multiple killers correctly.
         """
         logger.info("Resolving final night deaths...")
         phase_str = f"Night {self.game_settings['phase_number']}"
-
-        # Iterate through a copy of the items because we might modify player state within the loop
         for victim_id, killer_ids in list(self.kill_attempts_on.items()):
             victim_obj = self.players.get(victim_id)
-            if not victim_obj or not victim_obj.is_alive: # Skip if victim already died this phase
-                logger.warning(f"Victim {victim_id} is already dead or does not exist, skipping.")
+            if not victim_obj or not victim_obj.is_alive:
                 continue
-
-            # Get the primary killer (first one in the list for attribution)
-            killer_id = killer_ids[0]
-            killer_obj = self.players.get(killer_id)
-            if not killer_obj: # Safety check if killer object doesn't exist
-                logger.warning(f"Could not find killer object for ID {killer_id} targeting {victim_id}")
-                continue
-
-            # --- Check for Saves ---
+            # --- Check for Saves FIRST ---
+            # (Saves should still apply to the whole group of attackers)
             if victim_id in self.heals_on_players:
                 healer_id = self.heals_on_players[victim_id][0]
                 healer_obj = self.players.get(healer_id)
-                if healer_obj: # Ensure healer exists
-                    event_type = 'save_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'save'
-                    # Pass killer_obj for the narration event
-                    self.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=killer_obj)
-                    logger.info(f"{victim_obj.display_name} was saved by {healer_obj.display_name}.")
-                else:
-                    logger.warning(f"Could not find healer object for ID {healer_id} who saved {victim_id}")
-                # Even if healer object not found, the save prevents the kill. Continue to next victim.
+                # Use the first killer in the list for the narration "X saved Y from Z"
+                primary_killer = self.players.get(killer_ids[0])
+                event_type = 'save_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'save'
+                self.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=primary_killer)
                 continue
-
-            # --- Process Kill (Only if Not Saved) ---
-            
-            if killer_obj.is_alive:
-                # Killer is alive, process the kill
-                victim_obj.kill(phase_str, f"Killed by {killer_obj.role.name if killer_obj.role else 'Unknown'}")
-                logger.info(f"{victim_obj.display_name} has been killed by {killer_obj.display_name}.")
+            # --- Process Kill: Find a living killer ---
+            living_killer = None
+            for k_id in killer_ids:
+                potential_killer = self.players.get(k_id)
+                if potential_killer and potential_killer.is_alive:
+                    living_killer = potential_killer
+                    break # We found one! That's all we need.
+            if living_killer:
+                # At least one attacker is alive, Ordos (the victim) dies!
+                victim_obj.kill(phase_str, f"Killed by {living_killer.role.name if living_killer.role else 'Unknown'}")
                 self._handle_promotions(victim_obj)
                 event_type = 'kill_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'kill'
-                self.narration_manager.add_event(event_type, killer=killer_obj, victim=victim_obj)
-                logger.info(f"{victim_obj.display_name} was killed by {killer_obj.display_name}.")
+                self.narration_manager.add_event(event_type, killer=living_killer, victim=victim_obj)
+                logger.info(f"{victim_obj.display_name} was killed by {living_killer.display_name}.")
             else:
-                # Killer died earlier in this same resolution phase. Their kill fails.
+                # ALL killers died earlier in this resolution phase.
+                primary_killer = self.players.get(killer_ids[0])
                 event_type = 'kill_missed_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'failed_kill_killer_dead'
-                self.narration_manager.add_event(event_type, killer=killer_obj, victim=victim_obj)
-                logger.info(f"Kill attempt by {killer_obj.display_name} (now dead) on {victim_obj.display_name} failed.")
-
-        # Clear attempts AFTER the loop is finished
+                self.narration_manager.add_event(event_type, killer=primary_killer, victim=victim_obj)
+                logger.info(f"All kill attempts on {victim_obj.display_name} failed because all attackers are dead.")
         self.kill_attempts_on.clear()
         logger.info("Night deaths resolved.")
 
@@ -1058,6 +1045,7 @@ class Game:
                 "is_winner": player.is_winner,
                 "death_phase": player.death_info.get('phase'),
                 "death_cause": player.death_info.get('how'),
+                "death_phase_number": player.death_info.get('phase_number'),
                 "lynched_by_voters": player.death_info.get('voters') # From step 4
             })
         # 3. --- Lynch Data ---

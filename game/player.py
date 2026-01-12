@@ -43,7 +43,13 @@ class Player:
         """Marks the player as dead and records the details."""
         if self.is_alive:
             self.is_alive = False
-            self.death_info = {"phase": phase_str, "how": cause_of_death}
+            phase = str(phase_str.split()[0])  # Extract phase type (Day/Night)
+            phase_number = int(phase_str.split()[-1])  # Extract phase number from string
+            if phase == "Day" or phase == "Pre-night":
+                phase_number = phase_number * 2 
+            else:
+                phase_number = phase_number * 2 - 1 
+            self.death_info = {"phase": phase_str, "how": cause_of_death, "phase_number": phase_number}
             logger.info(f"Player {self.display_name} has died. Cause: {cause_of_death}")
 
     def can_perform_action(self, action_type: str) -> bool:

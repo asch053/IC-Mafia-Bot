@@ -240,7 +240,7 @@ class ExportCog(commands.Cog):
 
             # Update all 4 tabs
             await update_tab("Games", [
-                "Game_ID", "Game_Type", "Start_Time_UTC", "End_Time_UTC", "Total_Phases", "Winning_Faction"
+                "Game_ID", "Game_Type", "Start_Time_UTC", "End_Time_UTC", "Total_Days", "Winning_Faction"
             ], games_rows)
             
             await update_tab("Players", [
