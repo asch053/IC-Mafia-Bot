@@ -7,7 +7,7 @@ logger = logging.getLogger('discord')
 
 class GameRole:
     """The base class for all roles in the game."""
-    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None, investigate_result=None, is_night_immune=False, night_priority=99):
+    def __init__(self, name, alignment, description, short_description, abilities=None, uses=None, win_condition=None, investigation_immune=False ,investigate_result=None, is_night_immune=False, night_priority=99):
         self.name = name
         self.alignment = alignment
         self.description = description
@@ -18,6 +18,7 @@ class GameRole:
         self.investigation_result = investigate_result
         self.is_night_immune = is_night_immune
         self.night_priority = night_priority
+        self.investigation_immune = investigation_immune # Default, can be overridden
 
     def __str__(self):
         """String representation of the role is its name."""
@@ -101,6 +102,7 @@ def get_role_instance(role_name: str) -> GameRole | None:
         uses=role_data.get("uses"),
         win_condition=role_data.get("win_condition"),
         investigate_result=role_data.get("investigate_result"),
+        investigation_immune=role_data.get("ineveestigation_immune", True),
         is_night_immune=role_data.get("is_night_immune", False),
         night_priority=role_data.get("night_priority", 99)
     )

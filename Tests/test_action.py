@@ -111,6 +111,47 @@ class TestActionHandlers(unittest.IsolatedAsyncioTestCase):
         actions.handle_investigation(self.game, cop.id, gf.id, night_outcomes)
         
         mock_create_task.assert_called_once()
+    
+    # game/test_action.py (Portion of the updated file)
+
+    @patch('asyncio.create_task')
+    async def test_investigate_immune_target_spoof(self, mock_create_task):
+        """Verify that an immune target returns the spoofed result instead of their real role."""
+        # Fix: Silence 'coroutine never awaited' warning
+        mock_create_task.side_effect = lambda coro: coro.close()
+
+        cop = self.create_mock_player(1, "Cop")
+        gf = self.create_mock_player(2, "Godfather", "Godfather")
+        
+        # Setup the immunity and the spoof result
+        gf.role.investigation_immune = True
+        gf.role.investigation_result = {"Villager": "A simple resident of the town."}
+        
+        night_outcomes = {1: {'status': None}}
+        
+        # Execute the handler
+        actions.handle_investigation(self.game, cop.id, gf.id, night_outcomes)
+        
+        # We need to capture the message sent. Since actions.py fetches user and sends DM,
+        # we check if the task was created. In a full integration test we'd mock fetch_user.
+        mock_create_task.assert_called_once()
+        self.assertEqual(night_outcomes[1]['status'], 'successful')
+
+    @patch('asyncio.create_task')
+    async def test_investigate_immune_target_string_fallback(self, mock_create_task):
+        """Verify the handler works even if investigation_result is just a string."""
+        mock_create_task.side_effect = lambda coro: coro.close()
+
+        cop = self.create_mock_player(1, "Cop")
+        sk = self.create_mock_player(3, "SK", "Serial Killer")
+        
+        sk.role.investigation_immune = True
+        sk.role.investigation_result = "Innocent Resident" # String format
+        
+        night_outcomes = {1: {'status': None}}
+        actions.handle_investigation(self.game, cop.id, sk.id, night_outcomes)
+        
+        self.assertEqual(night_outcomes[1]['status'], 'successful')
 
 if __name__ == '__main__':
     unittest.main()

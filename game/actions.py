@@ -91,44 +91,51 @@ def handle_kill(game, killer_id, victim_id, night_outcomes):
 
 def handle_investigation(game, investigator_id, target_id, night_outcomes):
     """Determines investigation result and sends DM."""
+    # Check if the investigator's own action was cancelled
     investigator_action = night_outcomes.get(investigator_id)
     if investigator_action and investigator_action.get('status') == 'blocked':
         logger.info(f"Investigation by {investigator_id} failed because they were blocked.")
         return
-
+    # If the investigation was not blocked, then mark the investigator's action as successful
     if investigator_action:
         night_outcomes[investigator_id]['status'] = 'successful'
-
-    investigator = game.players.get(investigator_id)
-    target = game.players.get(target_id)
-    if not investigator or not target: return
-    
+    # Get player objects
+    investigator = game.players.get(investigator_id) # The investigator
+    target = game.players.get(target_id) # The target being investigated
+    if not investigator or not target: return 
+    # Check if investigator is alive
     if not investigator.is_alive: return
     # Check if investigator was killed this night
     if investigator_id in game.kill_attempts_on:
         logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
         return
-        
-    role_name_result = target.role.name if target.role else "Unknown"
-    short_desc_result = target.role.short_description if target.role else "No details."
-    
-    if target.role and target.role.investigation_result:
+    # Prepare investigation result 
+    # Check if target is investigation immune
+    if target.role and target.role.investigation_immune:
         result_data = target.role.investigation_result
+        if not result_data:
+            role_name_result = "Plain Townie"
+            short_desc_result = "Normal Member of town"
         try:
             # Handle both dict and string (just in case)
-            if isinstance(result_data, dict):
-                role_name_result, short_desc_result = list(result_data.items())[0]
+            if isinstance(result_data, dict): # Assume dict has one key-value pair
+                role_name_result, short_desc_result = list(result_data.items())[0] # Unpack first (and only) item
             else:
-                short_desc_result = str(result_data)
+                role_name_result = str(result_data) # Assume string
+                #short_desc_result = str(result_data) # Assume string
         except (IndexError, ValueError):
             logger.warning(f"Malformed investigation_result for role {target.role.name}")
-
+    else:
+        # Normal investigation
+        role_name_result = target.role.name if target.role else "Unknown" 
+        short_desc_result = target.role.short_description if target.role else "No details."
+    # Send the result to the investigator via DM
     result_message = (
         f"Your investigation of **{target.display_name}** reveals they are **{role_name_result}**."
         f"\n> *{short_desc_result}*"
     )
     logger.info(f"Sent investigation result: {result_message} to {investigator.display_name}")
-
+    # Send the DM asynchronously
     async def send_investigation_dm():
         try:
             user = await game.bot.fetch_user(investigator.id)
@@ -136,9 +143,9 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
             logger.info(f"Sent investigation result to {investigator.display_name}.")
         except Exception as e:
             logger.error(f"Failed to send investigation DM to {investigator.display_name}: {e}")
-
+    # Schedule the DM sending
     asyncio.create_task(send_investigation_dm())
-
+    # Log the investigation event for narration
     event_type = 'investigate_royale' if game.game_settings.get('game_type') == "battle_royale" else 'investigate'
     game.narration_manager.add_event(event_type, investigator=investigator, target=target)
     logger.info(f"{investigator.display_name} investigated {target.display_name}.")

@@ -30,6 +30,7 @@
         "description": "Chooses the Mafia's target each night.\nUse `/kill player-name` in this DM with the bot.\nA separate message will be sent with the identity of other Mafia members.\nYou win when the Mafia can no longer be eliminated.",
         "short_description": "Chooses the Mafia's target each night.",
         "abilities": { "kill": "Choose a player for the Mafia to kill." },
+        "investigate_immune": false,
         "investigate_result": { "Plain Townie": "Normal Member of town" },
         "is_night_immune": true,
         "night_priority": 3
@@ -53,6 +54,7 @@
         "short_description": "Kills one player each night.",
         "abilities": { "kill": "Choose a player to kill." },
         "win_condition": "Be the last player alive.",
+        "investigate_immune" : true,
         "investigate_result": { "Plain Townie": "Normal Member of town" },
         "is_night_immune": true,
         "night_priority": 3

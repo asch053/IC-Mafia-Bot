@@ -57,6 +57,10 @@ class Game:
             "current_phase": "setup", # Phases: setup, signup, preparation, night, day, finished
             "phase_number": 0,
             "phase_end_time": None,
+            "gf_investigate": True,  # Default
+            "sk_investigate": False, # Default
+            "gf_night_immune": True,  # Default
+            "sk_night_immune": True, # Default
             "phase_hours": 12, # Default
         }
         self.chat_log = [] # To store chat messages during the game FR-5.4: Advanced Data Logging
@@ -102,17 +106,19 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19):
+    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, max_players=21):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
         logger.debug("Setting up game settings.")
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
-        self.game_settings["game_type"] = game_type #set game type to the type of game being played
-        self.game_settings["game_started"] = True #set game_started to True
-        self.game_settings["start_time"] = start_datetime_obj #set start_time to the start time
-        self.game_settings["current_phase"] = "signup" #set current phase to signup
-        self.game_settings["phase_end_time"] = start_datetime_obj #set when the phase ends
-        self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
+        self.game_settings["game_type"] = game_type # Set game type to the type of game being played
+        self.game_settings["game_started"] = True # Set game_started to True
+        self.game_settings["start_time"] = start_datetime_obj # Set start_time to the start time
+        self.game_settings["current_phase"] = "signup" # Set current phase to signup
+        self.game_settings["phase_end_time"] = start_datetime_obj # Set when the phase ends
+        self.game_settings["phase_hours"] = phase_hours # Set phase hours as set within the game initialization
+        self.game_settings["gf_investigate"] = gf_investigate # Set Godfather immunity as set within the game initialization
+        self.game_settings["sk_investigate"] = sk_investigate # Set Serial Killer immunity as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         # Set all players to spectators
         #logger.info("Setting all players to spectators.")
@@ -139,8 +145,37 @@ class Game:
         # Send the announcement to the relevant channels
         await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(announcement) #send announcement to #announcement channel
         await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
+        await self.bot.get_channel(config.STORIES_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         # Create a different message for the rules and roles channel, including the standard rules text
-        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{self.rules_text}\n")
+        # Get the rules
+        rules = self.rules_text
+        # Add objective on win condition based on game type
+        if self.game_settings["game_type"] == "battle_royale":
+            rules += "11. **Objective:** Be the last player alive!"
+            rules += "\n12. **Night Phase:** Each night, with night have either a kill action or a block action. There are no teams in Battle Royale; everyone is out for themselves!"
+        else:
+            rules += "11. **Objective:** The Town must eliminate all Mafia members and the Serial Killer. The Mafia must outnumber the Town. The Serial Killer must be the last player standing."
+            rules += "\n12. **Night Phase:** Mafia members choose a player to kill. The Serial Killer also chooses a player to kill. Some Town roles may have night actions."
+        # add in details on if SK or GF are investigation immune
+        if not gf_investigate:
+            rules += "\n**Note:** The Godfather is *immune* to investigations."
+        else:
+            rules += "\n**Note:** The Godfather can be investigated normally."
+        if not sk_investigate:
+            rules += "\n**Note:** The Serial Killer is *immune* to investigations."
+        else:
+            rules += "\n**Note:** The Serial Killer can be investigated normally."
+        # Add details on SK and GF night death immunity
+        if self.game_settings["gf_night_immune"]:
+            rules += "\n**Note:** The Godfather is *immune* to night kills."
+        else:
+            rules += "\n**Note:** The Godfather can be killed at night."
+        if self.game_settings["sk_night_immune"]:
+            rules += "\n**Note:** The Serial Killer is *immune* to night kills."
+        else:
+            rules += "\n**Note:** The Serial Killer can be killed at night."
+        # Send the rules to the rules channel
+        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{rules}\n")
         logger.debug("Sign-up phase announcement sent to all channels.")
         # Start the sign-up monitoring loop
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
@@ -336,6 +371,7 @@ class Game:
         # --- 4. Get Role List ---
         logger.info("Generating dynamic role list...")
         game_type = self.game_settings['game_type']
+
         player_count = len(self.players)
         if player_count < config.min_players:
             logger.critical(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
@@ -358,6 +394,16 @@ class Game:
         # Convert role names to GameRole objects
         self.game_roles = []
         self.game_roles = [get_role_instance(name) for name in role_names]
+        # Overwrite investigation immunities based on game settings
+        for role in self.game_roles:
+            if role.name == "Godfather":
+                role.investigation_immune = not self.game_settings["gf_investigate"]
+                logger.info(f"Set Godfather investigation immunity to {role.investigation_immune} != {self.game_settings['gf_investigate']}")
+            elif role.name == "Serial Killer":
+                role.investigation_immune = not self.game_settings["sk_investigate"]
+                logger.info(f"Set Serial Killer investigation immunity to {role.investigation_immune} != {self.game_settings['sk_investigate']}")
+        logger.info("Game roles generated successfully.")
+        
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""

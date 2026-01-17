@@ -123,14 +123,26 @@ class GameCog(commands.Cog, name="GameCog"):
     @app_commands.describe(
         game_type="The type of Mafia game to start (e.g., Classic, Battle Royale).",
         phase_hours="The duration of each day/night phase in hours.",
-        start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC)."
+        start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC).",
+        gf_investigate_choice="Whether the Godfather is able to be investigated (yes/no).",
+        #sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no)."
     )
     @app_commands.choices(game_type=[
         app_commands.Choice(name="Classic", value="classic"),
         app_commands.Choice(name="Battle Royale", value="battle_royale")
     ])
+    @app_commands.choices(gf_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
+    #@app_commands.choices(sk_investigate_choice=[
+    #    app_commands.Choice(name="Yes", value="yes"),
+    #    app_commands.Choice(name="No", value="no")
+    #])
     @is_admin() # Decorator: This command can only be used by admins.
-    async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str):
+    async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str, gf_investigate_choice: str = "No", 
+                                 #sk_investigate_choice: str = "Yes"
+                                 ):
         """Command for admins to schedule a new game."""
         logger.info(f"'/mafiastart' command invoked by {interaction.user.name} with args: type={game_type}, hours={phase_hours}, start='{start_datetime}'.")
         # Prevent starting a game if one is already running
@@ -148,6 +160,10 @@ class GameCog(commands.Cog, name="GameCog"):
         if start_datetime_obj <= datetime.now(timezone.utc):
             await interaction.response.send_message("The start time must be in the future.", ephemeral=True)
             return
+        # Convert investigate choices to booleans
+        gf_investigate = (gf_investigate_choice.lower() == "yes")
+        #sk_investigate = (sk_investigate_choice.lower() == "yes")
+        sk_investigate = False
         # Acknowledge the command while the bot prepares the game announcement
         await interaction.response.defer(ephemeral=True)
         # Create a new Game instance and store it in the cog
@@ -156,7 +172,7 @@ class GameCog(commands.Cog, name="GameCog"):
         # Confirm to the admin that the game has been scheduled successfully
         await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
         # Call the game engine's start method to begin the sign-up phase
-        await self.game.start(game_type, start_datetime_obj, phase_hours)
+        await self.game.start(game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate)
 
     # --- Player Commands (Channel) ---
     @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")

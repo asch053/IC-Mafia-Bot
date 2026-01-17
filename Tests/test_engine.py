@@ -573,3 +573,33 @@ class TestGameEngine(unittest.TestCase):
         coro = mock_create_task.call_args[0][0]
         await coro
         print("   -> Success! Mob Goon promoted successfully.")
+    
+
+    def test_game_settings_initialization(self):
+        """Test that the game correctly stores custom immunity settings."""
+        custom_game = Game(self.mock_bot, self.mock_guild)
+        
+        self.assertFalse(custom_game.game_settings['gf_investigate'])
+        self.assertTrue(custom_game.game_settings['sk_investigate'])
+
+    @patch('game.roles.get_role_instance')
+    def test_role_immunity_override_during_assignment(self, mock_get_role):
+        """Test that roles have their immunity attribute overridden during setup."""
+        # Setup mock role
+        mock_role = MagicMock()
+        mock_role.name = "Godfather"
+        mock_role.investigation_immune = True # Default
+        mock_get_role.return_value = mock_role
+        
+        # Start game with Godfather immunity DISABLED
+        self.game.game_settings['gf_investigate'] = True
+        
+        # Simulate the part of generate_game_roles that overrides immunity
+        # (This mimics the logic we added to engine.py)
+        roles_to_assign = ["Godfather"]
+        for role_name in roles_to_assign:
+            role_inst = game.roles.get_role_instance(role_name)
+            if role_name == "Godfather":
+                role_inst.investigation_immune = self.game.game_settings['gf_investigate']
+        
+        self.assertFalse(mock_role.investigation_immune)

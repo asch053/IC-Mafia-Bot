@@ -35,6 +35,8 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
         player_count: The number of players in the game.
         game_type: The type of game (e.g., "Classic", "Battle Royale").
                    Currently, only "Classic" is dynamically generated.
+        gf_investigate_immune: Whether the Godfather is immune to investigation.
+        sk_investigate_immune: Whether the Serial Killer is immune to investigation.
 
     Returns:
         A list of strings, where each string is a role name.
