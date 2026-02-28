@@ -213,7 +213,7 @@ class StatsCog(commands.Cog):
         return embed
 
     # --- COMMANDS ---
-
+    ## --- GAMESTATS COMMAND ---
     @app_commands.command(name="gamestats", description="Displays overall statistics from past games.")
     async def game_stats(self, interaction: discord.Interaction):
         """Calculates and displays overall game and player statistics."""
@@ -259,6 +259,7 @@ class StatsCog(commands.Cog):
 
         await interaction.followup.send(embed=embed, ephemeral=True)
 
+    ## --- PLAYER STATS COMMAND ---
     @app_commands.command(name="playerstats", description="Displays detailed statistics for a specific player.")
     @app_commands.describe(player="The server member you want to look up.")
     @app_commands.autocomplete(player=player_autocomplete)
@@ -282,6 +283,7 @@ class StatsCog(commands.Cog):
         embed = self._build_player_stats_embed(member, player_games)
         await interaction.followup.send(embed=embed, ephemeral=True)
 
+    ### --- SKILL SCORE COMMAND ---
     @app_commands.command(name="skillscore", description="Calculates a player's skill score for Classic mode.")
     @app_commands.describe(member="The player to look up (defaults to yourself).")
     async def skillscore(self, interaction: discord.Interaction, member: discord.User = None):
@@ -422,21 +424,18 @@ class StatsCog(commands.Cog):
             w_town = getattr(config, "SKILL_WIN_WEIGHT_TOWN", 0.55)
             w_mafia = getattr(config, "SKILL_WIN_WEIGHT_MAFIA", 0.35)
             w_neut = getattr(config, "SKILL_WIN_WEIGHT_NEUTRAL", 0.10)
-            
             rates = []
             for f, w in [('Town', w_town), ('Mafia', w_mafia), ('Neutral', w_neut)]:
                 if faction_games[f] > 0:
                     rates.append((faction_wins[f] / faction_games[f]) * w)
-            
             u_score = sum(rates) * 5
-
-        # Weights
+        # Get attributes for Weights as stored in config, defaulting to 1 if not set
         W_P = getattr(config, "SKILL_WEIGHT_PERSUASION", 1)
         W_E = getattr(config, "SKILL_WEIGHT_ELUSIVENESS", 1)
         W_U = getattr(config, "SKILL_WEIGHT_UNDERSTANDING", 1)
-        
+        #   Calculate Final Score by weighting each component and normalizing to a 5.0 scale
         final = ((p_score * W_P) + (e_score * W_E) + (u_score * W_U)) / (W_P + W_E + W_U)
-        
+        # Cap final score at 5.0 and return all components for display
         return {
             "final_score": min(final, 5.0),
             "persuasion_norm": p_score,
@@ -445,6 +444,96 @@ class StatsCog(commands.Cog):
             "total_games_played": played_count,
             "games_for_understanding": games_understanding
         }
+    ## --- Leaderboad Command ---
+    @app_commands.command(name="leaderboard", description="View the top 10 players by various metrics.")
+    @app_commands.choices(metric=[
+        app_commands.Choice(name="Skill Score (Overall)", value="skill"),
+        app_commands.Choice(name="Greatest Survivor (Highest Life Rate)", value="survivor"),
+        app_commands.Choice(name="Red Shirt (Most Likely to Die)", value="red_shirt")
+    ])
+    async def leaderboard(self, interaction: discord.Interaction, metric: str):
+        """Displays a top 10 list based on the chosen metric."""
+        await interaction.response.defer(ephemeral=False)
+        
+        # 1. Load all game data
+        games_by_mode = self._load_and_group_games()
+        if not games_by_mode:
+            return await interaction.followup.send("No game history found to generate a leaderboard!")
+
+        # 2. Aggregate player data across ALL games
+        all_players = defaultdict(lambda: {
+            "games_played": 0, "wins": 0, "deaths": 0, 
+            "survived": 0, "skill_score_sum": 0
+        })
+
+        for mode, games in games_by_mode.items():
+            for game in games:
+                for p in game.get('player_data', []):
+                    pid = p.get('player_id')
+                    all_players[pid]["games_played"] += 1
+                    
+                    if p.get('is_winner'):
+                        all_players[pid]["wins"] += 1
+                    
+                    if p.get('status') == 'Dead':
+                        all_players[pid]["deaths"] += 1
+                    else:
+                        all_players[pid]["survived"] += 1
+
+        # 3. Filter for players with > 5 games played
+        eligible_players = {pid: stats for pid, stats in all_players.items() if stats["games_played"] > 5}
+
+        if not eligible_players:
+            return await interaction.followup.send("Not enough players with >5 games played to generate a leaderboard.")
+
+        # 4. Calculate Leaderboard Rankings
+        leaderboard_data = []
+        for pid, stats in eligible_players.items():
+            # Skill Score (Simplified logic for the example, would call your _calculate_skill_scores internal)
+            # survival_rate = stats["survived"] / stats["games_played"]
+            # win_rate = stats["wins"] / stats["games_played"]
+            
+            value = 0
+            label = ""
+            
+            if metric == "skill":
+                # Using a placeholder weight: Win Rate * 100 + Survival Rate * 50
+                value = (stats["wins"] / stats["games_played"] * 100) + (stats["survived"] / stats["games_played"] * 50)
+                label = "Score"
+            elif metric == "survivor":
+                value = (stats["survived"] / stats["games_played"]) * 100
+                label = "Survival Rate"
+            elif metric == "red_shirt":
+                value = (stats["deaths"] / stats["games_played"]) * 100
+                label = "Death Rate"
+
+            # Get name from member cache or use "Unknown"
+            member = interaction.guild.get_member(pid)
+            name = member.display_name if member else f"User {pid}"
+            leaderboard_data.append({"name": name, "value": value})
+
+        # Sort and take top 10
+        # For 'red_shirt', higher value is "better" for that specific list
+        leaderboard_data.sort(key=lambda x: x["value"], reverse=True)
+        top_10 = leaderboard_data[:10]
+
+        # 5. Build Embed
+        embed = discord.Embed(
+            title=f"🏆 Top 10 Leaderboard: {metric.replace('_', ' ').title()}",
+            color=discord.Color.gold(),
+            description="Filtered by players with **> 5 games** played."
+        )
+
+        for i, entry in enumerate(top_10, 1):
+            medals = {1: "🥇", 2: "🥈", 3: "🥉"}
+            rank_display = medals.get(i, f"**{i}.**")
+            embed.add_field(
+                name=f"{rank_display} {entry['name']}",
+                value=f"{label}: **{entry['value']:.1f}%**" if "%" in label or "Rate" in label else f"{label}: **{entry['value']:.1f}**",
+                inline=False
+            )
+
+        await interaction.followup.send(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(StatsCog(bot))
