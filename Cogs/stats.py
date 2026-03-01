@@ -632,34 +632,30 @@ class StatsCog(commands.Cog):
         
         # Row 1: Participation
         # --- SPACER ---
-        embed.add_field(name="## **Participation** ##", value="", inline=False)
+        embed.add_field(name="", value="## **Participation** ##", inline=False)
         embed.add_field(name="Most Games Played", value=get_top('games'), inline=True)
         embed.add_field(name="Most Wins", value=get_top('wins'), inline=True)
         embed.add_field(name="Most Losses", value=get_top('losses'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="\u200b", inline=False)
-        embed.add_field(name="## **Faction Loyalty** ##", value="\u200b", inline=False)
+        embed.add_field(name="\u200b", value="## **Faction Loyalty** ##", inline=False)
         # Row 2: Faction Loyalty
         embed.add_field(name="Most Mafia Games", value=get_top('mob_games'), inline=True)
         embed.add_field(name="Most Town Games", value=get_top('town_games'), inline=True)
         embed.add_field(name="Most Neutral/SK Games", value=get_top('sk_games'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="\u200b", inline=False)
-        embed.add_field(name="## **Faction Success** ##", value="", inline=False)
+        embed.add_field(name="\u200b", value="## **Faction Success** ##", inline=False)
         # Row 3: Faction Success
         embed.add_field(name="Most Mafia Wins", value=get_top('mob_wins'), inline=True)
         embed.add_field(name="Most Town Wins", value=get_top('town_wins'), inline=True)
         embed.add_field(name="Most Neutral/SK Wins", value=get_top('neutral_wins'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="\u200b", inline=False)
-        embed.add_field(name="## **Roles & Tragedy** ##", value="", inline=False)
+        embed.add_field(name="\u200b", value="## **Roles & Tragedy** ##", value="", inline=False)
         # Row 4: Roles & Tragedy
         embed.add_field(name="Most Plain Townie", value=get_top('plain_town_games'), inline=True)
         embed.add_field(name="Most Lynched", value=get_top('lynches'), inline=True)
         embed.add_field(name="Most Day 1 Lynches", value=get_top('d1_lynches'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="\u200b", inline=False)
-        embed.add_field(name="## **Turn 1 Tragedy** ##", value="", inline=False)
+        embed.add_field(name="\u200b", value="## **Turn 1 Tragedy** ##", value="", inline=False)
         # Row 5: Night Tragedy
         embed.add_field(name="Most Night Deaths", value=get_top('night_deaths'), inline=True)
         embed.add_field(name="Most Night 1 Deaths", value=get_top('n1_deaths'), inline=True)
