@@ -101,13 +101,17 @@ class StatsCog(commands.Cog):
         return win_stats
 
     def _calculate_player_stats(self, games, mode):
-        """Calculates detailed per-player statistics."""
-        player_stats = defaultdict(lambda: {'played': Counter(), 'wins': Counter(), 'total_games': 0})
+        """Calculates detailed per-player statistics, grouped by ID."""
+        # FIX: Added 'name' to the default dictionary structure
+        player_stats = defaultdict(lambda: {'played': Counter(), 'wins': Counter(), 'total_games': 0, 'name': 'Unknown'})
         
         for game in games:
             for p_data in game.get('player_data', []):
                 # Skip invalid/test data
                 if mode == 'classic' and p_data.get('alignment') == 'Vigilante': continue
+                
+                pid = str(p_data.get('player_id'))
+                if not pid or pid == "None": continue # Safe-guard against corrupted IDs
                 
                 name = p_data.get('player_name', 'Unknown')
                 key = p_data.get('alignment')
@@ -117,10 +121,12 @@ class StatsCog(commands.Cog):
                 
                 if not key: continue
                 
-                player_stats[name]['total_games'] += 1
-                player_stats[name]['played'][key] += 1
+                # FIX: Group by ID, but continuously overwrite with the most recent name
+                player_stats[pid]['name'] = name 
+                player_stats[pid]['total_games'] += 1
+                player_stats[pid]['played'][key] += 1
                 if p_data.get('is_winner'):
-                    player_stats[name]['wins'][key] += 1
+                    player_stats[pid]['wins'][key] += 1
                     
         return player_stats
 
@@ -249,13 +255,10 @@ class StatsCog(commands.Cog):
             # Top Players
             p_stats = self._calculate_player_stats(games, mode)
             sorted_players = sorted(p_stats.items(), key=lambda x: x[1]['total_games'], reverse=True)
-            
             top_5 = []
-            for name, data in sorted_players[:5]:
-                top_5.append(f"**{name}**: {data['total_games']} games")
-            
-            if top_5:
-                embed.add_field(name=f"👥 Top {mode_name} Players", value="\n".join(top_5), inline=False)
+            for pid, data in sorted_players[:5]:  # FIX: Unpacking pid instead of name
+                # FIX: Pull the name from the dictionary's new 'name' property
+                top_5.append(f"**{data['name']}**: {data['total_games']} games")
 
         await interaction.followup.send(embed=embed, ephemeral=True)
 
@@ -463,7 +466,7 @@ class StatsCog(commands.Cog):
         # 2. Aggregate player data across ALL games
         all_players = defaultdict(lambda: {
             "games_played": 0, "wins": 0, "deaths": 0, 
-            "survived": 0, "skill_score_sum": 0
+            "survived": 0, "skill_score_sum": 0, "name": "Unknown" # <-- Add name here
         })
 
         for mode, games in games_by_mode.items():
@@ -471,10 +474,9 @@ class StatsCog(commands.Cog):
                 for p in game.get('player_data', []):
                     pid = p.get('player_id')
                     all_players[pid]["games_played"] += 1
-                    
+                    all_players[pid]["name"] = p.get('player_name', f"User {pid}") # <-- Store latest name                    
                     if p.get('is_winner'):
                         all_players[pid]["wins"] += 1
-                    
                     if p.get('status') == 'Dead':
                         all_players[pid]["deaths"] += 1
                     else:
@@ -507,9 +509,9 @@ class StatsCog(commands.Cog):
                 value = (stats["deaths"] / stats["games_played"]) * 100
                 label = "Death Rate"
 
-            # Get name from member cache or use "Unknown"
+            # Get name from member cache OR fall back to the last known game name!
             member = interaction.guild.get_member(pid)
-            name = member.display_name if member else f"User {pid}"
+            name = member.display_name if member else stats["name"]
             leaderboard_data.append({"name": name, "value": value})
 
         # Sort and take top 10
@@ -533,6 +535,126 @@ class StatsCog(commands.Cog):
                 inline=False
             )
 
+        await interaction.followup.send(embed=embed)
+
+    @app_commands.command(name="records", description="View the all-time Mafia records and top category holders (Classic only).")
+    async def records(self, interaction: discord.Interaction):
+        """Displays the top player for various game categories in Classic mode."""
+        await interaction.response.defer(ephemeral=False)
+        
+        # 1. Load games and isolate Classic mode
+        games_by_mode = self._load_and_group_games()
+        classic_games = games_by_mode.get('classic', [])
+        
+        if not classic_games:
+            return await interaction.followup.send("No Classic mode game history found!")
+
+        # 2. Initialize our massive stat tracker
+        stats = defaultdict(lambda: {
+            "name": "Unknown",
+            "games": 0, "wins": 0, "losses": 0,
+            "mob_games": 0, "town_games": 0, "plain_town_games": 0, "sk_games": 0,
+            "mob_wins": 0, "town_wins": 0, "neutral_wins": 0,
+            "night_deaths": 0, "n1_deaths": 0,
+            "lynches": 0, "d1_lynches": 0
+        })
+
+        # 3. Single-Pass Aggregation
+        for game in classic_games:
+            for p in game.get('player_data', []):
+                pid = str(p.get('player_id'))
+                if not pid or pid == "None": continue
+                
+                entry = stats[pid]
+                entry['name'] = p.get('player_name', entry['name']) # Continuously store latest name
+                
+                # Basic Stats
+                entry['games'] += 1
+                is_winner = p.get('is_winner', False)
+                if is_winner:
+                    entry['wins'] += 1
+                else:
+                    entry['losses'] += 1
+                    
+                # Alignments & Roles
+                alignment = p.get('alignment', '')
+                role = p.get('role', '')
+                
+                if alignment == 'Mafia':
+                    entry['mob_games'] += 1
+                    if is_winner: entry['mob_wins'] += 1
+                elif alignment == 'Town':
+                    entry['town_games'] += 1
+                    if is_winner: entry['town_wins'] += 1
+                elif alignment in ['Serial Killer', 'Jester', 'Neutral']:
+                    entry['sk_games'] += 1
+                    if is_winner: entry['neutral_wins'] += 1
+                    
+                if role == 'Plain Townie':
+                    entry['plain_town_games'] += 1
+                    
+                # Death Stats
+                death_phase = p.get('death_phase', '') or ''
+                death_cause = (p.get('death_cause', '') or '').lower()
+                
+                if death_phase.startswith('Night'):
+                    entry['night_deaths'] += 1
+                    if 'Night 1' in death_phase:
+                        entry['n1_deaths'] += 1
+                        
+                if 'lynch' in death_cause:
+                    entry['lynches'] += 1
+                    if 'Day 1' in death_phase:
+                        entry['d1_lynches'] += 1
+
+        # 4. Helper to find and format the absolute highest value(s) for a category
+        def get_top(category_key):
+            # Filter out people with 0 so we don't declare a 0-way tie if an event has never happened
+            eligible = {pid: data for pid, data in stats.items() if data[category_key] > 0}
+            if not eligible:
+                return "Nobody yet!"
+            
+            # Find the maximum mathematical value
+            max_val = max(data[category_key] for data in eligible.values())
+            # Grab the names of everyone who shares that maximum value
+            winners = [data['name'] for data in eligible.values() if data[category_key] == max_val]
+            
+            # Format nicely: "Panda, TheBigOne (5)"
+            names_str = ", ".join(winners)
+            return f"**{names_str}** ({max_val})"
+
+        # 5. Build the UI
+        embed = discord.Embed(
+            title="🏆 Hall of Records (Classic Mode)", 
+            description="The all-time greatest highs and lowest lows across all recorded Classic games.",
+            color=discord.Color.purple()
+        )
+        
+        # Row 1: Participation
+        embed.add_field(name="Most Games Played", value=get_top('games'), inline=True)
+        embed.add_field(name="Most Wins", value=get_top('wins'), inline=True)
+        embed.add_field(name="Most Losses", value=get_top('losses'), inline=True)
+        
+        # Row 2: Faction Loyalty
+        embed.add_field(name="Most Mafia Games", value=get_top('mob_games'), inline=True)
+        embed.add_field(name="Most Town Games", value=get_top('town_games'), inline=True)
+        embed.add_field(name="Most Neutral/SK Games", value=get_top('sk_games'), inline=True)
+        
+        # Row 3: Faction Success
+        embed.add_field(name="Most Mafia Wins", value=get_top('mob_wins'), inline=True)
+        embed.add_field(name="Most Town Wins", value=get_top('town_wins'), inline=True)
+        embed.add_field(name="Most Neutral/SK Wins", value=get_top('neutral_wins'), inline=True)
+
+        # Row 4: Roles & Tragedy
+        embed.add_field(name="Most Plain Townie", value=get_top('plain_town_games'), inline=True)
+        embed.add_field(name="Most Lynched", value=get_top('lynches'), inline=True)
+        embed.add_field(name="Most Day 1 Lynches", value=get_top('d1_lynches'), inline=True)
+
+        # Row 5: Night Tragedy
+        embed.add_field(name="Most Night Deaths", value=get_top('night_deaths'), inline=True)
+        embed.add_field(name="Most Night 1 Deaths", value=get_top('n1_deaths'), inline=True)
+        embed.add_field(name="\u200b", value="\u200b", inline=True) # Empty field to align the 3-column grid
+        
         await interaction.followup.send(embed=embed)
 
 async def setup(bot):
