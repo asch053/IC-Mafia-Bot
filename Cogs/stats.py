@@ -537,7 +537,7 @@ class StatsCog(commands.Cog):
 
         await interaction.followup.send(embed=embed)
 
-    @app_commands.command(name="Hall of Records", description="View the all-time Mafia records and top category holders (Classic only).")
+    @app_commands.command(name="Hall_of_Records", description="View the all-time Mafia records and top category holders (Classic only).")
     async def records(self, interaction: discord.Interaction):
         """Displays the top player for various game categories in Classic mode."""
         await interaction.response.defer(ephemeral=False)
