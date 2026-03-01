@@ -175,18 +175,18 @@ class ExportCog(commands.Cog):
 
             analytics_rows.append([
                 name,
-                f"{skill_data['final_score']:.2f}",
-                f"{skill_data['persuasion_norm']:.2f}",
-                f"{skill_data['elusiveness_norm']:.2f}",
-                f"{skill_data['understanding_norm']:.2f}",
-                data['games'],
-                f"{win_rate:.1f}",
-                f"{surv_rate:.1f}",
-                data['n1_deaths'],
-                data['d1_lynches'],
-                data['death_type_mafia'],
-                data['death_type_sk'],
-                data['death_type_lynch']
+                round(skill_data['final_score'], 2),
+                round(skill_data['persuasion_norm'], 2),
+                round(skill_data['elusiveness_norm'], 2),
+                round(skill_data['understanding_norm'], 2),
+                data['games'],        # Already an int, no change needed!
+                round(win_rate, 1),
+                round(surv_rate, 1),
+                data['n1_deaths'],    # Already an int
+                data['d1_lynches'],   # Already an int
+                data['death_type_mafia'], # Already an int
+                data['death_type_sk'],    # Already an int
+                data['death_type_lynch']  # Already an int
             ])
         
         # Sort by Skill Score Descending
