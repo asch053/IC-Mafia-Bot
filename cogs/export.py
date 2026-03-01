@@ -215,7 +215,7 @@ class ExportCog(commands.Cog):
         # PASS 2: Calculation & Formatting
         analytics_rows = []
         for pid_str, data in player_map.items():
-            skill_data = stats_cog._calculate_skill_scores(data['id'], classic_games)
+            skill_data = stats_cog._calculate_skill_scores(int(data['id']), classic_games)
             
             win_rate = (data['wins'] / data['games'] * 100) if data['games'] > 0 else 0
             surv_rate = (data['phases_lived'] / data['phases_possible'] * 100) if data['phases_possible'] > 0 else 0
