@@ -118,7 +118,9 @@ class InfoCog(commands.Cog, name="InfoCog"):
             "`/mafiaroles` - See roles in the current game (with alive/total counts).\n"
             "`/gamestats` - View statistics from all completed games.\n"
             "`/playerstats` - View any player's game statistics.\n"
-        #    "`/skillscore` - View your (or another player's) skill score."  -- Commented out until implemented
+            "`/skillscore` - View your (or another player's) skill score.\n" 
+            "`/hall_of_records` - View the all time mafia records and top category holders (classic only).\n"
+            "`/leaderboard` - View the current leaderboard rankings based on skill score, survival rate, or red shirt (death rate) (classic only).\n"
         )
         embed.add_field(name="Player Commands", value=player_commands, inline=False)
         # Define the text block for secret night action commands
@@ -135,7 +137,8 @@ class InfoCog(commands.Cog, name="InfoCog"):
             "`/mafiastop` - Forcibly end the current game.\n"
             "`/forcestart` - End sign-ups and start the game now.\n"
             "`/forcephaseend` - Forcibly end the current Day or Night phase.\n"
-            "`/mafiareinit` - (Debug) Rebuild player list from roles."
+            "`/mafiareinit` - (Debug) Rebuild player list from roles.\n"
+            "`/exportdata` - Export all game data to google sheets for use in website."
         )
         embed.add_field(name="Admin Commands", value=admin_commands, inline=False)
         # Send the embed as an ephemeral message
