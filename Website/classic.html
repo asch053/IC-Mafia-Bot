@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mafia Classic</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575; --red: #cf3838; --blue: #388acf; --gold: #ffd700; --green: #4caf50; --orange: #ff9800; --grey: #607d8b; --purp: #9c27b0; --input-bg: #2d2d2d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+        h1 { margin: 0; color: var(--red); }
+        .nav-link { color: var(--muted); text-decoration: none; font-weight: bold; font-size: 1.1rem; border: 1px solid #444; padding: 8px 16px; border-radius: 4px; transition: 0.2s; }
+        .nav-link:hover { color: white; border-color: var(--red); background: rgba(207, 56, 56, 0.1); }
+
+        .stats-bar { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+        .stat-box { background: #2a2a2a; border-left: 4px solid var(--gold); padding: 15px; flex: 1; min-width: 200px; border-radius: 4px; }
+        .sb-val { font-size: 1.8rem; font-weight: bold; color: white; margin: 5px 0; }
+        .sb-sub { font-size: 0.9rem; color: #aaa; }
+        .sb-title { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .card { background: var(--card); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 1000px) { .split-grid { grid-template-columns: 1fr; } }
+
+        .table-wrap { overflow-x: auto; max-height: 800px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { text-align: left; color: var(--muted); border-bottom: 1px solid #333; padding: 8px; cursor: pointer; white-space: nowrap; }
+        td { padding: 8px; border-bottom: 1px solid #2a2a2a; }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        
+        .filter-input { width: 90%; background: var(--input-bg); border: 1px solid #444; color: white; padding: 4px; border-radius: 3px; }
+        .skill-total { font-size: 1rem; font-weight: bold; color: var(--gold); }
+        .comp-score { font-size: 0.75rem; padding: 1px 4px; border-radius: 3px; margin-right: 3px; background: #333; display:inline-block; min-width: 35px; text-align:center;}
+        
+        #loader { text-align: center; margin-top: 50px; }
+        .spinner { border: 4px solid #333; border-top: 4px solid var(--red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-row">
+        <h1>📊 Mafia Classic</h1>
+        <a href="?page=battle_royale" class="nav-link">Go to Battle Royale &rarr;</a>
+    </div>
+
+    <div id="loader"><div class="spinner"></div><p>Calculating Moneyball Stats...</p></div>
+
+    <div id="app" style="display:none;">
+        <div class="stats-bar">
+            <div class="stat-box" style="border-color: var(--gold);">
+                <div class="sb-title">Total Games</div><div class="sb-val" id="c-total">0</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--blue);">
+                <div class="sb-title">Town Wins</div><div class="sb-val" id="c-town">0</div><div class="sb-sub" id="c-town-pct">0%</div>
+            </div>
+            <div class="stat-box" style="border-color: var(--red);">
+                <div class="sb-title">Mafia Wins</div><div class="sb-val" id="c-mafia">0</div><div class="sb-sub" id="c-mafia-pct">0%</div>
+            </div>
+             <div class="stat-box" style="border-color: var(--grey);">
+                <div class="sb-title">Draws/Other</div><div class="sb-val" id="c-draw">0</div><div class="sb-sub" id="c-draw-pct">0%</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>📈 Mafia History</h2>
+            <div style="height: 300px;"><canvas id="trendChart"></canvas></div>
+        </div>
+
+        <div class="split-grid">
+            <div class="card">
+                <h2>🧠 Player Skill Leaderboard</h2>
+                <div class="table-wrap">
+                    <table id="skillTable">
+                        <thead>
+                            <tr><th onclick="sort('skillTable',0)">#</th><th onclick="sort('skillTable',1)">Player</th><th onclick="sort('skillTable',2)">Skill</th><th>Breakdown</th></tr>
+                            <tr><th></th><th><input class="filter-input" onkeyup="filter('skillTable',1)"></th><th><input class="filter-input" onkeyup="filter('skillTable',2)"></th><th></th></tr>
+                        </thead>
+                        <tbody id="skillBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <h2>⚔️ Player Leaderboard</h2>
+                <div class="table-wrap">
+                    <table id="statsTable">
+                        <thead>
+                            <tr><th onclick="sort('statsTable',0)">#</th><th onclick="sort('statsTable',1)">Player</th><th onclick="sort('statsTable',2)">Games</th><th onclick="sort('statsTable',3)">Win%</th><th onclick="sort('statsTable',4)">Surv%</th><th>N1</th><th>D1</th></tr>
+                            <tr><th></th><th><input class="filter-input" onkeyup="filter('statsTable',1)"></th><th><input class="filter-input" onkeyup="filter('statsTable',2)"></th><th><input class="filter-input" onkeyup="filter('statsTable',3)"></th><th><input class="filter-input" onkeyup="filter('statsTable',4)"></th><th></th><th></th></tr>
+                        </thead>
+                        <tbody id="statsBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        google.script.run.withSuccessHandler(render).getDashboardData('classic');
+    };
+
+    function render(data) {
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        
+        const s = data.gameStats;
+        document.getElementById('c-total').innerText = s.Total;
+        document.getElementById('c-town').innerText = s.Town;
+        document.getElementById('c-town-pct').innerText = s.Total ? ((s.Town/s.Total)*100).toFixed(1)+"%" : "0%";
+        document.getElementById('c-mafia').innerText = s.Mafia;
+        document.getElementById('c-mafia-pct').innerText = s.Total ? ((s.Mafia/s.Total)*100).toFixed(1)+"%" : "0%";
+        document.getElementById('c-draw').innerText = s.Draw + s.Neutral;
+        document.getElementById('c-draw-pct').innerText = s.Total ? (((s.Draw+s.Neutral)/s.Total)*100).toFixed(1)+"%" : "0%";
+
+        new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: data.trend.map(d=>d.date),
+                datasets: [
+                    {label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true},
+                    {label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true},
+                    {label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true},
+                    {label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true}
+                ]
+            },
+            options: { responsive: true, maintainAspectRatio: false, scales: { y: { stacked: true, max: 100 }, x: { display: false } } }
+        });
+
+        const skillList = [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore));
+        const skillBody = document.getElementById('skillBody');
+        skillList.forEach((p,i) => {
+             let c = parseFloat(p.skillScore)>=4?'var(--gold)':(parseFloat(p.skillScore)>=2.5?'var(--green)':'var(--muted)');
+             skillBody.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)">${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)">${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)">${p.u_score}</span></td></tr>`;
+        });
+
+        const statsList = [...data.leaderboard].sort((a,b)=>b.games-a.games);
+        const statsBody = document.getElementById('statsBody');
+        statsList.forEach((p,i) => {
+             statsBody.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.winRate}%</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
+        });
+    }
+
+    function filter(tid, cidx) {
+        const trs = document.getElementById(tid).tBodies[0].rows;
+        const val = document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();
+        for(let tr of trs) {
+            let txt = (tr.cells[cidx].textContent||"").replace('%','');
+            let show = true;
+            if(val.startsWith('>')) { if(parseFloat(txt)<=parseFloat(val.substring(1))) show=false; }
+            else if(val.startsWith('<')) { if(parseFloat(txt)>=parseFloat(val.substring(1))) show=false; }
+            else { if(txt.toUpperCase().indexOf(val)===-1) show=false; }
+            tr.style.display = show?'':'none';
+        }
+    }
+    
+    function sort(tid, n) {
+        const tb = document.getElementById(tid).tBodies[0];
+        let rows = Array.from(tb.rows);
+        let asc = tb.getAttribute('data-asc') === 'true';
+        rows.sort((a,b) => {
+            let x = (a.cells[n].textContent||"").replace('%',''), y = (b.cells[n].textContent||"").replace('%','');
+            let xn = parseFloat(x), yn = parseFloat(y);
+            return (isNaN(xn)?x.localeCompare(y):xn-yn) * (asc?1:-1);
+        });
+        tb.setAttribute('data-asc', !asc);
+        rows.forEach(r => tb.appendChild(r));
+    }
+</script>
+</body>
+</html>
