@@ -23,6 +23,10 @@
         }
         .nav-btn:hover { color: white; }
         .nav-btn.active { color: white; border-bottom-color: var(--nav-active); }
+        
+        .nav-btn.special-link { color: var(--gold); }
+        .nav-btn.special-link:hover { color: white; border-bottom-color: var(--gold); }
+        .nav-btn.special-link.active { border-bottom-color: var(--gold); }
 
         /* Stats Bar */
         .stats-bar { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
@@ -45,6 +49,12 @@
         .skill-total { font-size: 1rem; font-weight: bold; color: var(--gold); }
         .comp-score { font-size: 0.75rem; padding: 1px 4px; border-radius: 3px; margin-right: 3px; background: #333; display:inline-block; min-width: 35px; text-align:center;}
         .win-badge { background: rgba(255, 215, 0, 0.15); color: var(--gold); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .rank-col { font-weight: bold; color: var(--orange); width: 40px; }
+
+        /* Dark Mode Select Dropdown */
+        .record-selector { width: 100%; background: var(--input-bg); color: white; border: 1px solid #444; padding: 12px; font-size: 16px; border-radius: 5px; margin-bottom: 20px; cursor: pointer; }
+        .record-selector optgroup { background: var(--bg); color: var(--muted); font-style: normal; font-weight: bold; }
+        .record-selector option { background: var(--input-bg); color: white; }
 
         #loader { text-align: center; margin-top: 50px; }
         .spinner { border: 4px solid #333; border-top: 4px solid var(--red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; }
@@ -56,11 +66,66 @@
 
 <div class="container">
     <nav class="nav-bar">
-        <button id="nav-classic" class="nav-btn active" onclick="switchMode('classic')">Mafia Classic</button>
+        <button id="nav-records" class="nav-btn special-link active" onclick="switchMode('records')">🏆 Hall of Records</button>
+        <button id="nav-classic" class="nav-btn" onclick="switchMode('classic')">Mafia Classic</button>
         <button id="nav-br" class="nav-btn" onclick="switchMode('battle_royale')">Battle Royale</button>
     </nav>
 
     <div id="loader"><div class="spinner"></div><p>Accessing Archives...</p></div>
+
+    <div id="view-records" class="hidden">
+        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="margin-bottom: 5px;">🏆 The Mafia Hall of Records</h2>
+            
+            <p style="color: var(--muted); margin-top: 0; margin-bottom: 20px; font-style: italic;">
+                *Statistics calculated from Classic Mode games only*
+            </p>
+
+            <select id="metricSelector" class="record-selector" onchange="renderRecordsTable()" style="text-align: left;">
+                <optgroup label="Competitive Ratings">
+                    <option value="skill">Top 10: Overall Skill Score</option>
+                    <option value="survivor">Greatest Survivor (Highest Survival %)</option>
+                    <option value="redshirt">Red Shirt (Highest Death Rate)</option>
+                    <option value="accuracy">Best Scumhunter (Highest Vote Accuracy %)</option>
+                </optgroup>
+                <optgroup label="Participation & Outcomes">
+                    <option value="games_played">Most Games Played</option>
+                    <option value="wins">Most Wins</option>
+                    <option value="losses">Most Losses</option>
+                </optgroup>
+                <optgroup label="Faction Loyalty">
+                    <option value="town_games">Most Town Games</option>
+                    <option value="mob_games">Most Mafia Games</option>
+                    <option value="sk_games">Most Neutral/SK Games</option>
+                    <option value="plain_town">Most Plain Townie</option>
+                </optgroup>
+                <optgroup label="Faction Success">
+                    <option value="town_wins">Most Town Wins</option>
+                    <option value="mob_wins">Most Mafia Wins</option>
+                    <option value="sk_wins">Most Neutral/SK Wins</option>
+                </optgroup>
+                <optgroup label="Tragedy & Death">
+                    <option value="lynched">Most Times Lynched</option>
+                    <option value="d1_lynched">Most Day 1 Lynches</option>
+                    <option value="night_deaths">Most Total Night Deaths</option>
+                    <option value="n1_deaths">Most Night 1 Deaths</option>
+                </optgroup>
+            </select>
+
+            <div class="table-wrap">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th id="recordsValueHeader">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
     <div id="view-classic" class="hidden">
         <div class="stats-bar">
@@ -87,18 +152,123 @@
 
 <script>
     let trendChart, brChart;
-    window.onload = function() { switchMode('classic'); };
+    let recordsData = []; // Holds the fetched Apps Script data for the Hall of Records
+
+    const metricsConfig = {
+        "skill": { header: "Skill Score", sortDesc: true, format: "float", label: "Skill Score" },
+        "survivor": { header: "Survival %", sortDesc: true, format: "percent", label: "Survival Rate" },
+        "redshirt": { header: "Survival %", sortDesc: false, format: "inverse_percent", label: "Death Rate" },
+        "accuracy": { header: "Vote Accuracy %", sortDesc: true, format: "percent", label: "Vote Accuracy" },
+        "games_played": { header: "Games Played", sortDesc: true, format: "int", label: "Games" },
+        "wins": { header: "Games Won", sortDesc: true, format: "int", label: "Wins" },
+        "losses": { header: "Losses", sortDesc: true, format: "int", label: "Losses" },
+        "town_games": { header: "Town Games", sortDesc: true, format: "int", label: "Games" },
+        "mob_games": { header: "Mafia Games", sortDesc: true, format: "int", label: "Games" },
+        "sk_games": { header: "Neutral/SK Games", sortDesc: true, format: "int", label: "Games" },
+        "plain_town": { header: "Plain Town Games", sortDesc: true, format: "int", label: "Games" },
+        "town_wins": { header: "Town Wins", sortDesc: true, format: "int", label: "Wins" },
+        "mob_wins": { header: "Mafia Wins", sortDesc: true, format: "int", label: "Wins" },
+        "sk_wins": { header: "Neutral/SK Wins", sortDesc: true, format: "int", label: "Wins" },
+        "lynched": { header: "Times Lynched", sortDesc: true, format: "int", label: "Lynches" },
+        "d1_lynched": { header: "D1 Lynches", sortDesc: true, format: "int", label: "Lynches" },
+        "night_deaths": { header: "Total Night Deaths", sortDesc: true, format: "int", label: "Deaths" },
+        "n1_deaths": { header: "N1 Deaths", sortDesc: true, format: "int", label: "Deaths" }
+    };
+
+    // Make 'records' the default page!
+    window.onload = function() { switchMode('records'); };
 
     function switchMode(mode) {
+        // 1. Manage Active Tabs
+        document.getElementById('nav-records').className = mode === 'records' ? 'nav-btn special-link active' : 'nav-btn special-link';
         document.getElementById('nav-classic').className = mode === 'classic' ? 'nav-btn active' : 'nav-btn';
         document.getElementById('nav-br').className = mode === 'battle_royale' ? 'nav-btn active' : 'nav-btn';
+        
+        // 2. Hide all views and show loader
+        document.getElementById('view-records').classList.add('hidden');
         document.getElementById('view-classic').classList.add('hidden');
         document.getElementById('view-br').classList.add('hidden');
         document.getElementById('loader').classList.remove('hidden');
         
-        google.script.run.withSuccessHandler((data) => render(mode, data)).getDashboardData(mode);
+        // 3. Fetch Data dynamically based on the requested tab
+        if (mode === 'records') {
+            if (recordsData.length > 0) {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('view-records').classList.remove('hidden');
+                renderRecordsTable();
+            } else {
+                google.script.run
+                .withFailureHandler((error) => {
+                    document.getElementById('loader').innerHTML = `<p style="color: #cf3838; font-weight: bold;">❌ Server Error: ${error.message}</p>`;
+                    console.error("GAS Error:", error);
+                })
+                .withSuccessHandler((data) => {
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('view-records').classList.remove('hidden');
+                    recordsData = data.filter(p => parseInt(p["Games Played"]) > 5);
+                    renderRecordsTable();
+                }).getLeaderboardData();
+            }
+        } else {
+            google.script.run.withSuccessHandler((data) => render(mode, data)).getDashboardData(mode);
+        }
     }
 
+    // Renders the specific Hall of Records dropdown table
+    function renderRecordsTable() {
+        const metricKey = document.getElementById("metricSelector").value;
+        const config = metricsConfig[metricKey];
+        
+        const tbody = document.getElementById("recordsBody");
+        const valueHeader = document.getElementById("recordsValueHeader");
+        tbody.innerHTML = ""; 
+        valueHeader.innerText = config.label;
+
+        let sortedPlayers = [...recordsData];
+
+        sortedPlayers.sort((a, b) => {
+            let valA = parseFloat(a[config.header]) || 0;
+            let valB = parseFloat(b[config.header]) || 0;
+            return config.sortDesc ? (valB - valA) : (valA - valB);
+        });
+
+        const top10 = sortedPlayers.slice(0, 10);
+
+        top10.forEach((player, index) => {
+            let tr = document.createElement("tr");
+            
+            let rankDisplay = index + 1;
+            if (rankDisplay === 1) rankDisplay = "🥇 1";
+            if (rankDisplay === 2) rankDisplay = "🥈 2";
+            if (rankDisplay === 3) rankDisplay = "🥉 3";
+
+            let rawValue = parseFloat(player[config.header]) || 0;
+            let displayValue = "";
+            
+            if (config.format === "score" || config.format === "float") {
+                displayValue = rawValue.toFixed(2);
+            } else if (config.format === "percent") {
+                displayValue = rawValue.toFixed(1) + "%";
+            } else if (config.format === "inverse_percent") {
+                displayValue = (100 - rawValue).toFixed(1) + "%";
+            } else if (config.format === "int") {
+                displayValue = Math.round(rawValue);
+            }
+
+            tr.innerHTML = `
+                <td class="rank-col">${rankDisplay}</td>
+                <td><strong style="color:white; font-size: 1.1em;">${player["Player Name"]}</strong> <br><small style="color:var(--muted);">${player["Games Played"]} total games</small></td>
+                <td style="font-weight: bold; font-size: 1.1em; color: var(--blue);">${displayValue}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (top10.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Not enough player data yet.</td></tr>`;
+        }
+    }
+
+    // Handles Classic & Battle Royale Views
     function render(mode, data) {
         document.getElementById('loader').classList.add('hidden');
         if (mode === 'classic') {

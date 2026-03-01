@@ -537,7 +537,7 @@ class StatsCog(commands.Cog):
 
         await interaction.followup.send(embed=embed)
 
-    @app_commands.command(name="records", description="View the all-time Mafia records and top category holders (Classic only).")
+    @app_commands.command(name="hall_of_records", description="View the all-time Mafia records and top category holders (Classic only).")
     async def records(self, interaction: discord.Interaction):
         """Displays the top player for various game categories in Classic mode."""
         await interaction.response.defer(ephemeral=False)
@@ -621,7 +621,7 @@ class StatsCog(commands.Cog):
             
             # Format nicely: "Panda, TheBigOne (5)"
             names_str = ", ".join(winners)
-            return f"**{names_str}** ({max_val})"
+            return f"*{names_str}* ({max_val})"
 
         # 5. Build the UI
         embed = discord.Embed(
@@ -631,25 +631,35 @@ class StatsCog(commands.Cog):
         )
         
         # Row 1: Participation
+        # --- SPACER ---
+        embed.add_field(name="Faction", value="**Participation**", inline=False)
         embed.add_field(name="Most Games Played", value=get_top('games'), inline=True)
         embed.add_field(name="Most Wins", value=get_top('wins'), inline=True)
         embed.add_field(name="Most Losses", value=get_top('losses'), inline=True)
-        
+        # --- SPACER ---
+        embed.add_field(name="\u200b", value="\u200b", inline=False)
+        embed.add_field(name="Faction", value="**Faction Loyalty**", inline=False)
         # Row 2: Faction Loyalty
         embed.add_field(name="Most Mafia Games", value=get_top('mob_games'), inline=True)
         embed.add_field(name="Most Town Games", value=get_top('town_games'), inline=True)
         embed.add_field(name="Most Neutral/SK Games", value=get_top('sk_games'), inline=True)
-        
+        # --- SPACER ---
+        embed.add_field(name="\u200b", value="\u200b", inline=False)
+        embed.add_field(name="success", value="**Faction Success**", inline=False)
         # Row 3: Faction Success
         embed.add_field(name="Most Mafia Wins", value=get_top('mob_wins'), inline=True)
         embed.add_field(name="Most Town Wins", value=get_top('town_wins'), inline=True)
         embed.add_field(name="Most Neutral/SK Wins", value=get_top('neutral_wins'), inline=True)
-
+        # --- SPACER ---
+        embed.add_field(name="\u200b", value="\u200b", inline=False)
+        embed.add_field(name="roles", value="**Roles & Tragedy**", inline=False)
         # Row 4: Roles & Tragedy
         embed.add_field(name="Most Plain Townie", value=get_top('plain_town_games'), inline=True)
         embed.add_field(name="Most Lynched", value=get_top('lynches'), inline=True)
         embed.add_field(name="Most Day 1 Lynches", value=get_top('d1_lynches'), inline=True)
-
+        # --- SPACER ---
+        embed.add_field(name="\u200b", value="\u200b", inline=False)
+        embed.add_field(name="turn1", value="**Turn 1 Tragedy**", inline=False)
         # Row 5: Night Tragedy
         embed.add_field(name="Most Night Deaths", value=get_top('night_deaths'), inline=True)
         embed.add_field(name="Most Night 1 Deaths", value=get_top('n1_deaths'), inline=True)
