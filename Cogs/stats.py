@@ -649,13 +649,13 @@ class StatsCog(commands.Cog):
         embed.add_field(name="Most Town Wins", value=get_top('town_wins'), inline=True)
         embed.add_field(name="Most Neutral/SK Wins", value=get_top('neutral_wins'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="## **Roles & Tragedy** ##", value="", inline=False)
+        embed.add_field(name="\u200b", value="## **Roles & Tragedy** ##", inline=False)
         # Row 4: Roles & Tragedy
         embed.add_field(name="Most Plain Townie", value=get_top('plain_town_games'), inline=True)
         embed.add_field(name="Most Lynched", value=get_top('lynches'), inline=True)
         embed.add_field(name="Most Day 1 Lynches", value=get_top('d1_lynches'), inline=True)
         # --- SPACER ---
-        embed.add_field(name="\u200b", value="## **Turn 1 Tragedy** ##", value="", inline=False)
+        embed.add_field(name="\u200b", value="## **Turn 1 Tragedy** ##",  inline=False)
         # Row 5: Night Tragedy
         embed.add_field(name="Most Night Deaths", value=get_top('night_deaths'), inline=True)
         embed.add_field(name="Most Night 1 Deaths", value=get_top('n1_deaths'), inline=True)
