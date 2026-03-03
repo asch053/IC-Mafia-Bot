@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mafia Analytics</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575;
+            --red: #cf3838; --blue: #388acf; --gold: #ffd700; --green: #4caf50;
+            --orange: #ff9800; --grey: #607d8b; --purp: #9c27b0; --input-bg: #2d2d2d;
+            --nav-active: #cf3838;
+        }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        /* Navigation */
+        .nav-bar { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #333; padding-bottom: 10px; }
+        .nav-btn {
+            background: transparent; border: none; color: var(--muted); 
+            font-size: 1.2rem; font-weight: bold; cursor: pointer; padding: 10px 20px;
+            transition: 0.3s; border-bottom: 3px solid transparent;
+        }
+        .nav-btn:hover { color: white; }
+        .nav-btn.active { color: white; border-bottom-color: var(--nav-active); }
+        
+        .nav-btn.special-link { color: var(--gold); }
+        .nav-btn.special-link:hover { color: white; border-bottom-color: var(--gold); }
+        .nav-btn.special-link.active { border-bottom-color: var(--gold); }
+
+        /* Stats Bar */
+        .stats-bar { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
+        .stat-box { background: #2a2a2a; border-left: 4px solid var(--gold); padding: 15px; flex: 1; min-width: 200px; border-radius: 4px; }
+        .sb-val { font-size: 1.8rem; font-weight: bold; color: white; margin: 5px 0; }
+        .sb-sub { font-size: 0.9rem; color: #aaa; }
+        .sb-title { color: var(--muted); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; }
+
+        .card { background: var(--card); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        @media (max-width: 1000px) { .split-grid { grid-template-columns: 1fr; } }
+
+        .table-wrap { overflow-x: auto; max-height: 800px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th { text-align: left; color: var(--muted); border-bottom: 1px solid #333; padding: 8px; cursor: pointer; white-space: nowrap; }
+        td { padding: 8px; border-bottom: 1px solid #2a2a2a; }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        
+        .filter-input { width: 90%; background: var(--input-bg); border: 1px solid #444; color: white; padding: 4px; border-radius: 3px; }
+        .skill-total { font-size: 1rem; font-weight: bold; color: var(--gold); }
+        .comp-score { font-size: 0.75rem; padding: 1px 4px; border-radius: 3px; margin-right: 3px; background: #333; display:inline-block; min-width: 35px; text-align:center;}
+        .win-badge { background: rgba(255, 215, 0, 0.15); color: var(--gold); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .rank-col { font-weight: bold; color: var(--orange); width: 40px; }
+
+        /* Dark Mode Select Dropdown */
+        .record-selector { width: 100%; background: var(--input-bg); color: white; border: 1px solid #444; padding: 12px; font-size: 16px; border-radius: 5px; margin-bottom: 20px; cursor: pointer; }
+        .record-selector optgroup { background: var(--bg); color: var(--muted); font-style: normal; font-weight: bold; }
+        .record-selector option { background: var(--input-bg); color: white; }
+
+        #loader { text-align: center; margin-top: 50px; }
+        .spinner { border: 4px solid #333; border-top: 4px solid var(--red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <nav class="nav-bar">
+        <button id="nav-records" class="nav-btn special-link active" onclick="switchMode('records')">🏆 Hall of Records</button>
+        <button id="nav-classic" class="nav-btn" onclick="switchMode('classic')">Mafia Classic</button>
+        <button id="nav-br" class="nav-btn" onclick="switchMode('battle_royale')">Battle Royale</button>
+    </nav>
+
+    <div id="loader"><div class="spinner"></div><p>Accessing Archives...</p></div>
+
+    <div id="view-records" class="hidden">
+        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
+            <h2 style="margin-bottom: 5px;">🏆 The Mafia Hall of Records</h2>
+            
+            <p style="color: var(--muted); margin-top: 0; margin-bottom: 20px; font-style: italic;">
+                *Statistics calculated from Classic Mode games only*
+            </p>
+
+            <select id="metricSelector" class="record-selector" onchange="renderRecordsTable()" style="text-align: left;">
+                <optgroup label="Competitive Ratings">
+                    <option value="skill">Top 10: Overall Skill Score</option>
+                    <option value="survivor">Greatest Survivor (Highest Survival %)</option>
+                    <option value="redshirt">Red Shirt (Highest Death Rate)</option>
+                    <option value="accuracy">Best Scumhunter (Highest Vote Accuracy %)</option>
+                </optgroup>
+                <optgroup label="Participation & Outcomes">
+                    <option value="games_played">Most Games Played</option>
+                    <option value="wins">Most Wins</option>
+                    <option value="losses">Most Losses</option>
+                </optgroup>
+                <optgroup label="Faction Loyalty">
+                    <option value="town_games">Most Town Games</option>
+                    <option value="mob_games">Most Mafia Games</option>
+                    <option value="sk_games">Most Neutral/SK Games</option>
+                    <option value="plain_town">Most Plain Townie</option>
+                </optgroup>
+                <optgroup label="Faction Success">
+                    <option value="town_wins">Most Town Wins</option>
+                    <option value="mob_wins">Most Mafia Wins</option>
+                    <option value="sk_wins">Most Neutral/SK Wins</option>
+                </optgroup>
+                <optgroup label="Tragedy & Death">
+                    <option value="lynched">Most Times Lynched</option>
+                    <option value="d1_lynched">Most Day 1 Lynches</option>
+                    <option value="night_deaths">Most Total Night Deaths</option>
+                    <option value="n1_deaths">Most Night 1 Deaths</option>
+                </optgroup>
+            </select>
+
+            <div class="table-wrap">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th id="recordsValueHeader">Score</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-classic" class="hidden">
+        <div class="stats-bar">
+            <div class="stat-box" style="border-color: var(--gold);"><div class="sb-title">Total Games</div><div class="sb-val" id="c-total">0</div></div>
+            <div class="stat-box" style="border-color: var(--blue);"><div class="sb-title">Town Wins</div><div class="sb-val" id="c-town">0</div><div class="sb-sub" id="c-town-pct">0%</div></div>
+            <div class="stat-box" style="border-color: var(--red);"><div class="sb-title">Mafia Wins</div><div class="sb-val" id="c-mafia">0</div><div class="sb-sub" id="c-mafia-pct">0%</div></div>
+            <div class="stat-box" style="border-color: var(--grey);"><div class="sb-title">Draws/Other</div><div class="sb-val" id="c-draw">0</div><div class="sb-sub" id="c-draw-pct">0%</div></div>
+        </div>
+        <div class="card"><h2>📈 Meta History</h2><div style="height: 300px;"><canvas id="trendChart"></canvas></div></div>
+        <div class="split-grid">
+            <div class="card"><h2>🧠 Skill Leaderboard</h2><div class="table-wrap"><table id="skillTable"><thead><tr><th onclick="sort('skillTable',0)">#</th><th onclick="sort('skillTable',1)">Player</th><th onclick="sort('skillTable',2)">Skill</th><th>Breakdown</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('skillTable',1)"></th><th><input class="filter-input" onkeyup="filter('skillTable',2)"></th><th></th></tr></thead><tbody id="skillBody"></tbody></table></div></div>
+            <div class="card"><h2>⚔️ Stats Leaderboard</h2><div class="table-wrap"><table id="statsTable"><thead><tr><th onclick="sort('statsTable',0)">#</th><th onclick="sort('statsTable',1)">Player</th><th onclick="sort('statsTable',2)">Games</th><th onclick="sort('statsTable',3)">Win%</th><th onclick="sort('statsTable',4)">Surv%</th><th>N1</th><th>D1</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('statsTable',1)"></th><th><input class="filter-input" onkeyup="filter('statsTable',2)"></th><th><input class="filter-input" onkeyup="filter('statsTable',3)"></th><th><input class="filter-input" onkeyup="filter('statsTable',4)"></th><th></th><th></th></tr></thead><tbody id="statsBody"></tbody></table></div></div>
+        </div>
+    </div>
+
+    <div id="view-br" class="hidden">
+        <div class="stats-bar">
+            <div class="stat-box" style="border-color: var(--red);"><div class="sb-title">Total BR Matches</div><div class="sb-val" id="br-total">0</div></div>
+        </div>
+        <div class="card"><h2>🏆 Hall of Champions</h2><div style="height: 350px;"><canvas id="brChart"></canvas></div></div>
+        <div class="card"><h2>⚔️ Combatant Statistics</h2><div class="table-wrap"><table id="brTable"><thead><tr><th onclick="sort('brTable',0)">Rank</th><th onclick="sort('brTable',1)">Player</th><th onclick="sort('brTable',2)">Wins</th><th onclick="sort('brTable',3)">Games</th><th onclick="sort('brTable',4)">Win%</th><th onclick="sort('brTable',5)">Surv%</th><th>N1</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('brTable',1)"></th><th><input class="filter-input" onkeyup="filter('brTable',2)"></th><th><input class="filter-input" onkeyup="filter('brTable',3)"></th><th></th><th></th><th></th></tr></thead><tbody id="brBody"></tbody></table></div></div>
+    </div>
+</div>
+
+<script>
+    let trendChart, brChart;
+    let recordsData = []; // Holds the fetched Apps Script data for the Hall of Records
+
+    const metricsConfig = {
+        "skill": { header: "Skill Score", sortDesc: true, format: "float", label: "Skill Score" },
+        "survivor": { header: "Survival %", sortDesc: true, format: "percent", label: "Survival Rate" },
+        "redshirt": { header: "Survival %", sortDesc: false, format: "inverse_percent", label: "Death Rate" },
+        "accuracy": { header: "Vote Accuracy %", sortDesc: true, format: "percent", label: "Vote Accuracy" },
+        "games_played": { header: "Games Played", sortDesc: true, format: "int", label: "Games" },
+        "wins": { header: "Games Won", sortDesc: true, format: "int", label: "Wins" },
+        "losses": { header: "Losses", sortDesc: true, format: "int", label: "Losses" },
+        "town_games": { header: "Town Games", sortDesc: true, format: "int", label: "Games" },
+        "mob_games": { header: "Mafia Games", sortDesc: true, format: "int", label: "Games" },
+        "sk_games": { header: "Neutral/SK Games", sortDesc: true, format: "int", label: "Games" },
+        "plain_town": { header: "Plain Town Games", sortDesc: true, format: "int", label: "Games" },
+        "town_wins": { header: "Town Wins", sortDesc: true, format: "int", label: "Wins" },
+        "mob_wins": { header: "Mafia Wins", sortDesc: true, format: "int", label: "Wins" },
+        "sk_wins": { header: "Neutral/SK Wins", sortDesc: true, format: "int", label: "Wins" },
+        "lynched": { header: "Times Lynched", sortDesc: true, format: "int", label: "Lynches" },
+        "d1_lynched": { header: "D1 Lynches", sortDesc: true, format: "int", label: "Lynches" },
+        "night_deaths": { header: "Total Night Deaths", sortDesc: true, format: "int", label: "Deaths" },
+        "n1_deaths": { header: "N1 Deaths", sortDesc: true, format: "int", label: "Deaths" }
+    };
+
+    // Make 'records' the default page!
+    window.onload = function() { switchMode('records'); };
+
+    function switchMode(mode) {
+        // 1. Manage Active Tabs
+        document.getElementById('nav-records').className = mode === 'records' ? 'nav-btn special-link active' : 'nav-btn special-link';
+        document.getElementById('nav-classic').className = mode === 'classic' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('nav-br').className = mode === 'battle_royale' ? 'nav-btn active' : 'nav-btn';
+        
+        // 2. Hide all views and show loader
+        document.getElementById('view-records').classList.add('hidden');
+        document.getElementById('view-classic').classList.add('hidden');
+        document.getElementById('view-br').classList.add('hidden');
+        document.getElementById('loader').classList.remove('hidden');
+        
+        // 3. Fetch Data dynamically based on the requested tab
+        if (mode === 'records') {
+            if (recordsData.length > 0) {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('view-records').classList.remove('hidden');
+                renderRecordsTable();
+            } else {
+                google.script.run
+                .withFailureHandler((error) => {
+                    document.getElementById('loader').innerHTML = `<p style="color: #cf3838; font-weight: bold;">❌ Server Error: ${error.message}</p>`;
+                    console.error("GAS Error:", error);
+                })
+                .withSuccessHandler((data) => {
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('view-records').classList.remove('hidden');
+                    recordsData = data.filter(p => parseInt(p["Games Played"]) > 5);
+                    renderRecordsTable();
+                }).getLeaderboardData();
+            }
+        } else {
+            google.script.run.withSuccessHandler((data) => render(mode, data)).getDashboardData(mode);
+        }
+    }
+
+    // Renders the specific Hall of Records dropdown table
+    function renderRecordsTable() {
+        const metricKey = document.getElementById("metricSelector").value;
+        const config = metricsConfig[metricKey];
+        
+        const tbody = document.getElementById("recordsBody");
+        const valueHeader = document.getElementById("recordsValueHeader");
+        tbody.innerHTML = ""; 
+        valueHeader.innerText = config.label;
+
+        let sortedPlayers = [...recordsData];
+
+        sortedPlayers.sort((a, b) => {
+            let valA = parseFloat(a[config.header]) || 0;
+            let valB = parseFloat(b[config.header]) || 0;
+            return config.sortDesc ? (valB - valA) : (valA - valB);
+        });
+
+        const top10 = sortedPlayers.slice(0, 10);
+
+        top10.forEach((player, index) => {
+            let tr = document.createElement("tr");
+            
+            let rankDisplay = index + 1;
+            if (rankDisplay === 1) rankDisplay = "🥇 1";
+            if (rankDisplay === 2) rankDisplay = "🥈 2";
+            if (rankDisplay === 3) rankDisplay = "🥉 3";
+
+            let rawValue = parseFloat(player[config.header]) || 0;
+            let displayValue = "";
+            
+            if (config.format === "score" || config.format === "float") {
+                displayValue = rawValue.toFixed(2);
+            } else if (config.format === "percent") {
+                displayValue = rawValue.toFixed(1) + "%";
+            } else if (config.format === "inverse_percent") {
+                displayValue = (100 - rawValue).toFixed(1) + "%";
+            } else if (config.format === "int") {
+                displayValue = Math.round(rawValue);
+            }
+
+            tr.innerHTML = `
+                <td class="rank-col">${rankDisplay}</td>
+                <td><strong style="color:white; font-size: 1.1em;">${player["Player Name"]}</strong> <br><small style="color:var(--muted);">${player["Games Played"]} total games</small></td>
+                <td style="font-weight: bold; font-size: 1.1em; color: var(--blue);">${displayValue}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        if (top10.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Not enough player data yet.</td></tr>`;
+        }
+    }
+
+    // Handles Classic & Battle Royale Views
+    function render(mode, data) {
+        document.getElementById('loader').classList.add('hidden');
+        if (mode === 'classic') {
+            document.getElementById('view-classic').classList.remove('hidden');
+            const s = data.gameStats;
+            document.getElementById('c-total').innerText = s.Total;
+            document.getElementById('c-town').innerText = s.Town;
+            document.getElementById('c-town-pct').innerText = s.Total?((s.Town/s.Total)*100).toFixed(1)+"%":"0%";
+            document.getElementById('c-mafia').innerText = s.Mafia;
+            document.getElementById('c-mafia-pct').innerText = s.Total?((s.Mafia/s.Total)*100).toFixed(1)+"%":"0%";
+            document.getElementById('c-draw').innerText = s.Draw+s.Neutral;
+            document.getElementById('c-draw-pct').innerText = s.Total?(((s.Draw+s.Neutral)/s.Total)*100).toFixed(1)+"%":"0%";
+
+            if(trendChart) trendChart.destroy();
+            trendChart = new Chart(document.getElementById('trendChart'), {
+                type:'line', data:{labels:data.trend.map(d=>d.date),datasets:[{label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true},{label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true},{label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true},{label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{stacked:true,max:100},x:{display:false}}}
+            });
+
+            const sb = document.getElementById('skillBody'); sb.innerHTML='';
+            [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore)).forEach((p,i)=>{
+                let c=parseFloat(p.skillScore)>=4?'var(--gold)':(parseFloat(p.skillScore)>=2.5?'var(--green)':'var(--muted)');
+                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)">${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)">${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)">${p.u_score}</span></td></tr>`;
+            });
+            const stb = document.getElementById('statsBody'); stb.innerHTML='';
+            [...data.leaderboard].sort((a,b)=>b.games-a.games).forEach((p,i)=>{
+                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.winRate}%</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
+            });
+        } else {
+            document.getElementById('view-br').classList.remove('hidden');
+            document.getElementById('br-total').innerText = data.totalGames;
+            if(brChart) brChart.destroy();
+            if(data.chart.labels.length>0) {
+                brChart = new Chart(document.getElementById('brChart'), {
+                    type:'bar', data:{labels:data.chart.labels,datasets:[{label:'Wins',data:data.chart.values,backgroundColor:data.chart.labels.map(l=>l==='Draw'?'#607d8b':'#cf3838')}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'#333'}},y:{ticks:{color:'#e0e0e0'}}},plugins:{legend:{display:false}}}
+                });
+            }
+            const bb = document.getElementById('brBody'); bb.innerHTML='';
+            data.leaderboard.forEach((p,i)=>{
+                let w=p.wins>0?`<span class="win-badge">🏆 ${p.wins}</span>`:'-';
+                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+            });
+        }
+    }
+
+    function filter(tid,cidx){const trs=document.getElementById(tid).tBodies[0].rows;const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();for(let tr of trs){let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');let show=true;if(val.startsWith('>')){if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;}else if(val.startsWith('<')){if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;}else{if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;}tr.style.display=show?'':'none';}}
+    function sort(tid,n){const tb=document.getElementById(tid).tBodies[0];let rows=Array.from(tb.rows);let asc=tb.getAttribute('data-asc')==='true';rows.sort((a,b)=>{let x=(a.cells[n].textContent||"").replace('%','').replace('🏆','').trim(),y=(b.cells[n].textContent||"").replace('%','').replace('🏆','').trim();let xn=parseFloat(x),yn=parseFloat(y);return(isNaN(xn)?x.localeCompare(y):xn-yn)*(asc?1:-1);});tb.setAttribute('data-asc',!asc);rows.forEach(r=>tb.appendChild(r));}
+</script>
+</body>
+</html>

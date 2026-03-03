@@ -1,12 +1,12 @@
 **Mafia Game Rules:**
-1. **Objective:** The Town must eliminate all Mafia members and the Serial Killer. The Mafia must outnumber the Town. The Serial Killer must be the last player standing.
-2. **Phases:** The game alternates between Day and Night phases.
-3. **Day Phase:** Players discuss and vote to lynch someone. Voting is done via the `/vote` command.
-4. **Night Phase:** Mafia members choose a player to kill. The Serial Killer also chooses a player to kill. Some Town roles may have night actions.
-5. **Voting:** During the Day phase, players can vote for another player using the `/vote @player` command. The player with the most votes at the end of the Day phase is lynched.
-6. **Role Actions:** Some roles have special actions that can be performed during the Night phase. These actions are communicated to the bot via DM.
-7. **Winning:** The game ends when one faction achieves its win condition.
-8. **No Meta-Gaming:** Do not discuss the game outside of the designated channels or after you are dead.
-9. **No Sharing Role Information:** Do not share screenshots or verbatim copies of messages from the bot regarding your role or actions.
-10. **Inactivity:** Players who are inactive for extended periods may be removed from the game.
-11. **Have Fun:** Remember, it's just a game! Enjoy the experience and the company of your fellow players.
+1. **Have Fun:** Remember, it's just a game! Enjoy the experience and the company of your fellow players.
+2. **No Meta-Gaming:** Do not discuss the game outside of the designated channels or after you are dead.
+3. **No Sharing Role Information:** Do not share screenshots or verbatim copies of messages from the bot regarding your role or actions.
+4. **Phases:** The game alternates between Day and Night phases.
+5. **Day Phase:** Players discuss and vote to lynch someone. Voting is done via the `/vote` command.
+6. **Voting:** During the Day phase, players can vote for another player using the `/vote @player` command. The player with the most votes at the end of the Day phase is lynched.
+7. **Tied Votes:** All players tied on votes at the deadline for day phase will be killed. There is no extentions.
+8. **Inactivity:** Players who are miss a vote will be killed off as inactive.
+9. **Role Actions:** Some roles have special actions that can be performed during the Night phase. These actions are communicated to the bot via DM.
+10. **Winning:** The game ends when one faction achieves its win condition.
+

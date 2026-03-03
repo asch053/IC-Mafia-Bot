@@ -59,6 +59,10 @@ class Game:
             "current_phase": "setup", # Phases: setup, signup, preparation, night, day, finished
             "phase_number": 0,
             "phase_end_time": None,
+            "gf_investigate": True,  # Default
+            "sk_investigate": False, # Default
+            "gf_night_immune": True,  # Default
+            "sk_night_immune": True, # Default
             "phase_hours": 12, # Default
         }
         self.chat_log = [] # To store chat messages during the game FR-5.4: Advanced Data Logging
@@ -107,18 +111,19 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, game_type, start_datetime_obj, phase_hours, max_players=19, story_type="Classic Mafia"):
+    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, max_players=21):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
         logger.debug("Setting up game settings.")
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
-        self.game_settings["game_type"] = game_type #set game type to the type of game being played
-        self.game_settings["game_started"] = True #set game_started to True
-        self.game_settings["start_time"] = start_datetime_obj #set start_time to the start time
-        self.game_settings["current_phase"] = "signup" #set current phase to signup
-        self.game_settings["phase_end_time"] = start_datetime_obj #set when the phase ends
-        self.game_settings["phase_hours"] = phase_hours #set phase hours as set within the game initialization
-        self.game_settings["story_type"] = story_type #set story type as set within the game initialization
+        self.game_settings["game_type"] = game_type # Set game type to the type of game being played
+        self.game_settings["game_started"] = True # Set game_started to True
+        self.game_settings["start_time"] = start_datetime_obj # Set start_time to the start time
+        self.game_settings["current_phase"] = "signup" # Set current phase to signup
+        self.game_settings["phase_end_time"] = start_datetime_obj # Set when the phase ends
+        self.game_settings["phase_hours"] = phase_hours # Set phase hours as set within the game initialization
+        self.game_settings["gf_investigate"] = gf_investigate # Set Godfather immunity as set within the game initialization
+        self.game_settings["sk_investigate"] = sk_investigate # Set Serial Killer immunity as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         self.is_prologue = True # Mark that the next story is the prologue
         self.is_epilogue = False # Not the epilogue yet
@@ -148,25 +153,38 @@ class Game:
         # Send the announcement to the relevant channels
         await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(announcement) #send announcement to #announcement channel
         await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
+        await self.bot.get_channel(config.STORIES_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         # Create a different message for the rules and roles channel, including the standard rules text
-        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{self.rules_text}\n")
-        story_channel = self.bot.get_channel(config.STORIES_CHANNEL_ID)
-        if story_channel:
-            await story_channel.send("\n--------------------------\n\n---- ## New Game ## ----\n\n--------------------------\n")
-        self.narration_manager.add_event("prologue", details="The game is starting soon. Players are signing up.")
-        game_state = {
-            "phase": "Prologue",
-            "number": 0,
-            "living_players": [],
-            "is_prologue": True,
-            "is_epilogue": False
-        }
-        story = await self.narration_manager.construct_story(game_state=game_state)
-        if story_channel and story:
-            await story_channel.send(story)
-            logger.info("Prologue story sent to stories channel.")
-        self.is_prologue = False  # Mark that the next story is the prologue
-        logger.info("Sign-up phase announcement sent to all channels.")
+        # Get the rules
+        rules = self.rules_text
+        # Add objective on win condition based on game type
+        if self.game_settings["game_type"] == "battle_royale":
+            rules += "11. **Objective:** Be the last player alive!"
+            rules += "\n12. **Night Phase:** Each night, with night have either a kill action or a block action. There are no teams in Battle Royale; everyone is out for themselves!"
+        else:
+            rules += "11. **Objective:** The Town must eliminate all Mafia members and the Serial Killer. The Mafia must outnumber the Town. The Serial Killer must be the last player standing."
+            rules += "\n12. **Night Phase:** Mafia members choose a player to kill. The Serial Killer also chooses a player to kill. Some Town roles may have night actions."
+        # add in details on if SK or GF are investigation immune
+        if not gf_investigate:
+            rules += "\n**Note:** The Godfather is *immune* to investigations."
+        else:
+            rules += "\n**Note:** The Godfather can be investigated normally."
+        if not sk_investigate:
+            rules += "\n**Note:** The Serial Killer is *immune* to investigations."
+        else:
+            rules += "\n**Note:** The Serial Killer can be investigated normally."
+        # Add details on SK and GF night death immunity
+        if self.game_settings["gf_night_immune"]:
+            rules += "\n**Note:** The Godfather is *immune* to night kills."
+        else:
+            rules += "\n**Note:** The Godfather can be killed at night."
+        if self.game_settings["sk_night_immune"]:
+            rules += "\n**Note:** The Serial Killer is *immune* to night kills."
+        else:
+            rules += "\n**Note:** The Serial Killer can be killed at night."
+        # Send the rules to the rules channel
+        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{rules}\n")
+        logger.debug("Sign-up phase announcement sent to all channels.")
         # Start the sign-up monitoring loop
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
         self.signup_loop.start()
@@ -373,6 +391,7 @@ class Game:
         # --- 4. Get Role List ---
         logger.info("Generating dynamic role list...")
         game_type = self.game_settings['game_type']
+
         player_count = len(self.players)
         if player_count < config.min_players:
             logger.warning(f"Cannot generate {game_type} roles for {player_count} players. Minimum is {config.min_players}.\n Converting to Battle Royale mode.")
@@ -396,6 +415,16 @@ class Game:
         # Convert role names to GameRole objects
         self.game_roles = []
         self.game_roles = [get_role_instance(name) for name in role_names]
+        # Overwrite investigation immunities based on game settings
+        for role in self.game_roles:
+            if role.name == "Godfather":
+                role.investigation_immune = not self.game_settings["gf_investigate"]
+                logger.info(f"Set Godfather investigation immunity to {role.investigation_immune} != {self.game_settings['gf_investigate']}")
+            elif role.name == "Serial Killer":
+                role.investigation_immune = not self.game_settings["sk_investigate"]
+                logger.info(f"Set Serial Killer investigation immunity to {role.investigation_immune} != {self.game_settings['sk_investigate']}")
+        logger.info("Game roles generated successfully.")
+        
 
     async def assign_roles(self):
         """Assigns the generated roles to players randomly and sends DMs."""
@@ -855,57 +884,44 @@ class Game:
     async def _resolve_night_deaths(self):
         """
         Final step of the night. Compares kill attempts against heals to determine
-        who dies, and generates the definitive kill/save narration events.
-        Checks if the killer is still alive before processing the kill.
+        who dies. Updated to handle multiple killers correctly.
         """
         logger.info("Resolving final night deaths...")
         phase_str = f"Night {self.game_settings['phase_number']}"
-
-        # Iterate through a copy of the items because we might modify player state within the loop
         for victim_id, killer_ids in list(self.kill_attempts_on.items()):
             victim_obj = self.players.get(victim_id)
-            if not victim_obj or not victim_obj.is_alive: # Skip if victim already died this phase
-                logger.warning(f"Victim {victim_id} is already dead or does not exist, skipping.")
+            if not victim_obj or not victim_obj.is_alive:
                 continue
-
-            # Get the primary killer (first one in the list for attribution)
-            killer_id = killer_ids[0]
-            killer_obj = self.players.get(killer_id)
-            if not killer_obj: # Safety check if killer object doesn't exist
-                logger.warning(f"Could not find killer object for ID {killer_id} targeting {victim_id}")
-                continue
-
-            # --- Check for Saves ---
+            # --- Check for Saves FIRST ---
+            # (Saves should still apply to the whole group of attackers)
             if victim_id in self.heals_on_players:
                 healer_id = self.heals_on_players[victim_id][0]
                 healer_obj = self.players.get(healer_id)
-                if healer_obj: # Ensure healer exists
-                    event_type = 'save_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'save'
-                    # Pass killer_obj for the narration event
-                    self.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=killer_obj)
-                    logger.info(f"{victim_obj.display_name} was saved by {healer_obj.display_name}.")
-                else:
-                    logger.warning(f"Could not find healer object for ID {healer_id} who saved {victim_id}")
-                # Even if healer object not found, the save prevents the kill. Continue to next victim.
+                # Use the first killer in the list for the narration "X saved Y from Z"
+                primary_killer = self.players.get(killer_ids[0])
+                event_type = 'save_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'save'
+                self.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=primary_killer)
                 continue
-
-            # --- Process Kill (Only if Not Saved) ---
-            
-            if killer_obj.is_alive:
-                # Killer is alive, process the kill
-                victim_obj.kill(phase_str, f"Killed by {killer_obj.role.name if killer_obj.role else 'Unknown'}")
-                logger.info(f"{victim_obj.display_name} has been killed by {killer_obj.display_name}.")
+            # --- Process Kill: Find a living killer ---
+            living_killer = None
+            for k_id in killer_ids:
+                potential_killer = self.players.get(k_id)
+                if potential_killer and potential_killer.is_alive:
+                    living_killer = potential_killer
+                    break # We found one! That's all we need.
+            if living_killer:
+                # At least one attacker is alive, Ordos (the victim) dies!
+                victim_obj.kill(phase_str, f"Killed by {living_killer.role.name if living_killer.role else 'Unknown'}")
                 self._handle_promotions(victim_obj)
                 event_type = 'kill_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'kill'
-                self.narration_manager.add_event(event_type, killer=killer_obj, victim=victim_obj)
-                logger.info(f"{victim_obj.display_name} was killed by {killer_obj.display_name}.")
+                self.narration_manager.add_event(event_type, killer=living_killer, victim=victim_obj)
+                logger.info(f"{victim_obj.display_name} was killed by {living_killer.display_name}.")
             else:
-                # Killer died earlier in this same resolution phase. Their kill fails.
+                # ALL killers died earlier in this resolution phase.
+                primary_killer = self.players.get(killer_ids[0])
                 event_type = 'kill_missed_battle_royale' if self.game_settings.get('game_type') == "battle_royale" else 'failed_kill_killer_dead'
-                self.narration_manager.add_event(event_type, killer=killer_obj, victim=victim_obj)
-                logger.info(f"Kill attempt by {killer_obj.display_name} (now dead) on {victim_obj.display_name} failed.")
-
-        # Clear attempts AFTER the loop is finished
+                self.narration_manager.add_event(event_type, killer=primary_killer, victim=victim_obj)
+                logger.info(f"All kill attempts on {victim_obj.display_name} failed because all attackers are dead.")
         self.kill_attempts_on.clear()
         logger.info("Night deaths resolved.")
 
@@ -1115,6 +1131,7 @@ class Game:
                 "is_winner": player.is_winner,
                 "death_phase": player.death_info.get('phase'),
                 "death_cause": player.death_info.get('how'),
+                "death_phase_number": player.death_info.get('phase_number'),
                 "lynched_by_voters": player.death_info.get('voters') # From step 4
             })
         # 3. --- Lynch Data ---
