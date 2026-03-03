@@ -111,7 +111,7 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, max_players=21):
+    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=21):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
         logger.debug("Setting up game settings.")
@@ -124,6 +124,7 @@ class Game:
         self.game_settings["phase_hours"] = phase_hours # Set phase hours as set within the game initialization
         self.game_settings["gf_investigate"] = gf_investigate # Set Godfather immunity as set within the game initialization
         self.game_settings["sk_investigate"] = sk_investigate # Set Serial Killer immunity as set within the game initialization
+        self.game_settings["story_type"] = narration_type # Set narration type as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         self.is_prologue = True # Mark that the next story is the prologue
         self.is_epilogue = False # Not the epilogue yet
@@ -368,7 +369,9 @@ class Game:
             "phase_number": self.game_settings['phase_number'],
             "living_players": [p for p in self.players.values() if p.is_alive],
             "is_prologue": self.is_prologue,
-            "is_epilogue": self.is_epilogue
+            "is_epilogue": self.is_epilogue,
+            "game_type": self.game_settings["game_type"],
+            "story_type": self.game_settings["story_type"]
         }
         self.narration_manager.add_event('game_start', game_state=game_state)
         self.is_prologue = False # The prologue has now been used, so set it to False
@@ -537,6 +540,8 @@ class Game:
             logger.info(f"Preparing to construct story for phase: {phase_just_ended}, number: {self.game_settings['phase_number']} with {len(game_state['living_players'])} living players.\n{game_state}")
             # Construct the story
             story = await self.narration_manager.construct_story(game_state=game_state)
+            if self.is_prologue:
+                self.is_prologue = False  # The prologue has been told!
             if story:
                 #send story to the stories channel
                 logger.info("Story constructed from narration manager events.")
@@ -1292,15 +1297,14 @@ class Game:
         self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")      
         # FIX: Create the game_state dictionary expected by the new v0.6 NarrationManager
         game_state = {
-            "phase": self.game_settings['current_phase'],
-            "number": self.game_settings['phase_number'],
-            "living_players": [p for p in self.players.values() if p.is_alive],
-            "game_type": self.game_settings.get('game_type', 'classic'),
-            "story_type": self.game_settings.get('story_type', 'Classic Mafia'), # NEW
-            "theme": "a dramatic finale", # This overrides the prompt's theme usage slightly, or you can remove it to let story_type rule
-            "is_prolouge": False,
-            "is_game_over": True 
-        }
+                        "phase": self.game_settings['current_phase'],
+                        "number": self.game_settings['phase_number'],
+                        "living_players": [p for p in self.players.values() if p.is_alive],
+                        "game_type": self.game_settings.get('game_type', 'classic'),
+                        "story_type": self.game_settings.get('story_type', 'Classic Mafia'),
+                        "is_prologue": False,
+                        "is_game_over": True 
+                    }
         # Use 'await' and pass the dictionary
         story = await self.narration_manager.construct_story(game_state=game_state)
         # --- Send Messages Separately and Chunked ---

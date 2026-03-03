@@ -168,7 +168,7 @@ def _construct_ai_prompt(game_state: dict, events: list, story_history: list) ->
         logger.info("No events to add to AI prompt.")
     else:
         for event in events:
-            # --- Kill Events ---
+            # --- Kill Events --- 
             if event['type'] == 'kill':
                 prompt_parts.append(f"- Outcome: {event['killer'].role.name} killed {event['victim'].display_name}. The victim was the **{event['victim'].role.name}**.")
                 logger.info(f"Added kill event to prompt: {event['killer'].role.name} killed {event['victim'].display_name}.")

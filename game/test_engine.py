@@ -8,9 +8,9 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from game.engine import Game
-from game.player import Player
-from game.roles import get_role_instance
+from Game.engine import Game
+from Game.player import Player
+from Game.roles import get_role_instance
 
 # Helper to run async tests
 def async_test(f):

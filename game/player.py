@@ -1,6 +1,6 @@
 # game/player.py
 import logging
-from game.roles import GameRole # For type hinting
+from Game.roles import GameRole # For type hinting
 
 logger = logging.getLogger('discord')
 
