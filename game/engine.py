@@ -16,8 +16,8 @@ from collections import (
 )
 
 import config
-import game.actions as actions
-from utils.utilities import (
+import Game.actions as actions
+from Utils.utilities import (
     load_data,
     save_json_data,
     update_player_discord_roles,
@@ -28,11 +28,11 @@ from utils.utilities import (
     
 )
 
-from game.narration import NarrationManager # Import the NarrationManager
-from utils.randomness_tester import test_role_distribution # Import the test function
-from game.roles import GameRole, get_role_instance
-from game.player import Player # Import the Player class
-from game import setup_generator # Import the setup_generator function
+from Game.narration import NarrationManager # Import the NarrationManager
+from Utils.randomness_tester import test_role_distribution # Import the test function
+from Game.roles import GameRole, get_role_instance
+from Game.player import Player # Import the Player class
+from Game import setup_generator # Import the setup_generator function
 
 
 # Get the same logger instance as in mafiabot.py
@@ -371,6 +371,7 @@ class Game:
             "is_epilogue": self.is_epilogue
         }
         self.narration_manager.add_event('game_start', game_state=game_state)
+        self.is_prologue = False # The prologue has now been used, so set it to False
 
     def add_npc(self):
         """Adds a single NPC to the game."""
@@ -522,12 +523,16 @@ class Game:
             else:
                 phase_just_ended = self.game_settings['current_phase']
             # Prepare game state for story construction
+            # Note: We want to capture the state of the game at the moment the phase ended, 
+            # which is why we prepare this game_state before processing the events for the next phase
             game_state = {
                 "phase": phase_just_ended,
                 "number": self.game_settings['phase_number'],
                 "living_players": [p for p in self.players.values() if p.is_alive],
                 "game_type": self.game_settings.get("game_type", "classic"),
-                "story_type": self.game_settings.get("story_type", "Classic Mafia") # NEW: Pass the theme
+                "story_type": self.game_settings.get('story_type', 'Classic Mafia'),
+                "is_prologue": self.is_prologue, # Important for setting the scene
+                "is_game_over": False
             }
             logger.info(f"Preparing to construct story for phase: {phase_just_ended}, number: {self.game_settings['phase_number']} with {len(game_state['living_players'])} living players.\n{game_state}")
             # Construct the story
@@ -1293,6 +1298,7 @@ class Game:
             "game_type": self.game_settings.get('game_type', 'classic'),
             "story_type": self.game_settings.get('story_type', 'Classic Mafia'), # NEW
             "theme": "a dramatic finale", # This overrides the prompt's theme usage slightly, or you can remove it to let story_type rule
+            "is_prolouge": False,
             "is_game_over": True 
         }
         # Use 'await' and pass the dictionary

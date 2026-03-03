@@ -4,7 +4,7 @@ try:
     import config
 except ImportError:
     import config_template as config
-from utils.utilities import load_data
+from Utils.utilities import load_data
 
 logger = logging.getLogger('discord')
 
