@@ -52,10 +52,11 @@ class NarrationManager:
         logger.info("Attempting to generate story with AI storyteller...")
         
         # PASS HISTORY HERE so the AI knows the context!
+        # Only pass the last 3 stories to stay under the 8k token bug limit
         ai_story = await ai_storyteller.generate_story(
             game_state, 
             self.events, 
-            self.story_history
+            self.story_history[-3:] if self.story_history else []
         )
 
         if ai_story:
