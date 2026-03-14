@@ -273,7 +273,7 @@ class ExportCog(commands.Cog):
         analytics_rows.sort(key=lambda x: float(x[2]), reverse=True)
         return analytics_rows
 
-    async def run_export_logic(self):
+    async def run_export_logic(self, channel: discord.TextChannel = None, game_mode: str = None):
         """
         The Master Trigger: Called manually or by the Game Engine.
         """
@@ -342,7 +342,23 @@ class ExportCog(commands.Cog):
                 "Town Wins", "Mafia Wins", "Neutral/SK Wins", "Total Night Deaths"
             ], analytics_rows)
 
-            return f"✅ Export Complete: {len(games_rows)} games processed."
+            # --- UPDATED: TRIGGER AUTOMATIC CHAMPION ROLE UPDATES ---
+            if self.bot.guilds:
+                main_guild = self.bot.guilds[0]
+                fame_cog = self.bot.get_cog("FameCog")
+                if fame_cog:
+                    logger.info("Triggering background role updates...")
+                    
+                    # If the game engine told us which mode just ended, only update that one!
+                    if game_mode in ["classic", "battle_royale"]:
+                        await fame_cog.update_champion_roles(main_guild, mode=game_mode)
+                    else:
+                        # Fallback for manual full-server exports: Update both!
+                        await fame_cog.update_champion_roles(main_guild, mode="classic")
+                        await fame_cog.update_champion_roles(main_guild, mode="battle_royale")
+                else:
+                    logger.warning("FameCog not found. Could not auto-update roles.")
+            return f"✅ Export & Role Updates Complete: {len(games_rows)} games processed."
 
         except Exception as e:
             logger.error(f"Export failed: {e}", exc_info=True)
