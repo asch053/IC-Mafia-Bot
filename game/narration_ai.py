@@ -10,9 +10,7 @@ try:
 except ImportError:
     import config_template as config
 
-from Utils.utilities import load_data
-from Utils.utilities import archive_phase_data as _archive_phase_data
-from Utils.utilities import log_prompt_to_json as _log_prompt_to_json
+from Utils.utilities import load_data # Fixed import path
 
 # Import the new 2026 standard Google GenAI SDK
 try:
@@ -24,16 +22,21 @@ except ImportError:
 
 logger = logging.getLogger('discord')
 
-# Using the specialized thinking model
-MODEL_NAME = "gemini-3.0-flash" 
+# CRITICAL FIX: Update the model name to a known valid identifier
+# If gemini-3.0-flash-preview still fails, fallback to gemini-2.5-flash
+MODEL_NAME = "gemini-2.5-flash" 
 
 # Initialize the client safely depending on how your config is named
 _api_key = getattr(config, 'GEMINI_API_KEY', getattr(config, 'GOOGLE_AI_API_KEY', None))
 if SDK_AVAILABLE and _api_key:
+    # Use the synchronous client initialization as recommended by the new SDK
     client = genai.Client(api_key=_api_key)
 else:
     client = None
     logger.error("Google GenAI SDK not installed OR API Key missing. AI Narration will fail.")
+
+# Load themes dynamically from JSON
+THEMES_DATA = load_data("Data/themes.json") or {}
 
 def _generate_mechanical_summary(events: list) -> str:
     """
@@ -45,11 +48,13 @@ def _generate_mechanical_summary(events: list) -> str:
     
     for event in events:
         etype = event['type']
+        
         # --- Lynches ---
         if etype == 'lynch':
             for v in event.get('victims', []):
                 role_name = v.role.name if v.role else "Unknown"
-                lines.append(f"- 💀 **{v.display_name}** was lynched. They were the **{role_name}**.")   
+                lines.append(f"- 💀 **{v.display_name}** was lynched. They were the **{role_name}**.")
+                
         # --- Kills ---
         elif etype == 'kill':
             # Note: We updated actions.py to use 'victim' instead of 'target' for kills!
@@ -57,11 +62,13 @@ def _generate_mechanical_summary(events: list) -> str:
             if victim:
                 role_name = victim.role.name if victim.role else "Unknown"
                 lines.append(f"- 🔪 **{victim.display_name}** was killed in the night. They were the **{role_name}**.")
+                
         # --- Mod/Admin Interventions ---
         elif etype == 'inactivity_kill':
             for v in event.get('victims', []):
                 role_name = v.role.name if v.role else "Unknown"
                 lines.append(f"- ⚡ **{v.display_name}** was struck down for inactivity. They were the **{role_name}**.")
+
     # Only return a summary if deaths occurred
     if lines:
         return "\n**--- Mechanical Summary ---**\n" + "\n".join(lines)
@@ -69,17 +76,15 @@ def _generate_mechanical_summary(events: list) -> str:
 
 def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     """Builds the text prompt to send to the LLM."""
-    logger.info("Constructing AI prompt for story generation.")
+    
     phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
     phase_num = game_state.get('number', 0)
     story_type = game_state.get('story_type', 'Classic Mafia')
     living_players = [p.display_name for p in game_state.get('living_players', [])]
     is_prologue = game_state.get('is_prologue', False)
-    logger.info(f"Game State for Prompt: Phase={phase_name} {phase_num}, Story Type={story_type}, Living Players={living_players}, Is Prologue={is_prologue}")
+    
     # 1. Format Events Context
-    events_text = "No mechanical actions resolved this phase." # Default message if no events to narrate
-    # We will pass a simplified version of the events to the AI, stripping out complex objects and just giving it the key info (type, victim/target names). 
-    # The full details of the events will be captured in the Mechanical Summary instead to ensure nothing is lost.
+    events_text = "No mechanical actions resolved this phase."
     if events:
         event_lines = []
         for e in events:
@@ -89,93 +94,156 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             if 'target' in e: line += f" | Target: {e['target'].display_name}"
             event_lines.append(line)
         events_text = "\n".join(event_lines)
+
     # 2. Prune History to prevent context bloat (Max 3 previous chapters)
-    # We will pass the last 3 stories to the AI to provide context, but we need to be careful about token limits. 
-    # The AI doesn't need the entire history, just the most recent chapters to understand the current narrative flow.
-    history_text = "This is the very beginning." # Default message if no history exists yet
-    # We updated the narration manager to store the full text of each chapter in story_history, so we can pass that directly to the AI.
+    history_text = "This is the very beginning."
     if history:
         pruned_history = history[-3:] 
         history_text = "\n\n".join(pruned_history)
-    # 3. Construct the Reasoning Rubric
-    # This is a critical part of the prompt that guides the AI's thinking process. 
-    # We want to make sure it understands the current game state, the importance of only narrating living players, and the secrecy rules around roles.
-    prompt = f"""You are the Narrator for a game of Mafia. 
-                    Write a highly engaging, immersive story in the style of: '{story_type}'.
-                    Current Phase: {phase_name} {phase_num}
-                    --- REASONING RUBRIC (Think before you write) ---
-                    1. CURRENT LIVING PLAYERS: {", ".join(living_players)}. 
-                    CRITICAL RULE: Only living players can perform actions or speak in the scene. Dead players are gone.
-                    2. IS PROLOGUE? {is_prologue}. 
-                    If True: Do NOT name any players. Just set the atmosphere for the town.
-                    If False: Use the events below to describe what happened.
-                    3. SECRECY RULE: NEVER reveal a player's exact role (like 'Mafia' or 'Doctor') unless they died this phase. 
-                    --- MECHANICAL EVENTS TO NARRATE ---
-                    {events_text}
-                    --- PREVIOUS STORY CONTEXT ---
-                    {history_text}
-                    Write the next chapter of the story now:
-                    """
+
+  # 3. Pull Theme Guidelines dynamically from themes.json
+    try:
+        theme_guide = THEMES_DATA.get(story_type, f"A highly immersive setting focusing on the tropes of: {story_type}.")
+    except Exception as e:
+        logger.warning(f"Failed to load theme '{story_type}' from themes.json: {e}")
+        theme_guide = f"A highly immersive setting focusing on the tropes of: {story_type}."
+
+    # 4. Construct the Reasoning Rubric with Forum-Mafia Specific Guidance
+    prompt = f"""You are an elite, highly creative Game Moderator (GM) running a traditional text-based forum game of Mafia. 
+Your job is to write the story text for the current phase. 
+
+CURRENT THEME: '{story_type}'
+THEME GUIDELINES: {theme_guide}
+
+CURRENT PHASE: {phase_name} {phase_num}
+
+--- REASONING RUBRIC (Internal Rules) ---
+1. LIVING PLAYERS ONLY: {", ".join(living_players)}. 
+   CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions.
+2. SECRECY: NEVER reveal a player's exact role (e.g., 'Mafia', 'Cop', 'Doctor') in the prose UNLESS they are explicitly killed this phase. Keep the identities of the killers shadowed and ambiguous (e.g., "a dark figure," "the shadows").
+3. MECHANICAL EVENTS: Always incorporate the mechanical events of the phase (lynches, kills, special actions) into the story in a way that fits the narrative style.
+4. ATMOSPHERE: Focus on creating a tense, immersive atmosphere that captures the paranoia and drama of the game. Use sensory details and emotional cues to bring the story to life.
+5. NPCS: If there are any NPCs in the game, you can use them to add flavor and commentary, but they should not overshadow the players' stories. Keep them in the background as part of the town's ambiance.
+
+--- MECHANICAL EVENTS TO NARRATE THIS PHASE ---
+{events_text}
+
+--- PREVIOUS STORY CONTEXT ---
+{history_text}
+
+--- WRITING STYLE: "FORUM MAFIA ELITE" ---
+- Tone: Melodramatic, suspenseful, slightly theatrical, and deeply atmospheric.
+- Perspective: Third-person omniscient narrator. Focus on the psychology, paranoia, and the grim reality of the town.
+- Describe the environment: Use sensory details (the smell of iron, the chill of the morning air, the sound of an angry mob).
+- Continuity: Ensure the story flows logically from previous chapters, maintaining consistency in who is alive/dead and the events that have occurred.
+- Day Phases (Lynches): Describe the chaotic democratic process. Focus on the yelling, the mob mentality, the desperate pleas of the accused, and the grim execution. 
+- Night Phases (Kills): If there is a kill, do not describe the murder directly; instead, describe the morning discovery of the gruesome scene and the chilling realization of the town. If there are no kills, describe the restless sleep and mounting dread.
+- Prologues: If IS PROLOGUE is {is_prologue}, and it is True, DO NOT name any players yet. Focus entirely on world-building, setting the scene, and introducing the looming threat.
+- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 50 to 150 words (2-3 short paragraphs). Do not overwrite. Short dramatic paragraphs are preffered.
+- Mention the player & their role that dies in the story, but only have the role shown as part of the death scene, such as having a medical kit fall out of their pocket if town doc, or their police badge if cop. 
+
+If night kill, have them doing something like walking outside at night, rushing to get home, or having to secure a door, when the killer gets them.
+If a day lynch, give them a chance to speak or act before their fate is sealed. 
+Set the scene with others if needed, mention living players in the scene before the death, but do not have them interact with the victim as that can lead to confusion about who is alive or dead. 
+I.e. for day lynch you can mention other players in the crowd, yelling and shouting (but don't give them actual lines of dialogue), but for night kills, focus on the victim's internal thoughts and feelings as they realize they are being targeted, and the chilling atmosphere of the night.
+Ensure the story is focused on the victim's experience and the town's reaction, rather than naming specific living players as active participants in the scene, to avoid confusion about who is alive or dead.
+Make sure the scene is action and narrative driven, and not just a summary of events. The goal is to immerse the reader in the experience of the phase, not just recount what happened.
+Do not have any player be involved in the death of another player, as that can lead to confusion about who is alive or dead. Instead, focus on the victim's experience and the town's reaction, without naming specific living players as active participants in the scene.
+Ensure that the victum is the one named as the character who dies in the story, and that their death is described in a way that fits the narrative style, without explicitly stating their role until the moment of death. This helps maintain the suspense and mystery of the game, while still providing a satisfying narrative for the reader.
+--- YOUR TASK ---
+Write the next chapter of the story now:
+"""
     return prompt
+
+def _archive_phase_data(phase_key: str, prompt: str, thoughts: str, result: str):
+    """Stores the complete AI transaction for debugging and observability."""
+    archive_path = os.path.join("Logs", "prompts_archive.json")
+    os.makedirs("Logs", exist_ok=True)
+    
+    archive_data = {}
+    if os.path.exists(archive_path):
+        try:
+            with open(archive_path, 'r', encoding='utf-8') as f:
+                archive_data = json.load(f)
+        except json.JSONDecodeError:
+            archive_data = {}
+
+    archive_data[phase_key] = {
+        "timestamp": datetime.now().isoformat(),
+        "prompt_sent": prompt,
+        "ai_reasoning": thoughts if thoughts else "No thoughts recorded.",
+        "final_story": result
+    }
+
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        json.dump(archive_data, f, indent=4)
 
 async def generate_story(game_state: dict, events: list, history: list) -> str | None:
     """
-    Main entry point. Generates the story asynchronously using Gemini 3.
+    Main entry point. Generates the story asynchronously using the Gemini API.
     """
     if not client:
         return None
-    logger.info("Starting story generation process...")
-    # We create a unique key for this phase to use in logging and archiving the prompt and response. 
-    # This helps us keep track of all interactions with the AI for debugging and future analysis.
+
     phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
     phase_num = game_state.get('number', 0)
     phase_key = f"{phase_name} {phase_num} - {int(datetime.now().timestamp())}"
-    logger.info(f"Phase Key for Logging: {phase_key}")
+    
     # 1. Build Prompt
     prompt = _construct_ai_prompt(game_state, events, history)
-    logger.debug(f"Constructed AI Prompt: {prompt}")
-    # 2. Configure Thinking depth based on phase (Prologue needs less math, more vibes)
-    # Gemini 3 allows dynamic reasoning budgets
+
+    # 2. Configure Thinking depth based on phase
     is_prologue = game_state.get('is_prologue', False)
-    depth = "minimal" if is_prologue else "high"
-    # Note: The thinking_level parameter is a newer addition to the SDK. 
-    # If your version doesn't support it, you can still control reasoning through prompt engineering and temperature settings.
+    
+    # Note: Not all models support 'thinking_config' or 'thinking_level' yet.
+    # For stability with gemini-2.5-flash, we omit the thinking_config 
+    # unless you are strictly using a model that requires it.
     generation_config = types.GenerateContentConfig(
-        thinking_config=types.ThinkingConfig(include_thoughts=True),
         temperature=0.7,
-        thinking_level=depth, 
     )
-    logger.info(f"Requesting AI story for {phase_name} {phase_num} (Thinking Level: {depth})...")
-    # We will handle the API call and response in a try-except block to ensure any issues with the AI don't crash the bot.
+
+    logger.info(f"Requesting AI story for {phase_name} {phase_num} using {MODEL_NAME}...")
+
     try:
-        # 3. Async Call to Gemini
-        # We use a wrapper or the native async client (client.aio)
+        # 3. Async Call to Gemini using the recommended method
         response = await client.aio.models.generate_content(
             model=MODEL_NAME,
             contents=prompt,
             config=generation_config
         )
-        # 4. Extract Thoughts and Text
-        thoughts = ""
+
+        # 4. Extract Text
         story_text = ""
+        thoughts = "" # Default to empty if the model doesn't return thoughts
+        
+        if response.text:
+           story_text = response.text
+           
+        # Attempt to extract thoughts if they exist in the response structure
+        # This is a safe fallback in case we switch back to a thinking model
         if response.candidates and response.candidates[0].content.parts:
             for part in response.candidates[0].content.parts:
-                if getattr(part, 'thought', False): # Using getattr to be safe against older SDK versions
+                if getattr(part, 'thought', False): 
                     thoughts += part.text
-                elif part.text:
-                    story_text += part.text
+
         if not story_text:
             logger.error("AI returned an empty story.")
             return None
+
         # 5. Archive the interaction
         _archive_phase_data(phase_key, prompt, thoughts, story_text.strip())
+
         # 6. Append Factual Summary
         mechanical_summary = _generate_mechanical_summary(events)
         final_output = f"{story_text.strip()}\n{mechanical_summary}"
+        
         logger.info(f"Successfully generated and archived AI story for {phase_key}.")
-        logger.debug(f"Final Story Output: {final_output}")
         return final_output
+
+    except asyncio.TimeoutError:
+        logger.error("Gemini API timed out. Falling back to static story.")
+        return None
     except Exception as e:
-        # Catching all exceptions (TimeoutError, NetworkError, etc.) to ensure the bot doesn't crash
+        # Catching all exceptions to ensure the bot doesn't crash
         logger.error(f"Gemini API Error during generate_story: {type(e).__name__} - {e}", exc_info=True)
         return None
