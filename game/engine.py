@@ -16,8 +16,8 @@ from collections import (
 )
 
 import config
-import game.actions as actions
-from utils.utilities import (
+import Game.actions as actions
+from Utils.utilities import (
     load_data,
     save_json_data,
     update_player_discord_roles,
@@ -27,11 +27,11 @@ from utils.utilities import (
     
 )
 
-from game.narration import NarrationManager # Import the NarrationManager
-from utils.randomness_tester import test_role_distribution # Import the test function
-from game.roles import GameRole, get_role_instance
-from game.player import Player # Import the Player class
-from game import setup_generator # Import the setup_generator function
+from Game.narration import NarrationManager # Import the NarrationManager
+from Utils.randomness_tester import test_role_distribution # Import the test function
+from Game.roles import GameRole, get_role_instance
+from Game.player import Player # Import the Player class
+from Game import setup_generator # Import the setup_generator function
 
 
 # Get the same logger instance as in mafiabot.py
@@ -1119,8 +1119,10 @@ class Game:
         # Trigger the export immediately after saving.
         # We use create_task so it runs in the background and doesn't freeze the bot.
         export_cog = self.bot.get_cog("ExportCog")
+        channel = self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID) # You can specify a channel for the export cog to post in, or pass None if it handles its own channels.
         if export_cog:
-            self.bot.loop.create_task(export_cog.run_export_logic())
+            await export_cog.run_export_logic(channel=channel, game_mode=self.game_settings.get('game_type', 'classic'))
+            logger.info("Game stats exported.")
         else:
             logger.warning("Export Cog not found. Stats were not uploaded.")
         

@@ -5,9 +5,9 @@ from discord.ext import commands
 import logging
 
 # Import the custom decorator for checking admin permissions
-from utils.admincheck import is_admin 
+from Utils.admincheck import is_admin 
 # Import the Player class for type checking during re-initialization
-from game.player import Player 
+from Game.player import Player 
 
 # Get the logger instance from the main bot file
 logger = logging.getLogger('discord')

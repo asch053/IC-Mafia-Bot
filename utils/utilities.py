@@ -4,7 +4,7 @@ import asyncio
 import json
 import os
 import io
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import logging
 import config
 
@@ -192,3 +192,25 @@ def format_time_remaining(end_time):
 # --- Game Functions ---
 
 
+# --- Stats Functions ---
+
+def filter_games_by_time(games: list, days: int = None) -> list:
+    """Filters a list of games, returning only those that ended within the last X days."""
+    if not days:
+        return games
+        
+    cutoff_date = datetime.now(timezone.utc) - timedelta(days=days)
+    filtered_games = []
+    
+    for game in games:
+        end_str = game.get('game_summary', {}).get('end_date_utc')
+        if end_str:
+            try:
+                # Parse the ISO format string stored by your bot
+                end_date = datetime.fromisoformat(end_str)
+                if end_date > cutoff_date:
+                    filtered_games.append(game)
+            except ValueError:
+                logger.warning(f"Could not parse date string: {end_str}")
+                
+    return filtered_games
