@@ -71,9 +71,9 @@ def handle_kill(game, killer_id, victim_id, night_outcomes):
     killer_action = night_outcomes.get(killer_id)
     if killer_action and killer_action.get('status') == 'blocked':
         if game.game_settings["game_type"] == "battle_royale": 
-            game.narration_manager.add_event('block_battle_royale', killer=killer, target=victim) 
+            game.narration_manager.add_event('block_battle_royale', killer=killer, victim=victim) 
         else: 
-            game.narration_manager.add_event('blocked', killer=killer, target=victim)
+            game.narration_manager.add_event('blocked', killer=killer, victim=victim)
         logger.info(f"Kill attempt by {killer.display_name} failed because they were blocked.")
         return
 
@@ -81,7 +81,7 @@ def handle_kill(game, killer_id, victim_id, night_outcomes):
         night_outcomes[killer_id]['status'] = 'successful'
 
     if victim.role and victim.role.is_night_immune:
-        game.narration_manager.add_event('kill_immune', killer=killer, target=victim)
+        game.narration_manager.add_event('kill_immune', killer=killer, victim=victim)
         logger.info(f"Kill by {killer.display_name} on {victim.display_name} failed due to immunity.")
         return
     # Record the kill attempt

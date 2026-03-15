@@ -1,6 +1,6 @@
 import logging
-import game.narration_ai as ai_storyteller
-import game.narration_static as static_storyteller
+import Game.narration_ai as ai_storyteller
+import Game.narration_static as static_storyteller
 
 logger = logging.getLogger('discord')
 
@@ -52,11 +52,17 @@ class NarrationManager:
         logger.info("Attempting to generate story with AI storyteller...")
         
         # PASS HISTORY HERE so the AI knows the context!
-        ai_story = await ai_storyteller.generate_story(
-            game_state, 
-            self.events, 
-            self.story_history
-        )
+        # Only pass the last 3 stories to stay under the 8k token bug limit
+        # If narrarion type is "No Story", skip AI generation and go straight to static
+        if game_state['narration_type'] == "No Story":
+            logger.info("Narration type set to 'No Story'. Skipping AI generation.")
+            ai_story = None
+        else:
+            ai_story = await ai_storyteller.generate_story(
+                game_state, 
+                self.events, 
+                self.story_history[-3:] if self.story_history else []
+            )
 
         if ai_story:
             # Success! Use the AI story.

@@ -1,16 +1,42 @@
+# game/narration_ai.py
 import logging
-import aiohttp
+import asyncio
+import json
+import os
+from datetime import datetime
+
 try:
     import config
 except ImportError:
     import config_template as config
-from utils.utilities import load_data
+
+from Utils.utilities import load_data # Fixed import path
+
+# Import the new 2026 standard Google GenAI SDK
+try:
+    from google import genai
+    from google.genai import types
+    SDK_AVAILABLE = True
+except ImportError:
+    SDK_AVAILABLE = False
 
 logger = logging.getLogger('discord')
 
-# Using the specialized creative writing model
-MODEL_NAME = "gemma-3n-e2b-it" 
-API_URL = f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL_NAME}:generateContent"
+# CRITICAL FIX: Update the model name to a known valid identifier
+# If gemini-3.0-flash-preview still fails, fallback to gemini-2.5-flash
+MODEL_NAME = "gemini-2.5-flash" 
+
+# Initialize the client safely depending on how your config is named
+_api_key = getattr(config, 'GEMINI_API_KEY', getattr(config, 'GOOGLE_AI_API_KEY', None))
+if SDK_AVAILABLE and _api_key:
+    # Use the synchronous client initialization as recommended by the new SDK
+    client = genai.Client(api_key=_api_key)
+else:
+    client = None
+    logger.error("Google GenAI SDK not installed OR API Key missing. AI Narration will fail.")
+
+# Load themes dynamically from JSON
+THEMES_DATA = load_data("Data/themes.json") or {}
 
 def _generate_mechanical_summary(events: list) -> str:
     """
@@ -19,302 +45,205 @@ def _generate_mechanical_summary(events: list) -> str:
     """
     logger.info("Generating mechanical summary of events.")
     lines = []
-    # --- Process Events ---
+    
     for event in events:
-        #-- Deaths and Game Flow ---
         etype = event['type']
-        logger.info(f"Processing event for mechanical summary: {etype}")
-        # --- Deaths ---
+        
         # --- Lynches ---
         if etype == 'lynch':
             for v in event.get('victims', []):
                 role_name = v.role.name if v.role else "Unknown"
                 lines.append(f"- 💀 **{v.display_name}** was lynched. They were the **{role_name}**.")
-                logger.info(f"Lynch event processed for {v.display_name} with role {role_name}.")
+                
         # --- Kills ---
         elif etype == 'kill':
-            v = event.get('victim')
-            if v:
-                role_name = v.role.name if v.role else "Unknown"
-                # We usually don't reveal the killer's name mechanically unless it's Battle Royale
-                # But we can say "Killed by Mafia" if we track it, or just "Killed".
-                # For now, let's keep it simple.
-                killer_role = event['killer'].role.name if event.get('killer') and event['killer'].role else "Unknown"
-                lines.append(f"- 💀 **{v.display_name}** was killed by the {killer_role}. They were the **{role_name}**.")
-                logger.info(f"Kill event processed for {v.display_name} with role {role_name}.")
-        #--- Special Kill Types ---
-        elif etype == 'kill_immune':
-            v = event.get('victim')
-            k = event.get('killer')
-            if v and k:
-                role_name = v.role.name if v.role else "Unknown"
-                lines.append(f"- 🛡️ **{v.role_name}** survived an attack by **{k.role_name}**.")
-                logger.info(f"Kill immune event processed for {v.display_name} with role {role_name}.")
-        elif etype == 'kill_battle_royale':
-            v = event.get('victim')
-            k = event.get('killer')
-            if v and k:
-                role_name = v.role.name if v.role else "Unknown"
-                lines.append(f"- 💀 **{v.display_name}** was killed by **{k.display_name}**. They were the **{role_name}**.")
-                logger.info(f"Battle Royale kill event processed for {v.display_name} with role {role_name}.")
-        # --- Inactivity ---
+            # Note: We updated actions.py to use 'victim' instead of 'target' for kills!
+            victim = event.get('victim') 
+            if victim:
+                role_name = victim.role.name if victim.role else "Unknown"
+                lines.append(f"- 🔪 **{victim.display_name}** was killed in the night. They were the **{role_name}**.")
+                
+        # --- Mod/Admin Interventions ---
         elif etype == 'inactivity_kill':
             for v in event.get('victims', []):
                 role_name = v.role.name if v.role else "Unknown"
-                lines.append(f"- 💀 **{v.display_name}** died of inactivity. They were the **{role_name}**.")
-                logger.info(f"Inactivity kill event processed for {v.display_name} with role {role_name}.")
-        elif etype == 'failed_kill_killer_dead':
-             # Optional: Report that a kill failed? Maybe too much info. 
-             # Sticking to deaths usually is cleaner.
-             pass 
-        # --- Game Flow ---
-        elif etype == 'no_lynch':
-             lines.append("- 🕊️ No one was lynched today.")
-             logger.info("No lynch event processed.")
-        #--- Game Over Jester Win ---
-        elif etype == 'jester_win':
-             lines.append(f"- 🃏 **{event['victim'].display_name}** (Jester) was lynched and WINS the game!")
-             logger.info(f"Jester win event processed for {event['victim'].display_name}.")
-        #--- Game Over ---
-        elif etype == 'game_over':
-             winner = event.get('winner', 'Unknown')
-             lines.append(f"- 🏆 **Game Over!** The winner is: **{winner}**")
-             logger.info("Game over event processed.")
-    if not lines:
-        logger.info("No significant events to summarize mechanically.")
-        return ""
-    logger.info("Mechanical summary generated.")
-    return "\n**Summary of Events:**\n" + "\n".join(lines)
+                lines.append(f"- ⚡ **{v.display_name}** was struck down for inactivity. They were the **{role_name}**.")
 
-def _construct_ai_prompt(game_state: dict, events: list, story_history: list) -> str:
-    """Constructs a detailed, structured prompt for the AI model."""
-    logger.info("Constructing AI prompt for story generation.")
-    players = game_state.get('living_players', [])
-    is_game_over = game_state.get('is_game_over', False)
-    logger.info(f"Game state: phase={game_state.get('phase')}, number={game_state.get('number')}, is_game_over={is_game_over}")
-    # Check if this is the very start of the game
-    is_prologue = game_state.get('is_prologue', False)
-    logger.info(f"Is prologue: {is_prologue}")
-    # --- Dynamic Tone Selection ---
+    # Only return a summary if deaths occurred
+    if lines:
+        return "\n**--- Mechanical Summary ---**\n" + "\n".join(lines)
+    return ""
+
+def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
+    """Builds the text prompt to send to the LLM."""
+    
+    phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
+    phase_num = game_state.get('number', 0)
     story_type = game_state.get('story_type', 'Classic Mafia')
-    themetypes = load_data("Data/themes.json")
-    logger.info(f"Loaded theme types: {list(themetypes.keys()) if themetypes else 'None'}")
-    if not themetypes:
-        logger.warning("Data/themes.json could not be loaded. Using default theme.")
-        themetypes = {
-            'Classic Mafia': 'suspenseful, noir-inspired, and laden with paranoia'
-        }
-    # Select tone description based on story type
-    tone_desc = themetypes.get(story_type, 'suspenseful, noir-inspired, and laden with paranoia')
-    logger.info(f"Selected tone description: {tone_desc}")   
-    # Logic to hide roles if the game is still active
-    if is_game_over:
-        player_list_str = ", ".join([f"{p.display_name} ({p.role.name})" for p in players])
-    else:
-        player_list_str = ", ".join([f"{p.display_name}" for p in players])
-    logger.info(f"Player list for prompt: {player_list_str}")
-    prompt_parts = []
-    # --- SYSTEM INSTRUCTIONS ---
-    prompt_parts.append(
-        "\nYou are a master story writer, tasked with writing a short, punchy scene for a chat-based Mafia game." 
-        f"The theme is '{story_type}'. Your tone must be {tone_desc}." 
-        "\n\n*** STYLE GUIDELINES (MANDATORY) ***"
-        "\n1. **BE CONCISE:** Write no more than 150 words. Be sharp, direct, and impactful. Quality over quantity."
-        "\n2. **SHOW, DON'T TELL:** Do not use mechanical terms like 'blocked', 'immune', 'saved', or 'roleblocked'. Describe the action. (e.g., instead of 'He was blocked', write 'He was waylaid in the alley')."
-        "\n3. **WEAVE THE NARRATIVE:** Do NOT list the events sequentially. Combine them into a single, fluid scene."
-        "\n4. **FACTUALITY:** You must include the *outcomes* of the events listed below, do not invent new deaths, or any other action. Only the actions described need to be in the story."
-        # Note: We removed the strict "state the role" instruction here because the Mechanical Summary now handles it perfectly.
-        # This frees the AI to focus on the drama of the death without sounding like a stat sheet.
-        "\n5. **DRAMA:** When a player dies, focus on the final moment or the discovery of the body."
-        "\n6. **Build Atmosphere:** Use vivid, sensory language to immerse the reader in the scene."
-        "\n7. **Ensure Continuity:** Maintain consistency with previous chapters in character behavior, setting, and plot. Weave in storylines for different characters where appropiate and possible."
-    )
-    logger.info("System instructions added to prompt.")
-    # --- PROLOGUE HANDLING ---
-    if is_prologue:
-        prompt_parts.append(
-            "\n**CONTEXT:** The game is just beginning. Describe the setting and the ominous atmosphere. **DO NOT mention player numbers, or any specific player names.** Focus purely on setting the mood. If possible, hint at the conflicts to come. If you use named NPCs, ensure they fit the theme."
-        )
-        logger.info("Prologue context added to prompt.")
-    else:
-        prompt_parts.append(
-             "\n**CONTEXT:** Continue the story from the previous chapter."
-             "\n**Consistency:** Maintain consistency with established characters and plotlines."
-        )
-        logger.info("Regular game context added to prompt.")
-    logger.info("Context instructions added to prompt.")
-    # --- DATA INPUT ---
-    prompt_parts.append(f"\n\n*** CURRENT STATE ***")
-    prompt_parts.append(f"Phase: {game_state['phase']} {game_state['number']}.")
-    # Only show players if it's NOT the prologue (to prevent AI from listing them)
-    if not is_prologue:
-        prompt_parts.append(f"Living Characters: {player_list_str}.")
-        logger.info(f"Is not prologue, so Living Characters have been added to prompt: {player_list_str}")
-    # --- MEMORY INJECTION ---
-    if story_history:
-        prompt_parts.append("\n*** PREVIOUS CHAPTER (For Context) ***")
-        # Only show the very last chapter to save tokens and keep it focused
-        last_chapter = story_history[-1]
-        prompt_parts.append(f"{last_chapter}\n")
-        prompt_parts.append("*** END CONTEXT ***\n")
-    prompt_parts.append("\n*** KEY OUTCOMES TO NARRATE ***")
-    logger.info("Key outcomes section added to prompt.")
-    # --- EVENT DESCRIPTIONS ---
-    if not events:
-        if is_prologue:
-             prompt_parts.append("- Outcome: Introduce the world.")
-        else:
-             prompt_parts.append("- Outcome: The night was quiet. No deaths occurred.")
-        logger.info("No events to add to AI prompt.")
-    else:
-        for event in events:
-            # --- Kill Events ---
-            if event['type'] == 'kill':
-                prompt_parts.append(f"- Outcome: {event['killer'].role.name} killed {event['victim'].display_name}. The victim was the **{event['victim'].role.name}**.")
-                logger.info(f"Added kill event to prompt: {event['killer'].role.name} killed {event['victim'].display_name}.")
-            if event['type'] == 'kill_battle_royale':
-                prompt_parts.append(f"- Outcome: {event['killer'].display_name} killed {event['victim'].display_name}. The victim was the **{event['victim'].role.name}**.")
-                logger.info(f"Added battle royale kill event to prompt: {event['killer'].display_name} killed {event['victim'].display_name}.")
-            if event['type'] == 'kill_immune':
-                prompt_parts.append(f"- Outcome: {event['killer'].role.name} tried to kill {event['victim'].role.name}, but failed (target was tough/armored).")
-                logger.info(f"Added kill immune event to prompt: {event['killer'].role.name} tried to kill {event['victim'].role.name}.")
-            # --- Failed Kill Events ---
-            if event['type'] == 'kill_blocked':
-                prompt_parts.append(f"- Outcome: {event['killer'].role.name} tried to kill {event['target'].display_name}, but was stopped/intercepted.")
-                logger.info(f"Added kill blocked event to prompt: {event['killer'].role.name} tried to kill {event['target'].display_name}.")
-            if event['type'] == 'failed_kill_killer_dead':
-                prompt_parts.append(f"- Outcome: {event['killer'].display_name} tried to kill {event['victim'].display_name}, but died before they could strike.")
-                logger.info(f"Added failed kill killer dead event to prompt: {event['killer'].display_name} tried to kill {event['victim'].display_name}.")
-            # --- Defensive Events ---
-            # --- Heal Events ---
-            if event['type'] == 'save':
-                prompt_parts.append(f"- Outcome: {event['victim'].display_name} was attacked, but the Doctor saved them at the last second.")
-                logger.info(f"Added save event to prompt: {event['victim'].display_name} was saved.")
-            if event['type'] == 'save_battle_royale':
-                prompt_parts.append(f"- Outcome: {event['victim'].display_name} was attacked, but {event['healer'].display_name} saved them at the last second.")
-                logger.info(f"Added battle royale save event to prompt: {event['victim'].display_name} was saved by {event['healer'].display_name}.")
-            # --- Block Events ---
-            if event['type'] == 'block':
-                prompt_parts.append(f"- Outcome: {event['blocker'].role.name} distracted or detained {event['target'].role.name}, stopping their action.")
-                logger.info(f"Added block event to prompt: {event['blocker'].role.name} distracted or detained {event['target'].role.name}.")
-            if event['type'] == 'block_missed':
-                prompt_parts.append(f"- Outcome: {event['blocker'].role.name} tried to stop {event['target'].role.name}, but arrived too late.")
-                logger.info(f"Added block missed event to prompt: {event['blocker'].role.name} tried to stop {event['target'].role.name}, but arrived too late.")
-            if event['type'] == 'block_battle_royale':
-                prompt_parts.append(f"- Outcome: {event['blocker'].display_name} distracted or detained {event['target'].display_name}, stopping their action.")
-                logger.info(f"Added battle royale block event to prompt: {event['blocker'].display_name} distracted or detained {event['target'].display_name}.")
-            # --- Investigate Events ---
-            if event['type'] == 'investigate':
-                prompt_parts.append(f"- Outcome: Someone was snooping around for information. Do not include names of investigators or targets."
-                                        " Only illude to the act of investigation itself in a very hidden manner.")
-                logger.info("Added investigate event to prompt: Someone was snooping around for information.")
-            # --- Day Events ---
-            if event['type'] == 'lynch':
-                victims = event.get('victims', [])
-                details = event.get('details', {})
-                for victim in victims:
-                    voters = details.get(victim, [])
-                    voter_names = ", ".join([v.display_name for v in voters if v])
-                    if not voter_names:
-                        voter_names = "the town"
-                    prompt_parts.append(f"- Outcome: The town voted to LYNCH {victim.display_name}. They died. They were the **{victim.role.name}**. (Voters: {voter_names}).")
-                    logger.info(f"Added lynch event to prompt: {victim.display_name} was lynched by {voter_names}.")
-            if event['type'] == 'no_lynch':
-                prompt_parts.append("- Outcome: The town was indecisive. No execution today.")
-                logger.info("Added no lynch event to prompt: No execution today.")
-            # --- Inactivity Events ---
-            if event['type'] == 'inactivity_kill':
-                victims = event.get('victims', [])
-                names = ", ".join([f"{v.display_name}" for v in victims])
-                prompt_parts.append(f"- Outcome: {names} died/disappeared due to inactivity/absence.")
-                logger.info(f"Added inactivity kill event to prompt: {names} died due to inactivity.")
-            # --- Special/Meta Events ---
-            if event['type'] == 'promotion':
-                prompt_parts.append(f"- Outcome: The Mafia leadership changed. Do not mention any names other than the name of the just killed mafia member, just the event." 
-                                        "Create a seperate paragraph describing the scene of the promotion if possible. in the shadows, based on the theme")
-                logger.info("Added promotion event to prompt: Mafia leadership changed.")
-            # --- Game Start/End Events ---
-            if event['type'] == 'game_start':
-                # For prologue, we just want atmosphere, but we record the event for logging
-                if not is_prologue:
-                    p_list = event.get('players')
-                    if not p_list and event.get('game_state'):
-                        p_list = event['game_state'].get('living_players', [])
-                    player_names = ", ".join([p.display_name for p in (p_list or [])])
-                    prompt_parts.append(f"- Outcome: The game begins with these players: {player_names}.")
-                else:
-                    prompt_parts.append(f"- Outcome: The game begins. Set the scene.")
-                logger.info("Added game start event to prompt.")
-            if event['type'] == 'game_over': 
-                winners = event.get('winner', 'No one')
-                prompt_parts.append(f"- Outcome: Game Over. The winners are {winners}. "
-                                     "Write an ending scene reflecting the victory of the winners and the defeat of the losers." 
-                                     "If town are winners, focus on relief and rebuilding. If mafia wins focus on their total domination, "
-                                     "if neutrals win, focus on the chaos and uncertainty that was brought. " 
-                                     "Keep to the theme and setting established. Tie sup any plot lines not yet resolved.")
-                logger.info("Added game over event to prompt.")
-            if event['type'] == 'jester_win':
-                prompt_parts.append(f"- Outcome: The Jester ({event['victim'].display_name}) tricked the town into killing them and wins!")
-                logger.info("Added jester win event to prompt.")
-    logger.info("All events added to prompt.")
-    # --- FINAL INSTRUCTIONS ---
-    prompt_parts.append(
-        "\nWrite the narrative now. Focus on atmosphere and brevity. Do not use bullet points."
-    )
-    logger.info("Final instructions added to prompt.")
-    return "\n".join(prompt_parts)
+    living_players = [p.display_name for p in game_state.get('living_players', [])]
+    is_prologue = game_state.get('is_prologue', False)
+    
+    # 1. Format Events Context
+    events_text = "No mechanical actions resolved this phase."
+    if events:
+        event_lines = []
+        for e in events:
+            # We strip out the raw objects and just pass names/types to the AI
+            line = f"Event Type: {e['type']}"
+            if 'victim' in e: line += f" | Victim: {e['victim'].display_name}"
+            if 'target' in e: line += f" | Target: {e['target'].display_name}"
+            event_lines.append(line)
+        events_text = "\n".join(event_lines)
 
-async def generate_story(game_state: dict, events: list, story_history: list) -> str | None:
-    """Makes an asynchronous API call to the Google AI model to generate a story."""
-    if not hasattr(config, 'GOOGLE_AI_API_KEY') or not config.GOOGLE_AI_API_KEY:
-        logger.warning("GOOGLE_AI_API_KEY not found or is empty in config. Cannot generate AI story.")
+    # 2. Prune History to prevent context bloat (Max 3 previous chapters)
+    history_text = "This is the very beginning."
+    if history:
+        pruned_history = history[-3:] 
+        history_text = "\n\n".join(pruned_history)
+
+  # 3. Pull Theme Guidelines dynamically from themes.json
+    try:
+        theme_guide = THEMES_DATA.get(story_type, f"A highly immersive setting focusing on the tropes of: {story_type}.")
+    except Exception as e:
+        logger.warning(f"Failed to load theme '{story_type}' from themes.json: {e}")
+        theme_guide = f"A highly immersive setting focusing on the tropes of: {story_type}."
+
+    # 4. Construct the Reasoning Rubric with Forum-Mafia Specific Guidance
+    prompt = f"""You are an elite, highly creative Game Moderator (GM) running a traditional text-based forum game of Mafia. 
+Your job is to write the story text for the current phase. 
+
+CURRENT THEME: '{story_type}'
+THEME GUIDELINES: {theme_guide}
+
+CURRENT PHASE: {phase_name} {phase_num}
+
+--- REASONING RUBRIC (Internal Rules) ---
+1. LIVING PLAYERS ONLY: {", ".join(living_players)}. 
+   CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions.
+2. SECRECY: NEVER reveal a player's exact role (e.g., 'Mafia', 'Cop', 'Doctor') in the prose UNLESS they are explicitly killed this phase. Keep the identities of the killers shadowed and ambiguous (e.g., "a dark figure," "the shadows").
+3. MECHANICAL EVENTS: Always incorporate the mechanical events of the phase (lynches, kills, special actions) into the story in a way that fits the narrative style.
+4. ATMOSPHERE: Focus on creating a tense, immersive atmosphere that captures the paranoia and drama of the game. Use sensory details and emotional cues to bring the story to life.
+5. NPCS: If there are any NPCs in the game, you can use them to add flavor and commentary, but they should not overshadow the players' stories. Keep them in the background as part of the town's ambiance.
+
+--- MECHANICAL EVENTS TO NARRATE THIS PHASE ---
+{events_text}
+
+--- PREVIOUS STORY CONTEXT ---
+{history_text}
+
+--- WRITING STYLE: "FORUM MAFIA ELITE" ---
+- Tone: Melodramatic, suspenseful, slightly theatrical, and deeply atmospheric.
+- Perspective: Third-person omniscient narrator. Focus on the psychology, paranoia, and the grim reality of the town.
+- Describe the environment: Use sensory details (the smell of iron, the chill of the morning air, the sound of an angry mob).
+- Continuity: Ensure the story flows logically from previous chapters, maintaining consistency in who is alive/dead and the events that have occurred.
+- Day Phases (Lynches): Describe the chaotic democratic process. Focus on the yelling, the mob mentality, the desperate pleas of the accused, and the grim execution. 
+- Night Phases (Kills): If there is a kill, do not describe the murder directly; instead, describe the morning discovery of the gruesome scene and the chilling realization of the town. If there are no kills, describe the restless sleep and mounting dread.
+- Prologues: If IS PROLOGUE is {is_prologue}, and it is True, DO NOT name any players yet. Focus entirely on world-building, setting the scene, and introducing the looming threat.
+- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 50 to 150 words (2-3 short paragraphs). Do not overwrite. Short dramatic paragraphs are preffered.
+- Mention the player & their role that dies in the story, but only have the role shown as part of the death scene, such as having a medical kit fall out of their pocket if town doc, or their police badge if cop. 
+
+If night kill, have them doing something like walking outside at night, rushing to get home, or having to secure a door, when the killer gets them.
+If a day lynch, give them a chance to speak or act before their fate is sealed. 
+Set the scene with others if needed, mention living players in the scene before the death, but do not have them interact with the victim as that can lead to confusion about who is alive or dead. 
+I.e. for day lynch you can mention other players in the crowd, yelling and shouting (but don't give them actual lines of dialogue), but for night kills, focus on the victim's internal thoughts and feelings as they realize they are being targeted, and the chilling atmosphere of the night.
+Ensure the story is focused on the victim's experience and the town's reaction, rather than naming specific living players as active participants in the scene, to avoid confusion about who is alive or dead.
+Make sure the scene is action and narrative driven, and not just a summary of events. The goal is to immerse the reader in the experience of the phase, not just recount what happened.
+Do not have any player be involved in the death of another player, as that can lead to confusion about who is alive or dead. Instead, focus on the victim's experience and the town's reaction, without naming specific living players as active participants in the scene.
+Ensure that the victum is the one named as the character who dies in the story, and that their death is described in a way that fits the narrative style, without explicitly stating their role until the moment of death. This helps maintain the suspense and mystery of the game, while still providing a satisfying narrative for the reader.
+--- YOUR TASK ---
+Write the next chapter of the story now:
+"""
+    return prompt
+
+def _archive_phase_data(phase_key: str, prompt: str, thoughts: str, result: str):
+    """Stores the complete AI transaction for debugging and observability."""
+    archive_path = os.path.join("Logs", "prompts_archive.json")
+    os.makedirs("Logs", exist_ok=True)
+    
+    archive_data = {}
+    if os.path.exists(archive_path):
+        try:
+            with open(archive_path, 'r', encoding='utf-8') as f:
+                archive_data = json.load(f)
+        except json.JSONDecodeError:
+            archive_data = {}
+
+    archive_data[phase_key] = {
+        "timestamp": datetime.now().isoformat(),
+        "prompt_sent": prompt,
+        "ai_reasoning": thoughts if thoughts else "No thoughts recorded.",
+        "final_story": result
+    }
+
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        json.dump(archive_data, f, indent=4)
+
+async def generate_story(game_state: dict, events: list, history: list) -> str | None:
+    """
+    Main entry point. Generates the story asynchronously using the Gemini API.
+    """
+    if not client:
         return None
-    logger.info("Generating story using AI...")
+
+    phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
+    phase_num = game_state.get('number', 0)
+    phase_key = f"{phase_name} {phase_num} - {int(datetime.now().timestamp())}"
     
     # 1. Build Prompt
-    prompt = _construct_ai_prompt(game_state, events, story_history)
+    prompt = _construct_ai_prompt(game_state, events, history)
+
+    # 2. Configure Thinking depth based on phase
+    is_prologue = game_state.get('is_prologue', False)
     
-    # Debug log restricted to 1000 chars to avoid clutter
-    logger.info("Constructed AI Prompt:\n" + prompt[:1000] + "...")
-    logger.debug(f"Full AI Prompt:\n{prompt}")
-    
-    payload = { "contents": [{ "parts": [{"text": prompt}] }] }
-    full_api_url = f"{API_URL}?key={config.GOOGLE_AI_API_KEY}"
-    
+    # Note: Not all models support 'thinking_config' or 'thinking_level' yet.
+    # For stability with gemini-2.5-flash, we omit the thinking_config 
+    # unless you are strictly using a model that requires it.
+    generation_config = types.GenerateContentConfig(
+        temperature=0.7,
+    )
+
+    logger.info(f"Requesting AI story for {phase_name} {phase_num} using {MODEL_NAME}...")
+
     try:
-        async with aiohttp.ClientSession() as session:
-            async with session.post(full_api_url, json=payload, timeout=20.0) as response:
-                if response.status == 200:
-                    data = await response.json()
-                    candidates = data.get('candidates')
-                    if not candidates:
-                        logger.error(f"AI API returned 200 but no candidates. Response: {data}")
-                        return None
-                    
-                    try:
-                        text = candidates[0].get('content', {}).get('parts', [{}])[0].get('text')
-                    except (IndexError, KeyError):
-                        logger.error(f"AI API returned malformed data structure. Response: {data}")
-                        return None
-                    
-                    if text:
-                        # --- SUCCESS: APPEND MECHANICAL SUMMARY ---
-                        logger.info("Successfully generated story from AI.")
-                        ai_text = text.strip()
-                        
-                        # Generate the non-AI functional summary
-                        mechanical_summary = _generate_mechanical_summary(events)
-                        
-                        # Combine them
-                        final_output = f"{ai_text}\n{mechanical_summary}"
-                        return final_output
-                    else:
-                        logger.error(f"AI API returned valid structure but empty text.")
-                        return None
-                else:
-                    error_text = await response.text()
-                    logger.error(f"AI API call failed with status {response.status}: {error_text}")
-                    return None
+        # 3. Async Call to Gemini using the recommended method
+        response = await client.aio.models.generate_content(
+            model=MODEL_NAME,
+            contents=prompt,
+            config=generation_config
+        )
+
+        # 4. Extract Text
+        story_text = ""
+        thoughts = "" # Default to empty if the model doesn't return thoughts
+        
+        if response.text:
+           story_text = response.text
+           
+        # Attempt to extract thoughts if they exist in the response structure
+        # This is a safe fallback in case we switch back to a thinking model
+        if response.candidates and response.candidates[0].content.parts:
+            for part in response.candidates[0].content.parts:
+                if getattr(part, 'thought', False): 
+                    thoughts += part.text
+
+        if not story_text:
+            logger.error("AI returned an empty story.")
+            return None
+
+        # 5. Archive the interaction
+        _archive_phase_data(phase_key, prompt, thoughts, story_text.strip())
+
+        # 6. Append Factual Summary
+        mechanical_summary = _generate_mechanical_summary(events)
+        final_output = f"{story_text.strip()}\n{mechanical_summary}"
+        
+        logger.info(f"Successfully generated and archived AI story for {phase_key}.")
+        return final_output
+
+    except asyncio.TimeoutError:
+        logger.error("Gemini API timed out. Falling back to static story.")
+        return None
     except Exception as e:
-        logger.error(f"An exception occurred during the AI API call: {e}", exc_info=True)
+        # Catching all exceptions to ensure the bot doesn't crash
+        logger.error(f"Gemini API Error during generate_story: {type(e).__name__} - {e}", exc_info=True)
         return None

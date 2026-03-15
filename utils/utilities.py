@@ -134,7 +134,6 @@ async def send_role_dm(bot, player_id, role, guild):
     except Exception as e:
         logger.exception(f"An unexpected error occurred sending role DM to {player_id}: {e}")
         # Fallthrough to alert moderators
-
     # --- MODERATOR ALERT & FALLBACK ---
     logger.warning(f"Initiating moderator alert and fallback for player {player_id}.")
     mod_channel = bot.get_channel(config.MOD_CHANNEL_ID)
@@ -198,18 +197,14 @@ async def send_chunked_message(self, channel, message):
         Attempts to split cleanly on newlines.
         """
         if not message: return
-        
         if len(message) <= 2000:
             await channel.send(message)
             return
-        
         logger.info(f"Message length {len(message)} exceeds 2000 chars. Chunking...")
         chunks = []
         current_chunk = ""
-        
         # Split by lines to preserve formatting
-        lines = message.split('\n')
-        
+        lines = message.split('\n')  
         for line in lines:
             # Check if adding this line would exceed the limit (plus a newline char)
             if len(current_chunk) + len(line) + 1 > 1900: # 1900 safety buffer
@@ -217,13 +212,46 @@ async def send_chunked_message(self, channel, message):
                 current_chunk = line + "\n"
             else:
                 current_chunk += line + "\n"
-        
         if current_chunk:
             chunks.append(current_chunk)
-            
         for i, chunk in enumerate(chunks):
             await channel.send(chunk)
             logger.info(f"Sent chunk {i+1}/{len(chunks)}")
+
+
+# -- AI Functions ---
+def log_prompt_to_json(phase_key, prompt):
+    log_file = "Logs/prompts_archive.json"
+    data = {}
+    if os.path.exists(log_file):
+        with open(log_file, 'r') as f:
+            data = json.load(f)   
+    data[phase_key] = {
+        "timestamp": str(datetime.now()),
+        "prompt": prompt
+    }
+    with open(log_file, 'w') as f:
+        json.dump(data, f, indent=4)
+
+def archive_phase_data(phase_key: str, prompt: str, thoughts: str, result: str):
+    """Stores the complete AI transaction for debugging and observability."""
+    archive_path = os.path.join("Logs", "prompts_archive.json")
+    os.makedirs("Logs", exist_ok=True)
+    archive_data = {}
+    if os.path.exists(archive_path):
+        try:
+            with open(archive_path, 'r', encoding='utf-8') as f:
+                archive_data = json.load(f)
+        except json.JSONDecodeError:
+            archive_data = {}
+    archive_data[phase_key] = {
+        "timestamp": datetime.now().isoformat(),
+        "prompt_sent": prompt,
+        "ai_reasoning": thoughts if thoughts else "No thoughts recorded.",
+        "final_story": result
+    }
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        json.dump(archive_data, f, indent=4)
 
 # --- Stats Functions ---
 

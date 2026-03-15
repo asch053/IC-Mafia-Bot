@@ -8,7 +8,7 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from game.actions import handle_block, handle_heal, handle_kill, handle_investigation
+from Game.actions import handle_block, handle_heal, handle_kill, handle_investigation
 
 def async_test(f):
     def wrapper(*args, **kwargs):

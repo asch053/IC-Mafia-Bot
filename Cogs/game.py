@@ -125,7 +125,8 @@ class GameCog(commands.Cog, name="GameCog"):
         phase_hours="The duration of each day/night phase in hours.",
         start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC).",
         gf_investigate_choice="Whether the Godfather is able to be investigated (yes/no).",
-        #sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no)."
+        sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no).",
+        narration_type="The type of narration for the game."
     )
     @app_commands.choices(game_type=[
         app_commands.Choice(name="Classic", value="classic"),
@@ -135,13 +136,23 @@ class GameCog(commands.Cog, name="GameCog"):
         app_commands.Choice(name="Yes", value="yes"),
         app_commands.Choice(name="No", value="no")
     ])
-    #@app_commands.choices(sk_investigate_choice=[
-    #    app_commands.Choice(name="Yes", value="yes"),
-    #    app_commands.Choice(name="No", value="no")
-    #])
+    @app_commands.choices(sk_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
+    @app_commands.choices(narration_type=[
+    # options for AI narration types - can be expanded in the future to include more styles/themes. Add Classic Mafia, High Fantasy, Cyberpunk, Comedy, and lovecraftian horror.
+        app_commands.Choice(name="No Story", value="No Story"),
+        app_commands.Choice(name="Classic Mafia", value="Classic Mafia"),
+        app_commands.Choice(name="High Fantasy", value="High Fantasy"),
+        app_commands.Choice(name="Cyberpunk", value="Cyberpunk"),
+        app_commands.Choice(name="Comedy", value="Comedy"),
+        app_commands.Choice(name="Lovecraftian Horror", value="Lovecraftian Horror")
+    ])
     @is_admin() # Decorator: This command can only be used by admins.
     async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str, gf_investigate_choice: str = "No", 
-                                 #sk_investigate_choice: str = "Yes"
+                                 sk_investigate_choice: str = "No",
+                                 narration_type: str = "Classic Mafia"
                                  ):
         """Command for admins to schedule a new game."""
         logger.info(f"'/mafiastart' command invoked by {interaction.user.name} with args: type={game_type}, hours={phase_hours}, start='{start_datetime}'.")
@@ -162,7 +173,7 @@ class GameCog(commands.Cog, name="GameCog"):
             return
         # Convert investigate choices to booleans
         gf_investigate = (gf_investigate_choice.lower() == "yes")
-        #sk_investigate = (sk_investigate_choice.lower() == "yes")
+        sk_investigate = (sk_investigate_choice.lower() == "yes")
         sk_investigate = False
         # Acknowledge the command while the bot prepares the game announcement
         await interaction.response.defer(ephemeral=True)
@@ -172,7 +183,7 @@ class GameCog(commands.Cog, name="GameCog"):
         # Confirm to the admin that the game has been scheduled successfully
         await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
         # Call the game engine's start method to begin the sign-up phase
-        await self.game.start(game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate)
+        await self.game.start(game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=21)
 
     # --- Player Commands (Channel) ---
     @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")
