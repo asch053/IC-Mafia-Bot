@@ -1169,8 +1169,10 @@ class Game:
         # Trigger the export immediately after saving.
         # We use create_task so it runs in the background and doesn't freeze the bot.
         export_cog = self.bot.get_cog("ExportCog")
+        channel = self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID) # You can specify a channel for the export cog to post in, or pass None if it handles its own channels.
         if export_cog:
-            self.bot.loop.create_task(export_cog.run_export_logic())
+            await export_cog.run_export_logic(channel=channel, game_mode=self.game_settings.get('game_type', 'classic'))
+            logger.info("Game stats exported.")
         else:
             logger.warning("Export Cog not found. Stats were not uploaded.")
         

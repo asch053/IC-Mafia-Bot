@@ -14,5 +14,16 @@
     "spectator": {
         "id": 1322335985702277151,
         "name": "Spectator"
+      },
+    "classic": {
+        "top_skill": 1482294174161305620,
+        "top_survivor": 1482294180205301821,
+        "red_shirt": 1482294728799162579
+      },
+      "battle_royale": {
+        "top_wins": 1482320636234694679,
+        "top_survivor": 1482320824777048094,
+        "red_shirt": 1482320998920618075
       }
-  }
+}
+  

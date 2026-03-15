@@ -82,7 +82,8 @@ initial_extensions = [
     'Cogs.admin',
     'Cogs.info',
     'Cogs.stats',
-    'Cogs.export'
+    'Cogs.export',
+    'Game.statistics.fame'
 ]
 
 # --- 4. Setup Hook (The ONLY place for loading cogs) ---

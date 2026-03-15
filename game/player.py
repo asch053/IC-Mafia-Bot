@@ -1,4 +1,4 @@
-# game/player.py
+# Game/player.py
 import logging
 from Game.roles import GameRole # For type hinting
 
