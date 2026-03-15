@@ -142,6 +142,7 @@ class GameCog(commands.Cog, name="GameCog"):
     ])
     @app_commands.choices(narration_type=[
     # options for AI narration types - can be expanded in the future to include more styles/themes. Add Classic Mafia, High Fantasy, Cyberpunk, Comedy, and lovecraftian horror.
+        app_commands.Choice(name="No Story", value="No Story"),
         app_commands.Choice(name="Classic Mafia", value="Classic Mafia"),
         app_commands.Choice(name="High Fantasy", value="High Fantasy"),
         app_commands.Choice(name="Cyberpunk", value="Cyberpunk"),
