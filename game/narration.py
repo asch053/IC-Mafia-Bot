@@ -1,6 +1,6 @@
 import logging
-import Game.narration_ai as ai_storyteller
-import Game.narration_static as static_storyteller
+import game.narration_ai as ai_storyteller
+import game.narration_static as static_storyteller
 
 logger = logging.getLogger('discord')
 

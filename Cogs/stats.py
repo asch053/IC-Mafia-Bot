@@ -7,7 +7,7 @@ from discord.ext import commands
 from discord import app_commands
 from collections import Counter, defaultdict
 import config
-from Utils.utilities import filter_games_by_time as filter_games_by_time
+from utils.utilities import filter_games_by_time as filter_games_by_time
 logger = logging.getLogger('discord')
 
 class StatsCog(commands.Cog):

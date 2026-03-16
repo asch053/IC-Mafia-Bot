@@ -8,12 +8,12 @@ import sys
 import os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from Utils.utilities import load_data 
+from utils.utilities import load_data 
 
-from Game.engine import Game
-from Game.player import Player
-import Game.roles # <-- MODIFIED: Import module to patch get_role_instance correctly
-from Game.roles import GameRole
+from game.engine import Game
+from game.player import Player
+import game.roles # <-- MODIFIED: Import module to patch get_role_instance correctly
+from game.roles import GameRole
 
 # Helper decorator for async tests
 def async_test(f):

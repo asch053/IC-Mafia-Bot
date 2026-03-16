@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import MagicMock, patch, AsyncMock
-from Cogs.stats import StatsCog
+from cogs.stats import StatsCog
 import discord
 
 class TestStatsCog(unittest.IsolatedAsyncioTestCase):

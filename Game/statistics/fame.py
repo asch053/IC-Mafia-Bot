@@ -5,12 +5,17 @@ import logging
 import json
 import os
 import re
+import config
 from discord.ext import commands
 from discord import app_commands
 from collections import defaultdict
-from Utils.utilities import filter_games_by_time, load_data
+from utils.utilities import filter_games_by_time, load_data
 
 logger = logging.getLogger('discord')
+
+# Define the minimum number of games required to be eligible for champion roles
+# This is set to 5 for production, but can be 0 for testing purposes to allow everyone to qualify.
+ELIGIBLE_GAMES = 5 if config.game_type.lower() == "production" else 0
 
 class FameCog(commands.Cog):
     def __init__(self, bot):
@@ -85,10 +90,10 @@ class FameCog(commands.Cog):
 
                 all_players[pid]["phases_lived"] += int(phases)
 
-        eligible_players = {pid: data for pid, data in all_players.items() if data["games_played"] > 5}
+        eligible_players = {pid: data for pid, data in all_players.items() if data["games_played"] > ELIGIBLE_GAMES}
         
         if not eligible_players:
-            return discord.Embed(title="⚠️ No Eligible Players", description="Nobody has >5 games in the last 6 months.", color=discord.Color.orange())
+            return discord.Embed(title="⚠️ No Eligible Players", description=f"Nobody has >{ELIGIBLE_GAMES} games in the last 6 months.", color=discord.Color.orange())
             
         for pid, data in eligible_players.items():
             data["survival_rate"] = data["survived"] / data["games_played"]

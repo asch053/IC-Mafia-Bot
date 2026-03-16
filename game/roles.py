@@ -1,6 +1,6 @@
 # game/roles.py
 import logging
-from Utils.utilities import load_data
+from utils.utilities import load_data
 
 # Get the logger instance from the main bot file
 logger = logging.getLogger('discord')

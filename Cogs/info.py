@@ -4,7 +4,7 @@ from discord import app_commands
 from discord.ext import commands
 import logging
 from collections import Counter, defaultdict
-from Utils.utilities import load_data
+from utils.utilities import load_data
 
 # Get the logger instance from the main bot file
 logger = logging.getLogger('discord')

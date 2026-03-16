@@ -16,8 +16,8 @@ from collections import (
 )
 
 import config
-import Game.actions as actions
-from Utils.utilities import (
+import game.actions as actions
+from utils.utilities import (
     load_data,
     save_json_data,
     update_player_discord_roles,
@@ -28,11 +28,11 @@ from Utils.utilities import (
     
 )
 
-from Game.narration import NarrationManager # Import the NarrationManager
-from Utils.randomness_tester import test_role_distribution # Import the test function
-from Game.roles import GameRole, get_role_instance
-from Game.player import Player # Import the Player class
-from Game import setup_generator # Import the setup_generator function
+from game.narration import NarrationManager # Import the NarrationManager
+from utils.randomness_tester import test_role_distribution # Import the test function
+from game.roles import GameRole, get_role_instance
+from game.player import Player # Import the Player class
+from game import setup_generator # Import the setup_generator function
 
 
 # Get the same logger instance as in mafiabot.py

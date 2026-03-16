@@ -1,7 +1,7 @@
 # utils/checks.py
 import logging
 from discord import app_commands, Interaction
-from Utils import utilities # Use a relative import within the same package
+from utils import utilities # Use a relative import within the same package
 
 # Get the logger instance from the main bot file
 logger = logging.getLogger('discord')

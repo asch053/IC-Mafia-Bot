@@ -4,10 +4,10 @@ import config
 import logging
 from discord import app_commands
 from discord.ext import commands
-from Game.engine import Game
+from game.engine import Game
 from datetime import datetime, timezone
-from Utils import utilities
-from Utils.admincheck import is_admin
+from utils import utilities
+from utils.admincheck import is_admin
 from datetime import datetime, timezone
 
 # Get the logger instance from the main bot file

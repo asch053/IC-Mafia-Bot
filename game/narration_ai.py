@@ -10,7 +10,7 @@ try:
 except ImportError:
     import config_template as config
 
-from Utils.utilities import load_data # Fixed import path
+from utils.utilities import load_data # Fixed import path
 
 # Import the new 2026 standard Google GenAI SDK
 try:
