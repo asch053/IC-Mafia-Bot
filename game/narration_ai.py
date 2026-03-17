@@ -80,20 +80,52 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
     phase_num = game_state.get('number', 0)
     story_type = game_state.get('story_type', 'Classic Mafia')
+    game_mode = str(game_state.get('mode', 'classic')).lower()
     living_players = [p.display_name for p in game_state.get('living_players', [])]
     is_prologue = game_state.get('is_prologue', False)
     
-    # 1. Format Events Context
-    events_text = "No mechanical actions resolved this phase."
+    # --- NEW: DYNAMIC MODE CONTEXT ---
+    if "battle_royale" in game_mode or game_mode == "br":
+        mode_guide = """
+*** CRITICAL GAME MODE: BATTLE ROYALE (FREE-FOR-ALL) ***
+- This is a brutal, last-man-standing deathmatch. There is no 'Town' and no 'Mafia'.
+- Every single player is armed (e.g., holding a knife, a makeshift weapon, etc.).
+- Trust does not exist. Everyone is a killer. 
+- A 'lynch' represents the group temporarily forming a desperate, violent pact to eliminate the biggest perceived threat during the day.
+- A 'night kill' represents a brutal, solitary ambush or duel in the dark.
+"""
+        lynch_text = "The remaining survivors turned on and slaughtered"
+    else:
+        mode_guide = """
+*** CRITICAL GAME MODE: CLASSIC MAFIA ***
+- This is a game of deception and hidden identities. An innocent, uninformed majority (Town) vs a hidden, informed minority (Mafia/Cult).
+- Emphasize the fear of the unknown, the tragedy of innocent people turning on each other, and the shadows hiding the true killers.
+- A 'lynch' is a frantic, democratic execution by the frightened mob.
+"""
+        lynch_text = "The town voted to LYNCH"
+
+    # 1. Format Events Context - NOW MODE-AWARE
+    events_text = "No mechanical actions resolved this phase. Nobody died."
     if events:
         event_lines = []
         for e in events:
-            # We strip out the raw objects and just pass names/types to the AI
-            line = f"Event Type: {e['type']}"
-            if 'victim' in e: line += f" | Victim: {e['victim'].display_name}"
-            if 'target' in e: line += f" | Target: {e['target'].display_name}"
-            event_lines.append(line)
-        events_text = "\n".join(event_lines)
+            etype = e['type']
+            if etype == 'lynch':
+                for v in e.get('victims', []):
+                    role_name = v.role.name if v.role else "Unknown"
+                    event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Upon searching their body, their true identity was revealed as {role_name}.")
+            elif etype == 'kill':
+                victim = e.get('victim')
+                if victim:
+                    role_name = victim.role.name if victim.role else "Unknown"
+                    event_lines.append(f"CRITICAL EVENT: {victim.display_name} was MURDERED in the night. Upon searching their body, their true identity was revealed as {role_name}.")
+            elif etype == 'inactivity_kill':
+                for v in e.get('victims', []):
+                    role_name = v.role.name if v.role else "Unknown"
+                    event_lines.append(f"CRITICAL EVENT: {v.display_name} mysteriously vanished or dropped dead from weakness/inactivity. Their true identity was {role_name}.")
+                    
+        if event_lines:
+            events_text = "\n".join(event_lines)
 
     # 2. Prune History to prevent context bloat (Max 3 previous chapters)
     history_text = "This is the very beginning."
@@ -101,29 +133,38 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         pruned_history = history[-3:] 
         history_text = "\n\n".join(pruned_history)
 
-  # 3. Pull Theme Guidelines dynamically from themes.json
+    # 3. Pull Theme Guidelines dynamically from themes.json
     try:
         theme_guide = THEMES_DATA.get(story_type, f"A highly immersive setting focusing on the tropes of: {story_type}.")
     except Exception as e:
         logger.warning(f"Failed to load theme '{story_type}' from themes.json: {e}")
         theme_guide = f"A highly immersive setting focusing on the tropes of: {story_type}."
 
-    # 4. Construct the Reasoning Rubric with Forum-Mafia Specific Guidance
-    prompt = f"""You are an elite, highly creative Game Moderator (GM) running a traditional text-based forum game of Mafia. 
+    # 4. Construct the Reasoning Rubric
+    prompt = f"""You are an elite, highly creative Game Moderator (GM) running a text-based survival/deception game. 
 Your job is to write the story text for the current phase. 
 
 CURRENT THEME: '{story_type}'
 THEME GUIDELINES: {theme_guide}
+{mode_guide}
 
 CURRENT PHASE: {phase_name} {phase_num}
 
 --- REASONING RUBRIC (Internal Rules) ---
-1. LIVING PLAYERS ONLY: {", ".join(living_players)}. 
-   CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions.
-2. SECRECY: NEVER reveal a player's exact role (e.g., 'Mafia', 'Cop', 'Doctor') in the prose UNLESS they are explicitly killed this phase. Keep the identities of the killers shadowed and ambiguous (e.g., "a dark figure," "the shadows").
-3. MECHANICAL EVENTS: Always incorporate the mechanical events of the phase (lynches, kills, special actions) into the story in a way that fits the narrative style.
-4. ATMOSPHERE: Focus on creating a tense, immersive atmosphere that captures the paranoia and drama of the game. Use sensory details and emotional cues to bring the story to life.
-5. NPCS: If there are any NPCs in the game, you can use them to add flavor and commentary, but they should not overshadow the players' stories. Keep them in the background as part of the town's ambiance.
+1. SURVIVORS: {", ".join(living_players)}. 
+   CRITICAL: These players are ALIVE. Do NOT describe them dying, being attacked, or being eliminated under any circumstances.
+2. THE VICTIM(S): You MUST base the deaths strictly on the "MECHANICAL EVENTS TO NARRATE THIS PHASE" section below. Do NOT kill anyone else. If that section says nobody died, then nobody died.
+3. SECRECY: Keep the identities of the killers shadowed and ambiguous (e.g., "a dark figure," "the shadows," "a glint of steel"). Do not name living players as the explicit perpetrators of a murder.
+4. ROLE REVEALS: When a player dies, mention their role subtly as part of the death scene (e.g., a medical kit falling from the Doctor's pocket, a sniper rifle strapped to their back). Do not just state their role outright; weave it into the narrative.
+5. ATMOSPHERE: Focus on creating a tense, immersive atmosphere that captures the paranoia and drama of the game. 
+
+--- WRITING STYLE: "ELITE STORYTELLER" ---
+- Tone: Melodramatic, suspenseful, gritty, and deeply atmospheric.
+- Perspective: Third-person omniscient narrator. Focus on the psychology and paranoia.
+- Day Phases: Focus on the chaotic confrontation, the shouting, the desperate pleas of the accused, and the grim execution/elimination. 
+- Night Phases: Focus on the victim's internal thoughts as they realize they are hunted, the chilling atmosphere, and the morning discovery of the gruesome scene.
+- Prologues: If IS PROLOGUE is {is_prologue}, and it is True, DO NOT name any players yet. Focus entirely on world-building, setting the scene, and introducing the tension.
+- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 50 to 150 words (2-3 short paragraphs). Do not overwrite. 
 
 --- MECHANICAL EVENTS TO NARRATE THIS PHASE ---
 {events_text}
@@ -131,25 +172,6 @@ CURRENT PHASE: {phase_name} {phase_num}
 --- PREVIOUS STORY CONTEXT ---
 {history_text}
 
---- WRITING STYLE: "FORUM MAFIA ELITE" ---
-- Tone: Melodramatic, suspenseful, slightly theatrical, and deeply atmospheric.
-- Perspective: Third-person omniscient narrator. Focus on the psychology, paranoia, and the grim reality of the town.
-- Describe the environment: Use sensory details (the smell of iron, the chill of the morning air, the sound of an angry mob).
-- Continuity: Ensure the story flows logically from previous chapters, maintaining consistency in who is alive/dead and the events that have occurred.
-- Day Phases (Lynches): Describe the chaotic democratic process. Focus on the yelling, the mob mentality, the desperate pleas of the accused, and the grim execution. 
-- Night Phases (Kills): If there is a kill, do not describe the murder directly; instead, describe the morning discovery of the gruesome scene and the chilling realization of the town. If there are no kills, describe the restless sleep and mounting dread.
-- Prologues: If IS PROLOGUE is {is_prologue}, and it is True, DO NOT name any players yet. Focus entirely on world-building, setting the scene, and introducing the looming threat.
-- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 50 to 150 words (2-3 short paragraphs). Do not overwrite. Short dramatic paragraphs are preffered.
-- Mention the player & their role that dies in the story, but only have the role shown as part of the death scene, such as having a medical kit fall out of their pocket if town doc, or their police badge if cop. 
-
-If night kill, have them doing something like walking outside at night, rushing to get home, or having to secure a door, when the killer gets them.
-If a day lynch, give them a chance to speak or act before their fate is sealed. 
-Set the scene with others if needed, mention living players in the scene before the death, but do not have them interact with the victim as that can lead to confusion about who is alive or dead. 
-I.e. for day lynch you can mention other players in the crowd, yelling and shouting (but don't give them actual lines of dialogue), but for night kills, focus on the victim's internal thoughts and feelings as they realize they are being targeted, and the chilling atmosphere of the night.
-Ensure the story is focused on the victim's experience and the town's reaction, rather than naming specific living players as active participants in the scene, to avoid confusion about who is alive or dead.
-Make sure the scene is action and narrative driven, and not just a summary of events. The goal is to immerse the reader in the experience of the phase, not just recount what happened.
-Do not have any player be involved in the death of another player, as that can lead to confusion about who is alive or dead. Instead, focus on the victim's experience and the town's reaction, without naming specific living players as active participants in the scene.
-Ensure that the victum is the one named as the character who dies in the story, and that their death is described in a way that fits the narrative style, without explicitly stating their role until the moment of death. This helps maintain the suspense and mystery of the game, while still providing a satisfying narrative for the reader.
 --- YOUR TASK ---
 Write the next chapter of the story now:
 """

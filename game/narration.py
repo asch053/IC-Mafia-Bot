@@ -54,7 +54,7 @@ class NarrationManager:
         # PASS HISTORY HERE so the AI knows the context!
         # Only pass the last 3 stories to stay under the 8k token bug limit
         # If narrarion type is "No Story", skip AI generation and go straight to static
-        if game_state['narration_type'] == "No Story":
+        if game_state.get('story_type', 'No Story') == "No Story":
             logger.info("Narration type set to 'No Story'. Skipping AI generation.")
             ai_story = None
         else:

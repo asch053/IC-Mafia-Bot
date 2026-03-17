@@ -91,20 +91,20 @@ class Game:
         # --- Data Loading ---
         logger.debug("Loading game data from JSON files.")
         try:
-            self.discord_role_data = load_data("Data/discord_roles.json") #loads discord roles data
+            self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
         except Exception as e:
             logger.error(f"Error loading discord roles data: {e}")
         try:
-            self.npc_names = load_data("Data/bot_names.txt") #load NPC bot names
+            self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
         except Exception as e:
             logger.error(f"Error loading NPC names: {e}")
         try:    
-            self.rules_text = "\n".join(load_data("Data/rules.txt"))
+            self.rules_text = "\n".join(load_data("data/rules.txt"))
         except Exception as e:
             logger.error(f"Error loading rules text: {e}")
             self.rules_text = "No rules text found. Please check the rules.txt file."
         try:    
-            self.mafia_setups = load_data("Data/mafia_setups.json")
+            self.mafia_setups = load_data("data/mafia_setups.json")
         except Exception as e:
             logger.error(f"Error loading mafia setups: {e}")
             logger.critical("No mafia setups loaded. The game cannot start.")
