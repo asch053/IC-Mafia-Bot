@@ -80,7 +80,7 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     phase_name = str(game_state.get('phase', 'Unknown')).capitalize()
     phase_num = game_state.get('number', 0)
     story_type = game_state.get('story_type', 'Classic Mafia')
-    game_mode = str(game_state.get('mode', 'classic')).lower()
+    game_mode = str(game_state.get('game_type', game_state.get('mode', 'classic'))).lower()
     living_players = [p.display_name for p in game_state.get('living_players', [])]
     is_prologue = game_state.get('is_prologue', False)
     
