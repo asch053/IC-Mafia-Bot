@@ -53,7 +53,7 @@ def _generate_mechanical_summary(events: list) -> str:
         if etype == 'lynch':
             for v in event.get('victims', []):
                 role_name = v.role.name if v.role else "Unknown"
-                lines.append(f"- 💀 **{v.display_name}** was lynched. They were the **{role_name}**.")
+                lines.append(f"- 💀 **{v.display_name}** was lynched. They were **{role_name}**.")
                 
         # --- Kills ---
         elif etype == 'kill':
