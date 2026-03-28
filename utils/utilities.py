@@ -7,6 +7,7 @@ import io
 from datetime import datetime, timezone, timedelta
 import logging
 import config
+import random
 
 # Get the same logger instance as in mafiabot.py
 logger = logging.getLogger('discord')
@@ -81,6 +82,8 @@ async def update_player_discord_roles(bot, guild, players, discord_role_data):
             logger.warning(f"Could not find player with ID {player_id} in the server.")
             continue
         user_roles = [role.id for role in member.roles]
+        # CRITICAL FIX: Small jitter delay before sending DM to avoid hitting limits when looping
+        await asyncio.sleep(random.uniform(1.2, 2.8))
         try:
             if player_obj.is_alive:
                 await member.add_roles(living_role)
@@ -118,6 +121,8 @@ async def send_role_dm(bot, player_id, role, guild):
     Returns True on direct DM success, False on failure or fallback.
     """
     try:
+        # CRITICAL FIX: Small jitter delay before sending DM to avoid hitting limits when looping
+        await asyncio.sleep(random.uniform(1.2, 2.8))
         player = await bot.fetch_user(player_id)
         message = f"**Your Role: {role.name}**\n\n**Alignment:** {role.alignment}\n\n**Description:** {role.description}"
         logger.debug(f"Attempting to send role DM to {player.name} ({player_id})")
@@ -164,6 +169,8 @@ async def send_mafia_info_dm(bot, players):
             # If no teammates, just inform them they are alone
             message = "You are the sole member of the Mafia."
         # Use the send_dm method on the Player object
+        # CRITICAL FIX: Small jitter delay before sending DM to avoid hitting limits when looping
+        await asyncio.sleep(random.uniform(1.2, 2.8))
         await member.send_dm(bot, message)
         logger.debug(f"Sent Mafia team DM to {member.display_name} ({member.id}).")
 
