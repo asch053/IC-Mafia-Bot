@@ -21,6 +21,7 @@ def load_data(filepath,error_default=None):
     Returns:
         The loaded data (dict/list for JSON, list of strings for TXT), or an empty default.
     """
+    filepath = filepath.lower() # Normalize file path to lowercase for consistency
     try:
         with open(filepath, "r", encoding='utf-8') as f:
             
