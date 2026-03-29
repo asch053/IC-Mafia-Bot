@@ -45,7 +45,13 @@ class NarrationManager:
         2. Falls back to static if AI fails.
         3. Saves the result to history for next time.
         """
-        self.header = f"**--- {game_state['phase'].capitalize()} {game_state['number']} ---**"
+        if game_state['phase']:
+            phase_name = str(game_state['phase']).capitalize()
+            phase_num = game_state.get('number', "") 
+            if game_state.get('phase') == "night" or game_state.get('phase') == "day": 
+                self.header = f"**--- {phase_name} {phase_num} ---**"
+        else:
+            self.header = f"**--- {phase_name} ---**"
         final_story = None
         
         # --- 1. AI STORY GENERATION ATTEMPT ---

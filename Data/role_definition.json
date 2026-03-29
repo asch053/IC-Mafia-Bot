@@ -67,8 +67,8 @@
     },
     "Vigilante": {
         "base": "NeutralRoyale",
-        "description": "You are a lone wolf out for yourself. You can kill, heal, or block one player each night (your last submitted action will be used). Your goal is to be the last person standing.",
-        "short_description": "Can kill, heal, or block. Wins by being the only survivor.",
+        "description": "You are a lone wolf out for yourself. You can kill or block one player each night (your last submitted action will be used). Your goal is to be the last person standing.",
+        "short_description": "Can kill or block. Wins by being the only survivor.",
         "abilities": {
             "kill": "Choose one player to kill each night.",
             

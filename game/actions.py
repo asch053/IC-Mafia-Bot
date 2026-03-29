@@ -13,6 +13,8 @@ def handle_block(game, blocker_id, target_id, night_outcomes):
     blocker_action = night_outcomes.get(blocker_id)
     if blocker_action and blocker_action.get('status') == 'blocked':
         logger.info(f"Block attempt by {blocker_id} failed because they were also blocked.")
+        event_type = 'block_missed_royale' if game.game_settings.get('game_type') == "battle_royale" else 'block_missed'
+        game.narration_manager.add_event(event_type, blocker=game.players.get(blocker_id), target=game.players.get(target_id))
         return
 
     # --- FIX: Mark the blocker's action as successful (consumed) ---
@@ -107,8 +109,10 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
     if not investigator.is_alive: return
     # Check if investigator was killed this night
     if investigator_id in game.kill_attempts_on:
-        logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
-        return
+        # check that investigator was not saved by a heal
+        if investigator_id not in game.heals_on_players:
+            logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
+            return
     # Prepare investigation result 
     # Check if target is investigation immune
     if target.role and target.role.investigation_immune:

@@ -127,6 +127,7 @@ class Game:
         self.game_settings["story_type"] = narration_type # Set narration type as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         self.is_prologue = True # Mark that the next story is the prologue
+        self.is_introduction = False # Mark that the next story is the introduction (for better narration in v0.6)
         self.is_epilogue = False # Not the epilogue yet
         # Set all players to spectators
         #logger.info("Setting all players to spectators.")
@@ -155,8 +156,29 @@ class Game:
         await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(announcement) #send announcement to #announcement channel
         await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         await self.bot.get_channel(config.STORIES_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
+        # send a prologue story to the stories channel to set the scene for the game
+        game_state = {
+            "game_id": self.game_settings['game_id'],   
+            "phase": "Prologue",
+            "number": None,
+            "living_players": None,
+            "is_prologue": True,
+            "is_introduction": False,
+            "is_epilogue": False,
+            "is_game_over": False,
+            "winner": None,
+            "game_type": self.game_settings["game_type"],
+            "story_type": self.game_settings["story_type"]
+        }
+        prologue_story = await self.narration_manager.construct_story(game_state=game_state)
+        await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(
+            f"**--- Prologue ---**\n\n"
+            f"{prologue_story}"
+        )
+        self.is_prologue = False # The prologue has been sent, so set is_prologue to False
         # Create a different message for the rules and roles channel, including the standard rules text
         # Get the rules
+        
         rules = self.rules_text
         # Add objective on win condition based on game type
         if self.game_settings["game_type"] == "battle_royale":
@@ -364,17 +386,22 @@ class Game:
         if story_channel:
             await story_channel.send("\n\n--- **GAME STARTED** ---\n\n")
         # Create narration event for game start with a list of active players
+        self.is_introduction = True # Mark that the next story is the introduction (for better narration in v0.6)
         game_state = {
-            "phase": self.game_settings["current_phase"],
-            "phase_number": self.game_settings['phase_number'],
+            "game_id": self.game_settings['game_id'],
+            "phase": self.game_settings['current_phase'],
+            "number": self.game_settings['phase_number'],
             "living_players": [p for p in self.players.values() if p.is_alive],
-            "is_prologue": self.is_prologue,
-            "is_epilogue": self.is_epilogue,
+            "is_prologue": False,
+            "is_introduction": True, # This is the introduction, so set to True for better narration in v0.6
+            "is_game_over": False,
+            "winner": None,
+            "is_epilogue": False,
             "game_type": self.game_settings["game_type"],
             "story_type": self.game_settings["story_type"]
         }
         self.narration_manager.add_event('game_start', game_state=game_state)
-        self.is_prologue = False # The prologue has now been used, so set it to False
+        self.is_introduction = False # The introduction has now been used, so set it to False
 
     def add_npc(self):
         """Adds a single NPC to the game."""
@@ -529,13 +556,17 @@ class Game:
             # Note: We want to capture the state of the game at the moment the phase ended, 
             # which is why we prepare this game_state before processing the events for the next phase
             game_state = {
+                "game_id": self.game_settings['game_id'],
                 "phase": phase_just_ended,
                 "number": self.game_settings['phase_number'],
                 "living_players": [p for p in self.players.values() if p.is_alive],
                 "game_type": self.game_settings.get("game_type", "classic"),
                 "story_type": self.game_settings.get('story_type', 'Classic Mafia'),
-                "is_prologue": self.is_prologue, # Important for setting the scene
-                "is_game_over": False
+                "is_prologue": False, # Important for setting the scene
+                "is_introduction": False, # Important for setting the scene
+                "is_game_over": False if not winner else True, # Important for setting the scene
+                "is_epilogue": False, # Important for setting the scene
+                "winner": winner if winner else "No Winner",
             }
             logger.info(f"Preparing to construct story for phase: {phase_just_ended}, number: {self.game_settings['phase_number']} with {len(game_state['living_players'])} living players.\n{game_state}")
             # Construct the story
@@ -900,7 +931,7 @@ class Game:
         phase_str = f"Night {self.game_settings['phase_number']}"
         for victim_id, killer_ids in list(self.kill_attempts_on.items()):
             victim_obj = self.players.get(victim_id)
-            if not victim_obj or not victim_obj.is_alive:
+            if not victim_obj:
                 continue
             # --- Check for Saves FIRST ---
             # (Saves should still apply to the whole group of attackers)
@@ -1296,16 +1327,24 @@ class Game:
         else:
             winner_display_name = winner
         # --- Step 4: Announce the results ---
+        # Set is_epilogue to True and pass the winner's name for better story generation in v0.6
+        self.game_settings['is_epilogue'] = True
         self.narration_manager.add_event('game_over', winner=f"{winner_display_name}")      
         # FIX: Create the game_state dictionary expected by the new v0.6 NarrationManager
+        
         game_state = {
-                        "phase": self.game_settings['current_phase'],
-                        "number": self.game_settings['phase_number'],
+                        "game_id": self.game_settings.get('game_id'),   
+                        "phase": "Conclusion",
+                        "number": None,
                         "living_players": [p for p in self.players.values() if p.is_alive],
                         "game_type": self.game_settings.get('game_type', 'classic'),
                         "story_type": self.game_settings.get('story_type', 'Classic Mafia'),
                         "is_prologue": False,
-                        "is_game_over": True 
+                        "is_introduction": False,
+                        "is_epilogue": True,
+                        "winner": winner if winner else "No Winner",
+                        "is_game_over": False 
+
                     }
         # Use 'await' and pass the dictionary
         story = await self.narration_manager.construct_story(game_state=game_state)

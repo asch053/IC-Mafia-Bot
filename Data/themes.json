@@ -1,7 +1,67 @@
 {
-    "Classic Mafia": "set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, noir-inspired, and laden with paranoia. Nothing supernatural, just human nature at its darkest. or otherworldy, but realistic in its depiction of human nature. Their may be a conspiracy, but the changes ar epolitical, criminal, and social, not supernatural. The deaths, if any, are violent but realistic. Night kills are done in darkness and sneaky. Day lynches are chaotic and democratic, with crowds and yelling.",
-    "High Fantasy": "epic, archaic, and magical, like a D&D campaign",
-    "Cyberpunk": "gritty, neon-soaked, and tech-heavy",
-    "Comedy": "satirical, chaotic, and darkly funny",
-    "Lovecraftian Horror": "set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, eldritch, maddening, and terrifying. Something otherworldy and incomprehensible is influencing the town, driving people to madness and despair. The changes are supernatural, eldritch, and cosmic in nature. The deaths, if any, are gruesome and unsettling."
+    "Classic Mafia": {
+        "description": "Set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, noir-inspired, and laden with paranoia. Nothing supernatural, just human nature at its darkest. or otherworldy, but realistic in its depiction of human nature. Their may be a conspiracy, but the changes ar epolitical, criminal, and social, not supernatural. The deaths, if any, are violent but realistic. Night kills are done in darkness and sneaky. Day lynches are chaotic and democratic, with crowds and yelling.",
+        "classic": {
+            "atmosphere": "1920s Prohibition era, gritty noir, fedoras, speakeasies, cigar smoke, and looming mobsters.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role (e.g., 'Mafia', 'Cop') UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe the shadowy struggle or near-miss cinematically without naming the attacker.",
+            "writing_style": "- Tone: Melodramatic, suspenseful, slightly theatrical, and deeply atmospheric.\n- Day Phases: Describe the chaotic democratic process, mob mentality, and desperate pleas.\n- Night Phases: Describe the grim morning discovery of the gruesome scene."
+        },
+        "battle_royale": {
+            "atmosphere": "1920s Prohibition era, gritty noir. The streets have erupted into a chaotic, free-for-all mob war.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\n All kills should include the details about the killer stalking and killing their victum.\n- MULTI-KILLS: If multiple people die, narrate it as a chaotic crossfire in the dark alleys or a series of brutal, intertwined hits.",
+            "writing_style": "- Tone: Action-packed, gritty, intense, and melodramatic.\n- Day Phases: Tense standoffs, finger-pointing, and brutal mob justice.\n- Night Phases: Chaotic shootouts and ruthless ambushes. Make sure to include the specific killer killing their specific victum and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Comedy": {
+        "description": "Satirical, chaotic, and darkly funny. Set in a mundane suburban neighborhood or a municipal park, where petty grievances escalate into absurd violence. The theme and mood are absurd, comedic, and satirical. The changes are ridiculous and over-the-top, often involving slapstick humor. The deaths, if any, are cartoonishly violent but not gory. Night kills are done in ridiculous ways (e.g., a lawnmower accident, a runaway shopping cart). Day lynches are chaotic and involve absurd accusations and mob mentality.",
+        "classic": {
+            "atmosphere": "A mundane suburban neighborhood with overly dramatic local council meetings and passive-aggressive residents.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe an absurd, slapstick near-miss involving ridiculous everyday objects.",
+            "writing_style": "- Tone: Satirical, absurd, and darkly funny.\n- Day Phases: Petty suburban arguments escalating into mob justice.\n- Night Phases: Ridiculous, Rube Goldberg-esque assassination attempts."
+        },
+        "battle_royale": {
+            "atmosphere": "A municipal park turned chaotic warzone. Suspiciously cheerful ice cream trucks, squeaky swings, and pure absurdity.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\n All kills should include the details about the killer stalking and killing their victum.\n Describe the weapons as absurd (e.g., pool noodles, rusty spoons, aggressive squirrels).\n- MULTI-KILLS: If multiple people die, narrate it as a chaotic, slapstick crossfire or a series of unfortunate, intertwined accidents.",
+            "writing_style": "- Tone: Absurd, comedic, satirical, and darkly funny.\n- Day Phases: Petty playground arguments escalating into vindictive justice.\n- Night Phases: Slapstick traps, ridiculous ambushes, and cartoonish chaos. Make sure to have each trap set by the specific killer and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "High Fantasy": {
+        "description": "An epic, archaic, and magical medieval realm, resembling a high-stakes D&D campaign with cobbled streets and ancient taverns. The theme and mood are fantastical, dramatic, and immersive. The changes are supernatural, magical, and heroic in nature. The deaths, if any, are often violent but can be described in a grandiose or mystical way. Night kills can involve assassinations by rogue assassins, dark magic rituals, or monster attacks. Day lynches can be grand council meetings, town square declarations, and swift medieval justice.",    
+        "classic": {
+            "atmosphere": "An epic, archaic, and magical medieval realm, resembling a high-stakes D&D campaign with cobbled streets and ancient taverns.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a clash of magic, steel, or a divine shield without naming the attacker.",
+            "writing_style": "- Tone: Epic, fantastical, and dramatic.\n- Day Phases: Grand council meetings, town square declarations, and swift medieval justice.\n- Night Phases: Assassinations by rogue assassins, dark magic rituals, or monster attacks."
+        },
+        "battle_royale": {
+            "atmosphere": "An epic, archaic magical realm plunged into a chaotic, every-mage-for-themselves magical war.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\n All kills should include the details about the killer stalking and killing their victum.\n- MULTI-KILLS: Narrate it as a chaotic battlefield of wild magic, sweeping sword strikes, and devastating crossfire.",
+            "writing_style": "- Tone: High-octane fantasy action, gritty melee combat.\n- Day Phases: Tense standoffs with drawn blades and glowing staves.\n- Night Phases: Massive arcane explosions, volleyed arrows, and brutal skirmishes. Make sure to include the specific killer killing their specific victum and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Cyberpunk": {
+        "description": "A gritty, neon-soaked, and tech-heavy dystopian megacity. The theme and mood are cyber-noir, tense, and synth-wave atmospheric. The changes are technological, corporate, and cybernetic in nature. The deaths, if any, are often violent but can be described in a high-tech or cinematic way. Night kills can involve silent net-runner hacks, targeted corporate hits, or neon-lit assassinations. Day lynches can be corporate boardroom accusations or tense alleyway standoffs.",
+        "classic": {
+            "atmosphere": "A gritty, neon-soaked, and tech-heavy dystopian megacity. Rain-slicked streets and towering corporate monoliths.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a cyber-security firewall holding, a drone interception, or a jammed smart-gun.",
+            "writing_style": "- Tone: Cyber-noir, tense, and synth-wave atmospheric.\n- Day Phases: Corporate boardroom accusations or tense alleyway standoffs.\n- Night Phases: Silent net-runner hacks, targeted corporate hits, or neon-lit assassinations."
+        },
+        "battle_royale": {
+            "atmosphere": "A gritty, neon-soaked dystopian sprawl completely locked down in a violent gang and corporate mercenary turf war. Each player is out for themselves to survive and succeed in the new world order.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\nAll kills should include the details about the killer stalking and killing their victum.\n- MULTI-KILLS: Narrate it as a high-tech shootout with laser fire, explosions, and malfunctioning cybernetics.",
+            "writing_style": "- Tone: Frantic, hyper-violent, and cybernetic action.\n- Day Phases: Standoffs in crowded neon markets and brutal gang justice.\n- Night Phases: Full-scale shootouts, EMP blasts, and lethal drone strikes. Make sure to include the specific killer killing their specific victum and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Lovecraftian Horror": {
+        "description": "Set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, eldritch, maddening, and terrifying. Something otherworldy and incomprehensible is influencing the town, driving people to madness and despair. The changes are supernatural, eldritch, and cosmic in nature. The deaths, if any, are gruesome and unsettling. Night kills are done in darkness and sneaky. Day lynches are chaotic and democratic, with crowds and yelling.", 
+        "classic": {
+            "atmosphere": "A small, isolated town where townsfolk sense a dark, incomprehensible force. Suspenseful, eldritch, maddening, and terrifying.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS explicitly killed. Killers should be described as cultists or unearthly shadows.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a horrifying brush with madness or a protective, glowing arcane ward.",
+            "writing_style": "- Tone: Creeping dread, cosmic horror, and psychological terror.\n- Day Phases: Paranoia-fueled witch-hunts, townsfolk descending into madness and despair.\n- Night Phases: Gruesome, unsettling, and incomprehensible deaths."
+        },
+        "battle_royale": {
+            "atmosphere": "A small town entirely consumed by an eldritch madness, where every resident has snapped and turned on each other in the name of cosmic entities.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\n- MULTI-KILLS: Narrate it as a chaotic descent into violent insanity, cult skirmishes, and mass hysteria.\n All kills should include the details about the killer stalking and killing their victum.",
+            "writing_style": "- Tone: Frantic cosmic terror, blood-soaked madness, and despair.\n- Day Phases: Manic, screaming accusations and brutal, unhinged mob violence.\n- Night Phases: A chaotic bloodbath of maddened survivors and otherworldly horrors. Make sure to include the specific killer killing their specific victum and have the kill description reflect the personality of the killer and the method they used, but also have it be eldritch and horrifying in nature."
+        }
+    }
 }
