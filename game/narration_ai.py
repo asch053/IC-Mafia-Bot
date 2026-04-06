@@ -228,8 +228,11 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
 *** CRITICAL GAME MODE: CLASSIC MAFIA ***
 - This is a game of deception and hidden identities. An innocent, uninformed majority (Town) vs a hidden, informed minority (Mafia/Cult).
 - Emphasize the fear of the unknown, the tragedy of innocent people turning on each other, and the shadows hiding the true killers.
-- A 'lynch' is a frantic, democratic execution by the frightened mob.
+- A 'lynch' is a frantic, democratic execution by the frightened crowd.
 - Make each death unique, but fit into the wider story based on previous chapters. 
+- There are up to three seperate factions (Town, Mafia, Serial Killer) with different motivations and goals. Use the events and history to understand the current state of the game and narrate accordingly.
+- The mafia faction want to take over the town and will kill anyone in their way. The town faction want to protect the town and will lynch anyone they suspect of being mafia. The serial killer wants it all to end and is trying to kill everyone,town and mafia alike, so they are the sole survivor.
+- Give each faction a unique voice and style in the narration based on the theme
 """
         lynch_text = "The town voted to LYNCH"
 
@@ -391,8 +394,8 @@ CURRENT PHASE: {phase_name} {phase_num}
 - Never directly copy previous story text, but use it to understand the narrative arc and character development so far.
 
 --- WRITING STYLE ---
-- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 150 to 250 words (2-3 short paragraphs). Do not overwrite.
-- Originality: NEVER directly copy or repeat paragraphs from the PREVIOUS STORY CONTEXT. Use it only for continuity, but ensure your new chapter is completely originally written.
+- Length: Keep the story concise, punchy, and highly readable. Aim for exactly 150 to 250 words (2-3 short paragraphs). Do not overwrite. Do not use more than 250 words. Be concise and impactful. Less is better.
+- Originality: NEVER directly copy or repeat paragraphs from the PREVIOUS STORY CONTEXT. Use it only for continuity, but ensure your new chapter is completely originally written, but follows the same plot and character development.
 
 {narrative_directives}
 {writing_style}

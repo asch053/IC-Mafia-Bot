@@ -114,6 +114,9 @@ def handle_investigation(game, investigator_id, target_id, night_outcomes):
             logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
             return
     # Prepare investigation result 
+    logger.info(f"Preparing investigation result for {investigator.display_name} investigating {target.display_name}. Target role: {target.role.name if target.role else 'None'}")
+    logger.info(f"Target investigation immunity: {target.role.investigation_immune if target.role else 'N/A'}")
+    logger.info(f"Target role name: {target.role.name if target.role else 'None'}   | Target short description: {target.role.short_description if target.role else 'None'}")
     # Check if target is investigation immune
     if target.role and target.role.investigation_immune:
         result_data = target.role.investigation_result

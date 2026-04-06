@@ -454,6 +454,9 @@ class Game:
             elif role.name == "Serial Killer":
                 role.investigation_immune = not self.game_settings["sk_investigate"]
                 logger.info(f"Set Serial Killer investigation immunity to {role.investigation_immune} != {self.game_settings['sk_investigate']}")
+            else: 
+                role.investigation_immune = False
+            logger.info(f"{role.name} is investigation immune: {role.investigation_immune}")
         logger.info("Game roles generated successfully.")
         
 
