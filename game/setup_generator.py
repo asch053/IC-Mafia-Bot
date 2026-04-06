@@ -58,7 +58,8 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
       
     # --- 1. Calculate Evil Roles ---
     # Rule: 25% of players, rounded down.
-    mafia_count = math.floor(player_count * config.mob_ratio)
+    mob_ratio = config.mob_ratio if hasattr(config, 'mob_ratio') else 0.25  # Default to 0.25 if not defined
+    mafia_count = math.floor(player_count * mob_ratio)
     # Ensure at least 1 Mafia in a >= 5 player game
     if mafia_count == 0:
         mafia_count = 1
