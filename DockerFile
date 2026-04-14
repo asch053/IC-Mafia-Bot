@@ -1,0 +1,17 @@
+# 1. Use the official Python 3.13 image as our base
+FROM python:3.13-slim
+
+# 2. Set the "Home" directory inside the container
+WORKDIR /app
+
+# 3. Copy our requirements file first (this makes rebuilding faster!)
+COPY requirements.txt .
+
+# 4. Install all the dependencies we need (discord.py, aiohttp, etc.)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# 5. Copy the rest of our bot's code into the container
+COPY . .
+
+# 6. Tell Docker how to start our Mafia Bot
+CMD ["python", "bot.py"]

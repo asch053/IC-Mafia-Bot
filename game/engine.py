@@ -479,7 +479,7 @@ class Game:
         for player_obj, role in zip(player_pool, role_pool):
             player_obj.assign_role(role)
             if not player_obj.is_npc:
-                await send_role_dm(self.bot, player_obj.id, role, self.guild)
+                await send_role_dm(self.bot, player_obj, role, self.guild)
 
         logger.info("Roles assigned to players successfully.")
         
