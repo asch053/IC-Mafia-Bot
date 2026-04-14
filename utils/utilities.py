@@ -78,15 +78,16 @@ async def update_player_discord_roles(bot, guild, user_input, action: str):
     # 3. Process each user in the collection
     for uid in user_ids:
         try:
+            if uid < 0:
+                logger.warning(f"Skipping role update for user ID {uid} because it's a bot.")
+                continue
             member = await guild.fetch_member(uid)
             if not member:
                 continue
-
             # Cleanup: Remove existing game roles
             roles_to_remove = [r for r in managed_roles if r in member.roles]
             if roles_to_remove:
                 await member.remove_roles(*roles_to_remove, reason="Mafia Bot: Status Cleanup")
-
             # Add the new role
             role_to_add = None
             if action == "alive": role_to_add = alive_role
@@ -125,7 +126,7 @@ def format_time_remaining(target) -> str:
     minutes, seconds = divmod(remainder, 60)
     return f"{hours}h {minutes}m {seconds}s"
 
-async def send_chunked_message(channel, message: str, chunk_size: int = 1900):
+async def send_chunked_message(bot, channel, message: str, chunk_size: int = 1900):
     """Sends a long message in chunks."""
     for i in range(0, len(message), chunk_size):
         await channel.send(message[i:i+chunk_size])
@@ -133,6 +134,9 @@ async def send_chunked_message(channel, message: str, chunk_size: int = 1900):
 async def send_role_dm(bot, player, role, guild):
     """Sends role information via DM."""
     try:
+        if player.id < 0:
+            logger.warning(f"Skipping DM for player {player.display_name} because it's a bot.")
+            return
         user = await bot.fetch_user(player.id)
         await user.send(f"Your role is: **{role.name}**\n{role.description}")
     except Exception as e:
@@ -148,6 +152,9 @@ async def send_mafia_info_dm(bot, players):
     for player in mafia_players:
         if player.role.alignment != "Mafia":
             continue  # Just a safety check, should not happen
+        if player.id < 0:
+            logger.warning(f"Skipping DM for player {player.display_name} because it's a bot.")
+            continue
         try:
             user = await bot.fetch_user(player.id)
             mafia_names = ", ".join([p.display_name for p in mafia_players if p.id != player.id])
