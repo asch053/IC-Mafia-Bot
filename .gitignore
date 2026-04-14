@@ -33,3 +33,4 @@ folder_structure.txt
 *.csv
 /Mafia History Project/output
 Mafia History Project/output/new_discord_history.jsonl
+.env.test
