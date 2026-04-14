@@ -2,6 +2,8 @@ import unittest
 from unittest.mock import MagicMock, AsyncMock, patch, PropertyMock
 import sys
 import os
+import datetime
+from datetime import datetime, timedelta, timezone
 
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -42,6 +44,7 @@ class TestGameEngine(unittest.IsolatedAsyncioTestCase):
         self.mock_guild = MagicMock()
         
         self.game = Game(self.mock_bot, self.mock_guild)
+        self.game.game_settings['phase_end_time'] = datetime.now(timezone.utc) + timedelta(minutes=60) 
         self.mock_channel = AsyncMock()
         self.mock_bot.get_channel.return_value = self.mock_channel
         self.game.narration_manager = MagicMock()
@@ -60,6 +63,7 @@ class TestGameEngine(unittest.IsolatedAsyncioTestCase):
         print(f"\n{msg}"); logger.info(msg)
         
         self.game.game_settings['current_phase'] = 'signup'
+         # Set phase end time in the future
         mock_user = AsyncMock(name="TestUser101", display_name="TestUser101")
         type(mock_user).id = PropertyMock(return_value=101) 
         

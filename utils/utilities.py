@@ -118,7 +118,7 @@ def format_time_remaining(target) -> str:
         delta = target - now
     else:
         delta = target
-
+    logger.critical(f"Calculating time remaining for target: {target}, current time: {datetime.now(timezone.utc)}, delta: {delta}")
     seconds = int(delta.total_seconds())
     if seconds < 0:
         return "Time is up!"
