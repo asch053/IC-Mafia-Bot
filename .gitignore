@@ -2,6 +2,8 @@
 config.py
 .env
 ic-mafia-bot-*.json
+.env.test
+.env.production
 
 # --- Dynamic Data (Ignore these) ---
 # Ignore the specific dynamic roles file, but keep other json files (like role_definition.json)
