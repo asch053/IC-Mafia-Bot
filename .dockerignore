@@ -1,0 +1,37 @@
+--- Version Control ---
+
+.git
+.gitignore
+
+--- Python & Environments ---
+
+pycache/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+--- IDEs & Editors ---
+
+.vscode/
+.idea/
+
+--- Bot Data & Logs (We mount these via volumes!) ---
+
+Logs/
+Stats/
+data/
+
+--- Other Project Folders not needed to run the bot ---
+
+Mafia History Project/
+Simulations/
+
+
+
+--- Random System Files ---
+
+.DS_Store
+nohup.out
+ic-mafia-bot-41a41f61e757.json

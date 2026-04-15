@@ -1,0 +1,20 @@
+services:
+  mafia-bot-test:
+    build:
+      context: .
+      dockerfile: DockerFile  # This points to the file you just showed me!
+    container_name: mafia_test_env
+    restart: always
+    env_file:
+      - .env.test             # This is where we keep our TEST_TOKEN safe
+    volumes:
+      # This links your local Data and Logs to the container
+      # Format: host_folder:container_folder
+      - ./data:/app/data
+      - ./Logs:/app/Logs
+      - ./Stats:/app/Stats
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
