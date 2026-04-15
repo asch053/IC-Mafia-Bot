@@ -6,6 +6,7 @@ config.py
 .env.production
 .env.*
 
+
 # --- Dynamic Data (Ignore these) ---
 # Ignore the specific dynamic roles file, but keep other json files (like role_definition.json)
 
@@ -20,7 +21,7 @@ data/*discord_roles.json
 # This line ignores the entire stats folder (Alpha, Beta, AND Production)
 stats/Alpha Testing/
 stats/BETA Testing/
-stats/
+
 
 # This ignores the entire logs folder
 logs/
