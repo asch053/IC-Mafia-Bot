@@ -1,6 +1,9 @@
 # --- Configuration ---
 config.py
 .env
+.env.test
+.env.production
+
 ic-mafia-bot-*.json
 
 # --- Dynamic Data (Ignore these) ---
