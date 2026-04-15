@@ -13,7 +13,8 @@ Data/mafia_setups.json
 
 # --- Stats & Logs (Ignore ALL generated data) ---
 # This line ignores the entire stats folder (Alpha, Beta, AND Production)
-Stats/
+Stats/Alpha_Testing
+Stats/Alpha Testing
 # This ignores the entire logs folder
 logs/
 Logs/
@@ -34,4 +35,6 @@ folder_structure.txt
 *.csv
 /Mafia History Project/output
 Mafia History Project/output/new_discord_history.jsonl
+Simulations/
+
 .env.test
