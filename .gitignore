@@ -4,7 +4,7 @@ config.py
 .env.test
 .env.beta
 .env.production
-.env.*
+
 
 # --- Dynamic Data (Ignore these) ---
 # Ignore the specific dynamic roles file, but keep other json files (like role_definition.json)
