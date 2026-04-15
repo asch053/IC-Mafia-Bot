@@ -1,6 +1,7 @@
 import discord
 import logging
 import gspread
+import config
 from oauth2client.service_account import ServiceAccountCredentials
 from discord.ext import commands
 from discord import app_commands
