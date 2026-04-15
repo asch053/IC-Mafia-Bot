@@ -24,8 +24,7 @@ jobs:
         
     - name: Create Dummy Config (For Tests Only)
       run: |
-        # We create a dummy config so imports don't fail.
-        # The actual values are mocked in test_engine.py.
+        # We create a dummy config so imports don't fail on the GitHub Runner.
         echo "BOT_TOKEN = 'mock_token'" > config.py
         echo "ANNOUNCEMENT_CHANNEL_ID = 1" >> config.py
         echo "SIGN_UP_HERE_CHANNEL_ID = 2" >> config.py
@@ -42,7 +41,7 @@ jobs:
         
     - name: Run Unit Tests
       run: |
-        python -m unittest discover Tests
+        python -m unittest discover tests
 
   deploy-to-beta:
     needs: test
@@ -59,50 +58,20 @@ jobs:
         script: |
           cd /home/${{ secrets.BETA_USERNAME }}/IC-Mafia-Bot/
           
-          # 1. Check for Config File (Crucial Step!)
-          if [ ! -f config.py ]; then
-            echo "CRITICAL ERROR: config.py not found on server!"
-            echo "You must manually SSH in and create config.py based on config_template.py"
-            exit 1
-          fi
-
-          # 2. Stop the old bot
-          echo "Stopping old bot..."
-          pkill -f "python bot.py" || true
-          sleep 2
-          
-          # 3. Update Code
-          echo "Pulling latest code..."
+          echo "Pulling latest code from test_1 branch..."
           git fetch origin test_1
           git reset --hard origin/test_1
           
-          # 4. Update Dependencies
-          echo "Updating dependencies..."
-          source .venv/bin/activate
-          pip install -r requirements.txt
+          echo "Tearing down old container..."
+          docker compose down
           
-          # 5. Start the new bot (Standard Detachment with Log Check)
-          echo "Starting new bot..."
-          # Redirect all streams including stdin to ensure detachment
-          nohup python bot.py > nohup.out 2>&1 < /dev/null &
+          echo "Rebuilding and starting new container..."
+          docker compose up -d --build
           
-          # 6. Wait and Verify
-          echo "Bot launch command issued. Waiting for stabilization..."
-          sleep 5
+          echo "Cleaning up dangling Docker images..."
+          docker image prune -f
           
-          # Check if the process is still running
-          if pgrep -f "python bot.py" > /dev/null; then
-            echo "SUCCESS: Bot is running!"
-          else
-            echo "FAILURE: Bot failed to start or crashed immediately!"
-            echo "--- DUMPING NOHUP.OUT (Last 20 lines) ---"
-            tail -n 20 nohup.out
-            echo "-----------------------------------------"
-            exit 1
-          fi
-          
-          # Explicitly exit to close the SSH session
-          exit 0
+          echo "SUCCESS: Beta Deployment completed!"
 
   deploy-to-main:
     needs: test
@@ -119,34 +88,17 @@ jobs:
         script: |
           cd /home/${{ secrets.MAIN_USERNAME }}/IC-Mafia-Bot/
           
-          if [ ! -f config.py ]; then
-            echo "CRITICAL ERROR: config.py not found!"
-            exit 1
-          fi
+          echo "Pulling latest code from main branch..."
+          git fetch origin main
+          git reset --hard origin/main
           
-          echo "Stopping old bot..."
-          pkill -f "python bot.py" || true
-          sleep 2
+          echo "Tearing down old container..."
+          docker compose down
           
-          echo "Pulling latest code..."
-          git pull origin main
+          echo "Rebuilding and starting new container..."
+          docker compose up -d --build
           
-          echo "Updating dependencies..."
-          source .venv/bin/activate
-          pip install -r requirements.txt
+          echo "Cleaning up dangling Docker images..."
+          docker image prune -f
           
-          echo "Starting new bot..."
-          nohup python bot.py > nohup.out 2>&1 < /dev/null &
-          
-          echo "Bot launch command issued. Waiting..."
-          sleep 5
-          
-          if pgrep -f "python bot.py" > /dev/null; then
-            echo "SUCCESS: Bot is running!"
-          else
-            echo "FAILURE: Bot crashed!"
-            tail -n 20 nohup.out
-            exit 1
-          fi
-          
-          exit 0
+          echo "SUCCESS: Main Deployment completed!"

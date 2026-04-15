@@ -83,6 +83,7 @@ initial_extensions = [
     'cogs.info',
     'cogs.stats',
     'cogs.export',
+    'cogs.community',
     'game.statistics.fame'
 ]
 
@@ -115,6 +116,7 @@ async def on_ready():
 
 # --- 6. Main Entry Point ---
 async def main():
+    print(f"DEBUG: The token loaded is -> '{config.BOT_TOKEN}'")
     try:
         async with bot:
             await bot.start(config.BOT_TOKEN)
