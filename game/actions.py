@@ -1,8 +1,11 @@
 # game/actions.py
+# This file contains the core logic for handling player actions during the night phase, such as blocks, kills, heals, and investigations. Each action type has its own handler function that updates the game state and triggers appropriate narration events.
+
 import logging
 import asyncio
 
 logger = logging.getLogger('discord')
+
 
 def handle_block(game, blocker_id, target_id, night_outcomes):
     """

@@ -1,4 +1,6 @@
 # game/engine.py
+# This file contains the main Game class that manages the entire state and lifecycle of a single Mafia game. It handles player sign-ups, role assignments, night actions, day discussions, voting, and the overall flow of the game. The Game class interacts with other components like the NarrationManager for storytelling and uses utility functions for various tasks.
+
 import discord
 import asyncio
 import json

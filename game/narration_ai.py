@@ -1,4 +1,6 @@
 # game/narration_ai.py
+# This module is responsible for generating the AI narration for the game based on the events that occurred during the night and day phases. It uses the Google GenAI SDK to create engaging and thematic summaries of the game's progress, which are then posted in the designated channels. The narration is designed to be dynamic and adapt to different game modes (e.g., Classic Mafia vs Battle Royale) while ensuring that critical information is always clearly conveyed to the players.
+
 import logging
 import asyncio
 import json

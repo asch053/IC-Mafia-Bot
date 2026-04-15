@@ -1,3 +1,6 @@
+# game/narration.py
+# This module defines the NarrationManager class, which collects events from the game and orchestrates
+
 import logging
 import game.narration_ai as ai_storyteller
 import game.narration_static as static_storyteller

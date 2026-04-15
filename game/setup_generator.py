@@ -1,4 +1,6 @@
 # game/setup_generator.py
+# This module dynamically generates a list of roles for a 'Classic' Mafia game based on the number of players. This replaces the static mafia_setups.json and allows for more flexible and scalable game setups. The generate_roles function takes the player count and game type as input and returns a balanced list of role names that can be used to create the game. The logic is based on common Mafia game design principles, such as maintaining a certain ratio of Town to Mafia players and including specific roles at certain player thresholds.
+
 """
 Dynamically generates a list of roles for a 'Classic' Mafia game
 based on the number of players. This replaces the static mafia_setups.json.

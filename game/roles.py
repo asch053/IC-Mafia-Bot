@@ -1,4 +1,6 @@
 # game/roles.py
+# This file defines the GameRole class and its subclasses, which represent the different roles that players can have in the Mafia game. Each role has attributes such as name, alignment, description, abilities, and win conditions. The get_role_instance function allows for dynamic creation of role instances based on definitions stored in a JSON file, making it easy to add new roles without changing the code.
+
 import logging
 from utils.utilities import load_data
 

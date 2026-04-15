@@ -1,3 +1,6 @@
+# game/narration_static.py
+# This module provides a static, pre-written narration for the game based on the events that occurred
+
 import logging
 
 logger = logging.getLogger('discord')
