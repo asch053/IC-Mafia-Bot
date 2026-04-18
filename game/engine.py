@@ -137,7 +137,7 @@ class Game:
         logger.debug("Building announcement message for the sign-up phase.")
         # Get spectator role mention
         # You need the role's ID from your config
-        spectator_role_id = self.discord_role_data.get("spectator", {}).get("id", 0)
+        spectator_role_id = getattr(config, 'SPECTATOR_ROLE_ID', 0)
         logger.info(f"Spectator role ID: {spectator_role_id}")
         # Then, get the actual Role object from the server
         spectator_role = self.guild.get_role(spectator_role_id)

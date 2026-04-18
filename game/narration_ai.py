@@ -1,4 +1,6 @@
 # game/narration_ai.py
+# This module is responsible for generating the AI narration for the game based on the events that occurred during the night and day phases. It uses the Google GenAI SDK to create engaging and thematic summaries of the game's progress, which are then posted in the designated channels. The narration is designed to be dynamic and adapt to different game modes (e.g., Classic Mafia vs Battle Royale) while ensuring that critical information is always clearly conveyed to the players.
+
 import logging
 import asyncio
 import json
@@ -13,6 +15,8 @@ except ImportError:
     import config_template as config
 
 from utils.utilities import load_data # Fixed import path
+from community import quirk_logic
+
 
 # Import the new 2026 standard Google GenAI SDK
 try:
@@ -38,7 +42,52 @@ else:
     logger.error("Google GenAI SDK not installed OR API Key missing. AI Narration will fail.")
 
 # Load themes dynamically from JSON
-THEMES_DATA = load_data("Data/themes.json") or {}
+THEMES_DATA = load_data("data/themes.json") or {}
+
+def _get_involved_quirks(game_state: dict, events: list) -> str:
+    """
+    Identifies relevant player quirks for the current phase/scene.
+    Optimizes context by only including quirks for players mentioned in current events
+    or relevant based on the game stage (Intro/Outro).
+    """
+    all_approved = quirk_logic.get_all_approved()
+    if not all_approved:
+        return ""
+
+    involved_ids = set()
+    
+    # Check if we are in a special narrative phase
+    is_intro = game_state.get('is_introduction', False) 
+    is_outro = game_state.get('is_game_over', False) 
+    
+    if is_intro:
+        # For the start of the game, include all living players to set the stage
+        for p in game_state.get('living_players', []):
+            involved_ids.add(str(p.user_id))
+    elif is_outro:
+        # For the end, focus on the survivors/winners
+        for p in game_state.get('living_players', []):
+            if hasattr(p, 'is_alive') and p.is_alive:
+                involved_ids.add(str(p.user_id))
+    else:
+        # Standard scene: Use 'Just-in-Time' context to save tokens.
+        for e in events:
+            # Check common keys that store player objects
+            for key in ['victim', 'killer', 'actor', 'attacker', 'target', 'healer', 'blocker']:
+                obj = e.get(key)
+                if obj and hasattr(obj, 'user_id'):
+                    involved_ids.add(str(obj.user_id))
+
+    # Format the personas into a readable block for the AI
+    persona_lines = []
+    for p in game_state.get('living_players', []):
+        uid_str = str(p.user_id)
+        if uid_str in involved_ids and uid_str in all_approved:
+            persona_lines.append(f"- {p.display_name}: {all_approved[uid_str]}")
+            
+    if not persona_lines:
+        return ""
+    return "\n--- CHARACTER PERSONAS (Incorporate these traits naturally) ---\n" + "\n".join(persona_lines)
 
 def _generate_mechanical_summary(events: list) -> str:
     """
@@ -355,6 +404,9 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         custom_rules = theme_data.get("custom_rules", "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.")
         writing_style = theme_data.get("writing_style", "- Tone: Suspenseful.")
     
+    # QUIRKS INTEGRATION
+    quirks_block = _get_involved_quirks(game_state, events)
+
     narrative_directives = ""
     if is_prologue:
         narrative_directives += "- DO NOT name any players yet. Focus on world-building. This should set the scene for the comming conflict, introducing the setting, the tone, and the atmosphere. It should feel like the prequal chapter of a novel, drawing readers in with vivid descriptions and a sense of mystery. Do not reveal any specific player actions or outcomes in the prologue."
@@ -385,6 +437,9 @@ CURRENT PHASE: {phase_name} {phase_num}
 1. LIVING PLAYERS ONLY: {", ".join(living_players)}. 
    CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions.
 {custom_rules}
+3. CHARACTER PERSONAS: If traits are listed below, weave them into dialogue and behavior naturally. Show, don't tell. Do not label them as 'quirks'.
+{quirks_block}
+
 
 --- MECHANICAL EVENTS TO NARRATE THIS PHASE ---
 {events_text}
@@ -392,6 +447,7 @@ CURRENT PHASE: {phase_name} {phase_num}
 --- PREVIOUS STORY CONTEXT ---
 {history_text}
 - Never directly copy previous story text, but use it to understand the narrative arc and character development so far.
+- Where possible have narrative arcs described out
 
 --- WRITING STYLE ---
 - Length: Keep the story concise, punchy, and highly readable. Aim for exactly 150 to 250 words (2-3 short paragraphs). Do not overwrite. Do not use more than 250 words. Be concise and impactful. Less is better.
@@ -462,7 +518,7 @@ async def generate_story(game_state: dict, events: list, history: list) -> str |
     # For stability with gemini-2.5-flash, we omit the thinking_config 
     # unless you are strictly using a model that requires it.
     generation_config = types.GenerateContentConfig(
-        temperature=0.7,
+        temperature=0.7, 
     )
 
     logger.info(f"Requesting AI story for {phase_name} {phase_num} using {MODEL_NAME}...")
