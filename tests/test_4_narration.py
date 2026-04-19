@@ -12,7 +12,7 @@ from game.narration import NarrationManager
 
 class TestNarrationManager(unittest.IsolatedAsyncioTestCase):
     """Checks that stories are correctly formatted and generated from queued narration events."""
-    
+    logger.info(f"--- Starting Test Suite: {__name__} ---")
     def setUp(self):
         # NarrationManager takes no arguments on init
         self.narration_manager = NarrationManager()

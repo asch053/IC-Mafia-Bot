@@ -25,7 +25,7 @@ def mock_get_role_instance(role_name):
                     short_description="Mock", abilities=abilities, is_night_immune=False)
 
 class TestGameEngine(unittest.IsolatedAsyncioTestCase):
-
+    logger.info(f"--- Starting Test Suite: {__name__} ---")
     def setUp(self):
         self.mock_config = MagicMock()
         self.mock_config.MAX_MISSED_VOTES = 2

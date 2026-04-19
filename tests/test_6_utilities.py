@@ -12,7 +12,7 @@ logger = setup_test_logging()
 from utils.utilities import format_time_remaining, get_role_hierarchy
 
 class TestUtilities(unittest.TestCase):
-
+    logger.info(f"--- Starting Test Suite: {__name__} ---")
     def test_format_time_remaining_with_timedelta(self):
         msg = f"[START] {self._testMethodName} - Testing time format with duration"
         print(f"\n{msg}"); logger.info(msg)

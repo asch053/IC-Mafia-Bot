@@ -5,12 +5,12 @@ import logging
 logger = logging.getLogger('discord')
 
 # Using lowercase 'data' directory as requested
-PENDING_PATH = "data/pending_quirks.json"
-APPROVED_PATH = "data/player_concepts.json"
+PENDING_PATH = "data/narration/pending_quirks.json"
+APPROVED_PATH = "data/narration/player_concepts.json"
 
 def _ensure_data_dir():
     """Ensure the data directory exists."""
-    os.makedirs("data", exist_ok=True)
+    os.makedirs("data/narration", exist_ok=True)
 
 def get_all_pending() -> dict:
     """Returns a dictionary of all users awaiting quirk approval."""
