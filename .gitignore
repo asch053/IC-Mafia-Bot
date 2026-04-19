@@ -6,21 +6,17 @@ config.py
 .env.production
 .env.*
 
-
-# --- Dynamic Data (Ignore these) ---
-# Ignore the specific dynamic roles file, but keep other json files (like role_definition.json)
-
-data/discord_roles.json
-data/mafia_setups.json
-data/ic-mafia-bot-*.json
-data/*mafia_setups.json
-data/*discord_roles.json
+# Ignore specific data folders
+data/community_submissions
+data/discord_setup
+data/narration
 
 # --- Stats & Logs (Ignore ALL generated data) ---
 # This line ignores the entire stats folder (Alpha, Beta, AND Production)
-stats/Alpha Testing/
+stats/Alpha_Testing/
 stats/BETA Testing/
-
+stats/BETA_Testing/
+stats/Testing/
 
 # This ignores the entire logs folder
 logs/
@@ -44,3 +40,5 @@ folder_structure.txt
 Mafia History Project/output/new_discord_history.jsonl
 
 /Simulations
+
+data/ic-mafia-bot-41a41f61e757.json
