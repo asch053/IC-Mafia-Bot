@@ -33,6 +33,7 @@ from utils.randomness_tester import test_role_distribution # Import the test fun
 from game.roles import GameRole, get_role_instance
 from game.player import Player # Import the Player class
 from game import setup_generator # Import the setup_generator function
+from game.statistics.fame import FameCog # Import the function to update champion roles at the end of the game
 
 
 # Get the same logger instance as in mafiabot.py
@@ -89,31 +90,34 @@ class Game:
         self.is_prologue = None
         self.is_epilogue = None 
         # --- Data Loading ---
-        logger.debug("Loading game data from JSON files.")
+        logger.debug("Loading game data from data files.")
         try:
-            self.discord_role_data = load_data("data/discord_roles.json") #loads discord roles data
-        except Exception as e:
-            logger.error(f"Error loading discord roles data: {e}")
-        try:
-            self.npc_names = load_data("data/bot_names.txt") #load NPC bot names
+            self.npc_names = load_data("data/game_setup/bot_names.txt") #load NPC bot names
         except Exception as e:
             logger.error(f"Error loading NPC names: {e}")
         try:    
-            self.rules_text = "\n".join(load_data("data/rules.txt"))
+            self.rules_text = "\n".join(load_data("data/game_setup/rules.txt"))
         except Exception as e:
             logger.error(f"Error loading rules text: {e}")
             self.rules_text = "No rules text found. Please check the rules.txt file."
-        try:    
-            self.mafia_setups = load_data("data/mafia_setups.json")
+        try:
+            self.theme_stories = load_data("data/narration/themes.json")
         except Exception as e:
-            logger.error(f"Error loading mafia setups: {e}")
-            logger.critical("No mafia setups loaded. The game cannot start.")
+            logger.error(f"Error loading theme stories: {e}")
+            logger.critical("No theme stories loaded. The game cannot use AI narration.")
+        try:
+            self.player_quirks= load_data("data/narration/player_concepts.json")
+        except Exception as e:
+            logger.error(f"Error loading player quirks: {e}")
+            logger.critical("No player quirks loaded. The game cannot use AI narration.")
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
     async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=21):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
+
+        # 1. Set up game settings based on parameters and defaults 
         logger.debug("Setting up game settings.")
         self.game_settings["game_id"] = start_datetime_obj.strftime("%Y%m%d-%H%M%S") #sets game_id to a unique string based on the start time
         self.game_settings["game_type"] = game_type # Set game type to the type of game being played
@@ -129,34 +133,36 @@ class Game:
         self.is_prologue = True # Mark that the next story is the prologue
         self.is_introduction = False # Mark that the next story is the introduction (for better narration in v0.6)
         self.is_epilogue = False # Not the epilogue yet
-        # Set all players to spectators
-        #logger.info("Setting all players to spectators.")
-        #await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
-        # Announce the game in multiple channels
-        # Build the announcement message
+
+        # 2. Announce the game in multiple channels
+        # 2.1 Build the announcement message
         logger.debug("Building announcement message for the sign-up phase.")
-        # Get spectator role mention
-        # You need the role's ID from your config
+        # Get spectator role mention from your config file. 
+        # We will pull the spectator role ID from the config and then get the actual Role object from the guild to mention it properly. 
+        # This allows server admins to configure which role should receive the sign-up reminders and announcements.
         spectator_role_id = getattr(config, 'SPECTATOR_ROLE_ID', 0)
         logger.info(f"Spectator role ID: {spectator_role_id}")
-        # Then, get the actual Role object from the server
-        spectator_role = self.guild.get_role(spectator_role_id)
-        logger.info(f"Spectator role object: {spectator_role}")
+        # Then, get the actual Role object from the server with Safe fallback handling
+        spectator_role = self.guild.get_role(getattr(config, 'SPECTATOR_ROLE_ID', 0))
+        spec_mention = spectator_role.mention if spectator_role else "@Spectators" # Fallback to plain text mention if role not found
         signup_channel_mention = f"<#{config.SIGN_UP_HERE_CHANNEL_ID}>" 
         start_time_str = start_datetime_obj.strftime('%Y-%m-%d %H:%M:%S UTC') # Format the start time as a string
         time_left_str = format_time_remaining(start_datetime_obj) # Format the time remaining until the game starts
+        # Build the announcement message with all the details about the game and how to join
         announcement = (
             f"**A new game of {self.game_settings['game_type']} Mafia has been scheduled!**\n\n"
             f"Theme will be **{self.game_settings['story_type']}**.\n"
-            f"Sign-ups are now open for **{time_left_str}**! {spectator_role.mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
+            f"Sign-ups are now open for **{time_left_str}**! {spec_mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
             f"The game will officially begin at: **{start_time_str}** (or when {self.max_players} players join)."
         )
         logger.info(f"Game announcement: {announcement}")
-        # Send the announcement to the relevant channels
+        # 2.2 Send the announcement to the relevant channels
         await self.bot.get_channel(config.ANNOUNCEMENT_CHANNEL_ID).send(announcement) #send announcement to #announcement channel
         await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
         await self.bot.get_channel(config.STORIES_CHANNEL_ID).send("## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n\n") #send special text to #sign-up-here channel
-        # send a prologue story to the stories channel to set the scene for the game
+        
+        # 3. Send a prologue story to the stories channel to set the scene for the game
+        # 3.1 Build the game state for the prologue narration
         game_state = {
             "game_id": self.game_settings['game_id'],   
             "phase": "Prologue",
@@ -170,15 +176,17 @@ class Game:
             "game_type": self.game_settings["game_type"],
             "story_type": self.game_settings["story_type"]
         }
+        # 3.2 Create and send the prologue story to the stories channel
         prologue_story = await self.narration_manager.construct_story(game_state=game_state)
         await self.bot.get_channel(config.STORIES_CHANNEL_ID).send(
             f"**--- Prologue ---**\n\n"
             f"{prologue_story}"
         )
         self.is_prologue = False # The prologue has been sent, so set is_prologue to False
-        # Create a different message for the rules and roles channel, including the standard rules text
-        # Get the rules
         
+        # 4. Create a different message for the rules and roles channel, including the standard rules text
+        # 4.1 Get the rules text from the loaded data and append additional details based on the game type and settings
+        logger.debug("Preparing rules text for the rules and roles channel.")
         rules = self.rules_text
         # Add objective on win condition based on game type
         if self.game_settings["game_type"] == "battle_royale":
@@ -205,17 +213,18 @@ class Game:
             rules += "\n**Note:** The Serial Killer is *immune* to night kills."
         else:
             rules += "\n**Note:** The Serial Killer can be killed at night."
-        # Send the rules to the rules channel
+        # 4.2 Send the rules to the rules channel
         await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{rules}\n")
         logger.debug("Sign-up phase announcement sent to all channels.")
-        # Start the sign-up monitoring loop
+        
+        # 5. Start the sign-up monitoring loop
         logger.info("Starting the sign-up loop to monitor player sign-ups and send reminders.")
         self.signup_loop.start()
 
     @tasks.loop(seconds=config.signup_loop_interval_seconds) # Loop periodically to send reminders
     async def signup_loop(self):
         """Monitors the sign-up phase, sends reminders, and checks for start conditions."""
-        logger.info("Sign-up loop iteration started.")
+        logger.debug("Sign-up loop iteration started.")
         # --- Check for start conditions ---
         game_should_start = False
         reason = ""
@@ -241,7 +250,8 @@ class Game:
                 await self.prepare_game() # Start preparing the game if the sign-up phase is still active
             return
         # --- If phase has NOT ended, check for reminders ---
-        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
+        spectator_role_id = getattr(config, 'SPECTATOR_ROLE_ID', 0)
+        spectator_role = self.guild.get_role(spectator_role_id)
         time_left = self.game_settings["phase_end_time"] - datetime.now(timezone.utc) #determine how much time is left in the current phase
         time_left_str = format_time_remaining(self.game_settings["phase_end_time"])
         total_minutes_left = time_left.total_seconds() / 60 # Convert to total minutes
@@ -288,10 +298,11 @@ class Game:
                 return
             # Create a Player object
             self.players[user.id] = Player(user_id=user.id, discord_name=user.name, display_name=player_name)
+            self.players[user.id].is_alive = True # Mark the player as alive in the game
             # send a confirmation message
             await channel.send(f"Welcome to the game, **{player_name}**! You are player #{len(self.players)}.")
             logger.info(f"{user.name} ({player_name}) has joined the game.")
-            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles in Discord
+            await update_player_discord_roles(self.bot, self.guild, self.players) # Update player roles in Discord
             status_message = self.get_status_message() # Generate a status message with players listed
             try:
                 await self.bot.get_channel(config.SIGN_UP_HERE_CHANNEL_ID).send(status_message) # Send the status message to the sign-up channel
@@ -315,7 +326,7 @@ class Game:
                 await channel.send(f"**{player_name}** has left the game.")
                 logger.info(f"{user.name} ({player_name}) has left the game.")
                 #update player roles in Discord
-                await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data)
+                await update_player_discord_roles(self.bot, self.guild, self.players)
             else:
                 await channel.send("You are not currently in the game.")
                 logger.warning(f"{user.name} tried to leave the game but was not a participant.")
@@ -370,7 +381,7 @@ class Game:
         await self.assign_roles() #assign roles to players randomly
         logger.info(f"Assigned roles to {len(self.players)} players.")
         # Update player roles in Discord based on their game status (alive, dead, or spectator)
-        await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) 
+        await update_player_discord_roles(self.bot, self.guild, self.players) 
         # Generate a status message with the roles being played
         status_message = await self.role_status_message() 
         # Send status message with roles to rules channel
@@ -496,7 +507,7 @@ class Game:
         It handles the transition between phases, processes end-of-phase events, and checks for win conditions
         """
          
-        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0)) # Get the living role mention
+        living_role = self.guild.get_role(getattr(config, 'LIVING_ROLE_ID', 0)) # Get the living role mention
         if not living_role:
             logger.critical("Could not find the living role in the guild. Check the discord_roles.json configuration.")
             return
@@ -537,7 +548,7 @@ class Game:
                             acting_player.last_action_target_id = action_data['target_id']
             logger.info(f"{self.game_settings['current_phase'].capitalize()} phase ended. Events processed, creating story...")
             # update discord roles
-            await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) 
+            await update_player_discord_roles(self.bot, self.guild, self.players) 
             logger.info("Updated player roles in Discord based on current game state.")
             # Check for win conditions if win conditions not already met (i.e. Jester win)
             if not winner:
@@ -591,9 +602,21 @@ class Game:
             if winner: #if there is a winner, announce them and stop the game loop
                 await self.announce_winner(winner)
                 logger.info(f"Game ended with winner: {winner}")
-                await update_player_discord_roles(self.bot, self.guild, self.players, self.discord_role_data) # Update player roles based on their current state
+                await update_player_discord_roles(self.bot, self.guild, self.players) # Update player roles based on their current state
                 logger.info("Updated player roles in Discord based on current game state.")
-                await self.reset() # Reset the game state 
+                await self.reset() # Reset the game state
+                # Update champion roles fom the FameCog at end of the game by sending bot, guild, and game type
+                logger.info("Updating champion roles...")
+                fame_cog = self.bot.get_cog("FameCog")
+                if fame_cog:
+                    logger.info("Triggering automatic Champion Role update.")
+                    # get embeded message with new champion roles based on the game results and send it to the rules channel
+                    champion_message = await fame_cog.update_champion_roles(self.guild, self.game_settings["game_type"])
+                rules_channel = self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
+                if rules_channel:
+                    # Send embeded message with new champion roles to the rules channel
+                    await rules_channel.send(embed=champion_message)    
+                    logger.info("Champion Role update sent to rules channel.")
                 return
             # Generate a status message with players listed and send it to the Rules channel
             status_message = self.get_status_message() 
@@ -626,7 +649,7 @@ class Game:
         # --- If phase has NOT ended, check for reminders ---
         time_left = self.game_settings["phase_end_time"] - datetime.now(timezone.utc) #determine how much time is left in the current phase
         total_minutes_left = time_left.total_seconds() / 60 # Convert to total minutes
-        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0)) # Get the living role mention
+        living_role = self.guild.get_role(getattr(config, 'LIVING_ROLE_ID', 0)) # Get the living role mention
         if not living_role:
             logger.critical("Could not find the living role in the guild. Check the discord_roles.json configuration.")
             return
@@ -1414,40 +1437,9 @@ class Game:
         
         # 1. Update Discord Roles for ALL players
         logger.info("getting relevant discord roles.")
-        spectator_role = self.guild.get_role(self.discord_role_data.get("spectator", {}).get("id", 0))
-        living_role = self.guild.get_role(self.discord_role_data.get("living", {}).get("id", 0))
-        dead_role = self.guild.get_role(self.discord_role_data.get("dead", {}).get("id", 0))
-        # Proceed only if all roles are found
-        if spectator_role and living_role and dead_role:
-            logger.info(f"Updating Discord roles for all {len(self.players)} players to spectator.")
-            # Iterate through all players to update roles
-            for player_id, player in self.players.items():
-                if player_id <=0:
-                    continue  # Skip invalid player IDs
-                try:
-                    member = self.guild.get_member(player_id)
-                    if not member:
-                        # Fallback: try fetching if not in cache
-                        logger.warning(f"Member {player_id} not found in cache, fetching from guild.")
-                        try:
-                            member = await self.guild.fetch_member(player_id)
-                        except discord.NotFound:
-                            logger.warning(f"Could not find member {player_id} to reset roles.")
-                            continue
-                    logger.info(f"Updating roles for player {player.display_name} (ID: {player_id})")
-                    # Remove game roles
-                    roles_to_remove = [r for r in member.roles if r.id in [living_role.id, dead_role.id]]
-                    if roles_to_remove:
-                        await member.remove_roles(*roles_to_remove)
-                        logger.info(f"Removed roles {', '.join([r.name for r in roles_to_remove])} from {player.display_name}.")
-                    # Add spectator role
-                    if spectator_role not in member.roles:
-                        await member.add_roles(spectator_role)
-                        logger.info(f"Added role {spectator_role.name} to {player.display_name}.")
-                except discord.Forbidden:
-                    logger.error(f"Permission denied when resetting roles for user {player_id}.")
-                except Exception as e:
-                    logger.error(f"Error resetting roles for user {player_id}: {e}", exc_info=True)
+        # engine.py - Inside reset()
+        logger.info("Resetting player roles to spectators.")
+        await update_player_discord_roles(self.bot, self.guild, self.players, action="spectator")
         # 2. Clear Game State
         logger.info("Clearing game state.")
         self.players.clear()

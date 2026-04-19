@@ -11,8 +11,8 @@ services:
       # This links your local Data and Logs to the container
       # Format: host_folder:container_folder
       - ./data:/app/data
-      - ./Logs:/app/Logs
-      - ./statstats:/app/stats
+      - ./logs:/app/logs
+      - ./stats:/app/stats
     logging:
       driver: "json-file"
       options:

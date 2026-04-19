@@ -13,7 +13,7 @@ from game.actions import handle_block, handle_heal, handle_kill, handle_investig
 
 class TestHandleActions(unittest.IsolatedAsyncioTestCase):
     """Checks if actions are correctly recorded into the game's internal state dictionaries. (No narration tests here)"""
-    
+    logger.info(f"--- Starting Test Suite: {__name__} ---")
     def setUp(self): 
         self.mock_game = MagicMock()
         self.mock_game.bot = MagicMock()

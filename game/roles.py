@@ -74,7 +74,7 @@ ROLE_CLASSES = {
 }
 
 # Load all role definitions from the JSON file once when this module is first imported
-ALL_ROLES_DATA = load_data("data/role_definition.json")
+ALL_ROLES_DATA = load_data("data/game_setup/role_definition.json")
 
 def get_role_instance(role_name: str) -> GameRole | None:
     """
@@ -102,7 +102,7 @@ def get_role_instance(role_name: str) -> GameRole | None:
         uses=role_data.get("uses"),
         win_condition=role_data.get("win_condition"),
         investigate_result=role_data.get("investigate_result"),
-        investigation_immune=role_data.get("ineveestigation_immune", True),
+        investigation_immune=role_data.get("investigate_immune", True),
         is_night_immune=role_data.get("is_night_immune", False),
         night_priority=role_data.get("night_priority", 99)
     )
