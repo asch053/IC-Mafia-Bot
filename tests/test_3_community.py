@@ -3,24 +3,29 @@ import json
 from unittest.mock import patch, mock_open
 import os
 
-# Import the logic from your new package
-from community.quirk_logic import save_approved_quirk, get_all_quirks, DATA_PATH
+# 1. MUST BE FIRST: Load logger & environment mocks
+from tests.test_0_logging import setup_test_logging
+logger = setup_test_logging()
 
-def test_get_all_quirks_file_missing():
+# Import the logic from your new package
+from community.quirk_logic import approve_quirk_logic, get_all_approved, get_all_pending, reject_quirk_logic, DATA_PATH
+
+logger.info(f"--- Starting Test Suite: {__name__} ---")
+def test_get_all_approved_file_missing():
     """Ensure it returns an empty dict if the file doesn't exist."""
     with patch("os.path.exists", return_value=False):
-        assert get_all_quirks() == {}
+        assert get_all_approved() == {}
 
-def test_get_all_quirks_success():
+def test_get_all_approved_success():
     """Ensure it correctly loads existing data."""
     mock_data = '{"123": "Likes tea"}'
     with patch("os.path.exists", return_value=True):
         with patch("builtins.open", mock_open(read_data=mock_data)):
-            result = get_all_quirks()
+            result = get_all_approved()
             assert result["123"] == "Likes tea"
 
-def test_save_approved_quirk_new_file():
-    """Test saving a quirk when the file doesn't exist yet."""
+def test_approve_quirk():
+    """Test approving a quirk."""
     user_id = 456
     quirk = "Always wears a top hat"
     
@@ -28,8 +33,14 @@ def test_save_approved_quirk_new_file():
     with patch("os.path.exists", return_value=False):
         m = mock_open()
         with patch("builtins.open", m):
-            save_approved_quirk(user_id, quirk)
-            
+            approve_quirk_logic(user_id, quirk)
+
+            handle = m()
+            written_data = "".join(call.args[0] for call in handle.write.call_args_list)
+            data = json.loads(written_data)
+            assert data["456"] == quirk
+        with patch("builtins.open", m):
+            approve_quirk_logic(user_id)
             # Verify the file was opened for writing
             m.assert_called_once_with(DATA_PATH, 'w')
             
@@ -48,7 +59,7 @@ def test_quirk_truncation():
     with patch("os.path.exists", return_value=False):
         m = mock_open()
         with patch("builtins.open", m):
-            save_approved_quirk(user_id, long_quirk)
+            approve_quirk_logic(user_id, long_quirk)
             
             handle = m()
             written_data = "".join(call.args[0] for call in handle.write.call_args_list)

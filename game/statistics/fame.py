@@ -20,14 +20,25 @@ ELIGIBLE_GAMES = 5 if config.game_type.lower() == "production" else 0
 class FameCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
-        self.roles_file = "./Data/discord_roles.json"
+        
 
     async def update_champion_roles(self, guild: discord.Guild, mode: str = "classic") -> discord.Embed:
         """Calculates champions for a specific mode, updates roles, and returns an Embed."""
         logger.info(f"🏆 Running Champion Role Updates for {mode.upper()}...")
         
-        all_roles = load_data(self.roles_file) or {}
-        role_map = all_roles.get(mode, {})
+        # --- NEW: Pull from config instead of JSON file ---
+        if mode == "classic":
+            role_map = {
+                "top_skill": getattr(config, 'CLASSIC_MVP_ROLE_ID', 0),
+                "top_survivor": getattr(config, 'CLASSIC_SURVIVOR_ROLE_ID', 0),
+                "red_shirt": getattr(config, 'CLASSIC_RED_SHIRT_ROLE_ID', 0)
+            }
+        else:
+            role_map = {
+                "top_wins": getattr(config, 'BR_CHAMPION_ROLE_ID', 0),
+                "top_survivor": getattr(config, 'BR_SURVIVOR_ROLE_ID', 0),
+                "red_shirt": getattr(config, 'BR_RED_SHIRT_ROLE_ID', 0)
+            }
         
         if not role_map:
             return discord.Embed(title="❌ Error", description=f"No roles configured for `{mode}` in discord_roles.json.", color=discord.Color.red())
@@ -198,10 +209,15 @@ class FameCog(commands.Cog):
                 display_names += f"  *(Score: {stat_str})*"
 
             embed.add_field(name=f"## {cat_labels.get(category, category)}", value=display_names, inline=False)
-
+        # determine existing holders of the champion roles if no results to log
+        if not results_log:
+                for category, role_id in role_map.items():
+                    role = guild.get_role(role_id)
+                    if role and role.members:
+                        for member in role.members:
+                            results_log.append(f"👑 Current {role.mention} holder: **{member.display_name}**")
         log_text = "\n".join(results_log) if results_log else "*No role changes necessary; the reigning champions held their titles!*"
         embed.add_field(name="## System Log", value=log_text, inline=False)
-
         return embed
 
     @app_commands.command(name="crown_champions", description="[Admin] Manually recalculate and award 6-month Champion Roles.")

@@ -42,7 +42,7 @@ else:
     logger.error("Google GenAI SDK not installed OR API Key missing. AI Narration will fail.")
 
 # Load themes dynamically from JSON
-THEMES_DATA = load_data("data/themes.json") or {}
+THEMES_DATA = load_data("data/narration/themes.json") or {} 
 
 def _get_involved_quirks(game_state: dict, events: list) -> str:
     """
@@ -50,41 +50,51 @@ def _get_involved_quirks(game_state: dict, events: list) -> str:
     Optimizes context by only including quirks for players mentioned in current events
     or relevant based on the game stage (Intro/Outro).
     """
+    logger.info("Gathering involved player quirks for AI narration context.")
+    if game_state.get('is_prologue', True):
+        # Do not get quirks for prologue to save tokens and because players haven't chosen them yet
+        logger.info("Prologue phase detected. Skipping quirk gathering to save tokens.")
+        return ""
+    # Also do not get quirks if no living players in game_state to save tokens and because would not be relevant
+    if not game_state.get('living_players'):
+        logger.info("No living players found in game state. Skipping quirk gathering.")
+        return ""
+    # For the introduction, include quirks for all living players to set the stage. For the outro, focus on survivors/winners. 
+    # For standard scenes, use 'Just-in-Time' context to save tokens.
     all_approved = quirk_logic.get_all_approved()
     if not all_approved:
+        logger.info("No approved quirks found. Skipping quirk context.")
         return ""
-
+    # Identify involved player IDs from the current events and game state
     involved_ids = set()
-    
     # Check if we are in a special narrative phase
     is_intro = game_state.get('is_introduction', False) 
     is_outro = game_state.get('is_game_over', False) 
-    
+    # For intros and outros, we want to include quirks for all living players to set the stage and focus on survivors/winners respectively. 
+    # For standard scenes, we only include quirks for players directly involved in the events of that phase to optimize token usage.
     if is_intro:
         # For the start of the game, include all living players to set the stage
         for p in game_state.get('living_players', []):
-            involved_ids.add(str(p.user_id))
+            involved_ids.add(str(p.id))
     elif is_outro:
         # For the end, focus on the survivors/winners
         for p in game_state.get('living_players', []):
             if hasattr(p, 'is_alive') and p.is_alive:
-                involved_ids.add(str(p.user_id))
+                involved_ids.add(str(p.id))
     else:
         # Standard scene: Use 'Just-in-Time' context to save tokens.
         for e in events:
             # Check common keys that store player objects
             for key in ['victim', 'killer', 'actor', 'attacker', 'target', 'healer', 'blocker']:
                 obj = e.get(key)
-                if obj and hasattr(obj, 'user_id'):
-                    involved_ids.add(str(obj.user_id))
-
+                if obj and hasattr(obj, 'id'):
+                    involved_ids.add(str(obj.id))
     # Format the personas into a readable block for the AI
     persona_lines = []
     for p in game_state.get('living_players', []):
-        uid_str = str(p.user_id)
+        uid_str = str(p.id)
         if uid_str in involved_ids and uid_str in all_approved:
-            persona_lines.append(f"- {p.display_name}: {all_approved[uid_str]}")
-            
+            persona_lines.append(f"- {p.display_name}: {all_approved[uid_str]}")  
     if not persona_lines:
         return ""
     return "\n--- CHARACTER PERSONAS (Incorporate these traits naturally) ---\n" + "\n".join(persona_lines)

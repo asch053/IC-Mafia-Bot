@@ -1,5 +1,7 @@
 # Game/player.py
-# This file defines the Player class, which represents each participant in the Mafia game. It includes attributes for tracking the player's role, alive/dead status, night immunity, action targets, and other relevant game state information. The Player class also has methods for assigning roles, handling deaths, checking action permissions based on their role, and sending direct messages for private notifications.
+# This file defines the Player class, which represents each participant in the Mafia game. 
+# It includes attributes for tracking the player's role, alive/dead status, night immunity, action targets, and other relevant game state information. 
+# The Player class also has methods for assigning roles, handling deaths, checking action permissions based on their role, and sending direct messages for private notifications.
 
 import logging
 from game.roles import GameRole # For type hinting

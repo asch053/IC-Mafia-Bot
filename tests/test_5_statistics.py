@@ -11,7 +11,7 @@ logger = setup_test_logging()
 from cogs.stats import StatsCog
 
 class TestStatsCog(unittest.IsolatedAsyncioTestCase):
-
+    logger.info(f"--- Starting Test Suite: {__name__} ---")
     async def asyncSetUp(self):
         self.mock_bot = MagicMock()
         self.stats_cog = StatsCog(self.mock_bot)
