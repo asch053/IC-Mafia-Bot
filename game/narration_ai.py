@@ -31,7 +31,7 @@ except ImportError:
 logger = logging.getLogger('discord')
 
 # CRITICAL FIX: Update the model name to a known valid identifier
-# If gemini-3.0-flash-preview still fails, fallback to gemini-2.5-flash
+# If gemini-latest-flash still fails, fallback to gemini-2.5-flash
 MODEL_NAME = getattr(config, 'MODEL_NAME', 'gemini-2.5-flash') if not MODEL_NAME else MODEL_NAME
 
 # Initialize the client safely depending on how your config is named
@@ -90,20 +90,42 @@ def _get_involved_quirks(game_state: dict, events: list) -> str:
             etype = e.get('type', '')
             # 1. Victims and Lynch targets are always public context
             v = e.get('victim')
+            # Safer check that only hides immune players during "kill" events
+            v = e.get('victim')
             if v and hasattr(v, 'id'):
-                involved_ids.add(str(v.id))
-            
-            for lv in e.get('victims', []):
-                if hasattr(lv, 'id'):
-                    involved_ids.add(str(lv.id))
-            
+                # Determine if we should hide this victim
+                # Hide if: It's a kill event AND the victim is immune
+                is_immune = getattr(v.role, 'is_night_immune', False)
+                is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
+                # We will include victims in the involved_ids for all events except when it's a kill event and the victim is immune, because in that case we want to 
+                # avoid revealing too much about immune players through their death events. For example, if a player is killed but they are immune, we don't want the 
+                # AI to see their quirks and meta-game that information to figure out they are immune. By excluding immune victims from the involved_ids during kill events, 
+                # we can help preserve the mystery around immune players while still providing rich context for all other events and players.
+                if not (is_kill_event and is_immune):
+                    involved_ids.add(str(v.id))
+            # Also include lynch victims even if they are immune, because their death is public knowledge and they are relevant to the story, but we can choose to hide their 
+            # role/quirks if they are immune to preserve some mystery. For now, we will include them in the involved_ids so their quirks can be used, but we will rely on 
+            # the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal too much in the narration.
+            for lv in e.get('victims', []) : # handle lynch victims list
+                if hasattr(lv, 'id'): # Safer check to ensure we don't error out if 'victims' is not a list of player objects
+                    is_immune = getattr(lv.role, 'is_night_immune', False)
+                    is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
+                    # We will include lynch victims in the involved_ids even if they are immune, because their death is public knowledge and relevant to the story, 
+                    # but we will rely on the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal 
+                    # too much in the narration. This allows us to use their quirks for richer storytelling while still preserving some mystery about their role if 
+                    # they were immune.
+                    if not (is_kill_event and is_immune):
+                        involved_ids.add(str(lv.id))
             # 2. PRIVACY FILTER: In Battle Royale, perpetrators are public.
             # In Classic, we skip adding 'killer', 'actor', etc., so the AI doesn't see their quirks.
             if game_state.get('game_type', '').lower() in ['battle_royale', 'br']:
-                for key in ['killer', 'actor', 'attacker', 'healer', 'blocker']:
-                    obj = e.get(key)
-                    if obj and hasattr(obj, 'id'):
-                        involved_ids.add(str(obj.id))
+                for key in ['killer', 'actor', 'attacker', 'healer', 'blocker']: # Include healers and blockers as well since they are also public in battle royale
+                    obj = e.get(key) # Safer access to avoid KeyErrors
+                    if obj and hasattr(obj, 'id') and (obj.role.is_night_immune) != True: # Only include perpetrators if they are not night immune to avoid revealing too 
+                        # much about immune players through their actions
+                        involved_ids.add(str(obj.id)) # We can include perpetrators in the involved_ids for Battle Royale since they are public knowledge, 
+                        # but we will rely on the MECHANICAL EVENTS section of the prompt to clearly communicate any immunities to the AI so it doesn't meta-game or 
+                        # reveal too much in the narration.
     # Format the personas into a readable block for the AI
     persona_lines = []
     for p in game_state.get('living_players', []):
@@ -204,7 +226,7 @@ def _generate_mechanical_summary(events: list) -> str:
                 if etype == 'block_missed_royale':
                     lines.append(f"- 🛡️ **{blocker.display_name}** attempted to block **{target.display_name}**, but they had already completed their actions.")
                 else:
-                    lines.append(f"- 🛡️ A shadowy figure attempted to block **{target.display_name}**, but they had already completed their actions.")
+                    lines.append(f"- 🛡️ **{target.display_name}** was blocked by a shadowy figure and could not perform their action.")
         # --- Heals & Other Saves ---
         elif etype in ['save' , 'save_battle_royale']:
             logger.info(f"Generating save event story part for event: {etype}")
@@ -525,7 +547,7 @@ def _archive_phase_data(game_state: dict, phase_key: str, prompt: str, thoughts:
     game_mode_raw = str(game_state.get('game_type', 'classic')).lower()
     folder_name = "Battle Royale" if "battle_royale" in game_mode_raw else "Classic"
     
-    archive_dir = os.path.join("Stats", str(config.game_type).title(), folder_name, game_id)
+    archive_dir = os.path.join(str(config.data_save_path).title(), folder_name, game_id)
     os.makedirs(archive_dir, exist_ok=True)
     
     archive_path = os.path.join(archive_dir, f"{game_id}_ai_prompts.json")
