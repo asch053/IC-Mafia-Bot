@@ -4,6 +4,7 @@ import config
 from discord import app_commands
 from discord.ext import commands
 import logging
+import config
 
 # Import the custom decorator for checking admin permissions
 from utils.admincheck import is_admin 
@@ -105,8 +106,13 @@ class AdminCog(commands.Cog, name="AdminCog"):
         living_role = interaction.guild.get_role(config.LIVING_ROLE_ID)
         dead_role = interaction.guild.get_role(config.DEAD_ROLE_ID)
         # Check if both roles were found
-        if not living_role or not dead_role:
-            await interaction.response.send_message("Error: 'Living' or 'Dead' roles not found.", ephemeral=True)
+        try:
+            if not living_role or not dead_role:
+                    await interaction.response.send_message("Error: 'Living' or 'Dead' roles not found.", ephemeral=True)
+                    return
+        except Exception as e:
+            logger.error(f"Error occurred while fetching roles: {e}")
+            await interaction.response.send_message("An error occurred while fetching roles.", ephemeral=True)
             return
         # Log the start of the re-initialization process
         logger.info("Rebuilding internal player list from server roles...")

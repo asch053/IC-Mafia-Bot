@@ -17,6 +17,8 @@ except ImportError:
 from utils.utilities import load_data # Fixed import path
 from community import quirk_logic
 
+from config import MODEL_NAME
+
 
 # Import the new 2026 standard Google GenAI SDK
 try:
@@ -29,8 +31,8 @@ except ImportError:
 logger = logging.getLogger('discord')
 
 # CRITICAL FIX: Update the model name to a known valid identifier
-# If gemini-3.0-flash-preview still fails, fallback to gemini-2.5-flash
-MODEL_NAME = "gemini-2.5-flash" 
+# If gemini-latest-flash still fails, fallback to gemini-2.5-flash
+MODEL_NAME = getattr(config, 'MODEL_NAME', 'gemini-2.5-flash') if not MODEL_NAME else MODEL_NAME
 
 # Initialize the client safely depending on how your config is named
 _api_key = getattr(config, 'GEMINI_API_KEY', getattr(config, 'GOOGLE_AI_API_KEY', None))
@@ -83,12 +85,47 @@ def _get_involved_quirks(game_state: dict, events: list) -> str:
                 involved_ids.add(str(p.id))
     else:
         # Standard scene: Use 'Just-in-Time' context to save tokens.
+        # After: Only pull quirks for players who are public knowledge (Victims/Lynch Targets)
         for e in events:
-            # Check common keys that store player objects
-            for key in ['victim', 'killer', 'actor', 'attacker', 'target', 'healer', 'blocker']:
-                obj = e.get(key)
-                if obj and hasattr(obj, 'id'):
-                    involved_ids.add(str(obj.id))
+            etype = e.get('type', '')
+            # 1. Victims and Lynch targets are always public context
+            v = e.get('victim')
+            # Safer check that only hides immune players during "kill" events
+            v = e.get('victim')
+            if v and hasattr(v, 'id'):
+                # Determine if we should hide this victim
+                # Hide if: It's a kill event AND the victim is immune
+                is_immune = getattr(v.role, 'is_night_immune', False)
+                is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
+                # We will include victims in the involved_ids for all events except when it's a kill event and the victim is immune, because in that case we want to 
+                # avoid revealing too much about immune players through their death events. For example, if a player is killed but they are immune, we don't want the 
+                # AI to see their quirks and meta-game that information to figure out they are immune. By excluding immune victims from the involved_ids during kill events, 
+                # we can help preserve the mystery around immune players while still providing rich context for all other events and players.
+                if not (is_kill_event and is_immune):
+                    involved_ids.add(str(v.id))
+            # Also include lynch victims even if they are immune, because their death is public knowledge and they are relevant to the story, but we can choose to hide their 
+            # role/quirks if they are immune to preserve some mystery. For now, we will include them in the involved_ids so their quirks can be used, but we will rely on 
+            # the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal too much in the narration.
+            for lv in e.get('victims', []) : # handle lynch victims list
+                if hasattr(lv, 'id'): # Safer check to ensure we don't error out if 'victims' is not a list of player objects
+                    is_immune = getattr(lv.role, 'is_night_immune', False)
+                    is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
+                    # We will include lynch victims in the involved_ids even if they are immune, because their death is public knowledge and relevant to the story, 
+                    # but we will rely on the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal 
+                    # too much in the narration. This allows us to use their quirks for richer storytelling while still preserving some mystery about their role if 
+                    # they were immune.
+                    if not (is_kill_event and is_immune):
+                        involved_ids.add(str(lv.id))
+            # 2. PRIVACY FILTER: In Battle Royale, perpetrators are public.
+            # In Classic, we skip adding 'killer', 'actor', etc., so the AI doesn't see their quirks.
+            if game_state.get('game_type', '').lower() in ['battle_royale', 'br']:
+                for key in ['killer', 'actor', 'attacker', 'healer', 'blocker']: # Include healers and blockers as well since they are also public in battle royale
+                    obj = e.get(key) # Safer access to avoid KeyErrors
+                    if obj and hasattr(obj, 'id') and (obj.role.is_night_immune) != True: # Only include perpetrators if they are not night immune to avoid revealing too 
+                        # much about immune players through their actions
+                        involved_ids.add(str(obj.id)) # We can include perpetrators in the involved_ids for Battle Royale since they are public knowledge, 
+                        # but we will rely on the MECHANICAL EVENTS section of the prompt to clearly communicate any immunities to the AI so it doesn't meta-game or 
+                        # reveal too much in the narration.
     # Format the personas into a readable block for the AI
     persona_lines = []
     for p in game_state.get('living_players', []):
@@ -189,7 +226,7 @@ def _generate_mechanical_summary(events: list) -> str:
                 if etype == 'block_missed_royale':
                     lines.append(f"- 🛡️ **{blocker.display_name}** attempted to block **{target.display_name}**, but they had already completed their actions.")
                 else:
-                    lines.append(f"- 🛡️ A shadowy figure attempted to block **{target.display_name}**, but they had already completed their actions.")
+                    lines.append(f"- 🛡️ **{target.display_name}** was blocked by a shadowy figure and could not perform their action.")
         # --- Heals & Other Saves ---
         elif etype in ['save' , 'save_battle_royale']:
             logger.info(f"Generating save event story part for event: {etype}")
@@ -311,6 +348,7 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         processed_heals = set()
         for e in events:
             etype = e['type']
+            # Lynch event (Classic and Battle Royale)
             if etype == 'lynch':
                 for v in e.get('victims', []):
                     role_name = v.role.name if v.role else "Unknown"
@@ -318,40 +356,52 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                         event_lines.append(f"CRITICAL EVENT: {lynch_text} **{v.display_name}** as decided by the survivors.")
                     else:
                         event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Upon searching their body, their true identity was revealed as {role_name}.")
+            # Kill events (Classic)
             elif etype == 'kill':
                 victim = e.get('victim')
                 if victim and victim.display_name not in processed_kills:
                     processed_kills.add(victim.display_name)
                     killers = kill_data.get(victim.display_name, [])
-                    count = len(killers)
-                    
+                    count = len(killers)    
                 if victim:
                     role_name = victim.role.name if victim.role else "Unknown"
                     event_lines.append(f"CRITICAL EVENT: {victim.display_name} was MURDERED in the night. Upon searching their body, their true identity was revealed as {role_name}.")
+            # Inactivity kill events (Classic and Battle Royale) 
             elif etype == 'inactivity_kill':
                 for v in e.get('victims', []):
                     role_name = v.role.name if v.role else "Unknown"
                     event_lines.append(f"CRITICAL EVENT: {v.display_name} mysteriously vanished or dropped dead from weakness/inactivity. Their true identity was {role_name}.")
+            # Block event (Classic)
             elif etype == 'block':
                 target = e.get('target')
                 if target:
-                    event_lines.append(f"CRITICAL EVENT: {target.display_name} was BLOCKED by a shadowy figure and could not perform their action.")   
+                    event_lines.append(f"CRITICAL EVENT: {target.display_name} was BLOCKED by a shadowy figure and could not perform their action.")  
+            # Block event (Battle Royale)
             elif etype == 'block_battle_royale':
                 target = e.get('target')
                 blocker = e.get('blocker')
                 if target and blocker:
                     event_lines.append(f"CRITICAL EVENT: **{target.display_name}** was BLOCKED by **{blocker.display_name}** and could not perform their action.")
+            # Missed Block event (Battle Royale)
+            elif etype == 'block_missed_royale':
+                target = e.get('target')
+                blocker = e.get('blocker')
+                if target and blocker:
+                    event_lines.append(f"CRITICAL EVENT: {blocker.display_name} attempted to BLOCK {target.display_name}, but they had already completed their actions.")
+            # Save (Heal) event (Classic)
             elif etype == 'save': 
                 victim = e.get('victim')
                 if victim:
                     role_name = victim.role.name if victim.role else "Unknown"
                     event_lines.append(f"CRITICAL EVENT: {victim.display_name} was SAVED by a the doctor who heled them after the attack.")
+            # Save (Heal) event (Battle Royale)
             elif etype == 'save_battle_royale':  
                 victim = e.get('victim')
                 healer = e.get('healer')
                 healer_name = healer.display_name if healer and hasattr(healer, 'display_name') else "Unknown"
                 if victim:
                     event_lines.append(f"CRITICAL EVENT: {victim.display_name} was SAVED from a deadly attack by {healer_name} and survived.")
+            # Kill events (Battle Royale)   
             elif etype == 'kill_battle_royale':
                 victim = e.get('victim')
                 killer = e.get('killer')
@@ -366,21 +416,27 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                         event_lines.append(f"CRITICAL EVENT: {victim.display_name} was brutally KILLED in the night, suffering {count} separate lethal attacks by {killers_str}!")
                     else:
                         event_lines.append(f"CRITICAL EVENT: {victim.display_name} was brutally KILLED in the night. They were killed by {killers_str}.")
+            # Kill immunity event (Classic and Battle Royale)
             elif etype == 'kill_immune':
                 victim = e.get('victim')
                 if victim:
-                    role_name = victim.role.name if victim.role else "Unknown"
-                    event_lines.append(f"CRITICAL EVENT: An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect! They were the **{role_name}**.")    
+                    if game_state.get('game_type', '').lower() in ['battle_royale', 'br']:
+                        # After: Masks the target of a failed kill in Classic mode
+                            v = e.get('victim')
+                            t_name = v.display_name if v else "a target"
+                            event_lines.append(f"PUBLIC EVENT: {t_name} survived an assassination attempt.")
+                    else:
+                        # Strictly anonymous for Classic Mafia
+                        event_lines.append("SECRET EVENT: An assassination attempt failed. The target survived anonymously.") 
+                        role_name = victim.role.name if victim.role else "Unknown"
+                        event_lines.append(f"SECRET EVENT: An assailant ambushed **{role_name}** in the dark, but their target was unfazed. The attack had no effect!.")    
+            # Investigation event (Classic and Battle Royale) - This is a secret event that gives the AI context but is not revealed to players, so we can be more descriptive to help the AI generate better stories without worrying about meta-gaming or players using the narration as a source of information about investigations.
             elif etype == 'investigate':
-                #event_lines.append("CRITICAL EVENT: A lone figure was seen snooping around someone's house, trying to uncover secrets.")   
-                pass    
+                #event_lines.append("SECRET EVENT: A lone figure was seen snooping around someone's house, trying to uncover secrets.")   
+                pass  
+            # Promotion event (Classic and Battle Royale)
             elif etype == 'promotion':
-                event_lines.append("CRITICAL EVENT: In the mafia underground, a power vacuum has been filled. A new leader has risen to command the night's dark deeds.")                          
-            elif etype == 'block_missed_royale':
-                target = e.get('target')
-                blocker = e.get('blocker')
-                if target and blocker:
-                    event_lines.append(f"CRITICAL EVENT: {blocker.display_name} attempted to BLOCK {target.display_name}, but they had already completed their actions.")
+                event_lines.append("INFORMATION EVENT: In the mafia underground, a power vacuum has been filled. A new leader has risen to command the night's dark deeds.")                          
         if event_lines:
             events_text = "\n".join(event_lines)
 
@@ -433,6 +489,16 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
              narrative_directives += f"- Write this as a conclusion to the story based on the {winner} result. Focus on the fate of the winner {living_players} and the overall narrative arc, referencing key events and moments from the game."
     elif is_epilogue:
         narrative_directives += "- Write this as an epilogue chapter reflecting on the aftermath of the conflict. This should provide closure to the story, reflecting on the fates of the surviving players (if any) and the consequences of the conflict. This can be more reflective and less action-oriented, providing a sense of resolution to the narrative arc. This shold difinitely finish the story, providing a sense of closure and finality to the game."
+    # After: Explicit "Fog of War" instructions
+    if game_mode in ['battle_royale', 'br']:
+        rules_block = """--- BATTLE ROYALE RULES (OPEN INFORMATION) ---
+    1. TRANSPARENCY: Attackers and targets are public knowledge. Use names freely."""
+    else:
+        rules_block = """--- IRONCLAD RULES OF ANONYMITY (CLASSIC MAFIA) ---
+    1. DO NOT GUESS: If a perpetrator is not named in the MECHANICAL EVENTS, do NOT assign the action to a living player.
+    2. FOG OF WAR: Night killers and healers are ALWAYS anonymous. Refer to them as 'the assailant' or 'a shadowy figure' or a 'helpful bystander'.
+    3. NO OUTING: Never describe a named living player as being part of an aggressive act unless explicitly told."""
+
     # 4. Construct the Reasoning Rubric
     prompt = f"""You are an elite, highly creative Game Moderator (GM) running a text-based forum game of Mafia/Social Deduction. 
 Your job is to write the flavor text for the current phase. 
@@ -449,6 +515,8 @@ CURRENT PHASE: {phase_name} {phase_num}
 {custom_rules}
 3. CHARACTER PERSONAS: If traits are listed below, weave them into dialogue and behavior naturally. Show, don't tell. Do not label them as 'quirks'.
 {quirks_block}
+
+
 
 
 --- MECHANICAL EVENTS TO NARRATE THIS PHASE ---
@@ -479,7 +547,7 @@ def _archive_phase_data(game_state: dict, phase_key: str, prompt: str, thoughts:
     game_mode_raw = str(game_state.get('game_type', 'classic')).lower()
     folder_name = "Battle Royale" if "battle_royale" in game_mode_raw else "Classic"
     
-    archive_dir = os.path.join("Stats", str(config.game_type).title(), folder_name, game_id)
+    archive_dir = os.path.join(str(config.data_save_path).title(), folder_name, game_id)
     os.makedirs(archive_dir, exist_ok=True)
     
     archive_path = os.path.join(archive_dir, f"{game_id}_ai_prompts.json")
