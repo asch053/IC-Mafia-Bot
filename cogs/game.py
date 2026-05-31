@@ -151,7 +151,7 @@ class GameCog(commands.Cog, name="GameCog"):
     ])
     @is_admin() # Decorator: This command can only be used by admins.
     async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str, gf_investigate_choice: str = "No", 
-                                 sk_investigate_choice: str = "No",
+                                 sk_investigate_choice: str = "No", 
                                  narration_type: str = "Classic Mafia"
                                  ):
         """Command for admins to schedule a new game."""
@@ -172,9 +172,9 @@ class GameCog(commands.Cog, name="GameCog"):
             await interaction.response.send_message("The start time must be in the future.", ephemeral=True)
             return
         # Convert investigate choices to booleans
-        gf_investigate = (gf_investigate_choice.lower() == "yes")
-        sk_investigate = (sk_investigate_choice.lower() == "yes")
-        sk_investigate = False
+        gf_investigate = (gf_investigate_choice.lower() == "yes") # Default to False if not provided
+        sk_investigate = (sk_investigate_choice.lower() == "yes") # Default to False if not provided
+        sk_investigate = False 
         # Acknowledge the command while the bot prepares the game announcement
         await interaction.response.defer(ephemeral=True)
         # Create a new Game instance and store it in the cog

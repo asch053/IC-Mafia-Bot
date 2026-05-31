@@ -465,7 +465,7 @@ class Game:
                 role.investigation_immune = not self.game_settings["gf_investigate"]
                 logger.info(f"Set Godfather investigation immunity to {role.investigation_immune} != {self.game_settings['gf_investigate']}")
             elif role.name == "Serial Killer":
-                role.investigation_immune = not self.game_settings["sk_investigate"]
+                role.investigation_immune = not self.game_settings["sk_investigate"] # If SK investigate is False, then SK should be immune, so set investigation_immune to the opposite of sk_investigate
                 logger.info(f"Set Serial Killer investigation immunity to {role.investigation_immune} != {self.game_settings['sk_investigate']}")
             else: 
                 role.investigation_immune = False

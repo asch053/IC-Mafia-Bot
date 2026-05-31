@@ -595,9 +595,20 @@ async def generate_story(game_state: dict, events: list, history: list) -> str |
     # Note: Not all models support 'thinking_config' or 'thinking_level' yet.
     # For stability with gemini-2.5-flash, we omit the thinking_config 
     # unless you are strictly using a model that requires it.
-    generation_config = types.GenerateContentConfig(
-        temperature=0.7, 
-    )
+    # 2. Configure Thinking depth safely based on the model
+    # Only append the thinking config if we are using a reasoning model
+    generation_config_args = {"temperature": 0.7}
+    
+    # Configure Thinking depth safely based on the model
+    # Gemini 3 Flash, 2.5, and explicitly named thinking models support this!
+    model_lower = MODEL_NAME.lower()
+    if "thinking" in model_lower or "gemini-3" in model_lower:
+        generation_config_args["thinking_config"] = types.ThinkingConfig(
+            include_thoughts=True,
+            thought_token_limit=1024
+        )
+        
+    generation_config = types.GenerateContentConfig(**generation_config_args)
 
     logger.info(f"Requesting AI story for {phase_name} {phase_num} using {MODEL_NAME}...")
 
@@ -621,18 +632,19 @@ async def generate_story(game_state: dict, events: list, history: list) -> str |
             if response.text:
                 story_text = response.text
             
-            # Attempt to extract thoughts if they exist in the response structure
-            # This is a safe fallback in case we switch back to a thinking model
+            # Attempt to extract thoughts safely
             if response.candidates and response.candidates[0].content.parts:
                 for part in response.candidates[0].content.parts:
                     if getattr(part, 'thought', False): 
-                        thoughts += part.text
+                        # Safe concatenation in case part.text is None
+                        thoughts += (part.text or "")
 
             if not story_text:
                 logger.error(f"AI returned an empty story on attempt {attempt + 1}.")
                 if attempt == max_retries - 1:
                     return None
-                await asyncio.sleep(base_delay ** (attempt + 1))
+                # FIXED: Changed ** back to * to prevent massive minute-long hangs
+                await asyncio.sleep(base_delay * (attempt + 1))
                 continue
 
             # 5. Archive the interaction
@@ -649,10 +661,11 @@ async def generate_story(game_state: dict, events: list, history: list) -> str |
             logger.error(f"Gemini API timed out on attempt {attempt + 1}.")
             if attempt == max_retries - 1:
                 return None
-            await asyncio.sleep(base_delay ** (attempt + 1))
+            # FIXED: Math operator corrected here too
+            await asyncio.sleep(base_delay * (attempt + 1))
         except Exception as e:
             logger.error(f"Gemini API Error on attempt {attempt + 1}: {type(e).__name__} - {e}", exc_info=True)
             if attempt == max_retries - 1:
                 return None
-            # Wait exponentially before retrying (2s, 4s, 8s)
-            await asyncio.sleep(base_delay ** (attempt + 1))
+            # FIXED: Math operator corrected here too
+            await asyncio.sleep(base_delay * (attempt + 1))
