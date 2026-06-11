@@ -81,20 +81,20 @@ async def update_player_discord_roles(bot, guild, game_players: dict, action: st
             # 4. Logic for everyone NOT in the game
             else:
                 target_role = spec_role
-            logger.info(f"Determined target role for {member.display_name}: {target_role}")
+            logger.debug(f"Determined target role for {member.display_name}: {target_role}")
             if not target_role: continue  # Just a safety check, should not happen
             # 5. Apply changes only if necessary (to avoid rate limits)
             current_managed_roles = {r for r in [alive_role, dead_role, spec_role] if r in member.roles}
-            logger.info(f"Current managed roles for {member.display_name}: {current_managed_roles}")
+            logger.debug(f"Current managed roles for {member.display_name}: {current_managed_roles}")
             if target_role not in member.roles:
                 # Remove any of the other two managed roles the user might have
                 roles_to_remove = current_managed_roles - {target_role}
                 if roles_to_remove:
                     await member.remove_roles(*roles_to_remove)
-                    logger.info(f"Synchronized roles for {member.display_name}: Removed {[r.name for r in roles_to_remove]}")
+                    logger.debug(f"Synchronized roles for {member.display_name}: Removed {[r.name for r in roles_to_remove]}")
                 # Add the target role if not already present
                 await member.add_roles(target_role)
-                logger.info(f"Synchronized roles for {member.display_name}: Added {target_role.name}")
+                logger.debug(f"Synchronized roles for {member.display_name}: Added {target_role.name}")
         # Handle specific exceptions for better logging and debugging
         except discord.Forbidden:
             logger.error(f"Missing permissions to manage roles for {member.display_name}")
@@ -161,7 +161,7 @@ async def send_mafia_info_dm(bot, players):
             mafia_names = ", ".join([p.display_name for p in mafia_players if p.id != player.id])
             msg = f"Your Mafia teammates are: **{mafia_names}**" if mafia_names else "You are the only Mafia member. Good luck!"
             await user.send(msg)
-            logger.info(f"Sent Mafia team info DM to {player.display_name}.")
+            logger.debug(f"Sent Mafia team info DM to {player.display_name}.")
         except Exception as e:
             logger.error(f"Failed to send mafia DM to {player.display_name}: {e}")
     

@@ -67,6 +67,12 @@ class Game:
             "gf_night_immune": True,  # Default
             "sk_night_immune": True, # Default
             "phase_hours": 12, # Default
+            "mafia_ratio": config.mob_ratio, # Default
+            "town_rb_req": config.min_town_rb_players, # Default
+            "mafia_rb_req": config.min_mob_rb_mafia_count, # Default
+            "sk_player_count": config.min_sk_players, # Default
+            "town_cop_req": config.min_cop_players, # Default
+            "town_doctor_req": config.min_doctor_players # Default
         }
         self.chat_log = [] # To store chat messages during the game FR-5.4: Advanced Data Logging
         self.game_event_log = [] # To store game events during the game FR-5.4: Advanced Data Logging
@@ -115,7 +121,7 @@ class Game:
         logger.debug("Game instance initialized.")
 
     # --- 1. SIGN-UP PHASE ---
-    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=21):
+    async def start(self, game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=99, mafia_ratio=config.mob_ratio, town_rb_req=config.min_town_rb_players, mafia_rb_req=config.min_mob_rb_mafia_count, sk_player_count=config.min_sk_players, town_cop_req=config.min_cop_players, town_doctor_req=config.min_doctor_players):
         """Announces the sign-up phase and starts the signup_loop."""
         logger.info("Starting the sign-up phase for the game.")
 
@@ -131,6 +137,12 @@ class Game:
         self.game_settings["gf_investigate"] = gf_investigate # Set Godfather immunity as set within the game initialization
         self.game_settings["sk_investigate"] = sk_investigate # Set Serial Killer immunity as set within the game initialization
         self.game_settings["story_type"] = narration_type # Set narration type as set within the game initialization
+        self.game_settings["mafia_ratio"] = mafia_ratio # Set mafia ratio as set within the game initialization
+        self.game_settings["town_rb_req"] = town_rb_req # Set town role blocker requirement as set within the game initialization
+        self.game_settings["mafia_rb_req"] = mafia_rb_req # Set mafia role blocker requirement as set within the game initialization
+        self.game_settings["sk_player_count"] = sk_player_count # Set Serial Killer player count requirement as set within the game initialization
+        self.game_settings["town_cop_req"] = town_cop_req # Set town cop requirement as set within the game initialization
+        self.game_settings["town_doctor_req"] = town_doctor_req # Set town doctor requirement as set within the game initialization
         self.max_players = max_players #set max players as set within the game initialization
         self.is_prologue = True # Mark that the next story is the prologue
         self.is_introduction = False # Mark that the next story is the introduction (for better narration in v0.6)
@@ -444,7 +456,8 @@ class Game:
             self.game_settings['game_type'] = "battle_royale"
         
         # New smart way!
-        role_names = setup_generator.generate_roles(player_count, game_type)
+        role_names = setup_generator.generate_roles(player_count, game_type, self.game_settings["mafia_ratio"], self.game_settings["town_rb_req"], self.game_settings["mafia_rb_req"], self.game_settings["sk_player_count"], 
+                                                    self.game_settings["town_cop_req"], self.game_settings["town_doctor_req"])
         # We MUST check for an empty list, which our generator
         # returns if the player count is too low!
         if not role_names:

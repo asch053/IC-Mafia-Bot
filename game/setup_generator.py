@@ -29,7 +29,7 @@ JESTER = "Jester"
 VIGILANTE = "Vigilante"
 
 #-- Role Generation Function ---
-def generate_roles(player_count: int, game_type: str) -> List[str]:
+def generate_roles(player_count: int, game_type: str, mob_ratio: float, town_rb_req: int, mafia_rb_req: int, sk_player_count: int, min_cop_players: int, min_doctor_players: int) -> List[str]:
     """
     Generates a balanced list of role names based on player count and game type.
 
@@ -37,9 +37,12 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
         player_count: The number of players in the game.
         game_type: The type of game (e.g., "Classic", "Battle Royale").
                    Currently, only "Classic" is dynamically generated.
-        gf_investigate_immune: Whether the Godfather is immune to investigation.
-        sk_investigate_immune: Whether the Serial Killer is immune to investigation.
-
+        mob_ratio: The ratio of Mafia players to total players.
+        town_rb_req: The minimum number of players required for a Town Role Blocker.
+        mafia_rb_req: The minimum number of Mafia players required for a Mob Role Blocker.
+        sk_player_count: The minimum number of players required for the Serial Killer role.
+        min_cop_players: The minimum number of players required for the Town Cop role.
+        min_doctor_players: The minimum number of players required for the Town Doctor role.
     Returns:
         A list of strings, where each string is a role name.
     """
@@ -60,7 +63,8 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
       
     # --- 1. Calculate Evil Roles ---
     # Rule: 25% of players, rounded down.
-    mob_ratio = config.mob_ratio if hasattr(config, 'mob_ratio') else 0.25  # Default to 0.25 if not defined
+    if mob_ratio <= 0 or mob_ratio >= 1:
+        mob_ratio = config.mob_ratio if hasattr(config, 'mob_ratio') else 0.25  # Default to 0.25 if not defined
     mafia_count = math.floor(player_count * mob_ratio)
     # Ensure at least 1 Mafia in a >= 5 player game
     if mafia_count == 0:
@@ -77,12 +81,14 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
         # but it's good practice to be safe.
         pass
     
-    # Rule: 1 SK if players >= 9.
-    if player_count >= config.min_sk_players:
+    # Rule: 1 SK if players >= sk_player_count.
+    if sk_player_count <= 0:
+        sk_player_count = config.min_sk_players if hasattr(config, 'min_sk_players') else 4  # Default to 4 if not defined
+    if player_count >= sk_player_count:
         roles.append(SERIAL_KILLER)
     # Rule: 1 Mob RB if Mafia count >= 4.
     # This REPLACES one Goon to keep the Mafia count correct.
-    if mafia_count >= config.min_mob_rb_mafia_count:
+    if mafia_count >= mafia_rb_req:
         # Find the first "Mafia" and replace it
         try:
             index_to_replace = roles.index(MAFIA_GOON)
@@ -94,13 +100,13 @@ def generate_roles(player_count: int, game_type: str) -> List[str]:
 
     # --- 2. Calculate Town Power Roles ---
     # Rule: 1 Cop if players >= 6.
-    if player_count >= config.min_cop_players:
+    if player_count >= min_cop_players:
         roles.append(TOWN_COP)
     # Rule: 1 Doctor if players >= 7.
-    if player_count >= config.min_doctor_players:
+    if player_count >= min_doctor_players:
         roles.append(TOWN_DOCTOR)
-    # Rule: 1 Town RB if players >= 8.
-    if player_count >= config.min_town_rb_players:
+    # Rule: 1 Town RB if players >= town_rb_req.
+    if player_count >= town_rb_req:
         roles.append(TOWN_RB)
 
     # --- 3. Fill Remaining Slots with Townies ---

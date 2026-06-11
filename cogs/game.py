@@ -124,21 +124,19 @@ class GameCog(commands.Cog, name="GameCog"):
         game_type="The type of Mafia game to start (e.g., Classic, Battle Royale).",
         phase_hours="The duration of each day/night phase in hours.",
         start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC).",
+        narration_type="The type of narration for the game.",
         gf_investigate_choice="Whether the Godfather is able to be investigated (yes/no).",
         sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no).",
-        narration_type="The type of narration for the game."
+        mafia_ratio="Percentage of players that should be Mafia (e.g., 0.25)",
+        town_rb_req="Number of players before adding Roleblockers (e.g. set at 10 to need 10 players before adding Town Roleblockers)",
+        town_cop_req="Number of players before adding a Cop (e.g. set at 6 to require at least 6 players before adding a Cop)",
+        town_doctor_req="Number of players before adding a Doctor (e.g. set at 7 to require at least 7 players before adding a Doctor)",
+        mafia_rb_req="Number of Mafia players before adding Roleblockers (e.g. set at 4 to need 4 Mafia players before adding Mafia Roleblockers)",
+        sk_player_count="Minimum number of players required for the Serial Killer role (e.g., set at 9 to require 9 players before adding the Serial Killer)"
     )
     @app_commands.choices(game_type=[
         app_commands.Choice(name="Classic", value="classic"),
         app_commands.Choice(name="Battle Royale", value="battle_royale")
-    ])
-    @app_commands.choices(gf_investigate_choice=[
-        app_commands.Choice(name="Yes", value="yes"),
-        app_commands.Choice(name="No", value="no")
-    ])
-    @app_commands.choices(sk_investigate_choice=[
-        app_commands.Choice(name="Yes", value="yes"),
-        app_commands.Choice(name="No", value="no")
     ])
     @app_commands.choices(narration_type=[
     # options for AI narration types - can be expanded in the future to include more styles/themes. Add Classic Mafia, High Fantasy, Cyberpunk, Comedy, and lovecraftian horror.
@@ -149,13 +147,23 @@ class GameCog(commands.Cog, name="GameCog"):
         app_commands.Choice(name="Comedy", value="Comedy"),
         app_commands.Choice(name="Lovecraftian Horror", value="Lovecraftian Horror")
     ])
+    @app_commands.choices(gf_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
+    @app_commands.choices(sk_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
     @is_admin() # Decorator: This command can only be used by admins.
-    async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str, gf_investigate_choice: str = "No", 
-                                 sk_investigate_choice: str = "No", 
-                                 narration_type: str = "Classic Mafia"
+    async def start_game_command(self, interaction: discord.Interaction, game_type: str, phase_hours: float, start_datetime: str, narration_type: str = "Classic Mafia",
+                                 gf_investigate_choice: str = "No", sk_investigate_choice: str = "No", 
+                                 mafia_ratio: float = config.mob_ratio, town_rb_req: int = config.min_town_rb_players, mafia_rb_req: int = config.min_mob_rb_mafia_count, sk_player_count: int = config.min_sk_players
+                                    , town_cop_req: int = config.min_cop_players, town_doctor_req: int = config.min_doctor_players
                                  ):
         """Command for admins to schedule a new game."""
-        logger.info(f"'/mafiastart' command invoked by {interaction.user.name} with args: type={game_type}, hours={phase_hours}, start='{start_datetime}'.")
+        # Log the command invocation with all parameters for better traceability and debugging
+        logger.critical(f"'/mafiastart' command invoked by {interaction.user.name} with args: type={game_type}, hours={phase_hours}, start='{start_datetime}', narration={narration_type}, gf_investigate={gf_investigate_choice}, sk_investigate={sk_investigate_choice}, mafia_ratio={mafia_ratio}, town_rb_req={town_rb_req}, mafia_rb_req={mafia_rb_req}, sk_player_count={sk_player_count}.")
         # Prevent starting a game if one is already running
         if self.game is not None:
             await interaction.response.send_message("A game is already in progress!", ephemeral=True)
@@ -174,7 +182,22 @@ class GameCog(commands.Cog, name="GameCog"):
         # Convert investigate choices to booleans
         gf_investigate = (gf_investigate_choice.lower() == "yes") # Default to False if not provided
         sk_investigate = (sk_investigate_choice.lower() == "yes") # Default to False if not provided
-        sk_investigate = False 
+        # Check town role blocker requirement and mafia role blocker requirement are integer
+        if not isinstance(town_rb_req, int):
+            await interaction.response.send_message("Invalid town role blocker requirement. Please provide an integer.", ephemeral=True)
+            return
+        if not isinstance(mafia_rb_req, int):
+            await interaction.response.send_message("Invalid mafia role blocker requirement. Please provide an integer.", ephemeral=True)
+            return
+        # Check Serial Killer player count requirement is integer
+        if not isinstance(sk_player_count, int):
+            await interaction.response.send_message("Invalid Serial Killer player count requirement. Please provide an integer.", ephemeral=True)
+            return
+        # Check mafia ratio is a float between 0 and 1
+        if not isinstance(mafia_ratio, float) or mafia_ratio <= 0 or mafia_ratio >= 1:
+            await interaction.response.send_message("Invalid mafia ratio. Please provide a float between 0 and 1 (e.g., 0.25 for 25%).", ephemeral=True)
+            return
+
         # Acknowledge the command while the bot prepares the game announcement
         await interaction.response.defer(ephemeral=True)
         # Create a new Game instance and store it in the cog
@@ -183,7 +206,8 @@ class GameCog(commands.Cog, name="GameCog"):
         # Confirm to the admin that the game has been scheduled successfully
         await interaction.followup.send(f"Game scheduled by {interaction.user.mention}!", ephemeral=True)
         # Call the game engine's start method to begin the sign-up phase
-        await self.game.start(game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=21)
+        await self.game.start(game_type, start_datetime_obj, phase_hours, gf_investigate, sk_investigate, narration_type, max_players=99, mafia_ratio=mafia_ratio, town_rb_req=town_rb_req, mafia_rb_req=mafia_rb_req, 
+                              sk_player_count=sk_player_count, town_cop_req=town_cop_req, town_doctor_req=town_doctor_req)
 
     # --- Player Commands (Channel) ---
     @app_commands.command(name="mafiajoin", description="Joins the current game during the sign-up phase.")
