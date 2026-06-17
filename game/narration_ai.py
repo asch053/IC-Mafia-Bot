@@ -218,7 +218,7 @@ def _generate_mechanical_summary(events: list) -> str:
                 if etype == 'block_battle_royale':
                     lines.append(f"- 🛡️ **{target.display_name}** was blocked by **{blocker.display_name}** and could not perform their action.")
                 else:
-                    lines.append(f"- 🛡️ **{target.display_name}** was blocked by a shadowy figure and could not perform their action.")
+                    lines.append(f"- 🛡️ **{target.role.name}** was blocked by a shadowy figure and could not perform their action.")
         elif etype in ['block_missed', 'block_missed_royale']:
             target = event.get('target')
             blocker = event.get('blocker')
@@ -226,7 +226,7 @@ def _generate_mechanical_summary(events: list) -> str:
                 if etype == 'block_missed_royale':
                     lines.append(f"- 🛡️ **{blocker.display_name}** attempted to block **{target.display_name}**, but they had already completed their actions.")
                 else:
-                    lines.append(f"- 🛡️ **{target.display_name}** was blocked by a shadowy figure and could not perform their action.")
+                    lines.append(f"- 🛡️ **{target.role.name}** was blocked by a shadowy figure and could not perform their action.")
         # --- Heals & Other Saves ---
         elif etype in ['save' , 'save_battle_royale']:
             logger.info(f"Generating save event story part for event: {etype}")
@@ -375,7 +375,7 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             elif etype == 'block':
                 target = e.get('target')
                 if target:
-                    event_lines.append(f"CRITICAL EVENT: {target.display_name} was BLOCKED by a shadowy figure and could not perform their action.")  
+                    event_lines.append(f"CRITICAL EVENT: {target.role_name} was BLOCKED by a shadowy figure and could not perform their action.")  
             # Block event (Battle Royale)
             elif etype == 'block_battle_royale':
                 target = e.get('target')
