@@ -65,16 +65,22 @@ def get_dynamic_rules(self, game_settings):
 
     
         # 2. Construct the dynamic setup block
-        dynamic_setup = (
-            f"**🎲 Current Game Setup**\n"
-            f"1. ⏱️ **Phase Length:** {phase_length} Hours\n"
-            f"2. ⚖️ **Mafia Ratio:** {mafia_ratio}%\n"
-            f"3. 🔪 **Serial Killer:** Spawns at {sk_min}+ Players\n"
-            f"4. 🛡️ **Town Roles:** Spawn at {town_cop_req} for Cop, {town_doctor_req} for Doctor, and {town_rb__req} for Roleblocker\n"
-            f"5. 🕴️ **Mafia Roles:** Goons, and spawn a Roleblocker with {mafia_req} mafia members\n"
-            f"6. 🕵️‍♂️ **Investigations:** The Godfather {'is' if gf_investigate else 'is not'} investigatable, and the Serial Killer {'is' if sk_investigate else 'is not'} investigatable\n"
-            f"7. 🛡️ **Night Immunity:** The Godfather {'is' if gf_night_immune else 'is not'} night immune, and the Serial Killer {'is' if sk_night_immune else 'is not'} night immune\n"
-        )
+        if game_type == "battle_royale":
+              dynamic_setup = (
+                f"**🎲 Current Game Setup**\n"
+                f"- ⏱️ **Phase Length:** {phase_length} Hours\n"
+              )
+        else:
+            dynamic_setup = (
+                f"**🎲 Current Game Setup**\n"
+                f"- ⏱️ **Phase Length:** {phase_length} Hours\n"
+                f"- ⚖️ **Mafia Ratio:** {mafia_ratio}%\n"
+                f"- 🔪 **Serial Killer:** Spawns at {sk_min}+ Players\n"
+                f"- 🛡️ **Town Roles:** Spawn at {town_cop_req} players for Cop, {town_doctor_req} players for Doctor, and {town_rb__req} players for Roleblocker\n"
+                f"- 🕴️ **Mafia Roles:** Goons, and spawn a Roleblocker with {mafia_req} mafia members\n"
+                f"- 🕵️‍♂️ **Investigations:** The Godfather {'is' if gf_investigate else 'is not'} investigatable, and the Serial Killer {'is' if sk_investigate else 'is not'} investigatable\n"
+                f"- 🛡️ **Night Immunity:** The Godfather {'is' if gf_night_immune else 'is not'} night immune, and the Serial Killer {'is' if sk_night_immune else 'is not'} night immune\n"
+            )
 
         # 5. Stitch them together
         logger.info("Dynamic rules generated successfully.")
@@ -87,9 +93,9 @@ def game_type_rules(self, game_type):
         logger.info(f"Generating rules for game type: {game_type}")
         if game_type == "battle_royale":
             return (
-                "11. **Objective:** Be the last player alive!\n"
-                "12. **Night Phase:** Each night, you will either have a kill action or a block action. "
-                "13. There are no teams in Battle Royale; everyone is out for themselves!"
+                "- **Objective:** Be the last player alive!\n"
+                "- **Night Phase:** Each night, you will either have a kill action or a block action. "
+                "- **Teams:** There are no teams in Battle Royale; everyone is out for themselves!"
             )
         else:
             return (
