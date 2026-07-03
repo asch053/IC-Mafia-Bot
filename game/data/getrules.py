@@ -72,8 +72,8 @@ def get_dynamic_rules(self, game_settings):
             f"3. 🔪 **Serial Killer:** Spawns at {sk_min}+ Players\n"
             f"4. 🛡️ **Town Roles:** Spawn at {town_cop_req} for Cop, {town_doctor_req} for Doctor, and {town_rb__req} for Roleblocker\n"
             f"5. 🕴️ **Mafia Roles:** Goons, and spawn a Roleblocker with {mafia_req} mafia members\n"
-            f"6. 🕵️‍♂️ **Investigations:** Godfather Investigates: {'Yes' if gf_investigate else 'No'}, Serial Killer Investigates: {'Yes' if sk_investigate else 'No'}\n"
-            f"7. 🛡️ **Night Immunity:** Godfather Night Immune: {'Yes' if gf_night_immune else 'No'}, Serial Killer Night Immune: {'Yes' if sk_night_immune else 'No'}\n"
+            f"6. 🕵️‍♂️ **Investigations:** The Godfather {'is' if gf_investigate else 'is not'} investigatable, and the Serial Killer {'is' if sk_investigate else 'is not'} investigatable\n"
+            f"7. 🛡️ **Night Immunity:** The Godfather {'is' if gf_night_immune else 'is not'} night immune, and the Serial Killer {'is' if sk_night_immune else 'is not'} night immune\n"
         )
 
         # 5. Stitch them together
