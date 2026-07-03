@@ -9,4 +9,4 @@
 8. **Inactivity:** Players who are miss a vote will be killed off as inactive.
 9. **Role Actions:** Some roles have special actions that can be performed during the Night phase. These actions are communicated to the bot via DM.
 10. **Winning:** The game ends when one faction achieves its win condition.
-
+11. **Deadlines:** Phase deadlines are as stated at the start of each phase. No late actions (including votes) will be processed if submitted after the deadline.

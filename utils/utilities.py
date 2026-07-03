@@ -132,6 +132,22 @@ async def send_chunked_message(bot, channel, message: str, chunk_size: int = 190
     for i in range(0, len(message), chunk_size):
         await channel.send(message[i:i+chunk_size])
 
+def add_chunked_field(embed, name, text, chunk_size=1000):
+        """
+        Helper: Splits long text into multiple fields to avoid Discord API errors.
+        """
+        if not text:
+            logger.warning(f"No text provided for embed field '{name}'. Skipping.")
+            return
+        # Split content into a list of strings
+        logger.info(f"Adding chunked field '{name}' to embed. Total length: {len(text)} characters.")
+        chunks = [text[i:i + chunk_size] for i in range(0, len(text), chunk_size)]
+        for i, chunk in enumerate(chunks):
+            # If there's only one chunk, just use the name; otherwise, add (Part X)
+            field_name = name if len(chunks) == 1 else f"{name} (Part {i + 1})"
+            embed.add_field(name=field_name, value=chunk, inline=False)
+            logger.info(f"Added field '{field_name}' with {len(chunk)} characters to embed.")
+
 async def send_role_dm(bot, player, role, guild):
     """Sends role information via DM."""
     try:

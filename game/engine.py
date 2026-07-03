@@ -36,6 +36,8 @@ from game.roles import GameRole, get_role_instance
 from game.player import Player # Import the Player class
 from game import setup_generator # Import the setup_generator function
 from game.statistics.fame import FameCog # Import the function to update champion roles at the end of the game
+from game.data.getrules import build_rules_embed # Import the function to build the rules embed
+
 
 
 # Get the same logger instance as in mafiabot.py
@@ -200,35 +202,11 @@ class Game:
         
         # 4. Create a different message for the rules and roles channel, including the standard rules text
         # 4.1 Get the rules text from the loaded data and append additional details based on the game type and settings
-        logger.debug("Preparing rules text for the rules and roles channel.")
-        rules = self.rules_text
-        # Add objective on win condition based on game type
-        if self.game_settings["game_type"] == "battle_royale":
-            rules += "11. **Objective:** Be the last player alive!"
-            rules += "\n12. **Night Phase:** Each night, with night have either a kill action or a block action. There are no teams in Battle Royale; everyone is out for themselves!"
-        else:
-            rules += "11. **Objective:** The Town must eliminate all Mafia members and the Serial Killer. The Mafia must outnumber the Town. The Serial Killer must be the last player standing."
-            rules += "\n12. **Night Phase:** Mafia members choose a player to kill. The Serial Killer also chooses a player to kill. Some Town roles may have night actions."
-        # add in details on if SK or GF are investigation immune
-        if not gf_investigate:
-            rules += "\n**Note:** The Godfather is *immune* to investigations."
-        else:
-            rules += "\n**Note:** The Godfather can be investigated normally."
-        if not sk_investigate:
-            rules += "\n**Note:** The Serial Killer is *immune* to investigations."
-        else:
-            rules += "\n**Note:** The Serial Killer can be investigated normally."
-        # Add details on SK and GF night death immunity
-        if self.game_settings["gf_night_immune"]:
-            rules += "\n**Note:** The Godfather is *immune* to night kills."
-        else:
-            rules += "\n**Note:** The Godfather can be killed at night."
-        if self.game_settings["sk_night_immune"]:
-            rules += "\n**Note:** The Serial Killer is *immune* to night kills."
-        else:
-            rules += "\n**Note:** The Serial Killer can be killed at night."
+        logger.info("Preparing rules text for the rules and roles channel.")
+        embed = build_rules_embed(self, game=self) # Build the rules embed using the current game instance
+        
         # 4.2 Send the rules to the rules channel
-        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n{rules}\n")
+        await self.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID).send(f" ## New Game ##\n--------------------------\n**Game Starting Soon!**\n\n", embed=embed)
         logger.debug("Sign-up phase announcement sent to all channels.")
         
         # 5. Start the sign-up monitoring loop
