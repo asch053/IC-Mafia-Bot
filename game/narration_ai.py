@@ -374,8 +374,9 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             # Block event (Classic)
             elif etype == 'block':
                 target = e.get('target')
+                role_name = target.role.name if target.role else "Unknown"
                 if target:
-                    event_lines.append(f"CRITICAL EVENT: {target.role_name} was BLOCKED by a shadowy figure and could not perform their action.")  
+                    event_lines.append(f"CRITICAL EVENT: {role_name} was BLOCKED by a shadowy figure and could not perform their action.")  
             # Block event (Battle Royale)
             elif etype == 'block_battle_royale':
                 target = e.get('target')
