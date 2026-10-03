@@ -1,153 +1,87 @@
-# Cogs/admin.py
 import discord
-import config
-from discord import app_commands
+import logging  
 from discord.ext import commands
-import logging
-import config
+from discord import app_commands
 
-# Import the custom decorator for checking admin permissions
-from utils.admincheck import is_admin 
-# Import the Player class for type checking during re-initialization
-from game.player import Player 
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
-# Get the logger instance from the main bot file
-logger = logging.getLogger('discord')
+import utils.admincheck as is_admin  # Import the admin check decorator
 
-class AdminCog(commands.Cog, name="AdminCog"):
+import cogs.admincogs.getgameinstance as getgameinstance
+import cogs.admincogs.setgameinstance as setgameinstance
+import cogs.admincogs.startgame as start_game_command
+import cogs.admincogs.stopgame as stop_game_command
+
+
+class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bot administration and management."):
     """
     This cog contains all slash commands that are intended for administrator use only.
     It handles functionality like stopping and force-starting games, and provides
     debugging tools like re-initializing the player list.
     """
-
-    def __init__(self, bot: commands.Bot):
-        """Initializes the AdminCog, keeping a reference to the bot."""
+    def __init__(self, bot):
         self.bot = bot
 
-    def get_game_instance(self):
-        """
-        A helper method to safely retrieve the active game instance from the GameCog.
-        Returns the Game object if a game is running, otherwise returns None.
-        """
-        # Access the 'GameCog' instance that has been loaded into the bot
-        game_cog = self.bot.get_cog('GameCog')
-        # Return the 'game' attribute from the cog, which holds the game state
-        return game_cog.game if game_cog else None
+    # --- Admin Commands --- #
+    # Admin only functions for starting a new game. Accepts options for game type, phase duration, start time, narration type, and role investigation settings.
+    # Provides set options for game type, narration type, and investigation choices to ensure valid input. Validates start time to be in the future and acknowledges the command while preparing the game announcement.
+    # Then calls the start game function from the admincogs module with the provided parameters. Logs all actions for observability and debugging.
+    @app_commands.command(name="mafiastart", description="Schedules a new game")
+    @app_commands.describe(
+        game_type="The type of Mafia game to start (e.g., Classic, Battle Royale).",
+        phase_hours="The duration of each day/night phase in hours.",
+        start_datetime="The start time in 'YYYY-MM-DD HH:MM' format (UTC).",
+        narration_type="The type of narration for the game.",
+        gf_investigate_choice="Whether the Godfather is able to be investigated (yes/no).",
+        sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no).",
+        mafia_ratio="Percentage of players that should be Mafia (e.g., 0.25)",
+        town_rb_req="Number of players before adding Roleblockers (e.g. set at 10 to need 10 players before adding Town Roleblockers)",
+        town_cop_req="Number of players before adding a Cop (e.g. set at 6 to require at least 6 players before adding a Cop)",
+        town_doctor_req="Number of players before adding a Doctor (e.g. set at 7 to require at least 7 players before adding a Doctor)",
+        mafia_rb_req="Number of Mafia players before adding Roleblockers (e.g. set at 4 to need 4 Mafia players before adding Mafia Roleblockers)",
+        sk_player_count="Minimum number of players required for the Serial Killer role (e.g., set at 9 to require 9 players before adding the Serial Killer)"    
+    )
+    @app_commands.choices(game_type=[
+        app_commands.Choice(name="Classic", value="classic"),
+        app_commands.Choice(name="Battle Royale", value="battle_royale")
+    ])
+    @app_commands.choices(narration_type=[
+    # options for AI narration types - can be expanded in the future to include more styles/themes. Add Classic Mafia, High Fantasy, Cyberpunk, Comedy, and lovecraftian horror.
+        app_commands.Choice(name="No Story", value="No Story"),
+        app_commands.Choice(name="Classic Mafia", value="Classic Mafia"),
+        app_commands.Choice(name="High Fantasy", value="High Fantasy"),
+        app_commands.Choice(name="Cyberpunk", value="Cyberpunk"),
+        app_commands.Choice(name="Comedy", value="Comedy"),
+        app_commands.Choice(name="Lovecraftian Horror", value="Lovecraftian Horror")
+    ])
+    @app_commands.choices(gf_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
+    @app_commands.choices(sk_investigate_choice=[
+        app_commands.Choice(name="Yes", value="yes"),
+        app_commands.Choice(name="No", value="no")
+    ])
+    @is_admin() # Decorator: This command can only be used by admins.
+    async def mafiastart(
+        self, interaction: discord.Interaction, 
+        game_type: str, phase_hours: float, start_datetime: str, narration_type: str = "Classic Mafia",
+        gf_investigate_choice: str = "No", sk_investigate_choice: str = "No",
+        mafia_ratio: float = 0.25, town_rb_req: int = 10, mafia_rb_req: int = 4, sk_player_count: int = 9, town_cop_req: int = 6, town_doctor_req: int = 7
+    ):
+        """Schedules a new game with the specified parameters."""
+        logger.critical(f"Admin command invoked: /mafiastart by {interaction.user.name}")
+        await start_game_command.start_game_command(
+            self, interaction, game_type, phase_hours, start_datetime, narration_type,
+            gf_investigate_choice, sk_investigate_choice, mafia_ratio, town_rb_req,
+            mafia_rb_req, sk_player_count, town_cop_req, town_doctor_req
+        )
 
-    def set_game_instance(self, new_instance):
-        """
-        A helper method to safely update the game instance in the GameCog.
-        This is primarily used to set the game to None when it's stopped,
-        effectively cleaning up the game state.
-        """
-        game_cog = self.bot.get_cog('GameCog')
-        if game_cog:
-            game_cog.game = new_instance
-            return True
-        return False
-
-    # --- Admin Slash Commands ---
-
-    @app_commands.command(name="mafiastop", description="[Admin] Forcibly stops and resets the current game.")
-    @is_admin() # Decorator: This command can only be used by users with the admin role.
-    async def stop_game_command(self, interaction: discord.Interaction):
+    # Admin command to stop a current game. This command checks if a game is running and stops it, cleaning up resources and notifying players. It logs the action for observability.
+    @app_commands.command(name="mafiastop", description="[Admin] Stops the current game")
+    @is_admin() # Decorator: This command can only be used by admins.
+    async def mafiastop(self, interaction: discord.Interaction):
         """Command to forcefully terminate and reset the current game."""
-        logger.info(f"'/mafiastop' command invoked by {interaction.user.name}.")
-        # Retrieve the current game instance
-        game = self.get_game_instance()
-        if game is None:
-            # Inform the admin if no game is active to stop
-            await interaction.response.send_message("No game is currently running.", ephemeral=True)
-            return
-        # Acknowledge the command publicly before performing the cleanup
-        await interaction.response.send_message("🚨 **Game is being stopped by an administrator...**")
-        # Call the game engine's reset method to handle role cleanup and task cancellation
-        await game.reset()
-        # Nullify the game instance in the GameCog to allow a new game to start
-        self.set_game_instance(None) 
-        # Confirm to the channel that the game has been stopped
-        await interaction.channel.send("**Game has been stopped and reset.**")
-        logger.warning(f"Game was forcibly stopped by admin: {interaction.user.name}.")
-    
-    @app_commands.command(name="forcestart", description="[Admin] Ends sign-ups and starts the game immediately.")
-    @is_admin() # Decorator: Ensures only admins can use this command.
-    async def force_start_command(self, interaction: discord.Interaction):
-        """Command to bypass the signup timer and start the game on the next loop."""
-        logger.info(f"'/forcestart' command invoked by {interaction.user.name}.")
-        game = self.get_game_instance()
-        if game is None:
-            await interaction.response.send_message("No game is currently running to force start.", ephemeral=True)
-            return
-        # Check if a game exists and is in the correct phase for this command
-        if game and game.game_settings["current_phase"] == "signup":
-            # Call the engine's method to set the force start flag
-            await game.force_start(interaction)
-        else:
-            await interaction.response.send_message("No game is in the sign-up phase to force start.", ephemeral=True)
-
-    @app_commands.command(name="mafiareinit", description="[Admin] Debug tool to refresh the player list from Discord roles.")
-    @is_admin() # Decorator: Ensures only admins can use this command.
-    async def reinitialize_players(self, interaction: discord.Interaction):
-        """
-        A powerful debug command to rebuild the game's internal player list
-        based on which server members have the 'Living' or 'Dead' roles.
-        This can help recover from a bot crash or other state-desync issues.
-        """
-        logger.info(f"'/mafiareinit' command invoked by {interaction.user.name}.")
-        game = self.get_game_instance()
-        if game is None:
-            await interaction.response.send_message("No game is running to re-initialize.", ephemeral=True)
-            return
-        if not interaction.guild:
-            await interaction.response.send_message("This command must be used in a server.", ephemeral=True)
-            return
-        # Get the role objects from the config env variables to identify which members are players
-        living_role = interaction.guild.get_role(config.LIVING_ROLE_ID)
-        dead_role = interaction.guild.get_role(config.DEAD_ROLE_ID)
-        # Check if both roles were found
-        try:
-            if not living_role or not dead_role:
-                    await interaction.response.send_message("Error: 'Living' or 'Dead' roles not found.", ephemeral=True)
-                    return
-        except Exception as e:
-            logger.error(f"Error occurred while fetching roles: {e}")
-            await interaction.response.send_message("An error occurred while fetching roles.", ephemeral=True)
-            return
-        # Log the start of the re-initialization process
-        logger.info("Rebuilding internal player list from server roles...")
-        # Create a new, empty dictionary for the updated player list
-        new_players = {}
-        # Iterate through every member in the server to find players
-        for member in interaction.guild.members:
-            # If the member has either the living or dead role, they are part of the game
-            if living_role in member.roles or dead_role in member.roles:
-                # Get their old player data to preserve their assigned role and death info
-                old_player = game.players.get(member.id)
-                new_player = Player(user_id=member.id, discord_name=member.name, display_name=member.display_name)
-                # Set their alive status based on which role they have
-                new_player.is_alive = living_role in member.roles
-                # If we have their old data, copy it over to the new object
-                if old_player:
-                    new_player.role = old_player.role
-                    new_player.death_info = old_player.death_info
-                # Add the newly created/updated player object to our list
-                new_players[member.id] = new_player
-        # Overwrite the game's player list with our newly constructed one
-        game.players = new_players
-        await interaction.response.send_message(f"Player list re-initialized. Found {len(new_players)} players.", ephemeral=True)
-        logger.warning(f"Player list was manually re-initialized by admin: {interaction.user.name}.")
-
-    @app_commands.command(name="forcephaseend", description="[Admin] Forcibly end the current game phase.")
-    @is_admin()  # Ensure only admins can use this command
-    async def force_phase_end(self, interaction: discord.Interaction):
-        game = self.get_game_instance()
-        if game:
-            await game.force_end_phase(interaction)
-        else:
-            await interaction.response.send_message("No game is currently active.", ephemeral=True)
-
-async def setup(bot):
-    """The setup function required by discord.py to load the cog."""
-    await bot.add_cog(AdminCog(bot))
-
+        logger.critical(f"Admin command invoked: /mafiastop by {interaction.user.name}")
+        await stop_game_command.stop_game_command(self, interaction)

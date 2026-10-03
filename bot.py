@@ -1,133 +1,37 @@
+import logging
 import discord
 import asyncio
-import logging
-import logging.handlers
-import logging
-import os
-
-try:
-    import config
-# If it fails (like in GitHub Actions), import the template instead.
-except ImportError:
-    import config_template as config
-
-from datetime import datetime, timedelta, timezone
 from discord.ext import commands
+import config
+import setup.loggersetup as loggersetup
+import setup.cogsetup as cogsetup
+import setup.startbot as startbot
 
-# Version without smart narration
-
-# --- 1. Logging Setup ---
-def setup_logging():
-    """Configures logging into a date-stamped folder with separate files."""
-    # 1. Define the formatter
-    # Using a more detailed formatter for better debug info
-    formatter = logging.Formatter(
-        '[{asctime}] [{levelname:<8}] {name} - {funcName}:{lineno}: {message}',
-        datefmt='%Y-%m-%d %H:%M:%S',
-        style='{'
-    )
-    # 2. Get the main logger and set its level to the lowest (DEBUG)
-    # This allows it to pass all messages to the handlers, which will do their own filtering.
-    logger = logging.getLogger('discord')
-    logger.setLevel(logging.DEBUG)
-    # 3. Create the date-stamped directory (e.g., logs/2025-07-15/)
-    # Using a fixed timezone as per your old code
-    now = datetime.now(timezone(timedelta(hours=12)))
-    log_dir = os.path.join("logs", now.strftime('%Y-%m-%d'))
-    os.makedirs(log_dir, exist_ok=True)
-    # 4. Create handler for ALL messages (debug.log)
-    debug_handler = logging.handlers.RotatingFileHandler(
-        filename=os.path.join(log_dir, f'{now.strftime("%Y-%m-%d")}_debug.log'),
-        maxBytes=10*1024*1024,  # 10 MB
-        backupCount=5,
-        encoding='utf-8'
-    )
-    debug_handler.setFormatter(formatter)
-    debug_handler.setLevel(logging.DEBUG) # This handler accepts everything.
-    # 5. Create handler for INFO and up (error.log, as per your old naming)
-    info_handler = logging.handlers.RotatingFileHandler(
-        filename=os.path.join(log_dir, f'{now.strftime("%Y-%m-%d")}_error.log'),
-        maxBytes=10*1024*1024,  # 10 MB
-        backupCount=5,
-        encoding='utf-8'
-    )
-    info_handler.setFormatter(formatter)
-    info_handler.setLevel(logging.INFO) # This handler only accepts INFO, WARNING, ERROR, etc.
-    # 6. Create console handler for INFO and up
-    console_handler = logging.StreamHandler()
-    console_handler.setFormatter(formatter)
-    console_handler.setLevel(logging.ERROR)
-    # 7. Add all handlers to the main logger
-    logger.addHandler(debug_handler)
-    logger.addHandler(info_handler)
-    logger.addHandler(console_handler)
-    return logger
-# This line at the bottom of the setup section remains the same
-logger = setup_logging()
+# --- 1. Setup logging ---
+loggersetup.setup_logging()
+logger = logging.getLogger(__name__)
+logger.critical("Logging is set up and ready to go.")
 
 # --- 2. Bot Intents and Initialization ---
-# REMOVED: The first, redundant bot and intents definition is gone.
-logger.info("Defining intents and creating bot instance...")
+logger.critical("Defining intents and creating bot instance...")
 intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
-
 bot = commands.Bot(command_prefix=config.BOT_PREFIX, intents=intents, owner_id=config.OWNER_ID)
+logger.critical("Bot instance created.")
 
-
-# --- 3. List of Cogs to Load ---
-# This list is now correct with commas.
-initial_extensions = [
-    'cogs.game',
-    'cogs.admin',
-    'cogs.info',
-    'cogs.stats',
-    'cogs.export',
-    'cogs.community',
-    'game.statistics.fame'
-]
-
-# --- 4. Setup Hook (The ONLY place for loading cogs) ---
+# --- 3. Load Cogs ---
 @bot.event
-async def setup_hook():
-    logger.info("Running setup hook...")
-    # Load all cogs
-    for extension in initial_extensions:
-        try:
-            await bot.load_extension(extension)
-            logger.critical(f"Successfully loaded extension: {extension}")
-        except Exception as e:
-            logger.error(f"Failed to load extension {extension}.", exc_info=True)
-    # In your setup_hook function for the BETA BOT
-    try:
-        # This syncs commands globally to all servers and DMs
-        synced = await bot.tree.sync()
-        logger.critical(f"Synced {len(synced)} global slash command(s).")
-    except Exception as e:
-        logger.error("Failed to sync global slash commands.", exc_info=True)
+async def setuphook():
+    logger.critical(f"Bot is ready. Logged in as {bot.user} (ID: {bot.user.id})")
+    await cogsetup.load_cogs(bot)
+    logger.critical("All cogs loaded and commands synced.")
 
-
-# --- 5. on_ready Event (Simplified) ---
+# --- 4. Run the Bot ---
 @bot.event
 async def on_ready():
-    logger.critical(f"Logged in as {bot.user.name} (ID: {bot.user.id})")
-    # REMOVED: All cog loading logic is gone from here. It's not needed.
+    logger.critical(f"Bot is ready. Logged in as {bot.user} (ID: {bot.user.id})")
+    logger.critical("Bot is now running.")
 
-
-# --- 6. Main Entry Point ---
-async def main():
-    print(f"DEBUG: The token loaded is -> '{config.BOT_TOKEN}'")
-    try:
-        async with bot:
-            await bot.start(config.BOT_TOKEN)
-    finally:
-        if not bot.is_closed():
-            logger.critical("Shutting down the bot...")
-            await bot.close()
-            logger.info("Bot has been shut down.")
-
-if __name__ == "__main__":
-    try:
-        asyncio.run(main())
-    except KeyboardInterrupt:
-        logger.critical("Shutdown requested by user.")
+# --- 5. Start the Bot ---
+asyncio.run(startbot.main(bot))

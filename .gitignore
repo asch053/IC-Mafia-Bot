@@ -34,12 +34,12 @@ __pycache__/
 # --- Output Folders & Files ---
 
 folder_structure.txt
-/Mafia History Project/output
+/other projects/Mafia History Project/output
 *.csv
-/Mafia History Project/output
-Mafia History Project/output/new_discord_history.jsonl
+/other projects/Mafia History Project/output
+/other projects/Mafia History Project/output/new_discord_history.jsonl
 
-/Simulations
+/other projects/Simulations
 
 data/ic-mafia-bot-41a41f61e757.json
 20260421-220000_ai_prompts.json
