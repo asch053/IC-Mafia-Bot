@@ -143,63 +143,73 @@ def _generate_mechanical_summary(events: list) -> str:
     kill_data = {}
     heal_counts = {}
     for event in events:
-        etype = event['type']
-        if etype in ['kill_battle_royale']:
+        etype = event.get('type')
+        if etype in ['kill_battle_royale', 'kill', 'kill_royale', 'vigilante_kill']:
             v = event.get('victim')
+            killers_list = event.get('killers')
             killer = event.get('killer') or event.get('actor') or event.get('attacker')
-            if killer:
-                killer_name = getattr(killer, 'display_name', str(killer))
-            else:
-                killer_name = "Unknown"
 
             if v:
-                if v.display_name not in kill_data:
-                    kill_data[v.display_name] = []
-                kill_data[v.display_name].append(killer_name)
-        elif etype == 'kill_healed':
+                v_name = getattr(v, 'display_name', str(v))
+                if v_name not in kill_data:
+                    kill_data[v_name] = []
+                if killers_list:
+                    for k in killers_list:
+                        k_name = getattr(k, 'display_name', str(k))
+                        if k_name not in kill_data[v_name]:
+                            kill_data[v_name].append(k_name)
+                elif killer:
+                    k_name = getattr(killer, 'display_name', str(killer))
+                    if k_name not in kill_data[v_name]:
+                        kill_data[v_name].append(k_name)
+        elif etype in ['kill_healed', 'save', 'save_battle_royale']:
             v = event.get('target') or event.get('victim')
-            if v: heal_counts[v.display_name] = heal_counts.get(v.display_name, 0) + 1
-        elif etype == 'save_battle_royale':
-            v = event.get('target') or event.get('victim')
-            if v: heal_counts[v.display_name] = heal_counts.get(v.display_name, 0) + 1
+            if v:
+                v_name = getattr(v, 'display_name', str(v))
+                heal_counts[v_name] = heal_counts.get(v_name, 0) + 1
     
     processed_kills = set()
     
-    
     for event in events:
-        etype = event['type']
+        etype = event.get('type')
         
         # --- Lynches ---
         if etype == 'lynch':
             for v in event.get('victims', []):
-                role_name = v.role.name if v.role else "Unknown"
+                role_name = v.role.name if getattr(v, 'role', None) else "Unknown"
                 lines.append(f"- 💀 **{v.display_name}** was lynched. They were **{role_name}**.")
                 
         # --- Kills ---
         elif etype in ['kill', 'kill_battle_royale']:
-            # Note: We updated actions.py to use 'victim' instead of 'target' for kills!
             victim = event.get('victim')
             if victim and victim.display_name not in processed_kills:
                 processed_kills.add(victim.display_name)
-                role_name = victim.role.name if victim.role else "Unknown"
+                role_name = victim.role.name if getattr(victim, 'role', None) else "Unknown"
                 killers_data = kill_data.get(victim.display_name, [])
                 count = len(killers_data)
-            killer = event.get('killer') 
-            killer_role = killer.role.name if killer and hasattr(killer, 'role') and killer.role else "Unknown"
-            killer_name = killer.display_name if killer and hasattr(killer, 'display_name') else "Unknown"
-            victum_name = victim.display_name if victim.role else "Unknown"
-            if etype == 'kill':
-                lines.append(f"- 🔪 **{victum_name}** was killed in the night by {killer_role}. They were the **{role_name}**.")
-            elif etype == 'kill_battle_royale':
-                known_killers = [k for k in killers_data if k != "Unknown"]
-                killers_str = ", ".join(known_killers) if known_killers else "Unknown"
-                if count > 1:
-                    count_str = f"attacked {count} times! Killers: {killers_str}"
-                else:
-                    count_str = f"killed by: {killers_str}"
-                lines.append(f"- 🔪 **{victim.display_name}** was brutally eliminated in the night. They were {count_str}.")  
-            else:
-                lines.append(f"- 🔪 **{victim.display_name}** was killed in the night.")
+                killer = event.get('killer') 
+                killer_role = killer.role.name if killer and hasattr(killer, 'role') and killer.role else "Unknown"
+                victim_name = victim.display_name
+                if etype == 'kill':
+                    if count > 1:
+                        lines.append(f"- 🔪 **{victim_name}** was killed in the night, attacked {count} times! They were the **{role_name}**.")
+                    else:
+                        lines.append(f"- 🔪 **{victim_name}** was killed in the night by {killer_role}. They were the **{role_name}**.")
+                elif etype == 'kill_battle_royale':
+                    known_killers = [k for k in killers_data if k != "Unknown"]
+                    if len(known_killers) == 1:
+                        killers_str = known_killers[0]
+                    elif len(known_killers) == 2:
+                        killers_str = f"{known_killers[0]} and {known_killers[1]}"
+                    elif len(known_killers) > 2:
+                        killers_str = ", ".join(known_killers[:-1]) + f", and {known_killers[-1]}"
+                    else:
+                        killers_str = "Unknown"
+                    if count > 1:
+                        count_str = f"attacked {count} times! Killers: {killers_str}"
+                    else:
+                        count_str = f"killed by: {killers_str}"
+                    lines.append(f"- 🔪 **{victim.display_name}** was brutally eliminated in the night. They were {count_str}.")
         # --- Mod/Admin Interventions ---
         elif etype == 'inactivity_kill':
             for v in event.get('victims', []):
@@ -232,7 +242,7 @@ def _generate_mechanical_summary(events: list) -> str:
             if victim:
                 role_name = victim.role.name if victim.role else "Unknown"
                 if etype == 'save':
-                    lines.append(f"- ❤️ **{victim.display_name}** was saved by a the {healer_role}.") 
+                    lines.append(f"- ❤️ **{victim.display_name}** was saved from a deadly attack.") 
                 elif etype == 'save_battle_royale':
                     lines.append(f"- ❤️ **{victim.display_name}** was saved from a deadly attack by {healer_name}.")
                 else: 
@@ -242,7 +252,7 @@ def _generate_mechanical_summary(events: list) -> str:
             victim = event.get('victim')
             logger.info(f"Generating immune kill event story part for victim: {victim}")
             if not victim: return None
-            lines.append(f"An assailant ambushed **{victim.role.name}** in the dark, but their target was unfazed. The attack had no effect!")
+            lines.append(f"An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect!")
         elif etype == 'investigate':
             logger.info("Generating investigate event story part.")
             # lines.append("A lone figure was seen snooping around someone's house, trying to uncover secrets.")
@@ -281,58 +291,109 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     kill_data = {}
     heal_counts = {}
     for e in events:
-        etype = e['type']
-        if etype in ['kill', 'kill_royale', 'vigilante_kill']:
+        etype = e.get('type')
+        if etype in ['kill', 'kill_battle_royale', 'kill_royale', 'vigilante_kill']:
             v = e.get('victim')
+            killers_list = e.get('killers')
             killer = e.get('killer') or e.get('actor') or e.get('attacker')
-            if killer:
-                killer_name = getattr(killer, 'display_name', str(killer))
-            else:
-                killer_name = "Unknown"
 
             if v:
-                if v.display_name not in kill_data:
-                    kill_data[v.display_name] = []
-                kill_data[v.display_name].append(killer_name)
-        elif etype == 'kill_healed':
+                v_name = getattr(v, 'display_name', str(v))
+                if v_name not in kill_data:
+                    kill_data[v_name] = []
+                if killers_list:
+                    for k in killers_list:
+                        k_name = getattr(k, 'display_name', str(k))
+                        if k_name not in kill_data[v_name]:
+                            kill_data[v_name].append(k_name)
+                elif killer:
+                    k_name = getattr(killer, 'display_name', str(killer))
+                    if k_name not in kill_data[v_name]:
+                        kill_data[v_name].append(k_name)
+        elif etype in ['kill_healed', 'save', 'save_battle_royale']:
             v = e.get('target') or e.get('victim')
-            if v: heal_counts[v.display_name] = heal_counts.get(v.display_name, 0) + 1
-        elif etype == 'save_battle_royale':
-            v = e.get('target') or e.get('victim')
-            if v: heal_counts[v.display_name] = heal_counts.get(v.display_name, 0) + 1
+            if v:
+                v_name = getattr(v, 'display_name', str(v))
+                heal_counts[v_name] = heal_counts.get(v_name, 0) + 1
 
     
     # --- NEW: DYNAMIC MODE CONTEXT ---
     if "battle_royale" in game_mode or game_mode == "br":
-        mode_guide = """
+        if story_type == "Rom Com":
+            mode_guide = """
+*** CRITICAL GAME MODE: BATTLE ROYALE (ROM COM SPEED-DATING FREE-FOR-ALL) ***
+- A chaotic dating free-for-all where every single person is competing to be the last eligible bachelor/bachelorette standing!
+- STRICTLY NON-DEATH: No physical violence or murder. 'Kills' are dramatic breakups, cold ghostings, and public dumpings.
+- A 'lynch' represents the group intervening to dump the most toxic red-flag dater.
+- A 'night kill' represents a private date turning into an awkward disaster and instant breakup.
+"""
+            lynch_text = "The singles group voted to publicly DUMP"
+        elif story_type == "Office Restructuring":
+            mode_guide = """
+*** CRITICAL GAME MODE: BATTLE ROYALE (OFFICE DOWNSIZING CUTTHROAT WAR) ***
+- A high-stakes corporate cutthroat war where only ONE employee gets to keep their job and annual bonus!
+- STRICTLY NON-DEATH: No physical violence. 'Kills' are termination pink slips, layoffs, and HR escorts.
+- A 'lynch' represents an emergency performance review where the team votes to terminate a competitor.
+- A 'night kill' represents covert corporate sabotage or sudden executive firing.
+"""
+            lynch_text = "The committee voted to TERMINATE"
+        else:
+            mode_guide = """
 *** CRITICAL GAME MODE: BATTLE ROYALE (FREE-FOR-ALL) ***
 - This is a brutal, last-man-standing deathmatch. There is no 'Town' and no 'Mafia'.
 - Every single player is armed (e.g., holding a knife, a makeshift weapon, etc.).
 - Trust does not exist. Everyone is a killer. 
 - A 'lynch' represents the group temporarily forming a desperate, violent pact to eliminate the biggest perceived threat during the day.
 - A 'night kill' represents a brutal, solitary ambush or duel in the dark.
-- Make each death unique, ephasizing the chaos, and violence of a world where everyone is out to get everyone else killed.
+- Make each death unique, emphasizing the chaos, and violence of a world where everyone is out to get everyone else killed.
 """
-        lynch_text = "The remaining survivors turned on and slaughtered"
+            lynch_text = "The remaining survivors turned on and slaughtered"
     else:
-        mode_guide = """
+        if story_type == "Rom Com":
+            mode_guide = """
+*** CRITICAL GAME MODE: CLASSIC ROM COM (SFW ROMANTIC COMEDY) ***
+- A witty, fast-paced romantic comedy. Genuine Hopeful Singles (Town) vs Toxic Serial Heartbreakers (Mafia) and a Commitment-Phobe (Serial Killer).
+- STRICTLY NON-DEATH: Absolutely NO killing, blood, gore, or corpses. Eliminations are heartbreaks: dumped, ghosted, or friend-zoned!
+- A 'lynch' is an emergency brunch intervention where the group agrees to dump someone.
+- A 'night kill' is a cold breakup or ghosting text.
+"""
+            lynch_text = "The group voted to publicly DUMP"
+        elif story_type == "Office Restructuring":
+            mode_guide = """
+*** CRITICAL GAME MODE: CLASSIC CORPORATE RESTRUCTURING (OFFICE SATIRE) ***
+- An office comedy and corporate downsizing drama. Hardworking Employees (Town) vs Ruthless Restructuring Consultants (Mafia) and a Rogue Headhunter (Serial Killer).
+- STRICTLY NON-DEATH: Absolutely NO physical violence or killing. Eliminations are corporate layoffs, pink slips, and resignations!
+- A 'lynch' is a tense all-hands performance vote to make someone redundant.
+- A 'night kill' is an after-hours pink slip or HR escort from the premises.
+"""
+            lynch_text = "The company voted to LAY OFF"
+        else:
+            mode_guide = """
 *** CRITICAL GAME MODE: CLASSIC MAFIA ***
 - This is a game of deception and hidden identities. An innocent, uninformed majority (Town) vs a hidden, informed minority (Mafia/Cult).
 - Emphasize the fear of the unknown, the tragedy of innocent people turning on each other, and the shadows hiding the true killers.
 - A 'lynch' is a frantic, democratic execution by the frightened crowd.
 - Make each death unique, but fit into the wider story based on previous chapters. 
-- There are up to three seperate factions (Town, Mafia, Serial Killer) with different motivations and goals. Use the events and history to understand the current state of the game and narrate accordingly.
-- The mafia faction want to take over the town and will kill anyone in their way. The town faction want to protect the town and will lynch anyone they suspect of being mafia. The serial killer wants it all to end and is trying to kill everyone,town and mafia alike, so they are the sole survivor.
-- Give each faction a unique voice and style in the narration based on the theme
+- There are up to three separate factions (Town, Mafia, Serial Killer) with different motivations and goals.
 """
-        lynch_text = "The town voted to LYNCH"
+            lynch_text = "The town voted to LYNCH"
 
     # 1. Format Events Context - NOW MODE-AWARE
      # Handle dynamic "Uneventful Phase" text so it makes sense contextually
     if "night" in current_phase:
-        events_text = "NARRATIVE EVENT: The night passed completely uneventfully. Emphasize the town's restless sleep, paranoia, and waking up to find everyone perfectly safe."
+        if story_type == "Rom Com":
+            events_text = "NARRATIVE EVENT: The night passed with no breakups. Everyone had peaceful dates or restful sleep."
+        elif story_type == "Office Restructuring":
+            events_text = "NARRATIVE EVENT: The night shift was quiet. No termination notices or pink slips were issued."
+        else:
+            events_text = "NARRATIVE EVENT: The night passed completely uneventfully. Emphasize the town's restless sleep, paranoia, and waking up to find everyone perfectly safe."
     elif "day" in current_phase:
-        events_text = "NARRATIVE EVENT: The day passed with heated arguments but no consensus. The town failed to lynch anyone. Emphasize the rising tensions as the sun sets."
+        if story_type == "Rom Com":
+            events_text = "NARRATIVE EVENT: The group argued over dating habits but couldn't agree to dump anyone today."
+        elif story_type == "Office Restructuring":
+            events_text = "NARRATIVE EVENT: The all-hands meeting concluded with no layoffs or terminations today."
+        else:
+            events_text = "NARRATIVE EVENT: The day passed with heated arguments but no consensus. The town failed to lynch anyone. Emphasize the rising tensions as the sun sets."
     elif "preparation" in current_phase or "prologue" in current_phase or "introduction" in current_phase:
         events_text = "NARRATIVE EVENT: The game is just beginning. Focus purely on introductions and setting the scene."
     else:
@@ -346,11 +407,17 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             # Lynch event (Classic and Battle Royale)
             if etype == 'lynch':
                 for v in e.get('victims', []):
-                    role_name = v.role.name if v.role else "Unknown"
+                    role_disp = v.role.display_name if v.role and getattr(v.role, 'display_name', v.role.name) != v.role.name else (v.role.name if v.role else "Unknown")
+                    role_name = f"{role_disp} ({v.role.name})" if v.role and getattr(v.role, 'display_name', v.role.name) != v.role.name else role_disp
                     if game_mode == "battle_royale":
-                        event_lines.append(f"CRITICAL EVENT: {lynch_text} **{v.display_name}** as decided by the survivors.")
+                        event_lines.append(f"CRITICAL EVENT: {lynch_text} **{v.display_name}** as decided by the group.")
                     else:
-                        event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Upon searching their body, their true identity was revealed as {role_name}.")
+                        if story_type == "Rom Com":
+                            event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Their true dating role was {role_name}.")
+                        elif story_type == "Office Restructuring":
+                            event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Their corporate role was {role_name}.")
+                        else:
+                            event_lines.append(f"CRITICAL EVENT: {lynch_text} {v.display_name}. Upon searching their body, their true identity was revealed as {role_name}.")
             # Kill events (Classic)
             elif etype == 'kill':
                 victim = e.get('victim')
@@ -359,8 +426,14 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                     killers = kill_data.get(victim.display_name, [])
                     count = len(killers)    
                 if victim:
-                    role_name = victim.role.name if victim.role else "Unknown"
-                    event_lines.append(f"CRITICAL EVENT: {victim.display_name} was MURDERED in the night. Upon searching their body, their true identity was revealed as {role_name}.")
+                    role_disp = victim.role.display_name if victim.role and getattr(victim.role, 'display_name', victim.role.name) != victim.role.name else (victim.role.name if victim.role else "Unknown")
+                    role_name = f"{role_disp} ({victim.role.name})" if victim.role and getattr(victim.role, 'display_name', victim.role.name) != victim.role.name else role_disp
+                    if story_type == "Rom Com":
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was DUMPED / HEARTBROKEN in the night. Their true role was {role_name}.")
+                    elif story_type == "Office Restructuring":
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was TERMINATED / LAID OFF in the night. Their true corporate role was {role_name}.")
+                    else:
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was MURDERED in the night. Upon searching their body, their true identity was revealed as {role_name}.")
             # Inactivity kill events (Classic and Battle Royale) 
             elif etype == 'inactivity_kill':
                 for v in e.get('victims', []):
@@ -407,9 +480,16 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                     killers = kill_data.get(victim.display_name, [])
                     count = len(killers)
                     known_killers = [k for k in killers if k != "Unknown"]
-                    killers_str = ", ".join(known_killers) if known_killers else "Unknown"
+                    if len(known_killers) == 1:
+                        killers_str = known_killers[0]
+                    elif len(known_killers) == 2:
+                        killers_str = f"{known_killers[0]} and {known_killers[1]}"
+                    elif len(known_killers) > 2:
+                        killers_str = ", ".join(known_killers[:-1]) + f", and {known_killers[-1]}"
+                    else:
+                        killers_str = "Unknown"
                     if count > 1:
-                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was brutally KILLED in the night, suffering {count} separate lethal attacks by {killers_str}!")
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was brutally KILLED in the night, suffering {count} separate lethal attacks by {killers_str}! In your story, vividly describe how all {count} attackers ({killers_str}) targeted and overwhelmed {victim.display_name} together or in succession.")
                     else:
                         event_lines.append(f"CRITICAL EVENT: {victim.display_name} was brutally KILLED in the night. They were killed by {killers_str}.")
             # Kill immunity event (Classic and Battle Royale)
@@ -476,11 +556,26 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         narrative_directives += f"- Write this as the opening chapter of the story, introducing the main characters {living_players} and setting the scene for the conflict. This should be a gripping introduction that hooks the reader, providing just enough context to understand the stakes without revealing any outcomes yet. This should not include any specific events, but can reference the general situation and the relationships between characters. Do not mention players roles or specific actions, but you can use their names and hint at their personalities and motivations based on the theme."
     elif is_game_over:
         if winner == "Draw":
-            narrative_directives += "- Write this as a tragic conclusion to the story based on the Draw result. In a Draw, all players are dead, so the story should reflect on the senseless loss and the futility of the conflict. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
+            if story_type == "Rom Com":
+                narrative_directives += "- Write this as a comedic or bittersweet conclusion where nobody found love and everyone ended up single and heartbroken. Reflect on the chaotic dates, bad breakups, and missed romantic connections."
+            elif story_type == "Office Restructuring":
+                narrative_directives += "- Write this as a conclusion where corporate downsizing went too far and the entire office closed down. Everyone was laid off and the building is empty."
+            else:
+                narrative_directives += "- Write this as a tragic conclusion to the story based on the Draw result. In a Draw, all players are dead, so the story should reflect on the senseless loss and the futility of the conflict. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
         elif winner == "Mafia":
-            narrative_directives += f"- Write this as a tragic conclusion to the story based on the Mafia win result. Mafia win is always tragic, so the story should reflect on the darkness and corruption that has taken over, and the loss of innocent lives. Name all surviving players ({living_players}) and their fates, emphasizing the grim consequences of the Mafia's victory. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
+            if story_type == "Rom Com":
+                narrative_directives += f"- Write this as a conclusion where the Heartbreakers / Toxic Daters have taken over the dating scene, leaving broken hearts everywhere. Name all surviving players ({living_players}) and their fates."
+            elif story_type == "Office Restructuring":
+                narrative_directives += f"- Write this as a conclusion where Corporate Downsizing successfully purged the office. Name all surviving players ({living_players}) and their corporate fates."
+            else:
+                narrative_directives += f"- Write this as a tragic conclusion to the story based on the Mafia win result. Mafia win is always tragic, so the story should reflect on the darkness and corruption that has taken over, and the loss of innocent lives. Name all surviving players ({living_players}) and their fates, emphasizing the grim consequences of the Mafia's victory. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
         elif winner == "Town":
-            narrative_directives += f"- Write this as a triumphant conclusion to the story based on the Town win result. Town win is always triumphant, so the story should reflect on the heroism and resilience of the town, and the defeat of the Mafia. Name all surviving players ({living_players}) and their fates, emphasizing the positive outcomes of their efforts. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
+            if story_type == "Rom Com":
+                narrative_directives += f"- Write this as a triumphant, feel-good romantic comedy conclusion where the Hopeless Romantics defeated toxicity and found genuine love. Name all surviving players ({living_players}) and celebrate their romance."
+            elif story_type == "Office Restructuring":
+                narrative_directives += f"- Write this as a triumphant conclusion where the Honest Staff successfully banded together to protect their jobs and company culture. Name all surviving players ({living_players}) and their career triumphs."
+            else:
+                narrative_directives += f"- Write this as a triumphant conclusion to the story based on the Town win result. Town win is always triumphant, so the story should reflect on the heroism and resilience of the town, and the defeat of the Mafia. Name all surviving players ({living_players}) and their fates, emphasizing the positive outcomes of their efforts. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
         else: # battle royale winner or unknown winner
              narrative_directives += f"- Write this as a conclusion to the story based on the {winner} result. Focus on the fate of the winner {living_players} and the overall narrative arc, referencing key events and moments from the game."
     elif is_epilogue:
@@ -496,6 +591,36 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     3. NO OUTING: Never describe a named living player as being part of an aggressive act unless explicitly told."""
 
     # 4. Construct the Reasoning Rubric
+    if story_type == "Rom Com":
+        living_rubric = (
+            f"1. ACTIVE DATERS ONLY: {', '.join(living_players)}. \n"
+            f"   CRITICAL: If a player is NOT in this list, or was eliminated in previous chapters, they have been DUMPED, GHOSTED, or are NO LONGER ON THE DATING MARKET. "
+            f"STRICTLY NO MURDER, NO DEATH, NO CORPSES, NO BLOOD, NO PHYSICAL VIOLENCE. Eliminated players are nursing broken hearts or moving on, unable to participate."
+        )
+    elif story_type == "Office Restructuring":
+        living_rubric = (
+            f"1. CURRENT EMPLOYEES ONLY: {', '.join(living_players)}. \n"
+            f"   CRITICAL: If a player is NOT in this list, or was eliminated in previous chapters, they have been FIRED, LAID OFF, or MADE REDUNDANT. "
+            f"STRICTLY NO MURDER, NO DEATH, NO CORPSES, NO VIOLENCE. Former employees have surrendered their keycards, packed their cardboard boxes, and left the building."
+        )
+    elif story_type == "Explicit Kinky NSFW":
+        living_rubric = (
+            f"1. ACTIVE PARTICIPANTS (ALL R18 CONSENTING ADULTS): {', '.join(living_players)}. \n"
+            f"   CRITICAL: All characters are consenting adults (18+). If a player is NOT in this list, they have tapped out, reached their limit, or retired to the aftercare lounge."
+        )
+    else:
+        living_rubric = (
+            f"1. LIVING PLAYERS ONLY: {', '.join(living_players)}. \n"
+            f"   CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions."
+        )
+
+    elim_instruction = (
+        "Do not reveal exact roles unless a player was eliminated (e.g. dumped, ghosted) this phase. If a player was eliminated, you may reveal their role in the narration. REMEMBER: Strictly NO murder, death, corpses, or physical violence." if story_type == "Rom Com" else (
+            "Do not reveal exact roles unless a player was eliminated (e.g. fired, laid off) this phase. If a player was eliminated, you may reveal their role in the narration. REMEMBER: Strictly NO murder, death, corpses, or physical violence." if story_type == "Office Restructuring" else
+            "Do not reveal exact roles unless a player was killed this phase. If a player was killed, you may reveal their role in the narration."
+        )
+    )
+
     prompt = f"""You are an elite, highly creative Game Moderator (GM) running a text-based forum game of Mafia/Social Deduction. 
 Your job is to write the flavor text for the current phase. 
 
@@ -506,8 +631,7 @@ ATMOSPHERE: {atmosphere}
 CURRENT PHASE: {phase_name} {phase_num}
 
 --- REASONING RUBRIC (Internal Rules) ---
-1. LIVING PLAYERS ONLY: {", ".join(living_players)}. 
-   CRITICAL: If a player is NOT in this list, or died in previous chapters, they are a CORPSE. Corpses cannot speak, react, or perform actions.
+{living_rubric}
 {custom_rules}
 3. CHARACTER PERSONAS: If traits are listed below, weave them into dialogue and behavior naturally. Show, don't tell. Do not label them as 'quirks'.
 {quirks_block}
@@ -530,7 +654,7 @@ CURRENT PHASE: {phase_name} {phase_num}
 {narrative_directives}
 {writing_style}
 Do not reference chapter numbers or phase numbers in the story. Do not break the fourth wall or reference the game mechanics directly.
-Note: never use gendered pronouns, you can use non-gender pronouns such as "they" or "them". Refer to all players by their display names only. Do not reveal exact roles unless a player was killed this phase. If a player was killed, you may reveal their role in the narration. Always follow the mechanical events closely and narrate them in a way that fits the theme and style.
+Note: never use gendered pronouns, you can use non-gender pronouns such as "they" or "them". Refer to all players by their display names only. {elim_instruction} Always follow the mechanical events closely and narrate them in a way that fits the theme and style.
 
 Write the next chapter of the story now:
 """

@@ -23,7 +23,10 @@ async def start_game(
     mafia_rb_req: int = None,
     sk_player_count: int = None,
     town_cop_req: int = None,
-    town_doctor_req: int = None
+    town_doctor_req: int = None,
+    gf_night_immune: bool = True,
+    sk_night_immune: bool = True,
+    br_skip_day: bool = False
 ):
     """Announces the sign-up phase and starts the signup_loop."""
     logger.info("Starting the sign-up phase for the game.")
@@ -51,6 +54,9 @@ async def start_game(
     game.game_settings["phase_hours"] = phase_hours
     game.game_settings["gf_investigate"] = gf_investigate
     game.game_settings["sk_investigate"] = sk_investigate
+    game.game_settings["gf_night_immune"] = True if gf_night_immune is None else bool(gf_night_immune)
+    game.game_settings["sk_night_immune"] = True if sk_night_immune is None else bool(sk_night_immune)
+    game.game_settings["br_skip_day"] = bool(br_skip_day)
     game.game_settings["story_type"] = narration_type
     game.game_settings["mafia_ratio"] = mafia_ratio
     game.game_settings["town_rb_req"] = town_rb_req

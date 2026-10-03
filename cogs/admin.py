@@ -44,6 +44,9 @@ class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bo
         narration_type="The type of narration for the game.",
         gf_investigate_choice="Whether the Godfather is able to be investigated (yes/no).",
         sk_investigate_choice="Whether the Serial Killer is able to be investigated (yes/no).",
+        gf_night_immune_choice="Whether the Godfather has night kill immunity (yes/no). Defaults to Yes.",
+        sk_night_immune_choice="Whether the Serial Killer has night kill immunity (yes/no). Defaults to Yes.",
+        br_skip_day_choice="[Battle Royale] Whether to skip the day phase and run consecutive night phases only (yes/no). Defaults to No.",
         mafia_ratio="Percentage of players that should be Mafia (e.g., 0.25)",
         town_rb_req="Number of players before adding Roleblockers (e.g. set at 10 to need 10 players before adding Town Roleblockers)",
         town_cop_req="Number of players before adding a Cop (e.g. set at 6 to require at least 6 players before adding a Cop)",
@@ -58,6 +61,10 @@ class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bo
     @app_commands.choices(narration_type=[
         app_commands.Choice(name="No Story", value="No Story"),
         app_commands.Choice(name="Classic Mafia", value="Classic Mafia"),
+        app_commands.Choice(name="Horror (Slasher)", value="Horror"),
+        app_commands.Choice(name="Explicit Kinky NSFW (R18)", value="Explicit Kinky NSFW"),
+        app_commands.Choice(name="Rom Com (Non-death SFW)", value="Rom Com"),
+        app_commands.Choice(name="Office Restructuring (Non-death SFW)", value="Office Restructuring"),
         app_commands.Choice(name="High Fantasy", value="High Fantasy"),
         app_commands.Choice(name="Cyberpunk", value="Cyberpunk"),
         app_commands.Choice(name="Comedy", value="Comedy"),
@@ -71,6 +78,18 @@ class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bo
         app_commands.Choice(name="Yes", value="yes"),
         app_commands.Choice(name="No", value="no")
     ])
+    @app_commands.choices(gf_night_immune_choice=[
+        app_commands.Choice(name="Yes (Immune)", value="yes"),
+        app_commands.Choice(name="No (Vulnerable)", value="no")
+    ])
+    @app_commands.choices(sk_night_immune_choice=[
+        app_commands.Choice(name="Yes (Immune)", value="yes"),
+        app_commands.Choice(name="No (Vulnerable)", value="no")
+    ])
+    @app_commands.choices(br_skip_day_choice=[
+        app_commands.Choice(name="Yes (Skip Days)", value="yes"),
+        app_commands.Choice(name="No (Standard Day/Night)", value="no")
+    ])
     @is_admin()
     async def mafiastart(
         self,
@@ -81,6 +100,9 @@ class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bo
         narration_type: str = "Classic Mafia",
         gf_investigate_choice: str = "No",
         sk_investigate_choice: str = "No",
+        gf_night_immune_choice: str = "Yes",
+        sk_night_immune_choice: str = "Yes",
+        br_skip_day_choice: str = "No",
         mafia_ratio: float = 0.25,
         town_rb_req: int = 10,
         mafia_rb_req: int = 4,
@@ -89,39 +111,40 @@ class AdminCog(commands.Cog, name="Admin Commands", description="Commands for bo
         town_doctor_req: int = 7
     ):
         """Schedules a new game with the specified parameters."""
-        logger.critical(f"Admin command invoked: /mafiastart by {interaction.user.name}")
+        logger.info(f"Admin command invoked: /mafiastart by {interaction.user.name}")
         await start_game_command.start_game_command(
             self, interaction, game_type, phase_hours, start_datetime, narration_type,
             gf_investigate_choice, sk_investigate_choice, mafia_ratio, town_rb_req,
-            mafia_rb_req, sk_player_count, town_cop_req, town_doctor_req
+            mafia_rb_req, sk_player_count, town_cop_req, town_doctor_req,
+            gf_night_immune_choice, sk_night_immune_choice, br_skip_day_choice
         )
 
     @app_commands.command(name="mafiastop", description="[Admin] Stops the current game")
     @is_admin()
     async def mafiastop(self, interaction: discord.Interaction):
         """Command to forcefully terminate and reset the current game."""
-        logger.critical(f"Admin command invoked: /mafiastop by {interaction.user.name}")
+        logger.info(f"Admin command invoked: /mafiastop by {interaction.user.name}")
         await stop_game_command.stop_game_command(self, interaction)
 
-    @app_commands.command(name="forcestart", description="[Admin] Ends sign-ups and starts the game immediately.")
+    @app_commands.command(name="forcestart", description="[Admin] (Merged with /forcephaseend) Forcibly ends active phase or signups immediately.")
     @is_admin()
     async def forcestart(self, interaction: discord.Interaction):
-        """Command to bypass the signup timer and start the game on the next loop."""
-        logger.critical(f"Admin command invoked: /forcestart by {interaction.user.name}")
-        await force_start_command.force_start_command(self, interaction)
+        """Merged admin command to forcibly end the current phase (sign-up, day, or night)."""
+        logger.info(f"Admin command invoked: /forcestart (merged) by {interaction.user.name}")
+        await force_phase_end_command.force_phase_end_command(self, interaction)
 
     @app_commands.command(name="mafiareinit", description="[Admin] Debug tool to refresh the player list from Discord roles.")
     @is_admin()
     async def mafiareinit(self, interaction: discord.Interaction):
         """Command to rebuild the internal player list from server roles."""
-        logger.critical(f"Admin command invoked: /mafiareinit by {interaction.user.name}")
+        logger.info(f"Admin command invoked: /mafiareinit by {interaction.user.name}")
         await reinit_players_command.reinitialize_players_command(self, interaction)
 
-    @app_commands.command(name="forcephaseend", description="[Admin] Forcibly end the current game phase.")
+    @app_commands.command(name="forcephaseend", description="[Admin] Forcibly ends the current phase (sign-ups, day, or night) immediately.")
     @is_admin()
     async def forcephaseend(self, interaction: discord.Interaction):
-        """[ADMIN ONLY] Forcibly ends the current day or night phase."""
-        logger.critical(f"Admin command invoked: /forcephaseend by {interaction.user.name}")
+        """Merged admin command to forcibly end the current phase (sign-up, day, or night)."""
+        logger.info(f"Admin command invoked: /forcephaseend (merged) by {interaction.user.name}")
         await force_phase_end_command.force_phase_end_command(self, interaction)
 
 

@@ -7,6 +7,20 @@ logger = logging.getLogger('discord')
 
 def handle_investigation(game, investigator_id: int, target_id: int, night_outcomes: dict):
     """Determines investigation result and sends DM."""
+    investigator = game.players.get(investigator_id)
+    target = game.players.get(target_id)
+    if not investigator or not target:
+        return
+
+    if not investigator.is_alive:
+        logger.info(f"Investigation aborted: investigator {investigator.display_name} is dead.")
+        return
+
+    if investigator_id in getattr(game, 'kill_attempts_on', {}):
+        if investigator_id not in getattr(game, 'heals_on_players', {}):
+            logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
+            return
+
     investigator_action = night_outcomes.get(investigator_id)
     if investigator_action and investigator_action.get('status') == 'blocked':
         logger.info(f"Investigation by {investigator_id} failed because they were blocked.")
@@ -14,19 +28,6 @@ def handle_investigation(game, investigator_id: int, target_id: int, night_outco
 
     if investigator_action:
         night_outcomes[investigator_id]['status'] = 'successful'
-
-    investigator = game.players.get(investigator_id)
-    target = game.players.get(target_id)
-    if not investigator or not target:
-        return
-
-    if not investigator.is_alive:
-        return
-
-    if investigator_id in getattr(game, 'kill_attempts_on', {}):
-        if investigator_id not in getattr(game, 'heals_on_players', {}):
-            logger.info(f"Investigation by {investigator.display_name} aborted due to their death.")
-            return
 
     logger.info(f"Preparing investigation result for {investigator.display_name} investigating {target.display_name}.")
 
@@ -56,6 +57,8 @@ def handle_investigation(game, investigator_id: int, target_id: int, night_outco
     logger.info(f"Sent investigation result: {result_message} to {investigator.display_name}")
 
     async def send_investigation_dm():
+        if getattr(investigator, 'is_npc', False):
+            return
         try:
             user = await game.bot.fetch_user(investigator.id)
             await user.send(result_message)

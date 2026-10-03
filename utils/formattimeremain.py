@@ -7,6 +7,8 @@ logger.setLevel(logging.DEBUG)
 def format_time_remaining(target) -> str:
     """Formats the time remaining from now until target (datetime or timedelta)."""
     logger.debug(f"Calculating time remaining for target: {target}.")
+    if target is None:
+        return "N/A"
     if isinstance(target, datetime):
         # Ensure UTC comparison
         now = datetime.now(timezone.utc)

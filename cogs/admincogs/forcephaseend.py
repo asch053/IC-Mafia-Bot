@@ -6,8 +6,10 @@ logger.setLevel(logging.DEBUG)
 
 
 async def force_phase_end_command(self, interaction: discord.Interaction):
-    """[ADMIN ONLY] Forcibly ends the current day or night phase."""
-    logger.info(f"'/forcephaseend' command invoked by {interaction.user.name}.")
+    """
+    [ADMIN ONLY] Merged force command: Forcibly ends the active phase (sign-ups, day, or night) immediately.
+    """
+    logger.info(f"Force end phase / start command invoked by {interaction.user.name}.")
     game = self.get_game_instance()
     if game:
         await game.force_end_phase(interaction)

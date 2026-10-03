@@ -97,3 +97,42 @@ class TestGameEngine(unittest.IsolatedAsyncioTestCase):
         
         outcome_msg = f"[OUTCOME] Success! Town recognized as winner. Winner={winner}"
         print(outcome_msg); logger.info(outcome_msg)
+
+    async def test_npc_night_actions_auto_queue(self):
+        msg = f"[START] {self._testMethodName} - Testing NPC automated night actions"
+        print(f"\n{msg}"); logger.info(msg)
+
+        self.game.game_settings["current_phase"] = "night"
+        self._add_test_players(2)
+        # Player 1 is Town, Player 2 is NPC Godfather
+        self.game.players[1].assign_role(GameRole(name="Plain Townie", alignment="Town", description="Town", short_description="Town"))
+        
+        npc_gf = Player(-1, "BotGodfather", "BotGodfather")
+        npc_gf.assign_role(GameRole(name="Godfather", alignment="Mafia", description="GF", short_description="GF", abilities={"kill": "Kill"}))
+        self.game.players[-1] = npc_gf
+
+        await self.game.process_npc_night_actions()
+
+        self.assertIn(-1, self.game.night_actions)
+        self.assertEqual(self.game.night_actions[-1]["type"], "kill")
+        self.assertIn(self.game.night_actions[-1]["target_id"], [1, 2])
+        print(f"[OUTCOME] Success! NPC Godfather targeted Player {self.game.night_actions[-1]['target_id']} with kill action.")
+
+    async def test_npc_day_voting_auto_vote(self):
+        msg = f"[START] {self._testMethodName} - Testing NPC automated day voting"
+        print(f"\n{msg}"); logger.info(msg)
+
+        self.game.game_settings["current_phase"] = "day"
+        self.game.game_settings["phase_number"] = 1
+        self._add_test_players(2)
+
+        npc = Player(-2, "BotTownie", "BotTownie")
+        npc.assign_role(GameRole(name="Plain Townie", alignment="Town", description="Town", short_description="Town"))
+        self.game.players[-2] = npc
+
+        await self.game.process_npc_votes()
+
+        self.assertIsNotNone(npc.action_target)
+        self.assertIn(npc.action_target, [1, 2])
+        self.assertIn(-2, self.game.lynch_votes[npc.action_target])
+        print(f"[OUTCOME] Success! NPC voted for target ID {npc.action_target}.")

@@ -13,6 +13,8 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
       - ./stats:/app/stats
+      # Mount config.py directly so tweaks don't require rebuilding the image
+      - ./config.py:/app/config.py:ro
     logging:
       driver: "json-file"
       options:

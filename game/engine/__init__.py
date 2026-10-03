@@ -88,12 +88,18 @@ class Game:
     async def tally_votes(self):
         return await voting.tally_votes(self)
 
+    async def process_npc_votes(self):
+        return await voting.process_npc_votes(self)
+
     # --- NIGHT ACTIONS ---
     async def record_night_action(self, actor, action_type: str, target_name: str):
         return await night.record_night_action(self, actor, action_type, target_name)
 
     async def process_night_actions(self):
         return await night.process_night_actions(self)
+
+    async def process_npc_night_actions(self):
+        return await night.process_npc_night_actions(self)
 
     async def _resolve_night_deaths(self):
         return await night._resolve_night_deaths(self)

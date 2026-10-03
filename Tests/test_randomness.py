@@ -78,7 +78,49 @@ def run_test():
         percentage = (count / NUM_SIMULATIONS) * 100
         print(f"  - {role:<20}: {count:>6} times ({percentage:.2f}%)")
 
+import unittest
+
+class TestRoleRandomness(unittest.TestCase):
+    """
+    Automated unit test suite verifying role distribution fairness and integrity.
+    """
+    def test_single_role_assignment_integrity(self):
+        assignments = simulate_role_assignment()
+        self.assertEqual(len(assignments), len(PLAYERS))
+        self.assertEqual(set(assignments.keys()), set(PLAYERS))
+        # Ensure role counts in a single game exactly match the defined setup
+        assigned_role_counts = Counter(assignments.values())
+        expected_role_counts = Counter(ROLES)
+        self.assertEqual(assigned_role_counts, expected_role_counts)
+
+    def test_role_distribution_uniformity(self):
+        """
+        Runs 1,000 simulation rounds and verifies that no player is starved of any role.
+        """
+        test_simulations = 1000
+        results = {player: Counter() for player in PLAYERS}
+        for _ in range(test_simulations):
+            assignments = simulate_role_assignment()
+            for player, role in assignments.items():
+                results[player][role] += 1
+
+        for player, role_counts in results.items():
+            # Every player should have received every distinct role
+            unique_roles = set(ROLES)
+            self.assertEqual(set(role_counts.keys()), unique_roles, f"{player} missed some roles")
+            # For 1-of roles (p=0.10), expected count = 100. Assert between 40 and 180.
+            for role in unique_roles:
+                count = role_counts[role]
+                if role == "Townie":
+                    # Townie has 3 copies (p=0.30), expected count = 300. Assert between 180 and 420.
+                    self.assertGreater(count, 180, f"{player} received too few Townie roles ({count})")
+                    self.assertLess(count, 420, f"{player} received too many Townie roles ({count})")
+                else:
+                    self.assertGreater(count, 40, f"{player} received too few {role} roles ({count})")
+                    self.assertLess(count, 180, f"{player} received too many {role} roles ({count})")
+
 if __name__ == "__main__":
     # To run this test, save it as a file (e.g., test_randomness.py)
     # and run `python test_randomness.py` from your terminal.
     run_test()
+

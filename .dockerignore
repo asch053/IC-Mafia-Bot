@@ -1,37 +1,39 @@
 --- Version Control ---
-
 .git
 .gitignore
 
---- Python & Environments ---
-
-pycache/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-env/
-
---- IDEs & Editors ---
-
-.vscode/
-.idea/
-
---- Bot Data & Logs (We mount these via volumes!) ---
-
-Logs/
-Stats/
-data/
-
---- Other Project Folders not needed to run the bot ---
-
-Mafia History Project/
-Simulations/
-
-
-
 --- Random System Files ---
-
 .DS_Store
 nohup.out
 ic-mafia-bot-41a41f61e757.json
+
+# Virtual Environments & Caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Git & IDE
+.git/
+.gitignore
+.dockerignore
+.idea/
+.vscode/
+
+#--- Bot Data & Logs (We mount these via volumes!) ---
+logs/
+stats/
+data/
+
+# Sub-projects not needed inside the runtime bot container
+Other Projects/
+Website/
+docs/
+templates/
+tests/
+
+# Local Scratch & Environment overrides
+.env.test
+docker-compose.test.yml

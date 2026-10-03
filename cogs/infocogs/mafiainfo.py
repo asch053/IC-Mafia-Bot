@@ -36,8 +36,7 @@ async def show_info_command(self, interaction: discord.Interaction):
     admin_commands = (
         "`/mafiastart` - Schedule a new game.\n"
         "`/mafiastop` - Forcibly end the current game.\n"
-        "`/forcestart` - End sign-ups and start the game now.\n"
-        "`/forcephaseend` - Forcibly end the current Day or Night phase.\n"
+        "`/forcephaseend` (or `/forcestart`) - Forcibly end the active phase (sign-ups, day, or night) immediately.\n"
         "`/mafiareinit` - (Debug) Rebuild player list from roles.\n"
         "`/exportdata` - Export all game data to google sheets for use in website."
     )

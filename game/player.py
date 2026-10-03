@@ -42,9 +42,8 @@ class Player:
     def assign_role(self, role: 'GameRole'):
         """Assigns a role to this player and updates initial night immunity."""
         self.role = role
-        if getattr(role, 'is_night_immune', False):
-            self.night_immune = True
-        logger.info(f"Assigned role {role.name} to player {self.display_name}.")
+        self.night_immune = bool(getattr(role, 'is_night_immune', False))
+        logger.info(f"Assigned role {role.name} to player {self.display_name} (Night Immune: {self.night_immune}).")
 
     def kill(self, phase_str: str, cause_of_death: str):
         """Marks the player as dead and records phase and cause."""

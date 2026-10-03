@@ -14,9 +14,11 @@ from typing import List, Dict, Any
 # Define the script's own directory (e.g., F:\IC Mafia Bot\Mafia History Project)
 CURRENT_SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# *** FIX: Go up one level to the parent (root) directory for the key file. ***
-ROOT_DIR = os.path.dirname(CURRENT_SCRIPT_DIR)
-SERVICE_ACCOUNT_KEY_FILE = os.path.join(ROOT_DIR, "ic-mafia-bot-41a41f61e757.json")
+# Go up two levels to the workspace root directory (F:\IC Mafia Bot)
+ROOT_DIR = os.path.dirname(os.path.dirname(CURRENT_SCRIPT_DIR))
+SERVICE_ACCOUNT_KEY_FILE = os.path.join(ROOT_DIR, "data", "ic-mafia-bot-41a41f61e757.json")
+if not os.path.exists(SERVICE_ACCOUNT_KEY_FILE):
+    SERVICE_ACCOUNT_KEY_FILE = os.path.join(ROOT_DIR, "ic-mafia-bot-41a41f61e757.json")
 
 # Define paths relative to the script's directory
 LOG_DIR = os.path.join(CURRENT_SCRIPT_DIR, "logs")
@@ -113,7 +115,6 @@ def generate_user_data_and_export(logger: logging.Logger):
                         # Only record the ID if it's present and not the 'N/A' placeholder from forum posts
                         if user_id and user_id != 'N/A':
                             user_data[username]['discord_id'].add(str(user_id))
-                    logger.info(f" Tallying post by {username} from {source_type}")
                             
                 except json.JSONDecodeError:
                     logger.error(f"Error decoding JSON in file: {os.path.basename(file_path)}. Skipping line.")

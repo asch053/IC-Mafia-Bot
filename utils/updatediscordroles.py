@@ -19,6 +19,9 @@ async def update_player_discord_roles(bot, guild, game_players: dict, action: st
     if not all([alive_role, dead_role, spec_role]):
         logger.error("Role synchronization failed: One or more role IDs are missing in config.")
         return
+
+    logger.info(f"Starting server-wide role synchronization for {len(guild.members)} guild members.")
+
     # 2. Iterate through ALL members in the guild
     # Note: Use chunking or fetch if the server is large
     for member in guild.members:
@@ -67,3 +70,5 @@ async def update_player_discord_roles(bot, guild, game_players: dict, action: st
             logger.error(f"Missing permissions to manage roles for {member.display_name}")
         except Exception as e:
             logger.exception(f"Error syncing roles for {member.display_name}: {e}")
+
+    logger.info(f"Server-wide role synchronization completed for {len(guild.members)} guild members.")

@@ -29,75 +29,85 @@ def _get_update_roles_fn():
 
 async def signup_loop(game):
     """Monitors the sign-up phase, sends reminders, and checks for start conditions."""
-    logger.debug("Sign-up loop iteration started.")
-    game_should_start = False
-    reason = ""
+    try:
+        logger.debug("Sign-up loop iteration started.")
+        game_should_start = False
+        reason = ""
 
-    phase_end = game.game_settings.get("phase_end_time")
-    if phase_end and datetime.now(timezone.utc) >= phase_end:
-        game_should_start = True
-        reason = "The scheduled start time has been reached."
-        logger.info("Sign-up phase ended due to reaching scheduled start time.")
-    elif len(game.players) >= game.max_players:
-        game_should_start = True
-        reason = f"The maximum number of players ({game.max_players}) has been reached."
-        logger.info(f"Sign-up phase ended due to max player count: {game.max_players}.")
-    elif getattr(game, 'force_start_flag', False):
-        game_should_start = True
-        reason = "The game has been force-started by an administrator."
-        logger.info("Sign-up phase ended due to force start flag.")
+        phase_end = game.game_settings.get("phase_end_time")
+        if phase_end and datetime.now(timezone.utc) >= phase_end:
+            game_should_start = True
+            reason = "The scheduled start time has been reached."
+            logger.info("Sign-up phase ended due to reaching scheduled start time.")
+        elif len(game.players) >= game.max_players:
+            game_should_start = True
+            reason = f"The maximum number of players ({game.max_players}) has been reached."
+            logger.info(f"Sign-up phase ended due to max player count: {game.max_players}.")
+        elif getattr(game, 'force_start_flag', False):
+            game_should_start = True
+            reason = "The game has been force-started by an administrator."
+            logger.info("Sign-up phase ended due to force start flag.")
 
-    if game_should_start:
-        logger.info(f"Ending sign-up loop. Reason: {reason}")
-        signup_chan = game.bot.get_channel(getattr(config, 'SIGN_UP_HERE_CHANNEL_ID', 0))
-        if signup_chan:
-            await signup_chan.send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
-        ann_chan = game.bot.get_channel(getattr(config, 'ANNOUNCEMENT_CHANNEL_ID', 0))
-        if ann_chan:
-            await ann_chan.send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
-
-        if hasattr(game, 'signup_loop') and hasattr(game.signup_loop, 'stop'):
-            game.signup_loop.stop()
-
-        if game.game_settings.get("current_phase") == "signup":
-            await game.prepare_game()
-        return
-
-    # Check for reminders
-    spectator_role_id = getattr(config, 'SPECTATOR_ROLE_ID', 0)
-    spectator_role = game.guild.get_role(spectator_role_id) if game.guild else None
-    if not spectator_role or not phase_end:
-        return
-
-    time_left = phase_end - datetime.now(timezone.utc)
-    time_left_str = format_time_remaining(phase_end)
-    total_minutes_left = time_left.total_seconds() / 60
-
-    reminder_points = getattr(config, 'REMINDER_POINTS', {})
-    for minutes, text in reminder_points.items():
-        if total_minutes_left <= minutes and minutes not in game.reminders_sent:
+        if game_should_start:
+            logger.info(f"Ending sign-up loop. Reason: {reason}")
             signup_chan = game.bot.get_channel(getattr(config, 'SIGN_UP_HERE_CHANNEL_ID', 0))
             if signup_chan:
-                await signup_chan.send(
-                    f"**Reminder!** {spectator_role.mention} There's still time to join! Sign-ups close in **{time_left_str}**.\n"
-                    f"Use `/mafiajoin` to participate!\n"
-                )
-            game.reminders_sent.add(minutes)
-            logger.info(f"Sent reminder for {text} remaining in the phase.")
-            break
+                await signup_chan.send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
+            ann_chan = game.bot.get_channel(getattr(config, 'ANNOUNCEMENT_CHANNEL_ID', 0))
+            if ann_chan:
+                await ann_chan.send(f"**Sign-ups are now closed!** {reason} The game will now begin.")
+
+            if hasattr(game, 'signup_loop') and hasattr(game.signup_loop, 'stop'):
+                game.signup_loop.stop()
+
+            if game.game_settings.get("current_phase") == "signup":
+                await game.prepare_game()
+            return
+
+        # Check for reminders
+        spectator_role_id = getattr(config, 'SPECTATOR_ROLE_ID', 0)
+        spectator_role = game.guild.get_role(spectator_role_id) if game.guild else None
+        if not spectator_role or not phase_end:
+            return
+
+        time_left = phase_end - datetime.now(timezone.utc)
+        time_left_str = format_time_remaining(phase_end)
+        total_minutes_left = time_left.total_seconds() / 60
+
+        reminder_points = getattr(config, 'REMINDER_POINTS', {})
+        for minutes, text in reminder_points.items():
+            if total_minutes_left <= minutes and minutes not in game.reminders_sent:
+                signup_chan = game.bot.get_channel(getattr(config, 'SIGN_UP_HERE_CHANNEL_ID', 0))
+                if signup_chan:
+                    await signup_chan.send(
+                        f"**Reminder!** {spectator_role.mention} There's still time to join! Sign-ups close in **{time_left_str}**.\n"
+                        f"Use `/mafiajoin` to participate!\n"
+                    )
+                game.reminders_sent.add(minutes)
+                logger.info(f"Sent reminder for {text} remaining in the phase.")
+                break
+    except Exception as e:
+        logger.critical(f"Sign-up loop encountered a critical error: {e}", exc_info=True)
 
 
 async def force_start(game, interaction: discord.Interaction):
-    """Admin command to force the signup phase to end and the game to start."""
-    if game.game_settings.get("current_phase") != "signup":
-        await interaction.response.send_message("This command can only be used during the sign-up phase.", ephemeral=True)
-        return
-    game.force_start_flag = True
-    delay = getattr(config, 'signup_loop_interval_seconds', 30)
-    await interaction.response.send_message(
-        f"Force start flag set. The game will begin on the next loop iteration (within {delay} seconds).",
-        ephemeral=True
-    )
+    """
+    [ADMIN ONLY] Forcibly ends the current phase.
+    If in signups, ends signups and starts the game. If in day/night, ends that phase.
+    """
+    current_phase = str(game.game_settings.get("current_phase", "")).lower()
+    if current_phase == "signup":
+        game.force_start_flag = True
+        delay = getattr(config, 'signup_loop_interval_seconds', 30)
+        logger.warning(f"Sign-ups forcibly ended by admin: {interaction.user.name}")
+        await interaction.response.send_message(
+            f"Sign-ups have been ended by admin. The game will begin on the next loop iteration (within {delay} seconds).",
+            ephemeral=False
+        )
+    elif current_phase in ["day", "night"]:
+        await game.force_end_phase(interaction)
+    else:
+        await interaction.response.send_message("No active phase to force end.", ephemeral=True)
 
 
 async def add_player(game, user, player_name, channel):

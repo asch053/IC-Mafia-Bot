@@ -1,3 +1,11 @@
+<!-- Obsidian Navigation Header -->
+> [!NOTE] Knowledge Graph Navigation
+> - **Parent Documentation Hub**: [[Documentation_Hub_Overview]]
+> - **Mafia Bot Docs Hub**: [[Mafia_Bot_Docs_Overview]]
+> - **Companion Document**: [[HIGH_LEVEL_REQUIREMENTS]]
+> - **System Overviews**: [[Bot_Setup_Overview]], [[Cogs_Overview]], [[Game_System_Overview]], [[Game_Engine_Overview]], [[Game_Actions_Overview]], [[Community_System_Overview]], [[Utilities_Overview]], [[Tests_Overview]]
+> - **Root Index**: [[Root_Project_Overview]]
+
 # IC Mafia Bot — Detailed Requirements & Unit Test Acceptance Criteria
 
 ## 1. Document Purpose
@@ -17,7 +25,7 @@ All components throughout the bot must access the active game state via `bot.gam
 
 ## 3. Subsystem Specifications & Unit Test Specifications
 
-### Subsystem A: Core Bot & Lifecycle Setup
+### Subsystem A: Core Bot & Lifecycle Setup ([[Bot_Setup_Overview]])
 
 #### A1. Bot Entry Point & Runner
 * **File Path**: `bot.py`
@@ -46,7 +54,7 @@ All components throughout the bot must access the active game state via `bot.gam
 
 ---
 
-### Subsystem B: Utilities & Discord Helpers (`utils/`)
+### Subsystem B: Utilities & Discord Helpers ([[Utilities_Overview|utils/]])
 
 #### B1. Format Time Remaining
 * **File Path**: `utils/formattimeremain.py`
@@ -221,30 +229,36 @@ All components throughout the bot must access the active game state via `bot.gam
 * **File Path**: `game/engine/voting.py`
 * **Signatures**:
   * `async def process_lynch_vote(game, interaction, voter: discord.User, target_name: str) -> str`
+  * `async def process_npc_votes(game) -> None`
   * `async def send_vote_count(game, channel: discord.TextChannel) -> None`
   * `async def tally_votes(game) -> None`
 * **Specification**:
   * Validates voter and target are living players.
   * Majority trigger: if target receives `> len(living_players) // 2` votes, triggers early day end.
+  * `process_npc_votes`: Automatically selects and casts random lynch votes for living unvoted NPCs at phase end (Mafia NPCs prefer non-Mafia targets).
   * `tally_votes`: executes player with highest votes (or ties result in no lynch). Increments `missed_votes` for non-voters.
 * **Acceptance Criteria**:
   * `TEST-ENG-04` (`tests/test_1_engine.py`): Voting updates `game.lynch_votes`.
   * `TEST-ENG-05`: Majority vote ends Day phase immediately and schedules lynch.
   * `TEST-ENG-06`: Inactivity penalty kills player after exceeding `MAX_MISSED_VOTES`.
+  * `TEST-ENG-06B` (`tests/test_1_engine.py:test_npc_day_voting_auto_vote`): Unvoted NPCs cast random valid votes and are not penalized for inactivity.
 
 #### F4. Night Phase & Death Resolution Chunk
 * **File Path**: `game/engine/night.py`
 * **Signatures**:
   * `async def record_night_action(game, interaction, action_type: str, target_name: str) -> str`
+  * `async def process_npc_night_actions(game) -> None`
   * `async def process_night_actions(game) -> None`
   * `async def _resolve_night_deaths(game) -> None`
   * `def _handle_promotions(game, dead_player: Player) -> None`
 * **Specification**:
+  * `process_npc_night_actions`: Automatically queues valid night abilities for living NPCs (Godfather/SK kills random target; Doctor heals random player without consecutive repeats; Blocker blocks; Cop investigates).
   * Collects night actions in `game.night_actions`.
   * Evaluates actions in priority order: Block -> Heal -> Kill -> Investigate.
   * If Godfather dies and living Mob Goons exist, promotes the first Mob Goon to Godfather.
 * **Acceptance Criteria**:
   * `TEST-ENG-07`: `process_night_actions` correctly cancels blocked actions and saves healed players.
+  * `TEST-ENG-07B` (`tests/test_1_engine.py:test_npc_night_actions_auto_queue`): Living NPC power roles automatically queue valid night actions against eligible targets.
   * `TEST-ENG-08`: `_handle_promotions` promotes Mob Goon to Godfather upon Godfather death.
 
 #### F5. Win Condition Evaluator Chunk
@@ -303,11 +317,16 @@ All components throughout the bot must access the active game state via `bot.gam
 #### G3. Info Cog & Chunks
 * **Cog**: `cogs/info.py` (`InfoCog`)
 * **Chunks in `cogs/infocogs/`**:
-  * `mafiarules.py`: `/mafiarules` loads rules text and builds rules embed.
+  * `mafiarules.py`: `/mafiarules` loads rules text and builds rules embed via `game/data/getrules.py`.
   * `mafiaroles.py`: `/mafiaroles` calculates alive/total role counts from `bot.game_instance` and displays alignment embed.
   * `mafiainfo.py`: `/mafiainfo` sends full categorized command list.
+* **Embed Formatting Standards (`game/data/getrules.py`)**:
+  * Start times formatted using Discord native timestamp syntax: `<t:{epoch}:F> (<t:{epoch}:R>)`.
+  * Server conduct rules rendered as an unbroken single-field list (`1.` to `6.`) avoiding fragmented "Part 1 / Part 2" embed splits.
+  * Dynamic setup parameters formatted with Discord blockquotes (`> `).
+  * Faction objectives formatted with bullet points (`•`) to prevent numeric collision with conduct rules.
 * **Acceptance Criteria**:
-  * `TEST-COG-INF-01`: `/mafiarules` sends ephemeral embed with rules.
+  * `TEST-COG-INF-01`: `/mafiarules` sends ephemeral embed with rules matching protocol layout standards.
   * `TEST-COG-INF-02`: `/mafiaroles` displays correct alive vs total counts grouped by alignment.
 
 #### G4. Stats Cog & Chunks
@@ -362,3 +381,23 @@ All unit tests will be executed via pytest in the `.venv` virtual environment:
 | `tests/test_6_utilities.py` | Utilities Subsystem | Time formatting, role hierarchy | 100% (Pass) |
 | `tests/test_7_parameters.py` | Setup Generator | Parameter validation, role balancing | 100% (Pass) |
 
+---
+
+## 🔗 Obsidian Knowledge Graph Links
+- **Master Root Index**: [[Root_Project_Overview]]
+- **Documentation Hub**: [[Documentation_Hub_Overview]]
+- **Mafia Bot Docs Hub**: [[Mafia_Bot_Docs_Overview]]
+- **High-Level Requirements**: [[HIGH_LEVEL_REQUIREMENTS]]
+- **Subsystem Overviews**:
+  - [[Bot_Setup_Overview]]: Bot initialization & logging
+  - [[Utilities_Overview]]: Helpers and serializers
+  - [[Game_Engine_Overview]]: Game state machine
+  - [[Game_Actions_Overview]]: Night action priorities
+  - [[Admin_Cogs_Overview]]: Admin commands
+  - [[Game_Cogs_Overview]]: Player slash commands
+  - [[Info_Cogs_Overview]]: Information commands
+  - [[Stats_Cogs_Overview]]: Stats and skill scores
+  - [[Community_System_Overview]]: Quirks & moderation
+  - [[Game_Narration_Overview]]: AI & static narration
+  - [[Export_Cogs_Overview]]: Google Sheets sync
+  - [[Tests_Overview]]: QA test suite

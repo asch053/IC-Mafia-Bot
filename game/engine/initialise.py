@@ -43,6 +43,7 @@ def initialize_game(self, bot, guild, cleanup_callback=None, game_type="classic"
         "sk_investigate": False,
         "gf_night_immune": True,
         "sk_night_immune": True,
+        "br_skip_day": False,
         "phase_hours": 12,
         "mafia_ratio": getattr(cfg, 'mob_ratio', 0.25),
         "town_rb_req": getattr(cfg, 'min_town_rb_players', 10),

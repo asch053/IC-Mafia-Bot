@@ -112,7 +112,7 @@ class FameCog(commands.Cog):
             
             # --- NEW: Calculate the critical Phase Survival Percentage ---
             data["phase_survival_pct"] = data["phases_lived"] / data["total_game_phases"]
-            logger.critical(f"Player ID {pid} ({data['name']}) - Phase Survival %: {data['phase_survival_pct']:.2%} ({data['phases_lived']} phases lived / {data['total_game_phases']} total phases)")
+            logger.debug(f"Player ID {pid} ({data['name']}) - Phase Survival %: {data['phase_survival_pct']:.2%} ({data['phases_lived']} phases lived / {data['total_game_phases']} total phases)")
 
             if mode == "classic":
                 skill_data = stats_cog._calculate_skill_scores(data["id"], recent_games)

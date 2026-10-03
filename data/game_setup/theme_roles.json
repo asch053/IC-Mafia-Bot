@@ -1,0 +1,470 @@
+{
+  "Classic Mafia": {
+    "Town Cop": {
+      "display_name": "Detective",
+      "description": "You are town-aligned and can investigate one player each night to learn their alignment.\nUse `/investigate player-name` during the night phase in this DM with the bot.\nResults will be sent as soon as the day phase starts.\nYou win when all Mafia and the Serial Killer are eliminated.",
+      "short_description": "Investigates one player each night."
+    },
+    "Town Doctor": {
+      "display_name": "Doctor",
+      "description": "You are town-aligned and can protect one player each night from being killed.\nUse `/heal player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are eliminated.",
+      "short_description": "Can heal one player each night."
+    },
+    "Plain Townie": {
+      "display_name": "Plain Townie",
+      "description": "A regular member of the town.\nDuring the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched.\nYou win when all Mafia and the Serial Killer are eliminated.",
+      "short_description": "Normal member of town."
+    },
+    "Town Role Blocker": {
+      "display_name": "Escort",
+      "description": "You are town-aligned and can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are eliminated.",
+      "short_description": "Prevents one player from performing their night action."
+    },
+    "Godfather": {
+      "display_name": "Godfather",
+      "description": "Chooses the Mafia's target each night.\nUse `/kill player-name` in this DM with the bot.\nA separate message will be sent with the identity of other Mafia members.\nYou win when the Mafia can no longer be eliminated.",
+      "short_description": "Chooses the Mafia's target each night."
+    },
+    "Mob Goon": {
+      "display_name": "Mob Goon",
+      "description": "A member of the Mafia.\nYou will be promoted to Godfather if the current one dies.\nYou win when the Mafia can no longer be eliminated.",
+      "short_description": "Standard Mafia member."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Consigliere",
+      "description": "A member of the Mafia.\nYou can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when the Mafia can no longer be eliminated.",
+      "short_description": "Stops a player from acting at night."
+    },
+    "Serial Killer": {
+      "display_name": "Serial Killer",
+      "description": "Kills one player each night.\nUse `/kill player-name` in this DM with the bot.\nYou win when you are the last person standing.",
+      "short_description": "Kills one player each night."
+    },
+    "Jester": {
+      "display_name": "Jester",
+      "description": "Your goal is to get yourself lynched by the town. You have no night action.",
+      "short_description": "Wins the game if they are lynched."
+    },
+    "Vigilante": {
+      "display_name": "Vigilante",
+      "description": "You are a lone wolf out for yourself. You can kill or block one player each night (your last submitted action will be used). Your goal is to be the last person standing.",
+      "short_description": "Can kill or block. Wins by being the only survivor."
+    }
+  },
+  "Horror": {
+    "Town Cop": {
+      "display_name": "Sheriff",
+      "description": "You are the local lawman investigating gruesome disappearances.\nUse `/investigate player-name` during the night phase to learn if a suspect is an innocent survivor or a killer.\nYou win when all evil killers are eliminated.",
+      "short_description": "Investigates suspects during the foggy night."
+    },
+    "Town Doctor": {
+      "display_name": "Camp Medic",
+      "description": "Armed with a first-aid kit and adrenaline, you watch over the survivors.\nUse `/heal player-name` during the night phase to rescue someone from a lethal ambush.\nYou win when the killers are defeated.",
+      "short_description": "Protects survivors from deadly attacks."
+    },
+    "Plain Townie": {
+      "display_name": "Camp Counselor",
+      "description": "A terrified counselor trying to survive the night in the woods.\nCast your vote during the day using `/vote player-name` in the voting channel.\nYou win when all killers are dead.",
+      "short_description": "Innocent counselor fighting for survival."
+    },
+    "Town Role Blocker": {
+      "display_name": "Spooky Harbinger",
+      "description": "You wander the grounds warning of doom, creating enough eerie commotion to halt someone in their tracks.\nUse `/block player-name` during the night phase to stop their action.\nYou win when evil is purged.",
+      "short_description": "Distracts and blocks someone at night."
+    },
+    "Godfather": {
+      "display_name": "Slasher Mastermind",
+      "description": "The terrifying mastermind orchestrating the cabin massacre.\nUse `/kill player-name` in this DM to choose your victim each night.\nYou win when your cult/cabal takes over.",
+      "short_description": "Directs the horror murders each night."
+    },
+    "Mob Goon": {
+      "display_name": "Masked Cultist",
+      "description": "A deranged follower serving the Slasher Mastermind.\nYou will take over the killings if your leader falls.\nYou win when evil triumphs.",
+      "short_description": "Loyal slasher henchman."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Wailing Banshee",
+      "description": "Your piercing scream paralyzes anyone in terror.\nUse `/block player-name` during the night phase to freeze a victim in their tracks.\nYou win when evil triumphs.",
+      "short_description": "Terrifies a player to block their action."
+    },
+    "Serial Killer": {
+      "display_name": "The Butcher",
+      "description": "A relentless, solitary maniac stalking the camp.\nUse `/kill player-name` each night to claim your prey.\nYou win when you are the sole survivor.",
+      "short_description": "Brutal solitary slasher."
+    },
+    "Jester": {
+      "display_name": "First Victim",
+      "description": "You're the guy who says 'I'll be right back' and investigates the basement alone!\nYour goal is to get lynched by the panicking survivors.\nYou win if you are lynched.",
+      "short_description": "Wins if lynched by the group."
+    },
+    "Vigilante": {
+      "display_name": "Final Girl",
+      "description": "Armed with a fire axe and pure survival instinct, you refuse to die.\nEach night choose to strike (`/kill player-name`) or fortify against (`/block player-name`) an assailant.\nYou win by being the last survivor.",
+      "short_description": "Determined survivor who can kill or block."
+    }
+  },
+  "Explicit Kinky NSFW": {
+    "Town Cop": {
+      "display_name": "Purity Inspector",
+      "description": "You inspect the deepest secrets and hidden desires of club guests.\nUse `/investigate player-name` at night to discover if a guest is vanilla town, part of the dominant syndicate, or an edge-lord.\nYou win when all hostiles are removed.",
+      "short_description": "Inspects players' alignments and kinks."
+    },
+    "Town Doctor": {
+      "display_name": "Aftercare Specialist",
+      "description": "You provide tender aftercare, warm blankets, and emotional safety.\nUse `/heal player-name` at night to protect someone from being pushed past their limits and removed from the scene.\nYou win when all hostiles are removed.",
+      "short_description": "Protects players with soothing aftercare."
+    },
+    "Plain Townie": {
+      "display_name": "Submissive Bystander",
+      "description": "A willing and curious guest enjoying the club atmosphere.\nUse `/vote player-name` during the day to vote on who gets sent to the timeout dungeon.\nYou win when all hostiles are removed.",
+      "short_description": "Regular club attendee."
+    },
+    "Town Role Blocker": {
+      "display_name": "Dominatrix",
+      "description": "You take complete control and lock a player in strict chastity for the night.\nUse `/block player-name` during the night to stop their action.\nYou win when all hostiles are removed.",
+      "short_description": "Locks a player in chastity, blocking their action."
+    },
+    "Godfather": {
+      "display_name": "Supreme Dominant",
+      "description": "The commanding master who rules the VIP dungeon chambers.\nUse `/kill player-name` at night to thoroughly break and eliminate a player from the scene.\nYou win when your syndicate takes over.",
+      "short_description": "Directs the nightly eliminations."
+    },
+    "Mob Goon": {
+      "display_name": "Leather Enforcer",
+      "description": "A loyal enforcer bound to the Supreme Dominant.\nYou step up to lead if your master is removed.\nYou win when the syndicate takes over.",
+      "short_description": "Syndicate leather enforcer."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Bondage Rigger",
+      "description": "Master of ropes, shibari, and sensory deprivation.\nUse `/block player-name` at night to bind a player and stop their action.\nYou win when the syndicate takes over.",
+      "short_description": "Binds a player to prevent night action."
+    },
+    "Serial Killer": {
+      "display_name": "Sadistic Edge-Lord",
+      "description": "A rogue switch who ignores safe words and plays dangerously rough.\nUse `/kill player-name` each night to eliminate everyone in the club.\nYou win when you are the last person standing.",
+      "short_description": "Ruthless rogue player aiming to eliminate all."
+    },
+    "Jester": {
+      "display_name": "Exhibitionist Masochist",
+      "description": "You crave nothing more than being publicly exposed, humiliated, and punished by the crowd!\nYour goal is to get voted out and tied up by the group.\nYou win if you are lynched.",
+      "short_description": "Wins if lynched by public vote."
+    },
+    "Vigilante": {
+      "display_name": "Rogue Switch",
+      "description": "A versatile free agent who shifts between dominant and submissive roles.\nEach night submit `/kill player-name` to dominate or `/block player-name` to restrain.\nYou win by being the last person standing.",
+      "short_description": "Free agent who can kill or block."
+    }
+  },
+  "Rom Com": {
+    "Town Cop": {
+      "display_name": "Relationship Detective",
+      "description": "You investigate dating profiles and background check potential suitors for red flags.\nUse `/investigate player-name` at night to learn if they are looking for true love (Town), a toxic player (Mafia), or an unhinged commitment-phobe (Neutral).\nYou win when all toxic players are removed.",
+      "short_description": "Investigates relationship motives."
+    },
+    "Town Doctor": {
+      "display_name": "Wingman",
+      "description": "You are the ultimate emotional support bestie, armed with ice cream and dating advice!\nUse `/heal player-name` at night to swoop in and prevent someone from getting their heart broken and dumped.\nYou win when true love triumphs over toxic players.",
+      "short_description": "Saves players from heartbreak and breakups."
+    },
+    "Plain Townie": {
+      "display_name": "Hopeless Romantic",
+      "description": "A sweet, hopeful single searching for genuine love in the big city.\nUse `/vote player-name` during the day to vote out the biggest dating red flags.\nYou win when true love wins and all toxic players are gone.",
+      "short_description": "Single looking for genuine romance."
+    },
+    "Town Role Blocker": {
+      "display_name": "Cockblocker",
+      "description": "You save friends from terrible late-night decisions by crashing their awkward dates!\nUse `/block player-name` at night to interrupt their plans and stop their action.\nYou win when all toxic players are gone.",
+      "short_description": "Interrupts a date to prevent their action."
+    },
+    "Godfather": {
+      "display_name": "Serial Heartbreaker",
+      "description": "The charismatic, smooth-talking player who leads the toxic dating circle.\nUse `/kill player-name` at night to coldly dump a hopeful single and break their heart.\nYou win when the heartbreakers outnumber genuine singles.",
+      "short_description": "Leads the nightly breakups."
+    },
+    "Mob Goon": {
+      "display_name": "Serial Ghoster",
+      "description": "A heartless dater who leaves people on read and ghosts after three dates.\nYou step up to lead the heartbreakers if your boss gets exposed.\nYou win when the heartbreakers take over.",
+      "short_description": "Ghoster who aids the heartbreakers."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Meddling Parent",
+      "description": "You show up uninvited to ask awkward questions and completely ruin romantic vibes.\nUse `/block player-name` at night to stop a single's action.\nYou win when the heartbreakers take over.",
+      "short_description": "Ruins dates with awkward interference."
+    },
+    "Serial Killer": {
+      "display_name": "Commitment-Phobe",
+      "description": "You despise relationships and run screaming from feelings, dumping anyone who gets close!\nUse `/kill player-name` each night to eliminate singles from the dating pool.\nYou win when you are the last single standing.",
+      "short_description": "Ghosts and dumps everyone to be alone."
+    },
+    "Jester": {
+      "display_name": "Clingy Ex",
+      "description": "You live for chaotic public drama and messy breakup scenes!\nYour goal is to be dumped in front of the entire group.\nYou win if you are voted out during the day.",
+      "short_description": "Wins if dumped by group vote."
+    },
+    "Vigilante": {
+      "display_name": "Cynical Bachelor",
+      "description": "Burned by love before, you navigate the dating scene on your own cynical terms.\nEach night choose to break a heart (`/kill player-name`) or interrupt a date (`/block player-name`).\nYou win by being the last eligible single.",
+      "short_description": "Independent single who can dump or block."
+    }
+  },
+  "Office Restructuring": {
+    "Town Cop": {
+      "display_name": "Compliance Auditor",
+      "description": "You review expense reports and audit communications for unethical behavior.\nUse `/investigate player-name` at night to see if a colleague is a loyal employee, a ruthless downsizing exec, or a rogue poacher.\nYou win when the workforce is saved from layoffs.",
+      "short_description": "Audits employees to verify allegiance."
+    },
+    "Town Doctor": {
+      "display_name": "HR Retention Partner",
+      "description": "You fight for talent, renew contracts, and shield employees from corporate pink slips!\nUse `/heal player-name` at night to protect a coworker from being fired or made redundant.\nYou win when the company is protected.",
+      "short_description": "Protects employees from termination."
+    },
+    "Plain Townie": {
+      "display_name": "Desk Worker",
+      "description": "A hardworking salaried employee trying to survive the quarterly restructuring.\nUse `/vote player-name` during the day in all-hands meetings to vote on employee terminations.\nYou win when all downsizing executives are ousted.",
+      "short_description": "Standard hardworking employee."
+    },
+    "Town Role Blocker": {
+      "display_name": "IT Systems Admin",
+      "description": "You hold the master admin passwords and can trigger a mandatory password reset or revoke access.\nUse `/block player-name` at night to lock someone out of their systems.\nYou win when the company is saved.",
+      "short_description": "Locks out systems to block night actions."
+    },
+    "Godfather": {
+      "display_name": "Restructuring Partner",
+      "description": "The ruthless management consultant brought in to aggressively slash headcounts.\nUse `/kill player-name` at night to issue a termination pink slip.\nYou win when the restructuring team dominates the company.",
+      "short_description": "Issues nightly termination pink slips."
+    },
+    "Mob Goon": {
+      "display_name": "Hatchet Associate",
+      "description": "An ambitious corporate drone helping management carry out the downsizing.\nYou take over issuing terminations if the Partner is removed.\nYou win when the restructuring team takes over.",
+      "short_description": "Aids in carrying out corporate layoffs."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Bureaucratic Gatekeeper",
+      "description": "You bury coworkers in endless requisition forms and red tape approval delays.\nUse `/block player-name` at night to stall someone's corporate tasks.\nYou win when the restructuring team takes over.",
+      "short_description": "Stalls a coworker with red tape."
+    },
+    "Serial Killer": {
+      "display_name": "The Poacher",
+      "description": "A rogue executive headhunter poaching key staff and gutting departments.\nUse `/kill player-name` each night to poach employees until you're the sole contractor standing.\nYou win when you are the last employee left.",
+      "short_description": "Poaches and fires everyone to be sole survivor."
+    },
+    "Jester": {
+      "display_name": "Severance Hunter",
+      "description": "You've read the policy manual and your dream is a massive golden parachute redundancy package!\nYour goal is to get laid off by company vote during the day.\nYou win if you are voted out.",
+      "short_description": "Wins if terminated by company vote."
+    },
+    "Vigilante": {
+      "display_name": "Freelance Contractor",
+      "description": "A mercenary gig-worker answering only to your own invoice.\nEach night choose to terminate (`/kill player-name`) or delay access (`/block player-name`).\nYou win by being the last worker left at the firm.",
+      "short_description": "Freelancer who can terminate or block."
+    }
+  },
+  "High Fantasy": {
+    "Town Cop": {
+      "display_name": "Inquisitor",
+      "description": "You seek out heresy and dark demonic pacts across the realm.\nUse `/investigate player-name` at night to uncover their true spiritual alignment.\nYou win when the forces of darkness are vanquished.",
+      "short_description": "Investigates alignments for heresy."
+    },
+    "Town Doctor": {
+      "display_name": "Cleric",
+      "description": "You channel divine healing radiance to ward off mortal blows.\nUse `/heal player-name` at night to shield an ally from death.\nYou win when evil is purged.",
+      "short_description": "Channels divine light to heal allies."
+    },
+    "Plain Townie": {
+      "display_name": "Villager",
+      "description": "A humble citizen of the kingdom.\nGather at the town square by day and use `/vote player-name` to banish dark forces.\nYou win when the kingdom is secure.",
+      "short_description": "Humble resident of the realm."
+    },
+    "Town Role Blocker": {
+      "display_name": "Tavern Bard",
+      "description": "You captivate adventurers with enchanting songs and intoxicating ale.\nUse `/block player-name` at night to distract a player from their quest.\nYou win when the kingdom is secure.",
+      "short_description": "Enchants and distracts a player at night."
+    },
+    "Godfather": {
+      "display_name": "Dark Lord",
+      "description": "The terrifying commander of the shadow cult.\nUse `/kill player-name` at night to strike down defenders of the realm.\nYou win when the shadow consumes the kingdom.",
+      "short_description": "Commands the nightly dark strikes."
+    },
+    "Mob Goon": {
+      "display_name": "Shadow Cultist",
+      "description": "A fanatical servant sworn to the Dark Lord.\nYou will ascend to lead the cult if your master falls.\nYou win when darkness prevails.",
+      "short_description": "Loyal disciple of the shadow."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Dark Sorceress",
+      "description": "You weave binding hexes and shadow wards.\nUse `/block player-name` at night to stifle someone's abilities.\nYou win when darkness prevails.",
+      "short_description": "Hexes a player to block their action."
+    },
+    "Serial Killer": {
+      "display_name": "Blood Assassin",
+      "description": "A merciless rogue claiming dark bounties on all who breathe.\nUse `/kill player-name` each night to harvest souls.\nYou win when you are the sole survivor.",
+      "short_description": "Ruthless rogue harvesting all souls."
+    },
+    "Jester": {
+      "display_name": "Cursed Madman",
+      "description": "Afflicted by an ancient madness, your soul can only be freed if the realm executes you!\nYour goal is to be banished or executed by public decree.\nYou win if you are lynched.",
+      "short_description": "Wins if executed by town decree."
+    },
+    "Vigilante": {
+      "display_name": "Wandering Ranger",
+      "description": "A solitary hunter of the untamed wilderness.\nEach night choose to loose a deadly arrow (`/kill player-name`) or lay a snaring trap (`/block player-name`).\nYou win by being the last survivor.",
+      "short_description": "Solitary ranger who can kill or snare."
+    }
+  },
+  "Cyberpunk": {
+    "Town Cop": {
+      "display_name": "Netwatch Agent",
+      "description": "You run deep neural scans and ICE-breakers to expose rogue operatives.\nUse `/investigate player-name` at night to scan a citizen's alignment.\nYou win when the syndicate is dismantled.",
+      "short_description": "Scans neural nets to verify alignment."
+    },
+    "Town Doctor": {
+      "display_name": "Ripperdoc",
+      "description": "Armed with med-gel and nanite injectors, you repair flatlining implants.\nUse `/heal player-name` at night to save someone from lethal cyber-hits.\nYou win when the streets are safe.",
+      "short_description": "Patches cyberware and heals players."
+    },
+    "Plain Townie": {
+      "display_name": "Street Chooh",
+      "description": "An everyday citizen surviving beneath the corporate monoliths.\nVote in the street council using `/vote player-name` during the day.\nYou win when the syndicate is eliminated.",
+      "short_description": "Standard resident of the neon sprawl."
+    },
+    "Town Role Blocker": {
+      "display_name": "Signal Jammer",
+      "description": "You broadcast localized EMP interference that fries communications.\nUse `/block player-name` at night to jam a runner's cyber-actions.\nYou win when the syndicate is eliminated.",
+      "short_description": "Jams comms to block night actions."
+    },
+    "Godfather": {
+      "display_name": "Syndicate Boss",
+      "description": "The cold-blooded corporate director pulling strings from the penthouse.\nUse `/kill player-name` at night to order a cyber-assassination.\nYou win when the syndicate owns the district.",
+      "short_description": "Orders nightly syndicate assassinations."
+    },
+    "Mob Goon": {
+      "display_name": "Cyber-Thug",
+      "description": "An augmented enforcer doing dirty work in the neon alleys.\nYou take command of the syndicate if your boss is flatlined.\nYou win when the syndicate takes over.",
+      "short_description": "Augmented syndicate street enforcer."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Black ICE Netrunner",
+      "description": "You fry neural processors with military-grade intrusion counter-measures.\nUse `/block player-name` at night to freeze a target's cyberware.\nYou win when the syndicate takes over.",
+      "short_description": "Fries neural links to block actions."
+    },
+    "Serial Killer": {
+      "display_name": "Cyberpsycho",
+      "description": "Overclocked on illegal chrome and severed from humanity, you slaughter indiscriminately.\nUse `/kill player-name` each night to rampage through the streets.\nYou win when you are the last survivor.",
+      "short_description": "Psychotic augmented killer on a rampage."
+    },
+    "Jester": {
+      "display_name": "Glitched Troll",
+      "description": "A nihilistic holonet prankster seeking ultimate virality through public deletion!\nYour goal is to get flatlined by public vote.\nYou win if you are lynched.",
+      "short_description": "Wins if flatlined by public vote."
+    },
+    "Vigilante": {
+      "display_name": "Solo Mercenary",
+      "description": "A freelance street samurai beholden to no megacorp.\nEach night choose to deploy a smart-gun (`/kill player-name`) or flashbang jammer (`/block player-name`).\nYou win by being the last survivor.",
+      "short_description": "Solo mercenary who can kill or jam."
+    }
+  },
+  "Comedy": {
+    "Town Cop": {
+      "display_name": "Neighborhood Karen",
+      "description": "You demand to speak to the manager and snoop through everyone's recycling bins!\nUse `/investigate player-name` at night to inspect someone's neighborhood standing.\nYou win when all troublemakers are expelled.",
+      "short_description": "Snoops on neighbors to verify alignment."
+    },
+    "Town Doctor": {
+      "display_name": "Essential Oils Guru",
+      "description": "Armed with lavender oil, kale smoothies, and healing crystals, you cure mortal wounds!\nUse `/heal player-name` at night to rub oils on someone and save their life.\nYou win when the neighborhood is peaceful.",
+      "short_description": "Cures attacks with essential oils."
+    },
+    "Plain Townie": {
+      "display_name": "Suburban Dad",
+      "description": "Rocking white New Balances and grilling tongs, you just want peace on your lawn.\nVote during the day in the HOA meeting using `/vote player-name`.\nYou win when the neighborhood is safe.",
+      "short_description": "Average suburban homeowner."
+    },
+    "Town Role Blocker": {
+      "display_name": "Door-to-Door Salesperson",
+      "description": "You trap neighbors in relentless 45-minute pitches for solar panels and vacuum cleaners!\nUse `/block player-name` at night to stall someone from doing anything else.\nYou win when the neighborhood is safe.",
+      "short_description": "Traps someone in an endless sales pitch."
+    },
+    "Godfather": {
+      "display_name": "HOA Overlord",
+      "description": "The ruthless ruler of the Homeowners Association who fines people for blade-of-grass infractions.\nUse `/kill player-name` at night to evict non-compliant residents.\nYou win when the HOA regime controls the suburb.",
+      "short_description": "Evicts residents in the night."
+    },
+    "Mob Goon": {
+      "display_name": "Bake Sale Enforcer",
+      "description": "An aggressive volunteer enforcing HOA decrees with dry brownies.\nYou take over the HOA if the Overlord is ousted.\nYou win when the HOA regime rules.",
+      "short_description": "Aggressive HOA volunteer."
+    },
+    "Mob Role Blocker": {
+      "display_name": "WiFi Disconnector",
+      "description": "You stealthily unplug the neighborhood router at the worst possible moments!\nUse `/block player-name` at night to cut off someone's internet connection.\nYou win when the HOA regime rules.",
+      "short_description": "Cuts off WiFi to prevent night actions."
+    },
+    "Serial Killer": {
+      "display_name": "Florida Man",
+      "description": "Riding into the night on a stolen lawnmower accompanied by pet alligators!\nUse `/kill player-name` each night to cause completely unhinged chaos.\nYou win when you are the last person standing.",
+      "short_description": "Unhinged chaotic lawnmower menace."
+    },
+    "Jester": {
+      "display_name": "Drama Queen",
+      "description": "You thrive on being canceled, melodramatic feuds, and getting kicked out of neighborhood groups!\nYour goal is to get publicly evicted by vote.\nYou win if you are lynched.",
+      "short_description": "Wins if voted out of the neighborhood."
+    },
+    "Vigilante": {
+      "display_name": "Mall Ninja",
+      "description": "Equipped with mall katanas, smoke pellets, and tactical sunglasses.\nEach night choose to strike (`/kill player-name`) or awkward-tackle (`/block player-name`).\nYou win by being the last survivor.",
+      "short_description": "Tactical backyard vigilante."
+    }
+  },
+  "Lovecraftian Horror": {
+    "Town Cop": {
+      "display_name": "Occult Alienist",
+      "description": "You decipher eldritch ciphers and assess psychological decay.\nUse `/investigate player-name` at night to divine if someone serves the ancient cosmic horrors.\nYou win when the cult is eradicated.",
+      "short_description": "Inspects minds for eldritch corruption."
+    },
+    "Town Doctor": {
+      "display_name": "Asylum Physician",
+      "description": "You administer laudanum and sedative draughts to preserve fragile minds from shattering.\nUse `/heal player-name` at night to protect an ally from cosmic predation.\nYou win when the horrors are banished.",
+      "short_description": "Saves allies from eldritch destruction."
+    },
+    "Plain Townie": {
+      "display_name": "Sane Resident",
+      "description": "A terrified citizen clinging desperately to human reason in an unraveling coastal town.\nVote at town hall using `/vote player-name` during the day.\nYou win when the eldritch menace is purged.",
+      "short_description": "Resident clinging to sanity."
+    },
+    "Town Role Blocker": {
+      "display_name": "Mesmerist",
+      "description": "You swing hypnotic pendulums and weave waking dreams.\nUse `/block player-name` at night to hypnotize an investigator or cultist into inaction.\nYou win when the horrors are banished.",
+      "short_description": "Hypnotizes someone into inaction."
+    },
+    "Godfather": {
+      "display_name": "High Priest of Dagon",
+      "description": "The blasphemous voice of the deep trench and ancient sea gods.\nUse `/kill player-name` at night to offer sacrifices to the ancient ones.\nYou win when the cult drowns the town in madness.",
+      "short_description": "Offers nightly eldritch sacrifices."
+    },
+    "Mob Goon": {
+      "display_name": "Deep One Hybrid",
+      "description": "A grotesque mutant born of coastal blasphemy.\nYou will lead the rites if the High Priest is slain.\nYou win when the ancient ones conquer.",
+      "short_description": "Grotesque cult mutant."
+    },
+    "Mob Role Blocker": {
+      "display_name": "Arkham Witch",
+      "description": "You whisper maddening incantations that shatter focus and resolve.\nUse `/block player-name` at night to overwhelm a mortal's mind.\nYou win when the ancient ones conquer.",
+      "short_description": "Maddens a player to block their action."
+    },
+    "Serial Killer": {
+      "display_name": "Eldritch Abomination",
+      "description": "A writhing horror from the stars that hungers for mortal minds and flesh.\nUse `/kill player-name` each night to devour all life.\nYou win when you are the sole entity left.",
+      "short_description": "Star-spawn entity devouring all life."
+    },
+    "Jester": {
+      "display_name": "Doomsday Prophet",
+      "description": "The stars have aligned in your head and you must be sacrificed in the town square to awaken the sleeper!\nYour goal is to get executed by public frenzy.\nYou win if you are lynched.",
+      "short_description": "Wins if lynched by frantic townsfolk."
+    },
+    "Vigilante": {
+      "display_name": "Paranoid Veteran",
+      "description": "Equipped with cold iron, warding salt, and a trench shotgun.\nEach night choose to blast an abomination (`/kill player-name`) or erect an elder sign (`/block player-name`).\nYou win by being the last survivor.",
+      "short_description": "Warded hunter who can kill or ward."
+    }
+  }
+}

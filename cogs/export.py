@@ -4,7 +4,7 @@ import discord
 from discord.ext import commands
 from discord import app_commands
 
-from cogs.exportcogs.sheets_client import get_sheets_client, connect_to_sheet
+from cogs.exportcogs.sheets_client import get_sheets_client, connect_to_sheet, log_game_setup_to_sheets
 from cogs.exportcogs.compiler import compile_standard_data, compile_analytics_data
 from cogs.exportcogs.exportstats import run_export_logic, handle_export_stats
 
@@ -30,6 +30,10 @@ class ExportCog(commands.Cog):
 
     def _compile_analytics_data(self, classic_games, stats_cog):
         return compile_analytics_data(classic_games, stats_cog)
+
+    async def log_game_setup(self, setup_data: dict) -> bool:
+        """Logs the initial rules setup for a newly scheduled game."""
+        return await log_game_setup_to_sheets(setup_data)
 
     async def run_export_logic(self, channel: discord.TextChannel = None, game_mode: str = None):
         return await run_export_logic(self, channel, game_mode)

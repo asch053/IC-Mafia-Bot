@@ -2,7 +2,9 @@
 import logging
 import discord
 import gspread
-from cogs.exportcogs.compiler import compile_standard_data, compile_analytics_data
+import config
+from cogs.exportcogs.compiler import compile_standard_data, compile_analytics_data, compile_rules_data
+from cogs.exportcogs.sheets_client import RULES_SHEET_HEADERS
 
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -66,6 +68,29 @@ async def run_export_logic(self, channel: discord.TextChannel = None, game_mode:
             "Losses", "Town Games", "Mafia Games", "Neutral/SK Games", "Plain Town Games",
             "Town Wins", "Mafia Wins", "Neutral/SK Wins", "Total Night Deaths"
         ], analytics_rows)
+
+        # Sync rules setup for finished games if any are missing from Rules Setup tab
+        rules_tab_name = getattr(config, 'GOOGLE_SHEET_RULES_TAB', 'Rules Setup')
+        try:
+            try:
+                ws_rules = sheet.worksheet(rules_tab_name)
+            except gspread.WorksheetNotFound:
+                ws_rules = sheet.add_worksheet(title=rules_tab_name, rows=100, cols=len(RULES_SHEET_HEADERS))
+                ws_rules.append_row(RULES_SHEET_HEADERS)
+
+            existing_rules_vals = ws_rules.get_all_values()
+            if not existing_rules_vals:
+                ws_rules.append_row(RULES_SHEET_HEADERS)
+                existing_rules_vals = [RULES_SHEET_HEADERS]
+
+            existing_gids = set(r[0] for r in existing_rules_vals[1:] if r)
+            rules_rows = compile_rules_data(all_games)
+            new_rules_rows = [r for r in rules_rows if r[0] not in existing_gids]
+            if new_rules_rows:
+                ws_rules.append_rows(new_rules_rows)
+                logger.info(f"Appended {len(new_rules_rows)} missing game rules setups to '{rules_tab_name}'.")
+        except Exception as e:
+            logger.warning(f"Could not sync Rules Setup tab during export: {e}")
 
         if self.bot.guilds:
             main_guild = self.bot.guilds[0]

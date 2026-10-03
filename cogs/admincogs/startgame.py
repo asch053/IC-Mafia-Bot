@@ -22,7 +22,10 @@ async def start_game_command(
     mafia_rb_req: int = None,
     sk_player_count: int = None,
     town_cop_req: int = None,
-    town_doctor_req: int = None
+    town_doctor_req: int = None,
+    gf_night_immune_choice: str = "Yes",
+    sk_night_immune_choice: str = "Yes",
+    br_skip_day_choice: str = "No"
 ):
     """Command to start a new game instance with the specified parameters."""
     if mafia_ratio is None:
@@ -38,9 +41,11 @@ async def start_game_command(
     if town_doctor_req is None:
         town_doctor_req = getattr(config, 'min_doctor_players', 7)
 
-    logger.critical(
+    logger.info(
         f"Starting game with parameters: game_type={game_type}, phase_hours={phase_hours}, start_datetime={start_datetime},"
         f"narration_type={narration_type}, gf_investigate_choice={gf_investigate_choice}, sk_investigate_choice={sk_investigate_choice},"
+        f"gf_night_immune_choice={gf_night_immune_choice}, sk_night_immune_choice={sk_night_immune_choice},"
+        f"br_skip_day_choice={br_skip_day_choice},"
         f"mafia_ratio={mafia_ratio}, town_rb_req={town_rb_req}, mafia_rb_req={mafia_rb_req}, sk_player_count={sk_player_count},"
         f"town_cop_req={town_cop_req}, town_doctor_req={town_doctor_req}"
     )
@@ -63,6 +68,9 @@ async def start_game_command(
 
     gf_investigate = (gf_investigate_choice.lower() == "yes")
     sk_investigate = (sk_investigate_choice.lower() == "yes")
+    gf_night_immune = (str(gf_night_immune_choice).strip().lower() in ("yes", "true", "1"))
+    sk_night_immune = (str(sk_night_immune_choice).strip().lower() in ("yes", "true", "1"))
+    br_skip_day = (str(br_skip_day_choice).strip().lower() in ("yes", "true", "1"))
 
     if not isinstance(town_rb_req, int):
         await interaction.response.send_message("Invalid town role blocker requirement. Please provide an integer.", ephemeral=True)
@@ -99,5 +107,35 @@ async def start_game_command(
         mafia_rb_req=mafia_rb_req,
         sk_player_count=sk_player_count,
         town_cop_req=town_cop_req,
-        town_doctor_req=town_doctor_req
+        town_doctor_req=town_doctor_req,
+        gf_night_immune=gf_night_immune,
+        sk_night_immune=sk_night_immune,
+        br_skip_day=br_skip_day
     )
+
+    # Log rules setup to Google Sheets
+    try:
+        from cogs.exportcogs.sheets_client import log_game_setup_to_sheets
+        setup_data = {
+            "game_id": new_game.game_settings.get("game_id", start_datetime_obj.strftime("%Y%m%d-%H%M%S")),
+            "scheduled_at_utc": datetime.now(timezone.utc).isoformat(),
+            "scheduled_by": getattr(interaction.user, "name", str(interaction.user)),
+            "game_type": game_type,
+            "story_type": narration_type,
+            "start_time_utc": start_datetime_obj.isoformat(),
+            "phase_hours": phase_hours,
+            "mafia_ratio": float(mafia_ratio),
+            "town_cop_req": town_cop_req,
+            "town_doctor_req": town_doctor_req,
+            "town_rb_req": town_rb_req,
+            "mafia_rb_req": mafia_rb_req,
+            "sk_player_count": sk_player_count,
+            "gf_investigate": gf_investigate,
+            "sk_investigate": sk_investigate,
+            "gf_night_immune": gf_night_immune,
+            "sk_night_immune": sk_night_immune,
+            "br_skip_day": br_skip_day
+        }
+        await log_game_setup_to_sheets(setup_data)
+    except Exception as e:
+        logger.error(f"Error logging rules setup to Google Sheets: {e}", exc_info=True)

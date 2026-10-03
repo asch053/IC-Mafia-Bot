@@ -55,6 +55,45 @@ def compile_standard_data(games):
     return games_rows, players_rows, votes_rows
 
 
+def compile_rules_data(games):
+    """Compiles rules setup data from saved game summaries."""
+    rules_rows = []
+    for game in games:
+        summ = game.get('game_summary', {})
+        gid = summ.get('game_id')
+        if not gid:
+            continue
+
+        def format_choice(val):
+            if isinstance(val, bool):
+                return "Yes" if val else "No"
+            if isinstance(val, str):
+                return "Yes" if val.lower() in ("yes", "true", "1") else "No"
+            return "No"
+
+        rules_rows.append([
+            gid,
+            summ.get('scheduled_at_utc', summ.get('start_date_utc', '')),
+            summ.get('scheduled_by', 'System'),
+            summ.get('game_type', 'classic'),
+            summ.get('story_type', 'Classic Mafia'),
+            summ.get('start_date_utc', ''),
+            summ.get('phase_hours', ''),
+            summ.get('mafia_ratio', ''),
+            summ.get('town_cop_req', ''),
+            summ.get('town_doctor_req', ''),
+            summ.get('town_rb_req', ''),
+            summ.get('mafia_rb_req', ''),
+            summ.get('sk_player_count', ''),
+            format_choice(summ.get('gf_investigate', False)),
+            format_choice(summ.get('sk_investigate', False)),
+            format_choice(summ.get('gf_night_immune', True)),
+            format_choice(summ.get('sk_night_immune', True)),
+            format_choice(summ.get('br_skip_day', False))
+        ])
+    return rules_rows
+
+
 def compile_analytics_data(classic_games, stats_cog):
     """Compiles comprehensive advanced analytics per player."""
     player_map = defaultdict(lambda: {

@@ -1,3 +1,11 @@
+<!-- Obsidian Navigation Header -->
+> [!NOTE] Knowledge Graph Navigation
+> - **Parent Documentation Hub**: [[Documentation_Hub_Overview]]
+> - **Mafia Bot Docs Hub**: [[Mafia_Bot_Docs_Overview]]
+> - **Companion Document**: [[DETAILED_REQUIREMENTS]]
+> - **System Overviews**: [[Bot_Setup_Overview]], [[Cogs_Overview]], [[Game_System_Overview]], [[Game_Engine_Overview]], [[Game_Actions_Overview]], [[Community_System_Overview]], [[Utilities_Overview]], [[Tests_Overview]]
+> - **Root Index**: [[Root_Project_Overview]]
+
 # IC Mafia Bot — High-Level Requirements Document
 
 ## 1. Document Overview
@@ -22,15 +30,15 @@ flowchart TD
     end
 
     subgraph Subsystems["Modular Subsystems"]
-        AdminSub["Admin Subsystem (/cogs/admincogs/)"]
-        GameSub["Game Subsystem (/cogs/gamecogs/)"]
-        InfoSub["Info Subsystem (/cogs/infocogs/)"]
-        StatsSub["Stats Subsystem (/cogs/statscogs/)"]
-        CommSub["Community Subsystem (/cogs/communitycogs/)"]
-        ExportSub["Export Subsystem (/cogs/exportcogs/)"]
-        EngineSub["Game Engine (/game/engine/)"]
-        ActionSub["Night Actions (/game/actions/)"]
-        NarrSub["Narration (/game/narration/)"]
+        AdminSub["[[Admin_Cogs_Overview|Admin Subsystem (/cogs/admincogs/)]]"]
+        GameSub["[[Game_Cogs_Overview|Game Subsystem (/cogs/gamecogs/)]]"]
+        InfoSub["[[Info_Cogs_Overview|Info Subsystem (/cogs/infocogs/)]]"]
+        StatsSub["[[Stats_Cogs_Overview|Stats Subsystem (/cogs/statscogs/)]]"]
+        CommSub["[[Community_Cogs_Overview|Community Subsystem (/cogs/communitycogs/)]]"]
+        ExportSub["[[Export_Cogs_Overview|Export Subsystem (/cogs/exportcogs/)]]"]
+        EngineSub["[[Game_Engine_Overview|Game Engine (/game/engine/)]]"]
+        ActionSub["[[Game_Actions_Overview|Night Actions (/game/actions/)]]"]
+        NarrSub["[[Game_Narration_Overview|Narration (/game/narration/)]]"]
     end
 
     User -->|Slash Commands| Cogs
@@ -49,9 +57,9 @@ flowchart TD
 | Feature ID | Feature Name | Description | Trigger / Actor | Preconditions | Expected Outcome | Error Handling |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **INF-01** | Environment Configuration | Loads bot tokens, role IDs, channel IDs, and game constants from `.env` and `config.py`. | Bot startup / System | Valid `.env` file present. | Configuration variables loaded into memory. | Halts startup with error if critical tokens or IDs are missing. |
-| **INF-02** | Structured Logging | Configures console and rotating file loggers with custom formatting. | `setup/loggersetup.py` / System | Write permissions on `logs/` directory. | Generates dated debug and error log files. | Falls back to standard console logging if file system is unwritable. |
-| **INF-03** | Dynamic Cog Loading | Scans `cogs/` directory and registers top-level cogs into `bot`. | `setup/cogsetup.py` / Bot startup | Cogs subclass `commands.Cog` and contain `setup(bot)`. | All slash command cogs loaded without loading internal subfolders. | Logs failure per cog without crashing remaining extensions. |
-| **INF-04** | Global Command Sync | Registers slash application commands with the Discord API. | `setup/cogsetup.py` / Bot startup | Valid bot token with application commands scope. | Slash commands available to server members. | Logs sync failure and rate limits. |
+| **INF-02** | Structured Logging | Configures console and rotating file loggers with custom formatting. | [[Bot_Setup_Overview|setup/loggersetup.py]] / System | Write permissions on [[Logs_Directory_Overview|logs/]] directory. | Generates dated debug and error log files. | Falls back to standard console logging if file system is unwritable. |
+| **INF-03** | Dynamic Cog Loading | Scans [[Cogs_Overview|cogs/]] directory and registers top-level cogs into `bot`. | [[Bot_Setup_Overview|setup/cogsetup.py]] / Bot startup | Cogs subclass `commands.Cog` and contain `setup(bot)`. | All slash command cogs loaded without loading internal subfolders. | Logs failure per cog without crashing remaining extensions. |
+| **INF-04** | Global Command Sync | Registers slash application commands with the Discord API. | [[Bot_Setup_Overview|setup/cogsetup.py]] / Bot startup | Valid bot token with application commands scope. | Slash commands available to server members. | Logs sync failure and rate limits. |
 | **INF-05** | Standardized Game State | Maintains a single active game instance accessible across all cogs via `bot.game_instance`. | Bot startup / System | `commands.Bot` initialized. | `bot.game_instance` stores `None` or active `Game` object. | Handlers safely return ephemeral error if game is `None`. |
 
 ---
@@ -73,7 +81,8 @@ flowchart TD
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **PLR-01** | Join Game (`/mafiajoin`) | Registers a user into the pending game during signups. | `/mafiajoin` / Player | Game phase is `signup`. Player not already joined. Player count < max. | Creates `Player` object, assigns Discord `Living` role, announces player in game channel. | Ephemeral rejection if already joined, game full, or signups closed. |
 | **PLR-02** | Leave Game (`/mafialeave`) | Removes a player from the game during the signup phase. | `/mafialeave` / Player | Game phase is `signup`. Player currently registered. | Removes player from `game.players`, removes `Living` role, notifies channel. | Ephemeral rejection if not signed up or if signups already ended. |
-| **PLR-03** | Auto NPC Balancing | Fills empty slots with named NPC bots if configured and needed for minimum threshold. | Engine / `prepare_game` | Player count < required minimum and NPC fill enabled. | Generates NPC `Player` instances with distinct names from `bot_names.txt`. | Cancels game start if minimum human threshold is not reached. |
+| **PLR-03** | Auto NPC Balancing | Fills empty slots with named NPC bots if configured and needed for minimum threshold. | Engine / `prepare_game` | Player count < required minimum and NPC fill enabled. | Generates NPC `Player` instances with distinct names from [[Game_Setup_Data_Overview|bot_names.txt]]. | Cancels game start if minimum human threshold is not reached. |
+| **PLR-04** | Automated NPC Decisions | Executes automated night abilities and day lynch votes for living NPCs without human intervention. | Engine / `process_npc_night_actions`, `process_npc_votes` | Living NPC players present during phase transitions. | At night end, NPC power roles target random valid players (Godfather/SK kills, Doctor heals, Blocker blocks, Cop investigates). At day end, unvoted NPCs cast random lynch votes (Mafia bots avoid fellow Mafia). | Gracefully skips self-targeting and invalid candidates. |
 
 ---
 
@@ -126,3 +135,29 @@ flowchart TD
 | **STA-05** | Hall of Records (`/hall_of_records`) | Displays milestone records (longest game, most votes, most kills). | `/hall_of_records` / Any User | Completed classic games exist. | Sends hall of records summary embed. | Notifies if no records found. |
 | **STA-06** | Google Sheets Export (`/exportstats`) | Pushes updated game history and stats to Google Sheets API. | `/exportstats` / Admin | Valid Google API credentials. | Updates remote spreadsheet for website consumption. | Logs authentication error and sends ephemeral failure message. |
 
+---
+
+### Table 9: Information & Protocol Commands
+| Feature ID | Feature Name | Description | Trigger / Actor | Preconditions | Expected Outcome | Error Handling |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| **INF-06** | Game Rules Protocol (`/mafiarules`) | Sends polished Discord embed with localized start times, consolidated conduct rules, dynamic setup blockquotes, and bulleted faction objectives. | `/mafiarules` / Any User | None. | Sends ephemeral rules embed generated by `game/data/getrules.py`. | Falls back to static rules if dynamic instance unavailable. |
+| **INF-07** | Roles Information (`/mafiaroles`) | Displays encyclopedia of all configured roles, active abilities, alignment, and immunities. | `/mafiaroles` / Any User | `role_definition.json` present. | Posts detailed role guide embed in DM or channel. | Sends error embed if role definition file is missing. |
+| **INF-08** | Bot & Game Info (`/mafiainfo`) | Displays comprehensive bot version, author details, and overview instructions. | `/mafiainfo` / Any User | None. | Posts general information embed. | Handles unexpected exceptions gracefully. |
+
+---
+
+## 🔗 Obsidian Knowledge Graph Links
+- **Master Root Index**: [[Root_Project_Overview]]
+- **Documentation Hub**: [[Documentation_Hub_Overview]]
+- **Mafia Bot Docs Hub**: [[Mafia_Bot_Docs_Overview]]
+- **Detailed Requirements & Unit Tests**: [[DETAILED_REQUIREMENTS]]
+- **Core Bot Subsystems**:
+  - [[Bot_Setup_Overview]]: Startup and logging
+  - [[Cogs_Overview]]: Slash command dispatcher
+  - [[Admin_Cogs_Overview]]: Admin commands
+  - [[Game_Cogs_Overview]]: Gameplay commands
+  - [[Game_Engine_Overview]]: State machine loop
+  - [[Game_Actions_Overview]]: Night action resolution
+  - [[Community_System_Overview]]: Player quirks and reviews
+  - [[Utilities_Overview]]: Shared helper functions
+  - [[Tests_Overview]]: QA test suite

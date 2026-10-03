@@ -13,7 +13,7 @@ async def load_cogs(bot):
             extension_name = f"cogs.{filename[:-3]}"
             try:
                 await bot.load_extension(extension_name)
-                logger.critical(f"Loaded cog: {filename}")
+                logger.info(f"Loaded cog: {filename}")
             except Exception as e:
                 logger.error(f"Failed to load cog {filename}: {e}", exc_info=True)
     logger.info("Cogs loaded.")
