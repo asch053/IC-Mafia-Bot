@@ -1,27 +1,26 @@
 import logging
 import os
 
-import bot
-
-# Import logging from the main bot file to ensure consistent logging configuration
 logger = logging.getLogger(__name__)
 
-# Load cogs
+
 async def load_cogs(bot):
+    """Loads all modular cog extensions from the ./cogs directory and syncs commands."""
     logger.info("Loading cogs...")
-    for filename in os.listdir("./cogs"):
-        if filename.endswith(".py"):
+    cogs_dir = os.path.join(os.path.dirname(__file__), "..", "cogs")
+    for filename in sorted(os.listdir(cogs_dir)):
+        if filename.endswith(".py") and not filename.startswith("__"):
+            extension_name = f"cogs.{filename[:-3]}"
             try:
-                bot.load_extension(f"cogs.{filename[:-3]}")
+                await bot.load_extension(extension_name)
                 logger.critical(f"Loaded cog: {filename}")
             except Exception as e:
-                logger.error(f"Failed to load cog {filename}: {e}")
+                logger.error(f"Failed to load cog {filename}: {e}", exc_info=True)
     logger.info("Cogs loaded.")
-    # ensure all commands are synced globally with Discord
+
     logger.info("Syncing commands globally...")
     try:
         synced = await bot.tree.sync()
         logger.info(f"Synced {len(synced)} commands globally.")
-        logger.info("Commands synced globally.")
     except Exception as e:
-        logger.error(f"Failed to sync commands: {e}")
+        logger.error(f"Failed to sync commands: {e}", exc_info=True)

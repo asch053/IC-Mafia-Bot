@@ -34,16 +34,9 @@ def test_approve_quirk():
         m = mock_open()
         with patch("builtins.open", m):
             approve_quirk_logic(user_id, quirk)
-
-            handle = m()
-            written_data = "".join(call.args[0] for call in handle.write.call_args_list)
-            data = json.loads(written_data)
-            assert data["456"] == quirk
-        with patch("builtins.open", m):
-            approve_quirk_logic(user_id)
             # Verify the file was opened for writing
             m.assert_called_once_with(DATA_PATH, 'w')
-            
+
             # Check what was actually 'written' to the mock file
             handle = m()
             # Capture all calls to write() and join them

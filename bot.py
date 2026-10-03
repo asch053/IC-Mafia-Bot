@@ -18,14 +18,16 @@ intents = discord.Intents.default()
 intents.members = True
 intents.message_content = True
 bot = commands.Bot(command_prefix=config.BOT_PREFIX, intents=intents, owner_id=config.OWNER_ID)
+bot.game_instance = None  # Single source of truth for active game
 logger.critical("Bot instance created.")
 
-# --- 3. Load Cogs ---
-@bot.event
-async def setuphook():
-    logger.critical(f"Bot is ready. Logged in as {bot.user} (ID: {bot.user.id})")
+# --- 3. Setup Hook to Load Cogs and Sync Commands ---
+async def setup_hook():
+    logger.critical("Bot setup hook running: Loading cogs and syncing commands...")
     await cogsetup.load_cogs(bot)
     logger.critical("All cogs loaded and commands synced.")
+
+bot.setup_hook = setup_hook
 
 # --- 4. Run the Bot ---
 @bot.event
@@ -34,4 +36,5 @@ async def on_ready():
     logger.critical("Bot is now running.")
 
 # --- 5. Start the Bot ---
-asyncio.run(startbot.main(bot))
+if __name__ == "__main__":
+    asyncio.run(startbot.main(bot))
