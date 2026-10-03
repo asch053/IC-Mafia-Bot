@@ -1,0 +1,119 @@
+{
+    "Classic Mafia": {
+        "description": "Set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, noir-inspired, and laden with paranoia. Nothing supernatural, just human nature at its darkest. The changes are political, criminal, and social, not supernatural. The deaths, if any, are violent but realistic. Night kills are done in darkness and sneaky. Day lynches are chaotic and democratic, with crowds and yelling.",
+        "classic": {
+            "atmosphere": "1920s Prohibition era, gritty noir, fedoras, speakeasies, cigar smoke, and looming mobsters.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role (e.g., 'Mafia', 'Cop') UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe the shadowy struggle or near-miss cinematically without naming the attacker.",
+            "writing_style": "- Tone: Melodramatic, suspenseful, slightly theatrical, and deeply atmospheric.\n- Day Phases: Describe the chaotic democratic process, mob mentality, and desperate pleas.\n- Night Phases: Describe the grim morning discovery of the gruesome scene."
+        },
+        "battle_royale": {
+            "atmosphere": "1920s Prohibition era, gritty noir. The streets have erupted into a chaotic, free-for-all mob war.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\nAll kills should include the details about the killer stalking and killing their victim.\n- MULTI-KILLS: If multiple people die, narrate it as a chaotic crossfire in the dark alleys or a series of brutal, intertwined hits.",
+            "writing_style": "- Tone: Action-packed, gritty, intense, and melodramatic.\n- Day Phases: Tense standoffs, finger-pointing, and brutal mob justice.\n- Night Phases: Chaotic shootouts and ruthless ambushes. Make sure to include the specific killer killing their specific victim and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Horror": {
+        "description": "A chilling, blood-curdling survival horror and classic slasher setting. Set in a secluded lakeside camp, a fog-shrouded mountain retreat, or a decaying small town where a sinister presence lurks in the shadows. The atmosphere is tense, visceral, and filled with creeping dread. Flickering flashlights, floorboards creaking, severed telephone lines, and the chilling realization that someone among the group is a masked killer. The deaths are brutal, gory, and terrifying.",
+        "classic": {
+            "atmosphere": "A storm-battered summer camp in the deep woods. Thunder rattles the cabin windows, rain pours relentlessly, and the power has just failed.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS explicitly killed this phase. Refer to attackers as 'the masked killer', 'the butcher', or 'a looming figure with a blade'.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a heart-pounding chase through the trees or a desperate barricade holding firm just in time.",
+            "writing_style": "- Tone: Visceral, suspenseful, dark, and terrifying with classic slasher tropes.\n- Day Phases: Panicked arguments in the mess hall, frantic finger-pointing, and desperate attempts to eliminate the killer before nightfall.\n- Night Phases: Gruesome discoveries at dawn—shattered windows, blood-stained cabins, and gruesome slasher scenes."
+        },
+        "battle_royale": {
+            "atmosphere": "The entire campsite or abandoned asylum has descended into a chaotic, every-survivor-for-themselves bloodbath where fear has driven everyone completely insane.",
+            "custom_rules": "- TRANSPARENCY: Open information. Everyone is armed and hunting one another. Detail the stalker ambushing the victim and the vicious struggle that follows.\n- MULTI-KILLS: Narrate multiple deaths as brutal back-to-back slasher encounters in the rain and dark.",
+            "writing_style": "- Tone: Relentless slasher action, frantic terror, and brutal melee combat.\n- Day Phases: Standoffs with makeshift weapons and frantic accusations.\n- Night Phases: Ruthless ambushes with axes, machetes, chainsaws, and hunting knives. Highlight the killer and their brutal weapon."
+        }
+    },
+    "Explicit Kinky NSFW": {
+        "description": "An upscale, decadent underground fetish club and orgy dungeon where consenting adults (everyone is strictly R18) explore their deepest sexual desires and power dynamics. The theme is sexual, seductive, decadent, provocative, and charged with intense sexual tension. Dominant and submissive play, leather, latex, ropes, wax, and velvet masks. Eliminations represent players being thoroughly mastered, pushed past their endurance limits, or publicly disciplined and banished to the aftercare lounge. Be as explicit as possible, but always consensual and safe. The deaths are erotic, intense, and highly sexualized. Nudity is allowed",
+        "classic": {
+            "atmosphere": "A dimly lit, lavish dungeon club with velvet curtains, polished leather, soft candlelight, and the quiet rhythm of whips and heavy breathing.",
+            "custom_rules": "- ADULT CONTENT: Strictly R18 consenting adults. Nudity, Sex, Sensual, dominant/submissive language, bondage, and erotic tension.\n- SECRECY: NEVER reveal a player's exact role UNLESS they are eliminated this phase. Refer to assailants anonymously as 'a dominant figure in black leather' or 'a masked master'.\n- NON-LETHAL DRAMA: If an attack is prevented, describe an intense session where aftercare or a firm safe word successfully interrupts the dominance.",
+            "writing_style": "- Tone: Sultry, provocative, intense erotic and explicit, psychological, and darkly alluring.\n- Day Phases: Heated council debates in the lounge, velvet-gloved power plays, and unanimous votes to discipline and expel non-compliant guests.\n- Night Phases: Tantalizing, secret private chamber encounters leading to dramatic, breathless climaxes where a player is eliminated from the session."
+        },
+        "battle_royale": {
+            "atmosphere": "A wild, uninhibited free-for-all across the entire dungeon mansion where every guest is competing to dominate all others and emerge as the Supreme Master of the night.Everything is very explicit and sexual. Everyone wears bondage gear that is very revealing and fetishistic. The atmosphere is decadent, erotic, and charged with intense sexual tension.",
+            "custom_rules": "- TRANSPARENCY: Every player is competing to dominate everyone else. Detail the specific dominant player overcoming their specific partner.\n- MULTI-KILLS: Narrate as simultaneous, decadent scenes of overwhelming passion and total restraint across multiple chambers.",
+            "writing_style": "- Tone: Fast-paced, intensely erotic and explicit, breathless, and commanding.\n- Day Phases: Daring challenges, sensual posturing, and competitive power dynamics.\n- Night Phases: Ruthless seductions, elaborate rope ties, and exhaustive submissions where victims tap out."
+        }
+    },
+    "Rom Com": {
+        "description": "A charming, lighthearted, and witty romantic comedy set in a bustling city, cozy coastal retreat, or a glamorous reality dating show. STRICTLY SFW AND NON-LETHAL: There is absolutely NO murder, NO death, NO corpses, and NO gore! Eliminations represent relationship heartbreak: being dumped, ghosted, unmatched on dating apps, friend-zoned, or publicly called out on a date!",
+        "classic": {
+            "atmosphere": "A vibrant, sun-drenched city filled with rooftop cocktail bars, cozy coffee shops, central park benches, and neurotic singles desperate for romance.",
+            "custom_rules": "- STRICTLY NON-DEATH: Absolutely NO murder, blood, violence, or corpses! Eliminations mean a player was dumped, ghosted, or had their heart broken, leaving them out of the dating pool!\n- SECRECY: NEVER reveal a player's role UNLESS they are dumped this phase. Refer to heartbreakers anonymously as 'a mysterious smooth-talker' or 'a toxic dater in a trench coat'.\n- SFW RELATIONSHIPS: Keep the tone PG-13/SFW. Focus on funny dating misadventures, romantic tropes, spilled wine, and awkward silences.\n- NON-LETHAL DRAMA: If an attack is prevented, narrate a loyal wingman swooping in with a fake emergency call or emergency ice cream to save the date!",
+            "writing_style": "- Tone: Witty, charming, heartwarming, slightly satirical, and fast-paced like an iconic 90s/2000s rom-com movie.\n- Day Phases: Chaotic brunch debates, reviewing dating red flags, comparing notes, and voting to publicly dump the most suspicious dater.\n- Night Phases: Disastrous candle-lit dinners, ghosting texts, and morning discoveries that someone was dumped and left crying into their pillow."
+        },
+        "battle_royale": {
+            "atmosphere": "A high-stakes, speed-dating elimination reality show where every single is out for themselves to be the last eligible bachelor or bachelorette standing!",
+            "custom_rules": "- STRICTLY NON-DEATH: No violence or death. Eliminations are ruthless on-camera breakups, public dumping, and blocked phone numbers.\n- TRANSPARENCY: Name the dater who delivered the breakup and the heartbroken victim who was dumped.\n- MULTI-KILLS: Narrate as a cascade of awkward double dates and chaotic reality-TV breakup drama.",
+            "writing_style": "- Tone: Snarky, comedic, reality-TV dramatic, and fast-paced.\n- Day Phases: Heated group confessionals and voting someone off the island/dating pool.\n- Night Phases: Brutal blind dates going up in flames, drinks thrown in faces, and swift, theatrical dumpings."
+        }
+    },
+    "Office Restructuring": {
+        "description": "A dry, witty corporate office comedy and workplace restructuring drama (inspired by The Office, Succession, and Severance). STRICTLY SFW AND NON-LETHAL: There is NO physical violence, NO murder, and NO blood! Eliminations represent corporate exits: being fired, laid off, handed a pink slip, made redundant, placed on a performance improvement plan (PIP), or rage-quitting!",
+        "classic": {
+            "atmosphere": "A sterile, fluorescent-lit corporate headquarters with buzzing water coolers, endless Zoom invites, motivational posters, and the chilling rumor of incoming management consultants.",
+            "custom_rules": "- STRICTLY NON-DEATH: Absolutely NO killing, blood, or corpses! Eliminations mean an employee was terminated, laid off, or escorted from the building with a cardboard box!\n- SECRECY: NEVER reveal a player's role UNLESS they are terminated this phase. Refer to executive terminators anonymously as 'the consulting team' or 'senior leadership'.\n- SFW CORPORATE HUMOR: Focus on passive-aggressive emails ('per my last email'), jargon, expense report audits, broken coffee machines, and bureaucratic dread.\n- NON-LETHAL DRAMA: If an attack is prevented, narrate an HR rep intervening with a contract extension or IT rebooting the server just in time!",
+            "writing_style": "- Tone: Deadpan, satirical, comedic, mildly bureaucratic, and sharply relatable.\n- Day Phases: Tense all-hands town halls, performance review votes, and corporate finger-pointing to decide who gets made redundant.\n- Night Phases: Mysterious after-hours emails, keycards being deactivated at midnight, and morning discoveries of an empty cubicle and a cardboard box."
+        },
+        "battle_royale": {
+            "atmosphere": "A ruthless corporate down-sizing hunger games where management announces only ONE single employee will keep their job and receive the annual bonus!",
+            "custom_rules": "- STRICTLY NON-DEATH: No violence. Competitors eliminate colleagues via corporate sabotage, leaking embarrassing emails, or stealing vital project files.\n- TRANSPARENCY: Name the employee who orchestrated the termination and the colleague who was fired.\n- MULTI-KILLS: Narrate as mass departmental layoffs and simultaneous corporate expulsions.",
+            "writing_style": "- Tone: Cutthroat corporate satire, fast-paced boardroom drama, and dry humor.\n- Day Phases: Heated Slack debates and public performance review terminations.\n- Night Phases: Stealthy office sabotage, shredded spreadsheets, and sudden, cold HR exit interviews."
+        }
+    },
+    "Comedy": {
+        "description": "Satirical, chaotic, and darkly funny. Set in a mundane suburban neighborhood or a municipal park, where petty grievances escalate into absurd violence. The theme and mood are absurd, comedic, and satirical. The changes are ridiculous and over-the-top, often involving slapstick humor. The deaths, if any, are cartoonishly violent but not gory. Night kills are done in ridiculous ways (e.g., a lawnmower accident, a runaway shopping cart). Day lynches are chaotic and involve absurd accusations and mob mentality.",
+        "classic": {
+            "atmosphere": "A mundane suburban neighborhood with overly dramatic local council meetings and passive-aggressive residents.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe an absurd, slapstick near-miss involving ridiculous everyday objects.",
+            "writing_style": "- Tone: Satirical, absurd, and darkly funny.\n- Day Phases: Petty suburban arguments escalating into mob justice.\n- Night Phases: Ridiculous, Rube Goldberg-esque assassination attempts."
+        },
+        "battle_royale": {
+            "atmosphere": "A municipal park turned chaotic warzone. Suspiciously cheerful ice cream trucks, squeaky swings, and pure absurdity.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\nAll kills should include the details about the killer stalking and killing their victim.\nDescribe the weapons as absurd (e.g., pool noodles, rusty spoons, aggressive squirrels).\n- MULTI-KILLS: If multiple people die, narrate it as a chaotic, slapstick crossfire or a series of unfortunate, intertwined accidents.",
+            "writing_style": "- Tone: Absurd, comedic, satirical, and darkly funny.\n- Day Phases: Petty playground arguments escalating into vindictive justice.\n- Night Phases: Slapstick traps, ridiculous ambushes, and cartoonish chaos. Make sure to have each trap set by the specific killer and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "High Fantasy": {
+        "description": "An epic, archaic, and magical medieval realm, resembling a high-stakes D&D campaign with cobbled streets and ancient taverns. The theme and mood are fantastical, dramatic, and immersive. The changes are supernatural, magical, and heroic in nature. The deaths, if any, are often violent but can be described in a grandiose or mystical way. Night kills can involve assassinations by rogue assassins, dark magic rituals, or monster attacks. Day lynches can be grand council meetings, town square declarations, and swift medieval justice.",    
+        "classic": {
+            "atmosphere": "An epic, archaic, and magical medieval realm, resembling a high-stakes D&D campaign with cobbled streets and ancient taverns.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a clash of magic, steel, or a divine shield without naming the attacker.",
+            "writing_style": "- Tone: Epic, fantastical, and dramatic.\n- Day Phases: Grand council meetings, town square declarations, and swift medieval justice.\n- Night Phases: Assassinations by rogue assassins, dark magic rituals, or monster attacks."
+        },
+        "battle_royale": {
+            "atmosphere": "An epic, archaic magical realm plunged into a chaotic, every-mage-for-themselves magical war.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\nAll kills should include the details about the killer stalking and killing their victim.\n- MULTI-KILLS: Narrate it as a chaotic battlefield of wild magic, sweeping sword strikes, and devastating crossfire.",
+            "writing_style": "- Tone: High-octane fantasy action, gritty melee combat.\n- Day Phases: Tense standoffs with drawn blades and glowing staves.\n- Night Phases: Massive arcane explosions, volleyed arrows, and brutal skirmishes. Make sure to include the specific killer killing their specific victim and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Cyberpunk": {
+        "description": "A gritty, neon-soaked, and tech-heavy dystopian megacity. The theme and mood are cyber-noir, tense, and synth-wave atmospheric. The changes are technological, corporate, and cybernetic in nature. The deaths, if any, are often violent but can be described in a high-tech or cinematic way. Night kills can involve silent net-runner hacks, targeted corporate hits, or neon-lit assassinations. Day lynches can be corporate boardroom accusations or tense alleyway standoffs.",
+        "classic": {
+            "atmosphere": "A gritty, neon-soaked, and tech-heavy dystopian megacity. Rain-slicked streets and towering corporate monoliths.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS they are explicitly killed this phase.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a cyber-security firewall holding, a drone interception, or a jammed smart-gun.",
+            "writing_style": "- Tone: Cyber-noir, tense, and synth-wave atmospheric.\n- Day Phases: Corporate boardroom accusations or tense alleyway standoffs.\n- Night Phases: Silent net-runner hacks, targeted corporate hits, or neon-lit assassinations."
+        },
+        "battle_royale": {
+            "atmosphere": "A gritty, neon-soaked dystopian sprawl completely locked down in a violent gang and corporate mercenary turf war. Each player is out for themselves to survive and succeed in the new world order.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\nAll kills should include the details about the killer stalking and killing their victim.\n- MULTI-KILLS: Narrate it as a high-tech shootout with laser fire, explosions, and malfunctioning cybernetics.",
+            "writing_style": "- Tone: Frantic, hyper-violent, and cybernetic action.\n- Day Phases: Standoffs in crowded neon markets and brutal gang justice.\n- Night Phases: Full-scale shootouts, EMP blasts, and lethal drone strikes. Make sure to include the specific killer killing their specific victim and have the kill description reflect the personality of the killer and the method they used."
+        }
+    },
+    "Lovecraftian Horror": {
+        "description": "Set in a small town, normal townsfolk but a knowledge of a new force in town, but don't know who. Have the players be the ones to decide the fate of the town, the mafia alligned are on the side of the new dark force, the town alligned are against it, the neutral alligned are in it for their own mysterious ends. The theme and mood are suspenseful, eldritch, maddening, and terrifying. Something otherworldly and incomprehensible is influencing the town, driving people to madness and despair. The changes are supernatural, eldritch, and cosmic in nature. The deaths, if any, are gruesome and unsettling. Night kills are done in darkness and sneaky. Day lynches are chaotic and democratic, with crowds and yelling.", 
+        "classic": {
+            "atmosphere": "A small, isolated town where townsfolk sense a dark, incomprehensible force. Suspenseful, eldritch, maddening, and terrifying.",
+            "custom_rules": "- SECRECY: NEVER reveal a player's exact role UNLESS explicitly killed. Killers should be described as cultists or unearthly shadows.\n- NON-LETHAL DRAMA: If an attack is prevented, describe a horrifying brush with madness or a protective, glowing arcane ward.",
+            "writing_style": "- Tone: Creeping dread, cosmic horror, and psychological terror.\n- Day Phases: Paranoia-fueled witch-hunts, townsfolk descending into madness and despair.\n- Night Phases: Gruesome, unsettling, and incomprehensible deaths."
+        },
+        "battle_royale": {
+            "atmosphere": "A small town entirely consumed by an eldritch madness, where every resident has snapped and turned on each other in the name of cosmic entities.",
+            "custom_rules": "- SECRECY: No secrecy is needed, everyone is out to get everyone else killed. Use the name of the player that got killed along with the name of the player that killed them.\n- MULTI-KILLS: Narrate it as a chaotic descent into violent insanity, cult skirmishes, and mass hysteria.\nAll kills should include the details about the killer stalking and killing their victim.",
+            "writing_style": "- Tone: Frantic cosmic terror, blood-soaked madness, and despair.\n- Day Phases: Manic, screaming accusations and brutal, unhinged mob violence.\n- Night Phases: A chaotic bloodbath of maddened survivors and otherworldly horrors. Make sure to include the specific killer killing their specific victim and have the kill description reflect the personality of the killer and the method they used, but also have it be eldritch and horrifying in nature."
+        }
+    }
+}

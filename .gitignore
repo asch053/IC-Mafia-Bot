@@ -7,9 +7,15 @@ config.py
 .env.*
 
 # Ignore specific data folders
-data/community_submissions
-data/discord_setup
-data/narration
+data/community_submissions/*
+!data/community_submissions/community_submissions_data_overview.md
+
+
+data/discord_setup/*
+!data/discord_setup/discord_setup_data_overview.md
+
+data/narration/player_concepts.json
+data/narration/pending_quirks.json
 
 # --- Stats & Logs (Ignore ALL generated data) ---
 # This line ignores the entire stats folder (Alpha, Beta, AND Production)
