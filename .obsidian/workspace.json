@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "docs/DETAILED_REQUIREMENTS.md",
+                "file": "tests/Tests_Overview.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DETAILED_REQUIREMENTS"
+              "title": "Tests_Overview"
             }
           }
         ]
@@ -83,7 +83,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 307.5
   },
   "right": {
     "id": "50cb488d0a0811b9",
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "docs/DETAILED_REQUIREMENTS.md",
+                "file": "tests/Tests_Overview.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -188,12 +188,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "6cc13813f6bca150",
+  "active": "71c081cc6a370a6d",
   "lastOpenFiles": [
-    "2026-10-03.md",
-    "Untitled.canvas",
-    "Untitled.base",
-    "docs/HIGH_LEVEL_REQUIREMENTS.md",
-    "docs/DETAILED_REQUIREMENTS.md"
+    "data/player_concepts.json",
+    "Website/build_unified_leaderboard.py",
+    "Website/data/master_user_map.json",
+    "Website/data/role_definition.json",
+    "Website/data/battle_royale.json",
+    "Website/data/classic.json",
+    "Website/data/leaderboard.json",
+    "Website/js/api.js",
+    "Website/archive/LeaderBoard.html",
+    "Website/archive/classic.html",
+    "Website/archive/battleroyale.html",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_844/game_historic_844_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_5705/game_historic_5705_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6735/game_historic_6735_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6880/game_historic_6880_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_9921/game_historic_9921_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_14820/game_historic_14820_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_16557/game_historic_16557_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_22128/game_historic_22128_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_30413/game_historic_30413_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_35369/game_historic_35369_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_35451/game_historic_35451_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_37954/game_historic_37954_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_38590/game_historic_38590_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_39258/game_historic_39258_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_44647/game_historic_44647_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_50496/game_historic_50496_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_54849/game_historic_54849_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_56839/game_historic_56839_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_58647/game_historic_58647_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_69663/game_historic_69663_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_80385/game_historic_80385_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_265/game_historic_265_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_83338/game_historic_83338_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_82572/game_historic_82572_story.md",
+    "Other Projects/Mafia History Project/output/modern_bot_format/historic_82103/game_historic_82103_story.md",
+    "Untitled.canvas"
   ]
 }
