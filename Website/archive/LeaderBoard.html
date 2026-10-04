@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { font-family: Arial, sans-serif; color: #333; background-color: #f4f7f6; }
+    .leaderboard-container { max-width: 650px; margin: 0 auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    select { padding: 12px; font-size: 16px; width: 100%; margin-bottom: 20px; border-radius: 5px; border: 1px solid #ccc; background-color: #fff; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background-color: #2c3e50; color: white; font-weight: bold; text-transform: uppercase; font-size: 0.9em; }
+    tr:nth-child(even) { background-color: #f9f9f9; }
+    tr:hover { background-color: #f1f2f6; }
+    .rank { font-weight: bold; color: #e67e22; width: 50px; }
+    .score-val { font-weight: bold; color: #2980b9; }
+    .nav-link { display: inline-block; margin-bottom: 15px; text-decoration: none; color: #3498db; font-weight: bold; }
+    .nav-link:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+<div class="leaderboard-container">
+  <a href="index.html" class="nav-link">← Back to Home</a>
+  <h2>🏆 Mafia Hall of Records</h2>
+  
+  <select id="metricSelector" onchange="renderLeaderboard()">
+    <optgroup label="Competitive Ratings">
+        <option value="skill">Top 10: Overall Skill Score</option>
+        <option value="survivor">Greatest Survivor (Highest Survival %)</option>
+        <option value="redshirt">Red Shirt (Highest Death Rate)</option>
+        <option value="accuracy">Best Scumhunter (Highest Vote Accuracy %)</option>
+    </optgroup>
+    <optgroup label="Participation & Outcomes">
+        <option value="games_played">Most Games Played</option>
+        <option value="wins">Most Wins</option>
+        <option value="losses">Most Losses</option>
+    </optgroup>
+    <optgroup label="Faction Loyalty">
+        <option value="town_games">Most Town Games</option>
+        <option value="mob_games">Most Mafia Games</option>
+        <option value="sk_games">Most Neutral/SK Games</option>
+        <option value="plain_town">Most Plain Townie</option>
+    </optgroup>
+    <optgroup label="Faction Success">
+        <option value="town_wins">Most Town Wins</option>
+        <option value="mob_wins">Most Mafia Wins</option>
+        <option value="sk_wins">Most Neutral/SK Wins</option>
+    </optgroup>
+    <optgroup label="Tragedy & Death">
+        <option value="lynched">Most Times Lynched</option>
+        <option value="d1_lynched">Most Day 1 Lynches</option>
+        <option value="night_deaths">Most Total Night Deaths</option>
+        <option value="n1_deaths">Most Night 1 Deaths</option>
+    </optgroup>
+  </select>
+
+  <table id="leaderboardTable">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Player</th>
+        <th id="valueHeader">Score</th>
+      </tr>
+    </thead>
+    <tbody id="leaderboardBody">
+      <tr><td colspan="3">Loading data from Google Sheets... ⏳</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+  let allPlayers = [];
+
+  // Configuration mapping for every possible stat
+  // Defines the exact column name in the CSV, how to sort it, and how to format the number
+  const metricsConfig = {
+    "skill": { header: "Skill Score", sortDesc: true, format: "float", label: "Skill Score" },
+    "survivor": { header: "Survival %", sortDesc: true, format: "percent", label: "Survival Rate" },
+    "redshirt": { header: "Survival %", sortDesc: false, format: "inverse_percent", label: "Death Rate" },
+    "accuracy": { header: "Vote Accuracy %", sortDesc: true, format: "percent", label: "Vote Accuracy" },
+    
+    "games_played": { header: "Games Played", sortDesc: true, format: "int", label: "Games" },
+    "wins": { header: "Games Won", sortDesc: true, format: "int", label: "Wins" },
+    "losses": { header: "Losses", sortDesc: true, format: "int", label: "Losses" },
+    
+    "town_games": { header: "Town Games", sortDesc: true, format: "int", label: "Games" },
+    "mob_games": { header: "Mafia Games", sortDesc: true, format: "int", label: "Games" },
+    "sk_games": { header: "Neutral/SK Games", sortDesc: true, format: "int", label: "Games" },
+    "plain_town": { header: "Plain Town Games", sortDesc: true, format: "int", label: "Games" },
+    
+    "town_wins": { header: "Town Wins", sortDesc: true, format: "int", label: "Wins" },
+    "mob_wins": { header: "Mafia Wins", sortDesc: true, format: "int", label: "Wins" },
+    "sk_wins": { header: "Neutral/SK Wins", sortDesc: true, format: "int", label: "Wins" },
+    
+    "lynched": { header: "Times Lynched", sortDesc: true, format: "int", label: "Lynches" },
+    "d1_lynched": { header: "D1 Lynches", sortDesc: true, format: "int", label: "Lynches" },
+    "night_deaths": { header: "Total Night Deaths", sortDesc: true, format: "int", label: "Deaths" },
+    "n1_deaths": { header: "N1 Deaths", sortDesc: true, format: "int", label: "Deaths" }
+  };
+
+  window.onload = function() {
+    // If testing locally without Apps Script, mock data can be loaded here.
+    // Otherwise, this calls your Code.gs function.
+    google.script.run
+      .withSuccessHandler(function(data) {
+        // Global Filter: Only rank players with > 5 total games played 
+        // to prevent 1-game wonders from dominating the leaderboards.
+        allPlayers = data.filter(p => parseInt(p["Games Played"]) > 5);
+        renderLeaderboard();
+      })
+      .getLeaderboardData();
+  };
+
+  function renderLeaderboard() {
+    const metricKey = document.getElementById("metricSelector").value;
+    const config = metricsConfig[metricKey];
+    
+    const tbody = document.getElementById("leaderboardBody");
+    const valueHeader = document.getElementById("valueHeader");
+    tbody.innerHTML = ""; 
+    valueHeader.innerText = config.label;
+
+    let sortedPlayers = [...allPlayers];
+
+    // Dynamic Sorting Logic
+    sortedPlayers.sort((a, b) => {
+      let valA = parseFloat(a[config.header]) || 0;
+      let valB = parseFloat(b[config.header]) || 0;
+      return config.sortDesc ? (valB - valA) : (valA - valB);
+    });
+
+    // Take top 10
+    const top10 = sortedPlayers.slice(0, 10);
+
+    top10.forEach((player, index) => {
+      let tr = document.createElement("tr");
+      
+      let rankDisplay = index + 1;
+      if (rankDisplay === 1) rankDisplay = "🥇 1";
+      if (rankDisplay === 2) rankDisplay = "🥈 2";
+      if (rankDisplay === 3) rankDisplay = "🥉 3";
+
+      // Dynamic Formatting Logic
+      let rawValue = parseFloat(player[config.header]) || 0;
+      let displayValue = "";
+      
+      if (config.format === "score" || config.format === "float") {
+        displayValue = rawValue.toFixed(2);
+      } else if (config.format === "percent") {
+        displayValue = rawValue.toFixed(1) + "%";
+      } else if (config.format === "inverse_percent") {
+        // For Red Shirt: Death Rate = 100% - Survival%
+        displayValue = (100 - rawValue).toFixed(1) + "%";
+      } else if (config.format === "int") {
+        displayValue = Math.round(rawValue);
+      }
+
+      tr.innerHTML = `
+        <td class="rank">${rankDisplay}</td>
+        <td><strong>${player["Player Name"]}</strong> <br><small style="color:#7f8c8d;">${player["Games Played"]} total games</small></td>
+        <td class="score-val">${displayValue}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    if (top10.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Not enough player data yet.</td></tr>`;
+    }
+  }
+</script>
+
+</body>
+</html>

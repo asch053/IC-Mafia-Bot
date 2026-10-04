@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mafia Battle Royale</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575; --red: #cf3838; --gold: #ffd700; --input-bg: #2d2d2d; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', sans-serif; padding: 20px; margin: 0; }
+        .container { max-width: 1600px; margin: 0 auto; }
+        
+        .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 20px; }
+        h1 { margin: 0; color: var(--red); }
+        .nav-link { color: var(--muted); text-decoration: none; font-weight: bold; font-size: 1.1rem; border: 1px solid #444; padding: 8px 16px; border-radius: 4px; transition: 0.2s; }
+        .nav-link:hover { color: white; border-color: #388acf; background: rgba(56, 138, 207, 0.1); }
+
+        .stat-box { background: #2a2a2a; border-left: 4px solid var(--red); padding: 15px; border-radius: 4px; margin-bottom: 20px; }
+        .sb-val { font-size: 2rem; font-weight: bold; color: white; }
+        .sb-title { color: var(--muted); text-transform: uppercase; font-size: 0.8rem; }
+
+        .card { background: var(--card); padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .table-wrap { overflow-x: auto; max-height: 800px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+        th { text-align: left; color: var(--muted); border-bottom: 1px solid #333; padding: 10px; cursor: pointer; }
+        td { padding: 10px; border-bottom: 1px solid #2a2a2a; }
+        tr:hover { background: rgba(255,255,255,0.05); }
+        .win-badge { background: rgba(255, 215, 0, 0.15); color: var(--gold); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
+        .filter-input { width: 90%; background: var(--input-bg); border: 1px solid #444; color: white; padding: 4px; border-radius: 3px; }
+
+        #loader { text-align: center; margin-top: 50px; }
+        .spinner { border: 4px solid #333; border-top: 4px solid var(--red); border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header-row">
+        <h1>⚔️ Battle Royale</h1>
+        <a href="?page=classic" class="nav-link">&larr; Back to Classic</a>
+    </div>
+
+    <div id="loader"><div class="spinner"></div><p>Scanning Battlefield...</p></div>
+
+    <div id="app" style="display:none;">
+        <div class="stat-box">
+            <div class="sb-title">Total Matches</div>
+            <div class="sb-val" id="br-total">0</div>
+        </div>
+
+        <div class="card">
+            <h2>🏆 Hall of Champions</h2>
+            <div style="height: 350px;"><canvas id="brChart"></canvas></div>
+        </div>
+
+        <div class="card">
+            <h2>⚔️ Combatant Statistics</h2>
+            <div class="table-wrap">
+                <table id="brTable">
+                    <thead>
+                        <tr><th onclick="sort('brTable',0)">Rank</th><th onclick="sort('brTable',1)">Player</th><th onclick="sort('brTable',2)">Wins</th><th onclick="sort('brTable',3)">Games</th><th onclick="sort('brTable',4)">Win%</th><th onclick="sort('brTable',5)">Surv%</th><th>N1</th></tr>
+                        <tr><th></th><th><input class="filter-input" onkeyup="filter('brTable',1)"></th><th><input class="filter-input" onkeyup="filter('brTable',2)"></th><th><input class="filter-input" onkeyup="filter('brTable',3)"></th><th></th><th></th><th></th></tr>
+                    </thead>
+                    <tbody id="brBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+        console.log("Requesting Battle Royale Data...");
+        google.script.run
+            .withSuccessHandler(render)
+            .withFailureHandler(showError)
+            .getDashboardData('battle_royale');
+    };
+
+    function showError(error) {
+        document.getElementById('loader').innerHTML = 
+            "<p style='color:red; font-weight:bold;'>⚠️ SYSTEM FAILURE ⚠️</p>" +
+            "<p>" + error.message + "</p>";
+    }
+
+    function render(data) {
+        console.log("Data Received:", data);
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        document.getElementById('br-total').innerText = data.totalGames;
+
+        if(data.chart.labels.length > 0) {
+            new Chart(document.getElementById('brChart'), {
+                type: 'bar',
+                data: {
+                    labels: data.chart.labels,
+                    datasets: [{
+                        label: 'Wins', data: data.chart.values,
+                        backgroundColor: data.chart.labels.map(l=>l==='Draw'?'#607d8b':'#cf3838')
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', scales: { x: { grid: { color:'#333'} }, y: { ticks: { color:'#e0e0e0'} } }, plugins: { legend: { display: false } } }
+            });
+        } else {
+            document.getElementById('brChart').parentNode.innerHTML = "<p style='text-align:center; color:#777; padding-top:100px;'>No champions yet...</p>";
+        }
+
+        const list = data.leaderboard;
+        const body = document.getElementById('brBody');
+        list.forEach((p,i) => {
+            let w = p.wins > 0 ? `<span class="win-badge">🏆 ${p.wins}</span>` : '-';
+            body.innerHTML += `<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+        });
+    }
+
+    function filter(tid, cidx) {
+        const trs = document.getElementById(tid).tBodies[0].rows;
+        const val = document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();
+        for(let tr of trs) {
+            let txt = (tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');
+            let show = true;
+            if(val.startsWith('>')) { if(parseFloat(txt)<=parseFloat(val.substring(1))) show=false; }
+            else if(val.startsWith('<')) { if(parseFloat(txt)>=parseFloat(val.substring(1))) show=false; }
+            else { if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1) show=false; }
+            tr.style.display = show?'':'none';
+        }
+    }
+
+    function sort(tid, n) {
+        const tb = document.getElementById(tid).tBodies[0];
+        let rows = Array.from(tb.rows);
+        let asc = tb.getAttribute('data-asc') === 'true';
+        rows.sort((a,b) => {
+            let x = (a.cells[n].textContent||"").replace('%','').replace('🏆','').trim(), y = (b.cells[n].textContent||"").replace('%','').replace('🏆','').trim();
+            let xn = parseFloat(x), yn = parseFloat(y);
+            return (isNaN(xn)?x.localeCompare(y):xn-yn) * (asc?1:-1);
+        });
+        tb.setAttribute('data-asc', !asc);
+        rows.forEach(r => tb.appendChild(r));
+    }
+</script>
+</body>
+</html>
