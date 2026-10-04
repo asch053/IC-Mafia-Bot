@@ -118,26 +118,37 @@ Website/
 ---
 
 ### Module D: Modern Game Explorer & Narrative Reader
-
+ 
 #### D1. Game Catalog & Filter (`js/games.js`)
 * **Interface**:
   * `function renderGameList(games: Array<object>): void`
-  * `function filterGames(query: string, typeFilter: string, winnerFilter: string): void`
+  * `function filterGames(query: string, eraFilter: string, winnerFilter: string): void`
 * **Specification**:
-  * Renders a sortable table of completed bot games.
-  * Table columns: `Game ID`, `Start Date`, `Type`, `Winner`, `Phases`, `Players`, `Actions`.
+  * Renders a sortable table of all games across Forum, Discourse, and Discord eras.
+  * Table columns: `Thread ID`, `Era`, `Game Title`, `Winner`, `Story & Actions`.
 * **Acceptance Criteria**:
-  * `TEST-WEB-GME-01`: Filtering by "Classic" and "Mafia" returns only matching games.
-
-#### D2. AI Story & Timeline Reader (`js/games.js`)
+  * `TEST-WEB-GME-01`: Filtering by "Forum" and "Mafia" returns only matching games.
+ 
+#### D2. AI Story & Narrative Reader (`js/games.js`)
 * **Interface**:
   * `function openGameDetailModal(gameId: string): void`
   * `function renderStoryChapter(markdownText: string): string`
 * **Specification**:
-  * Parses markdown text using lightweight client-side markdown formatter and renders in a book-style reader with theme headers.
-  * Renders a phase-by-phase timeline displaying daily lynches and nightly eliminations.
+  * Parses markdown text using client-side `marked.js` and renders in a book-style reader with theme headers and italicized flavor quotes.
 * **Acceptance Criteria**:
   * `TEST-WEB-GME-02`: Opening a game details modal displays the complete player box score and story chapters.
+
+#### D3. Phase-by-Phase Play-by-Play & Timeline Engine (`js/games.js`)
+* **Interface**:
+  * `function renderPhasePlayByPlay(timeline: Array<object>, lynchVotes: Array<object>, phaseScenes: Array<object>): void`
+* **Specification**:
+  * Generates chronological visual cards for each phase:
+    * `Preparation / Pre-game`: Roster setup, game rules.
+    * `Day Phases`: Displays lynch targets, individual voting records (who voted for whom), and execution scene description.
+    * `Night Phases`: Displays attacks, deaths, doctor saves, and roleblocks.
+    * `Endgame`: Final surviving faction and win condition met.
+* **Acceptance Criteria**:
+  * `TEST-WEB-GME-03`: Selecting the "⚡ Play-by-Play" tab inside a game modal renders all recorded phases in chronological order with vote details and elimination causes.
 
 ---
 

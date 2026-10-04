@@ -135,9 +135,10 @@ The history is segmented into four distinct eras:
 * Cache generated summaries in `output/summaries/game_<ID>_summary.json`.
 
 ### Phase 4: Identity Resolution & Roster Normalization
-* Execute `user_mapper_exporter.py` against all summarized games.
-* Populate `username_mapping_template.csv` to map vintage forum handles (e.g. `LordVader`) to modern Discord tags.
-* Merge career statistics across eras into a unified player table.
+* Execute `user_mapper_exporter.py` to securely fetch the curated Master Mapping Google Sheet.
+* Parse the Google Sheet directly to process Discord IDs, including splitting comma-separated IDs (handling players with multiple Discord accounts).
+* Generate a `master_user_map.json` used by downstream batch summarizers.
+* Merge career statistics across eras into a unified player table for the Web Portal.
 
 ### Phase 5: Web Portal Ingestion
 * Compile all verified historic games into `Website/data/history_archive.json`.

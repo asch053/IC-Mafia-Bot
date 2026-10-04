@@ -81,8 +81,8 @@ flowchart TD
 | Feature ID | Feature Name | Description | Trigger / Actor | Preconditions | Expected Outcome | Error Handling |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **HIS-MAP-01** | Author Handle Harvesting | Collects unique author handles across Forum, Discourse, and Discord data lakes. | Pipeline execution | Input JSONL files populated. | Produces distinct author dictionary with post counts and active era dates. | Normalizes casing, whitespace, and special characters. |
-| **HIS-MAP-02** | CSV Mapping Template | Generates `username_mapping_template.csv` mapping Forum User -> Discourse User -> Discord User ID. | `user_mapper_exporter.py` | Author handles harvested. | Generates structured CSV with columns for Canonical Name, Discord ID, and Era Handles. | Preserves existing manual mappings during re-runs. |
-| **HIS-MAP-03** | Google Sheets Master Sync | Synchronizes mapping template with the Master Historical Google Sheet via `gspread`. | Script / Admin | Google service account credentials valid. | Updates remote sheet for collaborative community editing. | Graceful fallback to local CSV if Google Sheets API fails. |
+| **HIS-MAP-02** | Google Sheet Import | Connects via `gspread` to the curated Master Historical Google Sheet to fetch the canonical username-to-Discord mappings. | `user_mapper_exporter.py` | Google service account credentials valid. | Downloads latest curated mappings directly from the cloud. | Fails gracefully if Google Sheets API is unauthorized or rate-limited. |
+| **HIS-MAP-03** | Multi-ID JSON Generation | Parses the downloaded sheet, explicitly splitting comma-separated Discord IDs (for users with multiple accounts), and generates `master_user_map.json`. | `user_mapper_exporter.py` | Google Sheet imported successfully. | Creates a unified JSON lookup dictionary for downstream pipeline consumption. | Skips rows with malformed data but logs warnings. |
 
 ---
 

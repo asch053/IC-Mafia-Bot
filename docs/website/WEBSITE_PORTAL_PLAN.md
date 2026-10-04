@@ -119,13 +119,21 @@ async function fetchPortalData(endpoint) {
 
 ### Module 3: Modern Game Explorer & Narrative Story Reader
 * **Searchable Game Registry**:
-  * Filterable table of past games with filters for Game ID, Game Type (Classic/BR), Winning Faction, Player Count, and Date Range.
-* **Game Box Score & Event Log**:
-  * Per-game summary showing roster, assigned roles, survival status, and phase of death.
-* **Full AI Story Chapter Reader**:
-  * Clean, book-style reader displaying the AI-generated stories (`game_<ID>_story.md`) with chapter headings, thematic narration (Classic Mafia, High Fantasy, Cyberpunk, Comedy, Lovecraftian Horror), and phase outcomes.
-* **Interactive Phase Timeline**:
-  * Visual timeline showing the progression: Day 1 (Lynch) $\rightarrow$ Night 1 (Kills/Saves) $\rightarrow$ Day 2 $\rightarrow$ Endgame.
+  * Filterable table of past games with filters for Game ID, Era (Forum, Discourse, Discord), Winning Faction, Player Count, and Search query.
+* **Dual-View Story & Play-by-Play Theater Modal**:
+  * **Tab 1: 📖 Written Narrative Story**:
+    * Clean, book-style reader displaying the AI-generated stories (`game_<ID>_story.md`) with chapter headings, thematic narration (Classic Mafia, High Fantasy, Cyberpunk, Comedy, Lovecraftian Horror).
+  * **Tab 2: ⚡ Phase-by-Phase Play-by-Play Action Log**:
+    * Chronological breakdown of each game phase (Preparation $\rightarrow$ Day 1 $\rightarrow$ Night 1 $\rightarrow$ Day 2 $\rightarrow$ ... $\rightarrow$ Endgame).
+    * Specific in-action events displayed per phase:
+      * ⚖️ **Day Lynches & Vote Tallies**: Who voted for whom, final vote count, and player executed.
+      * 🌙 **Night Actions & Fatalities**: Night kills, doctor heals/saves, roleblocks, and investigative results.
+      * 📜 **Phase Scene Narration**: The situational bot announcements depicting the elimination scenes.
+      * 💡 **Notable Moments**: Key game-turning plays, gambits, or mechanical twists.
+  * **Tab 3: 👥 Cast of Characters & Box Score**:
+    * Roster table showing player names, assigned roles, team alignments, survival status, death causes, and MVP badge/rationale.
+* **Interactive Phase Timeline Navigation**:
+  * Quick-jump navigation pills allowing readers to skip directly to specific phases (e.g. "Jump to Day 3 Lynch").
 
 ---
 

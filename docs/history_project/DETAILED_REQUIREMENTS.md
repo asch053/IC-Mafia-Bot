@@ -91,18 +91,20 @@ Other Projects/Mafia History Project/
 
 ### Subsystem C: Cross-Era Identity Resolution (`user_mapper_exporter.py`)
 
-#### C1. Username Harvester & Mapping Matrix
+#### C1. Google Sheets Import & Multi-ID JSON Generation
 * **Signature**:
-  * `def harvest_unique_authors(input_files: list[str]) -> dict[str, dict]`
-  * `def export_mapping_template(author_data: dict, output_csv: str) -> None`
-  * `def sync_to_google_sheets(csv_path: str, credentials_path: str) -> bool`
+  * `def fetch_google_sheet_mapping(credentials_path: str, spreadsheet_id: str) -> list[dict]`
+  * `def parse_comma_separated_ids(discord_id_field: str) -> list[str]`
+  * `def generate_master_user_map(sheet_data: list[dict], output_json: str) -> None`
 * **Specification**:
-  * Reads `extracted_history.jsonl`, `discourse_history.jsonl`, `old_discord_history.jsonl`.
-  * Normalizes author names (case-insensitive, trims punctuation).
-  * Generates `username_mapping_template.csv` with columns: `canonical_name`, `discord_id`, `forum_handle`, `discourse_handle`, `discord_handle`, `total_posts`, `first_seen`, `last_seen`.
+  * Authenticates and downloads the curated mapping matrix directly from Google Sheets.
+  * Normalizes author names (case-insensitive, trims punctuation) as dictionary keys.
+  * Explicitly parses the `Discord ID` column, splitting by commas to support users with multiple accounts.
+  * Outputs `master_user_map.json` formatted as `{ "ForumName": ["ID1", "ID2"] }`.
 * **Acceptance Criteria**:
-  * `TEST-HIS-MAP-01`: Generates CSV containing all unique authors sorted by post volume.
-  * `TEST-HIS-MAP-02`: Existing manual mappings are preserved during update runs.
+  * `TEST-HIS-MAP-01`: Successfully authenticates and downloads sheet data using `gspread`.
+  * `TEST-HIS-MAP-02`: Comma-separated Discord IDs are parsed into a valid list of strings.
+  * `TEST-HIS-MAP-03`: Outputs a unified `master_user_map.json` for downstream integration.
 
 ---
 
@@ -213,7 +215,7 @@ Other Projects/Mafia History Project/
 | `TEST-HIS-01` | `forumhistory_extractor.py` | Parse sample forum thread HTML | Correctly extracts thread title, ID, author, and all reply posts. |
 | `TEST-HIS-02` | `classify_game_threads.py` | Classify game vs signup threads | Correctly tags matches as `GAME_ACTIVE` and signups as `SIGNUP`. |
 | `TEST-HIS-03` | `classify_game_threads.py` | Detect phase transitions | Identifies Day/Night transitions from sample moderator posts. |
-| `TEST-HIS-04` | `user_mapper_exporter.py` | CSV generation & normalization | Deduplicates author handles and writes valid CSV template. |
+| `TEST-HIS-04` | `user_mapper_exporter.py` | Master map generation & multi-ID parse | Successfully downloads Google Sheet, splits comma-separated IDs, and writes valid JSON map. |
 | `TEST-HIS-05` | `summarize_historic_games.py` | Context builder token limits | Prunes non-essential banter while preserving mod stories and endgame reveals (< 100k tokens). |
 | `TEST-HIS-06` | `summarize_historic_games.py` | Gemini Prompt Generation | Builds structured prompt with system instructions, phase events, and required JSON schema. |
 | `TEST-HIS-07` | `summarize_historic_games.py` | JSON Box Score Validation | Validates that mock LLM output conforms to `MechanicalBoxScore` contract. |
