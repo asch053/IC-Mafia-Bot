@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Mafia Analytics</title>
+    <script src="js/api.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
         :root {
             --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575;
@@ -69,6 +71,8 @@
         <button id="nav-records" class="nav-btn special-link active" onclick="switchMode('records')">🏆 Hall of Records</button>
         <button id="nav-classic" class="nav-btn" onclick="switchMode('classic')">Mafia Classic</button>
         <button id="nav-br" class="nav-btn" onclick="switchMode('battle_royale')">Battle Royale</button>
+        <button id="nav-codex" class="nav-btn" onclick="switchMode('codex')">📖 Game Codex</button>
+        <button id="nav-archives" class="nav-btn" onclick="switchMode('archives')">📜 Game Archives</button>
     </nav>
 
     <div id="loader"><div class="spinner"></div><p>Accessing Archives...</p></div>
@@ -148,11 +152,156 @@
         <div class="card"><h2>🏆 Hall of Champions</h2><div style="height: 350px;"><canvas id="brChart"></canvas></div></div>
         <div class="card"><h2>⚔️ Combatant Statistics</h2><div class="table-wrap"><table id="brTable"><thead><tr><th onclick="sort('brTable',0)">Rank</th><th onclick="sort('brTable',1)">Player</th><th onclick="sort('brTable',2)">Wins</th><th onclick="sort('brTable',3)">Games</th><th onclick="sort('brTable',4)">Win%</th><th onclick="sort('brTable',5)">Surv%</th><th>N1</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('brTable',1)"></th><th><input class="filter-input" onkeyup="filter('brTable',2)"></th><th><input class="filter-input" onkeyup="filter('brTable',3)"></th><th></th><th></th><th></th></tr></thead><tbody id="brBody"></tbody></table></div></div>
     </div>
+
+    <!-- GAME ARCHIVES VIEW -->
+    <div id="view-archives" class="hidden">
+        <div class="card">
+            <h2>🏛️ Mafia Game Archives & History</h2>
+            <p style="color: var(--muted);">Explore over a decade of Imperial Conflict Mafia history across the Forum, Discourse, and Discord Eras.</p>
+            <div class="table-wrap">
+                <table id="archivesTable">
+                    <thead>
+                        <tr>
+                            <th>Thread ID</th>
+                            <th>Era</th>
+                            <th>Game Title</th>
+                            <th>Winner</th>
+                            <th>Story</th>
+                        </tr>
+                        <tr>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',0)" placeholder="ID..."></th>
+                            <th>
+                                <select class="filter-input" onchange="filterExact('archivesTable',1, this.value)">
+                                    <option value="">All Eras</option>
+                                    <option value="Forum">Forum (2012-2020)</option>
+                                    <option value="Discourse">Discourse</option>
+                                    <option value="Discord">Discord / Bot</option>
+                                </select>
+                            </th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',2)" placeholder="Title..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',3)" placeholder="Faction..."></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="archivesBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- NARRATIVE STORY & PHASE PLAY-BY-PLAY MODAL -->
+    <div id="story-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;">
+        <div style="background: var(--bg); max-width: 950px; margin: 30px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.9);">
+            <button onclick="document.getElementById('story-modal').classList.add('hidden')" style="position: absolute; top: 15px; right: 20px; background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
+            <h2 id="story-title" style="margin-top: 0; font-size: 1.8em; margin-bottom: 5px;"></h2>
+            <div id="story-header-badges" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;"></div>
+            
+            <!-- Modal Navigation Tabs -->
+            <div style="display: flex; gap: 10px; border-bottom: 2px solid #333; margin-bottom: 20px;">
+                <button id="modal-tab-story" class="nav-btn active" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('story')">📖 Written Narrative Story</button>
+                <button id="modal-tab-playbyplay" class="nav-btn" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('playbyplay')">⚡ Phase Play-by-Play & Timeline</button>
+                <button id="modal-tab-roster" class="nav-btn" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('roster')">👥 Cast & Box Score</button>
+            </div>
+
+            <!-- Tab 1: Written Narrative Story -->
+            <div id="story-view-story">
+                <div id="story-content" style="line-height: 1.6; font-size: 1.05em;"></div>
+            </div>
+
+            <!-- Tab 2: Phase Play-by-Play & Timeline -->
+            <div id="story-view-playbyplay" class="hidden">
+                <div id="story-playbyplay-content"></div>
+            </div>
+
+            <!-- Tab 3: Cast & Box Score -->
+            <div id="story-view-roster" class="hidden">
+                <div id="story-roster-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PLAYER DOSSIER MODAL -->
+    <div id="dossier-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;">
+        <div style="background: var(--bg); max-width: 800px; margin: 40px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+            <button onclick="document.getElementById('dossier-modal').classList.add('hidden')" style="position: absolute; top: 15px; right: 20px; background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
+            <h2 id="dossier-name" style="margin-top: 0; font-size: 2em; border-bottom: 2px solid var(--gold); padding-bottom: 10px;">Player Name</h2>
+            
+            <div class="split-grid" style="margin-top: 20px;">
+                <div class="card" style="background: #2a2a2a;">
+                    <h3 style="margin-top:0; color: var(--blue);">Career Overview</h3>
+                    <div id="dossier-overview" style="line-height: 1.8;"></div>
+                </div>
+                <div class="card" style="background: #2a2a2a;">
+                    <h3 style="margin-top:0; color: var(--red);">Faction Allegiance</h3>
+                    <div style="height: 180px; position: relative;">
+                        <canvas id="dossier-faction-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 20px;">Tragedy & Death Analysis</h3>
+            <div id="dossier-death-stats" style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;"></div>
+
+            <h3 style="margin-top: 20px;">🎖️ Accolades & Badges</h3>
+            <div id="dossier-badges" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+        </div>
+    </div>
+
+    <!-- GAME CODEX VIEW -->
+    <div id="view-codex" class="hidden">
+        <div class="card">
+            <h2>📖 Imperial Conflict Mafia Codex</h2>
+            <p style="color: var(--muted);">Welcome to the comprehensive rulebook and game guide.</p>
+            
+            <h3>Game Modes</h3>
+            <div class="split-grid">
+                <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--blue);">
+                    <h4 style="margin-top: 0; color: var(--blue);">Classic Mafia</h4>
+                    <p>The traditional game of social deduction. The Town must root out the informed minority (Mafia) and any Neutral killers before they lose their voting majority.</p>
+                </div>
+                <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--red);">
+                    <h4 style="margin-top: 0; color: var(--red);">Battle Royale</h4>
+                    <p>A fast-paced bloodbath where everyone is a Vigilante. There are no daytime lynches—only night kills. Last person standing wins.</p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;">The P.E.U. Skill Score Formula</h3>
+            <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--gold);">
+                <p>The <strong>Skill Score</strong> is a "Moneyball"-style advanced metric to determine a player's overall value, combining three core stats:</p>
+                <ul style="color: var(--text); line-height: 1.6;">
+                    <li><strong>(P) Persuasion:</strong> Voting with the majority to successfully lynch a target.</li>
+                    <li><strong>(E) Elusiveness:</strong> Avoiding getting killed at night or lynched during the day.</li>
+                    <li><strong>(U) Understanding:</strong> Voting against opposing factions and avoiding voting for your own team.</li>
+                </ul>
+            </div>
+            
+            <h3 style="margin-top: 30px;">Interactive Role Cards</h3>
+            <div id="role-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
+                <!-- Role cards will be injected here -->
+            </div>
+
+            <h3 style="margin-top: 30px;">Bot Commands Reference</h3>
+            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                <tr style="background: #333; color: white;">
+                    <th style="padding: 10px; border: 1px solid #444;">Command</th>
+                    <th style="padding: 10px; border: 1px solid #444;">Channel</th>
+                    <th style="padding: 10px; border: 1px solid #444;">Description</th>
+                </tr>
+                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/vote &lt;player&gt;</code></td><td style="padding: 8px; border: 1px solid #444;">Public</td><td style="padding: 8px; border: 1px solid #444;">Vote to lynch a player during the Day phase.</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/myrole</code></td><td style="padding: 8px; border: 1px solid #444;">DM</td><td style="padding: 8px; border: 1px solid #444;">Check your alignment, role, and abilities.</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/kill &lt;target&gt;</code></td><td style="padding: 8px; border: 1px solid #444;">DM</td><td style="padding: 8px; border: 1px solid #444;">Use your night kill action (Mafia, SK, Vigilante).</td></tr>
+                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/mafiastatus</code></td><td style="padding: 8px; border: 1px solid #444;">Public</td><td style="padding: 8px; border: 1px solid #444;">View current phase, alive players, and time remaining.</td></tr>
+            </table>
+        </div>
+    </div>
 </div>
 
 <script>
     let trendChart, brChart;
     let recordsData = []; // Holds the fetched Apps Script data for the Hall of Records
+    let rolesData = null; // Cache for the roles definition
+
+    let historyData = null; // Cache for archives
 
     const metricsConfig = {
         "skill": { header: "Skill Score", sortDesc: true, format: "float", label: "Skill Score" },
@@ -178,39 +327,59 @@
     // Make 'records' the default page!
     window.onload = function() { switchMode('records'); };
 
-    function switchMode(mode) {
+    async function switchMode(mode) {
         // 1. Manage Active Tabs
         document.getElementById('nav-records').className = mode === 'records' ? 'nav-btn special-link active' : 'nav-btn special-link';
         document.getElementById('nav-classic').className = mode === 'classic' ? 'nav-btn active' : 'nav-btn';
         document.getElementById('nav-br').className = mode === 'battle_royale' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('nav-codex').className = mode === 'codex' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('nav-archives').className = mode === 'archives' ? 'nav-btn active' : 'nav-btn';
         
         // 2. Hide all views and show loader
         document.getElementById('view-records').classList.add('hidden');
         document.getElementById('view-classic').classList.add('hidden');
         document.getElementById('view-br').classList.add('hidden');
-        document.getElementById('loader').classList.remove('hidden');
+        document.getElementById('view-codex').classList.add('hidden');
+        document.getElementById('view-archives').classList.add('hidden');
+        
+        if (mode !== 'codex') {
+            document.getElementById('loader').classList.remove('hidden');
+        }
         
         // 3. Fetch Data dynamically based on the requested tab
-        if (mode === 'records') {
-            if (recordsData.length > 0) {
+        try {
+            if (mode === 'codex') {
+                document.getElementById('view-codex').classList.remove('hidden');
+                if (!rolesData) {
+                    rolesData = await fetchPortalData('roles');
+                    renderRoleCards(rolesData);
+                }
+            } else if (mode === 'archives') {
+                if (!historyData) {
+                    historyData = await fetchPortalData('history');
+                }
                 document.getElementById('loader').classList.add('hidden');
-                document.getElementById('view-records').classList.remove('hidden');
-                renderRecordsTable();
-            } else {
-                google.script.run
-                .withFailureHandler((error) => {
-                    document.getElementById('loader').innerHTML = `<p style="color: #cf3838; font-weight: bold;">❌ Server Error: ${error.message}</p>`;
-                    console.error("GAS Error:", error);
-                })
-                .withSuccessHandler((data) => {
+                document.getElementById('view-archives').classList.remove('hidden');
+                renderArchives(historyData);
+            } else if (mode === 'records') {
+                if (recordsData.length > 0) {
+                    document.getElementById('loader').classList.add('hidden');
+                    document.getElementById('view-records').classList.remove('hidden');
+                    renderRecordsTable();
+                } else {
+                    const data = await fetchPortalData('leaderboard');
                     document.getElementById('loader').classList.add('hidden');
                     document.getElementById('view-records').classList.remove('hidden');
                     recordsData = data.filter(p => parseInt(p["Games Played"]) > 5);
                     renderRecordsTable();
-                }).getLeaderboardData();
+                }
+            } else {
+                const data = await fetchPortalData(mode);
+                render(mode, data);
             }
-        } else {
-            google.script.run.withSuccessHandler((data) => render(mode, data)).getDashboardData(mode);
+        } catch (error) {
+            document.getElementById('loader').innerHTML = `<p style="color: #cf3838; font-weight: bold;">❌ Server Error: ${error.message}</p>`;
+            console.error("Data Fetch Error:", error);
         }
     }
 
@@ -257,7 +426,7 @@
 
             tr.innerHTML = `
                 <td class="rank-col">${rankDisplay}</td>
-                <td><strong style="color:white; font-size: 1.1em;">${player["Player Name"]}</strong> <br><small style="color:var(--muted);">${player["Games Played"]} total games</small></td>
+                <td><a href="javascript:void(0)" onclick="openPlayerDossier('${player["Player Name"]}')" style="color:white; font-size: 1.1em; text-decoration: none; border-bottom: 1px dotted #ccc;"><strong>${player["Player Name"]}</strong></a> <br><small style="color:var(--muted);">${player["Games Played"]} total games</small></td>
                 <td style="font-weight: bold; font-size: 1.1em; color: var(--blue);">${displayValue}</td>
             `;
             tbody.appendChild(tr);
@@ -290,11 +459,11 @@
             const sb = document.getElementById('skillBody'); sb.innerHTML='';
             [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore)).forEach((p,i)=>{
                 let c=parseFloat(p.skillScore)>=4?'var(--gold)':(parseFloat(p.skillScore)>=2.5?'var(--green)':'var(--muted)');
-                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)">${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)">${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)">${p.u_score}</span></td></tr>`;
+                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)">${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)">${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)">${p.u_score}</span></td></tr>`;
             });
             const stb = document.getElementById('statsBody'); stb.innerHTML='';
             [...data.leaderboard].sort((a,b)=>b.games-a.games).forEach((p,i)=>{
-                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.winRate}%</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
+                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.winRate}%</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
             });
         } else {
             document.getElementById('view-br').classList.remove('hidden');
@@ -308,13 +477,411 @@
             const bb = document.getElementById('brBody'); bb.innerHTML='';
             data.leaderboard.forEach((p,i)=>{
                 let w=p.wins>0?`<span class="win-badge">🏆 ${p.wins}</span>`:'-';
-                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td style="font-weight:bold;color:white">${p.name}</td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
             });
         }
     }
 
     function filter(tid,cidx){const trs=document.getElementById(tid).tBodies[0].rows;const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();for(let tr of trs){let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');let show=true;if(val.startsWith('>')){if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;}else if(val.startsWith('<')){if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;}else{if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;}tr.style.display=show?'':'none';}}
     function sort(tid,n){const tb=document.getElementById(tid).tBodies[0];let rows=Array.from(tb.rows);let asc=tb.getAttribute('data-asc')==='true';rows.sort((a,b)=>{let x=(a.cells[n].textContent||"").replace('%','').replace('🏆','').trim(),y=(b.cells[n].textContent||"").replace('%','').replace('🏆','').trim();let xn=parseFloat(x),yn=parseFloat(y);return(isNaN(xn)?x.localeCompare(y):xn-yn)*(asc?1:-1);});tb.setAttribute('data-asc',!asc);rows.forEach(r=>tb.appendChild(r));}
+    function filterExact(tid,cidx,val){
+        const trs=document.getElementById(tid).tBodies[0].rows;
+        const searchVal = val.toUpperCase();
+        for(let tr of trs){
+            let txt=(tr.cells[cidx].textContent||"").toUpperCase().trim();
+            tr.style.display=(searchVal==="" || txt.includes(searchVal))?'':'none';
+        }
+    }
+
+    function renderRoleCards(data) {
+        const container = document.getElementById('role-cards-container');
+        container.innerHTML = '';
+        
+        for (const [roleName, details] of Object.entries(data)) {
+            let borderColor = "var(--muted)";
+            if (details.base.includes("Town")) borderColor = "var(--blue)";
+            else if (details.base.includes("Mafia")) borderColor = "var(--red)";
+            else if (details.base.includes("Neutral")) borderColor = "var(--gold)";
+
+            const abilitiesHtml = details.abilities ? 
+                Object.entries(details.abilities).map(([cmd, desc]) => `<li><code>/${cmd}</code>: ${desc}</li>`).join('') 
+                : "<em>No active abilities</em>";
+
+            const priorityHtml = details.night_priority ? 
+                `<span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: auto;">Priority: ${details.night_priority}</span>` 
+                : '';
+
+            const card = document.createElement('div');
+            card.style.cssText = `background: #2a2a2a; border-top: 4px solid ${borderColor}; padding: 15px; border-radius: 6px; display: flex; flex-direction: column;`;
+            card.innerHTML = `
+                <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                    <h4 style="margin: 0; font-size: 1.1em; color: white;">${roleName}</h4>
+                    ${priorityHtml}
+                </div>
+                <div style="font-size: 0.8em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;">
+                    ${details.base}
+                </div>
+                <p style="font-size: 0.9em; margin: 0 0 10px 0; flex-grow: 1;">${details.short_description}</p>
+                <div style="background: #1e1e1e; padding: 10px; border-radius: 4px; font-size: 0.85em;">
+                    <strong style="color: var(--muted);">Abilities:</strong>
+                    <ul style="margin: 5px 0 0; padding-left: 20px;">
+                        ${abilitiesHtml}
+                    </ul>
+                </div>
+            `;
+            container.appendChild(card);
+        }
+    }
+    
+    function renderArchives(data) {
+        const tbody = document.getElementById('archivesBody');
+        tbody.innerHTML = '';
+        
+        data.forEach(game => {
+            let winFaction = (game.box_score && game.box_score.winning_faction) ? game.box_score.winning_faction : 'Unknown';
+            let winColor = 'var(--muted)';
+            if (winFaction.includes('Town')) winColor = 'var(--blue)';
+            else if (winFaction.includes('Mafia')) winColor = 'var(--red)';
+            else if (winFaction.includes('Serial Killer') || winFaction.includes('Neutral')) winColor = 'var(--gold)';
+            
+            let era = game.era || "Forum";
+            
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><a href="https://imperialconflict.com/forum/viewtopic.php?id=${game.thread_id}" target="_blank" style="color: var(--blue); text-decoration: none;">${game.thread_id}</a></td>
+                <td style="color: var(--muted);">${era}</td>
+                <td style="font-weight: bold; color: white;">${game.title}</td>
+                <td><span style="background: rgba(255,255,255,0.1); color: ${winColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${winFaction}</span></td>
+                <td><button onclick="openStoryModal('${game.thread_id}')" style="background: #333; color: white; border: 1px solid #555; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 0.9em; font-weight: bold;">📖 View Story & Timeline</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function switchStoryModalTab(tab) {
+        document.getElementById('modal-tab-story').className = tab === 'story' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('modal-tab-playbyplay').className = tab === 'playbyplay' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('modal-tab-roster').className = tab === 'roster' ? 'nav-btn active' : 'nav-btn';
+
+        document.getElementById('story-view-story').className = tab === 'story' ? '' : 'hidden';
+        document.getElementById('story-view-playbyplay').className = tab === 'playbyplay' ? '' : 'hidden';
+        document.getElementById('story-view-roster').className = tab === 'roster' ? '' : 'hidden';
+    }
+
+    function openStoryModal(tid) {
+        const game = historyData.find(g => g.thread_id === tid);
+        if (!game) return;
+
+        document.getElementById('story-title').innerText = game.title;
+        switchStoryModalTab('story');
+
+        // Header Badges
+        const badgesContainer = document.getElementById('story-header-badges');
+        let winFaction = (game.box_score && game.box_score.winning_faction) ? game.box_score.winning_faction : 'Unknown';
+        let winColor = 'var(--muted)';
+        if (winFaction.includes('Town')) winColor = 'var(--blue)';
+        else if (winFaction.includes('Mafia')) winColor = 'var(--red)';
+        else if (winFaction.includes('Serial Killer') || winFaction.includes('Neutral')) winColor = 'var(--gold)';
+
+        let era = game.era || "Forum";
+        let eraBadge = `<span style="background: rgba(255,255,255,0.1); color: #ccc; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">Era: <strong>${era}</strong></span>`;
+        let winnerBadge = `<span style="background: rgba(255,255,255,0.1); color: ${winColor}; border: 1px solid ${winColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">🏆 Winner: ${winFaction}</span>`;
+        let mvpBadge = '';
+        if (game.box_score && game.box_score.mvp && game.box_score.mvp.player) {
+            mvpBadge = `<span style="background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">⭐ MVP: ${game.box_score.mvp.player}</span>`;
+        }
+        badgesContainer.innerHTML = `${eraBadge} ${winnerBadge} ${mvpBadge}`;
+
+        // Tab 1: Narrative Story
+        const chronicle = game.narrative_chronicle || "*No narrative chronicle found for this game.*";
+        document.getElementById('story-content').innerHTML = marked.parse(chronicle);
+        const storyContent = document.getElementById('story-content');
+        storyContent.querySelectorAll('h3').forEach(el => {
+            el.style.color = 'var(--gold)';
+            el.style.borderBottom = '1px solid #333';
+            el.style.paddingBottom = '5px';
+            el.style.marginTop = '25px';
+        });
+        storyContent.querySelectorAll('em').forEach(el => {
+            el.style.color = '#ccc';
+        });
+
+        // Tab 2: Phase-by-Phase Play-by-Play & Timeline
+        const playByPlayContainer = document.getElementById('story-playbyplay-content');
+        let playByPlayHtml = '';
+
+        // Notable Moments if available
+        if (game.box_score && game.box_score.notable_moments && game.box_score.notable_moments.length > 0) {
+            playByPlayHtml += `
+                <div style="background: rgba(255,215,0,0.08); border-left: 4px solid var(--gold); padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: var(--gold); font-size: 1.05em;">💡 Notable Tactical Moments & Highlights</h4>
+                    <ul style="margin: 0; padding-left: 20px; line-height: 1.6; color: #ddd;">
+                        ${game.box_score.notable_moments.map(m => `<li>${m}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        const timeline = (game.box_score && game.box_score.timeline) ? game.box_score.timeline : [];
+        if (timeline.length === 0) {
+            playByPlayHtml += `<p style="color: var(--muted); font-style: italic;">No detailed phase play-by-play events recorded for this match.</p>`;
+        } else {
+            // Check if timeline is array of phase objects (modern format) or array of event objects (historic format)
+            const isPhaseObjectFormat = timeline[0] && timeline[0].phase && (timeline[0].eliminated !== undefined || timeline[0].vote_tally !== undefined);
+
+            if (isPhaseObjectFormat) {
+                // Modern bot format with day/night phases, scenes, and lynch votes
+                timeline.forEach(phaseItem => {
+                    let phaseName = phaseItem.phase;
+                    let isDay = phaseItem.type === 'day' || phaseName.toLowerCase().includes('day');
+                    let isNight = phaseItem.type === 'night' || phaseName.toLowerCase().includes('night');
+                    let borderColor = isDay ? 'var(--gold)' : (isNight ? 'var(--blue)' : 'var(--muted)');
+                    let phaseIcon = isDay ? '☀️' : (isNight ? '🌙' : '⚙️');
+
+                    let sceneHtml = phaseItem.scene ? `
+                        <div style="background: #25252d; border-left: 3px solid rgba(255,255,255,0.25); padding: 10px 14px; font-style: italic; color: #ddd; margin: 10px 0; border-radius: 4px; line-height: 1.5;">
+                            "${phaseItem.scene}"
+                        </div>
+                    ` : '';
+
+                    let eliminationsHtml = '';
+                    if (phaseItem.eliminated && phaseItem.eliminated.length > 0) {
+                        eliminationsHtml += `<div style="margin-top: 10px;"><strong style="color: var(--text); font-size: 0.9em; text-transform: uppercase; letter-spacing: 0.5px;">Phase Casualties:</strong>`;
+                        phaseItem.eliminated.forEach(d => {
+                            let cause = d.cause || 'Eliminated';
+                            let isLynch = cause.toLowerCase().includes('lynch');
+                            let badgeStyle = isLynch ? 'background: rgba(207,56,56,0.2); color: var(--red); border: 1px solid var(--red);' : 'background: rgba(156,39,176,0.2); color: var(--purp); border: 1px solid var(--purp);';
+                            let icon = isLynch ? '⚖️ LYNCHED' : '💀 NIGHT KILL';
+                            let voterList = (d.lynched_by && d.lynched_by.length > 0) ? `<br><small style="color: var(--muted); font-size: 0.85em;">Lynched by: ${d.lynched_by.join(', ')}</small>` : '';
+
+                            eliminationsHtml += `
+                                <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
+                                    <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${icon}</span>
+                                    <div>
+                                        <strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${d.player}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${d.player}</a></strong> 
+                                        <span style="color: var(--muted);">— ${d.role || 'Unknown'} (${d.alignment || 'Unknown'})</span>
+                                        <div style="font-size: 0.85em; color: #aaa; margin-top: 2px;">${cause}</div>
+                                        ${voterList}
+                                    </div>
+                                </div>
+                            `;
+                        });
+                        eliminationsHtml += `</div>`;
+                    }
+
+                    let votesHtml = '';
+                    if (phaseItem.vote_tally && Object.keys(phaseItem.vote_tally).length > 0) {
+                        votesHtml += `
+                            <div style="margin-top: 12px; background: #1a1a20; padding: 10px; border-radius: 4px;">
+                                <strong style="color: var(--muted); font-size: 0.85em; text-transform: uppercase;">🗳️ Day Lynch Vote Breakdown (${phaseItem.votes_cast || 0} votes cast):</strong>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 6px;">
+                                    ${Object.entries(phaseItem.vote_tally).sort((a,b) => b[1] - a[1]).map(([target, count]) => `
+                                        <span style="background: rgba(255,255,255,0.08); border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">
+                                            <strong>${target}</strong>: <span style="color: var(--gold); font-weight: bold;">${count} vote${count > 1 ? 's' : ''}</span>
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    playByPlayHtml += `
+                        <div style="background: #1e1e24; border-left: 4px solid ${borderColor}; padding: 14px 18px; border-radius: 6px; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <h4 style="margin: 0; font-size: 1.15em; color: white;">${phaseIcon} ${phaseName}</h4>
+                                <span style="font-size: 0.8em; text-transform: uppercase; color: ${borderColor}; font-weight: bold;">${isDay ? 'Day Phase' : (isNight ? 'Night Phase' : 'Event')}</span>
+                            </div>
+                            ${sceneHtml}
+                            ${eliminationsHtml}
+                            ${votesHtml}
+                        </div>
+                    `;
+                });
+            } else {
+                // Historical flat timeline format: group events by phase
+                const phasesMap = {};
+                timeline.forEach(item => {
+                    let ph = item.phase || 'General Phase';
+                    if (!phasesMap[ph]) phasesMap[ph] = [];
+                    phasesMap[ph].push(item);
+                });
+
+                Object.entries(phasesMap).forEach(([phaseName, events]) => {
+                    let isDay = phaseName.toLowerCase().includes('day');
+                    let isNight = phaseName.toLowerCase().includes('night');
+                    let borderColor = isDay ? 'var(--gold)' : (isNight ? 'var(--blue)' : 'var(--muted)');
+                    let phaseIcon = isDay ? '☀️' : (isNight ? '🌙' : '📜');
+
+                    let eventsListHtml = events.map(ev => {
+                        let evType = ev.event || 'Action';
+                        let isLynch = evType.toLowerCase().includes('lynch');
+                        let isKill = evType.toLowerCase().includes('kill');
+                        let badgeStyle = isLynch ? 'background: rgba(207,56,56,0.2); color: var(--red); border: 1px solid var(--red);' : (isKill ? 'background: rgba(156,39,176,0.2); color: var(--purp); border: 1px solid var(--purp);' : 'background: rgba(56,138,207,0.2); color: var(--blue); border: 1px solid var(--blue);');
+
+                        return `
+                            <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
+                                <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${evType}</span>
+                                <div>
+                                    ${ev.target ? `<strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${ev.target}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${ev.target}</a></strong>` : ''}
+                                    ${ev.role ? `<span style="color: var(--muted);"> (${ev.role}${ev.alignment ? ' - ' + ev.alignment : ''})</span>` : ''}
+                                    <div style="font-size: 0.9em; color: #ccc; margin-top: 2px;">${ev.details || ''}</div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+
+                    playByPlayHtml += `
+                        <div style="background: #1e1e24; border-left: 4px solid ${borderColor}; padding: 14px 18px; border-radius: 6px; margin-bottom: 16px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between;">
+                                <h4 style="margin: 0; font-size: 1.15em; color: white;">${phaseIcon} ${phaseName}</h4>
+                                <span style="font-size: 0.8em; text-transform: uppercase; color: ${borderColor}; font-weight: bold;">${events.length} Action Event${events.length > 1 ? 's' : ''}</span>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                ${eventsListHtml}
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+        }
+        playByPlayContainer.innerHTML = playByPlayHtml;
+
+        // Tab 3: Cast of Characters & Box Score
+        const rosterContainer = document.getElementById('story-roster-content');
+        let rosterHtml = '';
+
+        if (game.box_score && game.box_score.mvp && game.box_score.mvp.player) {
+            rosterHtml += `
+                <div style="background: rgba(255,215,0,0.1); border: 1px solid var(--gold); padding: 14px 18px; border-radius: 6px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <span style="font-size: 1.4em;">⭐</span>
+                        <div>
+                            <strong style="color: var(--gold); font-size: 1.15em;">Match MVP: ${game.box_score.mvp.player}</strong>
+                            <div style="color: #ddd; font-size: 0.95em; margin-top: 3px;"><em>${game.box_score.mvp.rationale}</em></div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        const roster = (game.box_score && game.box_score.roster) ? game.box_score.roster : [];
+        if (roster.length === 0) {
+            rosterHtml += `<p style="color: var(--muted); font-style: italic;">No player roster details recorded for this match.</p>`;
+        } else {
+            rosterHtml += `
+                <div class="table-wrap">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr style="border-bottom: 1px solid #444;">
+                                <th style="padding: 10px;">Player</th>
+                                <th style="padding: 10px;">Assigned Role</th>
+                                <th style="padding: 10px;">Faction</th>
+                                <th style="padding: 10px;">Survival Status</th>
+                                <th style="padding: 10px;">Elimination Phase / Cause</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${roster.map(p => {
+                                let alignment = p.alignment || 'Unknown';
+                                let alignColor = alignment.toLowerCase().includes('town') ? 'var(--blue)' : (alignment.toLowerCase().includes('mafia') ? 'var(--red)' : 'var(--gold)');
+                                let survived = p.survived === true || (p.status && p.status.toLowerCase() === 'alive');
+                                let statusBadge = survived ? `<span style="background: rgba(76,175,80,0.2); color: var(--green); padding: 2px 8px; border-radius: 4px; font-weight: bold;">Alive</span>` : `<span style="background: rgba(207,56,56,0.2); color: var(--red); padding: 2px 8px; border-radius: 4px; font-weight: bold;">Dead</span>`;
+                                let deathCause = p.death_cause || (p.death_phase ? `Eliminated in ${p.death_phase}` : '-');
+
+                                return `
+                                    <tr style="border-bottom: 1px solid #2a2a2a;">
+                                        <td style="padding: 10px;"><a href="javascript:void(0)" onclick="openPlayerDossier('${p.player}')" style="font-weight: bold; color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${p.player}</a></td>
+                                        <td style="padding: 10px; color: #ddd;">${p.role || 'Unknown'}</td>
+                                        <td style="padding: 10px;"><span style="color: ${alignColor}; font-weight: bold;">${alignment}</span></td>
+                                        <td style="padding: 10px;">${statusBadge}</td>
+                                        <td style="padding: 10px; color: var(--muted); font-size: 0.9em;">${deathCause}</td>
+                                    </tr>
+                                `;
+                            }).join('')}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+        rosterContainer.innerHTML = rosterHtml;
+
+        document.getElementById('story-modal').classList.remove('hidden');
+    }
+    let dossierChart = null;
+
+    async function openPlayerDossier(playerName) {
+        // Ensure leaderboard data is loaded
+        if (recordsData.length === 0) {
+            recordsData = await fetchPortalData('leaderboard');
+        }
+        
+        const player = recordsData.find(p => p["Player Name"] === playerName);
+        if (!player) {
+            alert("Could not find detailed records for " + playerName);
+            return;
+        }
+
+        document.getElementById('dossier-name').innerText = player["Player Name"];
+        
+        const winRate = player["Games Played"] > 0 ? (player["Wins"] / player["Games Played"] * 100).toFixed(1) : 0;
+        const survRate = player["Survival %"].toFixed(1);
+        
+        document.getElementById('dossier-overview').innerHTML = `
+            <strong>Total Games:</strong> ${player["Games Played"]}<br>
+            <strong>Wins:</strong> <span style="color:var(--green);">${player["Wins"]}</span> | <strong>Losses:</strong> <span style="color:var(--red);">${player["Losses"]}</span><br>
+            <strong>Win Rate:</strong> ${winRate}%<br>
+            <strong>Survival Rate:</strong> ${survRate}%<br>
+            <strong>Skill Score (PEU):</strong> <span style="color:var(--gold); font-weight:bold;">${parseFloat(player["Skill Score"]).toFixed(2)}</span>
+        `;
+        
+        const ds = document.getElementById('dossier-death-stats');
+        ds.innerHTML = `
+            <div style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 4px; flex: 1; min-width: 150px; text-align: center;">
+                <div style="font-size: 2em; color: var(--orange);">${player["Times Lynched"]}</div>
+                <div style="color: var(--muted); font-size: 0.8em; text-transform: uppercase;">Times Lynched</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 4px; flex: 1; min-width: 150px; text-align: center;">
+                <div style="font-size: 2em; color: var(--red);">${player["Total Night Deaths"]}</div>
+                <div style="color: var(--muted); font-size: 0.8em; text-transform: uppercase;">Night Kills</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 4px; flex: 1; min-width: 150px; text-align: center;">
+                <div style="font-size: 2em; color: var(--grey);">${player["D1 Lynches"]}</div>
+                <div style="color: var(--muted); font-size: 0.8em; text-transform: uppercase;">D1 Lynches</div>
+            </div>
+            <div style="background: rgba(255,255,255,0.05); padding: 10px 15px; border-radius: 4px; flex: 1; min-width: 150px; text-align: center;">
+                <div style="font-size: 2em; color: #9c27b0;">${player["N1 Deaths"]}</div>
+                <div style="color: var(--muted); font-size: 0.8em; text-transform: uppercase;">N1 Deaths</div>
+            </div>
+        `;
+        
+        let badgesHtml = '';
+        if (player["Games Played"] >= 5) {
+            if (player["N1 Deaths"] >= 3) badgesHtml += `<span style="background: rgba(207,56,56,0.2); color: var(--red); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--red);">🩸 Red Shirt (Frequent N1 Target)</span>`;
+            if (player["Survival %"] >= 65) badgesHtml += `<span style="background: rgba(76,175,80,0.2); color: var(--green); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--green);">🛡️ Untouchable</span>`;
+            if (player["Wins"] >= 10) badgesHtml += `<span style="background: rgba(255,215,0,0.2); color: var(--gold); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--gold);">👑 Veteran Champion</span>`;
+            if ((player["Town Games"] / player["Games Played"]) > 0.8) badgesHtml += `<span style="background: rgba(56,138,207,0.2); color: var(--blue); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--blue);">🏛️ Townie Through & Through</span>`;
+            if (player["Mafia Wins"] >= 3) badgesHtml += `<span style="background: rgba(156,39,176,0.2); color: var(--purp); padding: 5px 10px; border-radius: 4px; border: 1px solid var(--purp);">🕴️ Mob Boss</span>`;
+        }
+        if (!badgesHtml) badgesHtml = '<span style="color: var(--muted); font-style: italic;">No badges earned yet. Keep playing!</span>';
+        
+        document.getElementById('dossier-badges').innerHTML = badgesHtml;
+
+        if(dossierChart) dossierChart.destroy();
+        dossierChart = new Chart(document.getElementById('dossier-faction-chart'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Town', 'Mafia', 'Neutral/SK'],
+                datasets: [{
+                    data: [player["Town Games"], player["Mafia Games"], player["Neutral/SK Games"]],
+                    backgroundColor: ['#388acf', '#cf3838', '#ffd700'],
+                    borderWidth: 0
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: {color: 'white'} } } }
+        });
+
+        document.getElementById('dossier-modal').classList.remove('hidden');
+    }
 </script>
 </body>
 </html>
