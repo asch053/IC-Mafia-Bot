@@ -1,0 +1,8 @@
+### Chapter 1: The Gathering Storm
+In the annals of the Imperial Conflict community, there exists a ghost of a game—a blueprint for a social experiment that never drew breath. It was the summer of 2011, and the community was already deep in the trenches of existing conflict. Into this atmosphere of high-stakes paranoia stepped the architect Torqez, proposing a "slower, deeper" iteration of the classic Mafia ritual. It was to be a forum-exclusive affair, stripped of the rapid-fire immediacy of chat rooms, designed to simmer over weeks rather than days.
+
+### Chapter 2: The Dissent
+The proposal was met with a cold, intellectual resistance. The veteran players of the forum—names like Elrohir and Wild Flower Soul—eyed the experiment with skepticism. They argued that the "forum-only" constraint would provide too many shadows for the Mafia to hide within, and that the community’s bandwidth was already stretched thin by ongoing operations. The legendary halls of the forum, already crowded with the machinations of arsy’s active game, proved too crowded for Torqez’s vision to find root.
+
+### Chapter 3: The Silent Exit
+There would be no first blood, no secret night murders, and no final stand. As the days ticked by, the threads of interest failed to weave together. The potential players, distracted by their existing loyalties and the inherent skepticism of the veteran guard, turned their backs on the proposal. With a final, melancholy post, Torqez withdrew the offer, lamenting the lost opportunity for the community to expand its tactical horizons. The game vanished into the archives, a "what-if" written in the margins of Imperial history.

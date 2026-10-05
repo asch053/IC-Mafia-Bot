@@ -62,7 +62,7 @@ flowchart TD
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
 | **HIS-EXT-01** | Forum Thread Harvester | Crawls all 82 pages of `viewforum.php?id=185` and extracts thread metadata (title, URL, thread ID, total posts). | Harvester Script / CLI | Network access to `imperialconflict.com`. | Produces `mafia_threads.json` listing 600+ historical threads. | Retries on HTTP 500/503 errors with exponential backoff. |
 | **HIS-EXT-02** | Forum Post Content Scraper | Iterates through thread list, paging through all replies, extracting author, timestamp, post content, and quote blocks. | Batch Script / CLI | `mafia_threads.json` present. | Appends structured post dictionaries into `extracted_history.jsonl`. | Honors `REQUEST_DELAY_SECONDS` (3s) to prevent IP rate-limiting. |
-| **HIS-EXT-03** | Discourse Topic Ingestion | Ingests Discourse topics, polling JSON endpoints to retrieve full topic transcripts. | Batch Script / CLI | Discourse board URL accessible. | Appends Discourse transcripts to `discourse_history.jsonl`. | Logs skipped private/deleted topics. |
+| **HIS-EXT-03** | Discourse Topic Ingestion | Ingests Discourse topics via `/t/{topic_id}.json` endpoint to retrieve complete, accurate topic post streams. | Batch Script / CLI | Discourse board URL accessible. | Appends Discourse transcripts to `discourse_history.jsonl` matching topic boundaries. | Logs skipped private/deleted topics. |
 | **HIS-EXT-04** | Discord History Harvester | Scrapes messages from designated historical Discord channels (`#history-channel`, `#voting-channel`). | Bot command / Script | Bot present in server with Message History permission. | Appends Discord message objects into `old_discord_history.jsonl`. | Handles message pagination and Discord rate limits. |
 
 ---
@@ -94,15 +94,17 @@ flowchart TD
 | **HIS-SUM-03** | Mechanical Box Score Extraction | Prompts LLM to output structured JSON containing Winning Faction, MVP, Final Roster, and Day-by-Day Eliminations. | Gemini API runner | Phase events parsed. | Produces validated JSON matching `MechanicalBoxScore` schema. | Validates JSON against schema; re-prompts if malformed. |
 | **HIS-SUM-04** | Tactical Play & Blunder Analysis | AI analyzes pivotal voting blunders, clutch cop investigations, or mafia deception plays that swung the outcome. | Summarizer pipeline | Narrative & Box Score generated. | Generates "Notable Plays & Key Moments" section for the match record. | Summarizes general game progression if no standout play is detected. |
 | **HIS-SUM-05** | Batch Summarization Runner | Batch script processing entire catalog of historic games with rate-limit pacing and checkpoint resumption. | CLI / Admin runner | Batch queue populated. | Processes 10-50 games sequentially, caching completed JSON summaries. | Skips already completed summaries on rerun (resume capability). |
+| **HIS-SUM-06** | Dual-Mode Narrative & Story Extraction | Extracts both the synthesized AI Narrative Chronicle Summary (`narrative_chronicle`) and the verbatim original Moderator Stories As Written (`story_as_written`) spanning Opening Lore, Phase Announcements, and Endgame Epilogue. | Pipeline runner / System | Harvested thread posts available. | Populates dual text fields on match record: `narrative_chronicle` (AI summary) and `story_as_written` (original prose). | Falls back to available moderator posts if phase markers are sparse. |
 
 ---
 
 ### Table 5: Serialization & Web Portal Delivery
 | Feature ID | Feature Name | Description | Trigger / Actor | Preconditions | Expected Outcome | Error Handling |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **HIS-EXP-01** | Web Portal History JSON Export | Compiles all summarized historic games into optimized `Website/data/history_archive.json`. | Export command / CLI | Summaries generated. | Generates compact, client-ready JSON file for portal consumption. | Validates total file size (< 15MB) and compresses if necessary. |
+| **HIS-EXP-01** | Web Portal History JSON Export | Compiles all summarized historic games into optimized `Website/data/history_archive.json` containing dual-mode narratives, timelines, and rosters. | Export command / CLI | Summaries generated. | Generates compact, client-ready JSON file for portal consumption. | Validates total file size (< 15MB) and compresses if necessary. |
 | **HIS-EXP-02** | Search Index Generation | Builds lightweight text search index over historic thread titles, authors, MVPs, and game summaries. | Build script | `history_archive.json` built. | Enables instant (< 10ms) search queries in the web portal browser. | Fallback to client-side linear substring search if index fails. |
 | **HIS-EXP-03** | All-Time Stats Aggregation | Combines historical game records with modern bot game stats to create unified All-Time Player Rankings. | Export pipeline | Roster mappings verified. | Computes career wins, games played, and survival rates across all eras. | Flags unmapped players in separate "Vintage Records" section. |
+| **HIS-EXP-04** | Multi-View Game Explorer Modal | Web portal game modal provides dedicated tabs for: (1) Game Summary Chronicle, (2) Original Story As Written, (3) Phase Play-by-Play & Timeline, and (4) Cast & Box Score. | Web Portal UI | `history_archive.json` loaded. | Renders interactive 4-tab modal with markdown formatting and direct hash navigation. | Shows informative fallback message if a specific section is unpopulated. |
 
 ---
 

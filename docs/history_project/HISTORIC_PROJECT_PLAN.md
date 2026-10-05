@@ -88,12 +88,14 @@ The cornerstone of the Historic Project is the **AI Summarization Engine**, whic
 3. **Endgame Reveal Posts**: Moderator debriefs listing the full player roster, true alignments, hidden roles, and secret night action submissions.
 4. **Vote Tallies**: Automated or moderator-posted vote counts leading to eliminations.
 
-### 3.2 What the AI Produces:
-* **The Narrative Game Chronicle**:
-  A 3–5 chapter prose recap formatted in markdown that captures the game's theme, key conflicts, deceptive plays, and turning points in a captivating literary style.
-* **The Mechanical Box Score**:
+### 3.2 What the Pipeline Produces (Dual Narrative & Summary Architecture):
+* **The AI Summary Chronicle (`narrative_chronicle`)**:
+  A 3–5 chapter literary prose summary formatted in markdown that captures the match's theme, tactical turning points, clutch deceptions, and dramatic climax. Displayed in the portal's **📋 Game Summary** tab.
+* **The Original Stories As Written (`story_as_written`)**:
+  The authentic verbatim moderator story posts as written during the game by the host (Prologue theme & lore, Day/Night phase announcements, murder mystery vignettes, vote counts, and final endgame debrief). Displayed in the portal's **📖 Stories as Written** tab.
+* **The Mechanical Box Score (`box_score`)**:
   * **Winning Faction**: Town, Mafia, Serial Killer, or Draw.
-  * **Game MVP / Standout Player**: The player who exerted the most decisive impact.
+  * **Game MVP / Standout Player**: The player who exerted the most decisive impact with analytical rationale.
   * **Phase-by-Phase Timeline**:
     * Day 1: Lynch target, vote count, alignment revealed.
     * Night 1: Victims, known protections/blocks.
@@ -120,19 +122,20 @@ The history is segmented into four distinct eras:
 ### Phase 1: Data Audit & Scrape Completion
 * Review existing 644 threads in `mafia_threads.json` and posts in `extracted_history.jsonl`.
 * Verify complete pagination harvest of `viewforum.php?id=185` (confirming all 82 pages harvested).
-* Validate Discourse and Discord scraper output files.
+* Validate Discourse scraper (`discoursehistory_extractor.py`), ensuring topics are harvested via `/t/{topic_id}.json` endpoint to write clean transcripts to `discourse_history.jsonl`.
+* Validate Discord scraper output files.
 
 ### Phase 2: Game Event & Boundary Detector
 * Implement thread classifier script (`classify_game_threads.py`):
-  * Differentiates actual game threads from signup threads, commentary/discussion threads, and rule threads.
-  * Extracts metadata: Game Number (e.g. "Mafia 54"), Host/Moderator name, Start Date, Total Posts.
+  * Differentiates actual game threads from signup threads, commentary/discussion threads, and rule threads across both Forum and Discourse catalogs.
+  * Extracts metadata: Game Number (e.g. "Mafia 54", "Mafia 88: Imperial Kitchen"), Host/Moderator name, Start Date, Total Posts.
 * Build phase segmenter: identifies posts containing keyword markers like `Day 1 Begins`, `Night 1 Resolution`, `Vote Count`, `Game Over`.
 
-### Phase 3: AI Summarization Pipeline (`summarize_historic_games.py`)
-* Implement Gemini 2.5 LLM prompt pipeline with chunking and token optimization.
-* Extract moderator opening posts, phase resolutions, and endgame reveals.
+### Phase 3: AI Summarization Pipeline (`summarize_historic_games.py` / `batch_summarize.py`)
+* Implement Gemini LLM prompt pipeline with chunking and token optimization.
+* Extract moderator opening posts, phase resolutions, and endgame reveals from both Forum and Discourse JSONL archives.
 * Synthesize narrative chapters and structured JSON box scores for each historic game.
-* Cache generated summaries in `output/summaries/game_<ID>_summary.json`.
+* Cache generated summaries in `output/summaries/game_<ID>_summary.json` (supporting both Forum and Discourse game IDs).
 
 ### Phase 4: Identity Resolution & Roster Normalization
 * Execute `user_mapper_exporter.py` to securely fetch the curated Master Mapping Google Sheet.
@@ -140,9 +143,13 @@ The history is segmented into four distinct eras:
 * Generate a `master_user_map.json` used by downstream batch summarizers.
 * Merge career statistics across eras into a unified player table for the Web Portal.
 
-### Phase 5: Web Portal Ingestion
-* Compile all verified historic games into `Website/data/history_archive.json`.
-* Enable the **"🏛️ Mafia History Archive"** tab on the web portal with era filtering, thread search, and the AI story reader.
+### Phase 5: Web Portal Ingestion & Multi-Tab Viewer
+* Compile all verified historic games into `Website/data/history_archive.json` with both `narrative_chronicle` and `story_as_written`.
+* Enable the **"🏛️ Mafia History Archive"** tab on the web portal with era filtering, thread search, and a four-view modal:
+  1. **📋 Game Summary**: The AI narrative chronicle, match synopsis, MVP, and tactical highlights.
+  2. **📖 Stories as Written**: The authentic, verbatim moderator story posts from the original match.
+  3. **⚡ Phase Play-by-Play & Timeline**: Chronological event cards, casualties, and vote tally breakdowns.
+  4. **👥 Cast & Box Score**: Full player roster table with roles, alignments, and survival statuses.
 
 ---
 

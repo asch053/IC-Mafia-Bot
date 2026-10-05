@@ -1,0 +1,11 @@
+### Chapter 1: The City of Dreams
+New York City. A sprawling metropolis of neon lights, empty bank accounts, and desperate ambition. Five young graduates arrived in the concrete jungle with stars in their eyes, eager to carve out a niche in the competitive job market. But the city is a parasite. It hungers for talent, and when talent is scarce, it feeds on desperation. The graduates answered a cryptic Craigslist ad, leading them to the back of a dingy, grease-stained pizza joint where a man in a sharp suit promised them "employment." It was the beginning of a trap.
+
+### Chapter 2: The Ghost of Ambition
+Lurking in the shadows was a man of fifty, his spirit broken and his clothes smelling of stale cigarettes and failure. Ten years ago, he had been a titan of his industry—or so he told himself. When the corporate machine replaced him with a cheaper, younger graduate, he didn't just lose his job; he lost his mind. He watched the newcomers with a predatory glint in his eye. He wouldn't let them have the success he was denied. He wanted revenge, and he wanted it served cold.
+
+### Chapter 3: A Twisted Reality
+As the sun set, the true nature of their "employment" manifested. The "Actor" practiced his lines in the dark, masquerading as a waiter by day and a conspirator by night. Others adopted guises—a nun hiding a life of exotic dancing, laborers desperate enough to take any commission. Trust dissolved as quickly as their meager savings. The City that Never Sleeps had no room for secrets, yet everyone had something to hide.
+
+### Chapter 4: The Paradox of Survival
+In the end, the chaotic web of deceptions collapsed under its own weight. The struggle for a living wage had pitted graduate against graduate, student against mentor, and innocent against the bitter scorned. In a bizarre twist of fate—perhaps a testament to the sheer absurdity of the New York job market—the conflict resolved in a way that defied the laws of traditional warfare. Everyone emerged as a victor, having navigated the gauntlet of the Craigslist trap... except for Daylight, whose hopes for a paycheck remained as empty as the city streets at 4:00 AM.

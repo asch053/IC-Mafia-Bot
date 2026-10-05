@@ -13,24 +13,29 @@ from clean_bbcode import clean_forum_text
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = os.path.join(CURRENT_DIR, "output")
 FORUM_EXTRACTED_FILE = os.path.join(OUTPUT_DIR, "extracted_history.jsonl")
+DISCOURSE_EXTRACTED_FILE = os.path.join(OUTPUT_DIR, "discourse_history.jsonl")
 
-def get_posts_for_thread(thread_id: str, jsonl_path: str = FORUM_EXTRACTED_FILE) -> List[Dict[str, Any]]:
-    """Retrieves all post records matching thread_id from the JSONL archive."""
+def get_posts_for_thread(thread_id: str, jsonl_path: str = None) -> List[Dict[str, Any]]:
+    """Retrieves all post records matching thread_id from either the forum or discourse JSONL archive."""
     thread_posts = []
-    if not os.path.exists(jsonl_path):
-        return []
+    paths_to_check = [jsonl_path] if jsonl_path else [FORUM_EXTRACTED_FILE, DISCOURSE_EXTRACTED_FILE]
 
-    with open(jsonl_path, 'r', encoding='utf-8') as f:
-        for line in f:
-            if not line.strip():
-                continue
-            try:
-                rec = json.loads(line)
-                src = rec.get('source_id', '')
-                if f'id={thread_id}' in src or f'/{thread_id}' in src:
-                    thread_posts.append(rec)
-            except Exception:
-                continue
+    for p in paths_to_check:
+        if not os.path.exists(p):
+            continue
+        with open(p, 'r', encoding='utf-8') as f:
+            for line in f:
+                if not line.strip():
+                    continue
+                try:
+                    rec = json.loads(line)
+                    src = rec.get('source_id', '')
+                    if f'id={thread_id}' in src or f'/{thread_id}/' in src or src.endswith(f'/{thread_id}'):
+                        thread_posts.append(rec)
+                except Exception:
+                    continue
+        if thread_posts:
+            break
 
     return thread_posts
 

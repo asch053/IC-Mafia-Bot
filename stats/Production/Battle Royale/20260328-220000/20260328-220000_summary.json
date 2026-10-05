@@ -1,0 +1,508 @@
+{
+    "game_summary": {
+        "game_id": "20260328-220000",
+        "game_type": "battle_royale",
+        "number_of_players": 12,
+        "player_counts": {
+            "town": 0,
+            "mafia": 0,
+            "neutral": 0
+        },
+        "start_date_utc": "2026-03-28T22:00:00+00:00",
+        "end_date_utc": "2026-03-31T10:01:30.872295+00:00",
+        "total_days": 3,
+        "phase_hours": 12.0,
+        "total_phases": 5,
+        "last_phase": "pre-day",
+        "winning_faction": "Jealous",
+        "winning_players": [
+            "Jealous"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1472420319930351898,
+            "player_name": "GymOfTheJungle",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 292241540687069186,
+            "player_name": "Jealous",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 294464443570454528,
+            "player_name": "Jets",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 746540828432007225,
+            "player_name": "LisaMVP",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 3",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 5,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 4,
+            "lynched_by_voters": [
+                "Panda",
+                "Jealous"
+            ]
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 4,
+            "lynched_by_voters": [
+                "Ordos",
+                "LisaMVP"
+            ]
+        },
+        {
+            "player_id": 829552473970180116,
+            "player_name": "PolarExpress",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 3,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 469571706898350080,
+            "player_name": "Soul",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 3,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1057856572899999744,
+            "player_name": "TheBigOne",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 3,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 450237854329602048,
+            "player_name": "WhoFlungDung",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Panda",
+                "Jealous",
+                "PolarExpress",
+                "TheBigOne",
+                "Ordos"
+            ]
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T10:04:17.249493+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T10:08:08.989806+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T10:17:50.033822+00:00"
+        },
+        {
+            "voter_id": 469571706898350080,
+            "voter_name": "Soul",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T10:47:44.043321+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "PolarExpress",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T15:05:18.676100+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T16:53:12.483318+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 469571706898350080,
+            "target_name": "Soul",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T16:53:31.755382+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-03-29T21:20:20.762871+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-03-30T10:06:51.443454+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-03-30T10:08:55.883093+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-03-30T13:35:50.302570+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-03-30T20:27:01.453951+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-03-30T21:28:57.568805+00:00"
+        }
+    ],
+    "chat_activity_logs": [
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-03-28T22:01:46.683000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487572436760399903,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I am town"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-03-28T23:18:01.819000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487591626271625376,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I didn’t realise I was signing up for battle royale but let’s gooo"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-28T23:19:40.741000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487592041180561418,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I will be first the die"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-03-28T23:28:52.446000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487594355198791740,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "No you will not"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-28T23:29:17.870000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487594461835038802,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "People love killing me"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-03-29T05:19:27.539000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487682582773764227,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I wish I could kill you all"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-29T05:22:12.229000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487683273533427924,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I hope you will be"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-29T05:23:47.285000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487683672227450970,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Did Narelle get down to you"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-29T05:26:05.062000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487684250106069024,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Nah rained for like a day"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-29T09:59:26.012000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487753040675995648,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Am I dead yet"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-29T10:04:32.137000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487754324657574038,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Nope"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-03-29T10:07:23.385000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487755042923610172,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "ha <@292241540687069186> I died first!!! 👻"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-29T10:07:40.796000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1487755115950510212,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Oh no"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-03-30T09:01:19.554000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488100805276991498,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "oh I should submit an action huh"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T09:28:39.836000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488107685118214205,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "<@292241540687069186> did you hear about Dezi Freeman today?"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T09:29:04.310000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488107787769741322,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "https://maps.app.goo.gl/NsgDQYujfZoB1RjQ7?g_st=aw"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T09:29:17.185000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488107841771536434,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "You should see what people have done on google maps, the reviews are great"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-30T09:29:55.055000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488108000609697912,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Yeah I saw that they got him"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T09:31:02.970000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488108285465854044,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "To those that aren't from Australia and don't understand the context, he was a Sovereign Citizen nut who shot and killed two cops (we don't have as many die as the USA). He's been on the run for 7 months, cops caught him today and he was shot and killed. Same day Aussies have identified where he was shot and killed, created a business on Google maps, and put shit stirring reviews on it"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T21:46:07.593000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488293273662521414,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Weee"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-03-30T21:52:13.997000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488294810472284162,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "I'll see you all soon deadzors"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-03-30T22:51:22.967000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1488309695931486412,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Did everyone kill ordos? Lol"
+        }
+    ]
+}

@@ -1,0 +1,8 @@
+### Chapter 1: The Gathering
+The archives are scarred, the ink faded, and the record incomplete. In the annals of the Imperial Conflict, the incident cataloged under Thread ID 6735—simply titled "Mafia"—remains a ghost story. Within the silent halls of the forum, a small assembly gathered, bound by the cryptic promise of a game that never truly began. Oxygen, the moderator, retreated into the shadows, leaving behind nothing but an ominous, fragmented legacy: "Is never coming back X(". 
+
+### Chapter 2: The Echo Chamber
+In the vacuum where a game should have transpired, only the echoes of legend remained. The players—Iluvatar, Nolio, and the entity known as Final_Doom—did not clash in a blood-drenched arena, but instead engaged in the meta-theatrics of veteran chroniclers. They spoke of "the good old days," of players named Monkeywrench and Arganon, and the shifting of titles. The "Mafia" game was not a struggle of life and death, but a struggle of memory against the encroaching void of a dead server.
+
+### Chapter 3: The Lost Chronicle
+There was no lynch. There was no night kill. There was only the realization that the game was a phantom limb—a session promised, a thread opened, and a community abandoned to its own nostalgia. The "Final_Doom" became "Thanks_Iluvatar," a testament to the fact that in this particular archive, the only thing being hunted was the past itself. The thread closed not with a victory screen, but with the cold silence of a moderator who would never return.

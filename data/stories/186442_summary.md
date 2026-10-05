@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering of Shadows
+The streets of the Animation District were paved with the bones of cartoon history, but today, they were stained with the crimson ink of a tragedy. Clifford, the Big Red Dog, lay motionless, scratched to ribbons—a chilling calling card left by the feline underworld. Scooby-Doo, ever the detective, stood over his fallen companion, his howls piercing the night. But the predators were already moving. Tom, the Fat Kat, swirled his whiskey, plotting a coup against the canine residents, while the Cheshire Cat grinned from the ether and Garfield, usually too lazy to exert himself, sharpened his claws.
+
+### Chapter 2: Web of Deceit
+Chaos erupted in the daylight hours. While the dogs barked accusations, the CatDog—a tragic, two-headed monstrosity fueled by a lifetime of rejection—slipped through the shadows, acting as a one-man wrecking crew. The Town, disorganized and fractured, squabbled over clues. WiWi was the first to fall to the gallows, a sacrifice to the paranoia sweeping the district. Meanwhile, Thor (Garfield) met his end not by a lynch, but by the melancholic gaze of Seymour, the faithful dog who waited for a master who would never return. Those who dared threaten Seymour paid the ultimate price in blood.
+
+### Chapter 3: The Piano’s Crescendo
+The investigation hit a fever pitch when Melvin, a dog caught in the wrong alley at the wrong time, was spotted over the mutilated body of Scooby-Doo. The Town, convinced of his guilt, moved for a lynch, but justice arrived in a more theatrical fashion: a falling piano, dropped by a vengeful Goofy, crushed Melvin into the pavement. Yet, while the Town cheered, the true architects of their demise—the Mob—remained largely hidden, their influence spreading like a virus through the ranks.
+
+### Chapter 4: The Final Stand
+As the numbers dwindled, the futility of the resistance became clear. Brian Griffin, the supposed intellectual anchor of the canine resistance, was lynched under a hail of accusations, leaving the Town leaderless. Gwynedd’s cries for help went unanswered as the Mob closed the trap. With the last of the defenders culled by nighttime assassinations, the remaining feline conspirators—Revenant and Josh—strutted down Main Street, victors of a broken town. They moved into the old dog house, finally masters of their own domain.

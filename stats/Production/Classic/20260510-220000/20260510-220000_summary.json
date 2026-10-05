@@ -1,0 +1,4283 @@
+{
+    "game_summary": {
+        "game_id": "20260510-220000",
+        "game_type": "classic",
+        "number_of_players": 12,
+        "player_counts": {
+            "town": 9,
+            "mafia": 2,
+            "neutral": 0
+        },
+        "start_date_utc": "2026-05-10T22:00:00+00:00",
+        "end_date_utc": "2026-05-14T22:00:44.370869+00:00",
+        "total_days": 4,
+        "phase_hours": 12.0,
+        "total_phases": 8,
+        "last_phase": "pre-night",
+        "winning_faction": "Serial Killer",
+        "winning_players": [
+            "Ordos"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 4",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 8,
+            "lynched_by_voters": [
+                "WhoFlungDung",
+                "Panda"
+            ]
+        },
+        {
+            "player_id": 292241540687069186,
+            "player_name": "Jealous",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 4",
+            "death_cause": "Killed by Serial Killer",
+            "death_phase_number": 7,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 294464443570454528,
+            "player_name": "Jets",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Jets",
+                "TheBigOne",
+                "WhoFlungDung",
+                "Jealous"
+            ]
+        },
+        {
+            "player_id": 746540828432007225,
+            "player_name": "LisaMVP",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Godfather",
+            "death_phase_number": 3,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 479362336264683520,
+            "player_name": "Morblnde",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 3",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 6,
+            "lynched_by_voters": [
+                "Jealous",
+                "WhoFlungDung",
+                "Ordos",
+                "Panda"
+            ]
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Serial Killer",
+            "role": "Serial Killer",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 4",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 8,
+            "lynched_by_voters": [
+                "Arby3",
+                "Ordos"
+            ]
+        },
+        {
+            "player_id": 469571706898350080,
+            "player_name": "Soul",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Serial Killer",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1057856572899999744,
+            "player_name": "TheBigOne",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Serial Killer",
+            "death_phase_number": 3,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 479197632074612736,
+            "player_name": "The_Unknown",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Arby3",
+                "Panda",
+                "Ordos",
+                "LisaMVP"
+            ]
+        },
+        {
+            "player_id": 450237854329602048,
+            "player_name": "WhoFlungDung",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 4",
+            "death_cause": "Game Over - Losing Player",
+            "death_phase_number": 8,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 4,
+            "lynched_by_voters": [
+                "Jealous",
+                "Morblnde",
+                "Ordos",
+                "Arby3",
+                "WhoFlungDung"
+            ]
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T10:34:01.256523+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jets",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T11:09:58.716291+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 1057856572899999744,
+            "target_name": "TheBigOne",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T11:17:58.702367+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T11:42:06.466795+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T13:27:19.585813+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T13:33:44.354214+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jets",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T13:35:25.356609+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T17:21:42.630305+00:00"
+        },
+        {
+            "voter_id": 479197632074612736,
+            "voter_name": "The_Unknown",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T18:12:48.038236+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T19:15:22.490725+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T19:20:08.499296+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jets",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T19:25:45.489526+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T19:26:01.477512+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T19:41:32.847591+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T20:33:15.661274+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T20:33:42.301093+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T20:42:07.436355+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T21:12:37.058878+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T21:26:01.750185+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-05-11T21:26:48.349439+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T10:02:38.347106+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T10:56:44.208976+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T11:18:19.988675+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T13:13:55.032895+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T14:12:42.511575+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T14:25:02.303774+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T17:27:59.454092+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T19:17:34.151175+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T19:18:07.579965+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T19:20:57.876048+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 2",
+            "timestamp_utc": "2026-05-12T19:23:19.651919+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T10:03:19.698540+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T10:48:47.278895+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T10:57:41.577102+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T10:58:42.332479+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T18:48:24.169069+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 3",
+            "timestamp_utc": "2026-05-13T19:02:07.530345+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T15:13:51.054796+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T15:15:24.779814+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T19:29:11.123962+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T19:36:05.399340+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T19:49:30.416332+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 4",
+            "timestamp_utc": "2026-05-14T20:25:37.172145+00:00"
+        }
+    ],
+    "chat_activity_logs": [
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-05-10T22:02:11.126000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503155217502306436,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Oo SK nice"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-10T22:07:59.572000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503156678990762147,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "O no,.an aluminum pan"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:15:26.365000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503158552976560229,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Can we get a night action for plain townie? It doesn't have to actually do anything, I just wanna feel like I'm actually contributing 😒"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:15:38.572000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503158604176560199,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Just submit your kill and you’ll be fine"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:17:11.835000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503158995349798933,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It says I don't have that ability 😒"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:17:28.168000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503159063855366165,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Must have typed wrong"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:17:54.006000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503159172227661956,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "So soul is cop and WFD is sk"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:17:56.412000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503159182319288510,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Got it"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:18:20.203000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503159282105843732,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "\\donk Arby in the squash"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:18:37.408000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503159354269106277,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "That's not typed right?"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-10T22:22:54.654000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503160433236906079,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It's like real life,.calm down"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:23:30.973000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503160585569829016,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Plain townie is the best role of the game"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:24:30.198000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503160833977483274,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Easiest, yes... Best, I bet to differ"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:24:49.906000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503160916638699600,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You get to do whatever you want"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:25:24.243000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161060658511954,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Cause chaos, don’t cause chaos. Bait people. Don’t bait people"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:25:32.117000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161093684461648,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It’s fun"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:26:34.434000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161355061170267,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Should there not be a story?"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:26:48.623000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161414574145601,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Well the more I talk the faster I die it seems"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:27:27.060000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161575790350508,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "So I maybe I take first death from jealous this round 😂"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:27:27.644000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161578239823943,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Talking is fun. Staying silent is boring"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:28:23.051000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161810633621677,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "But silent = alive"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:28:26.367000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161824542068897,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Usually"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:28:41.530000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161888140169286,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Gets stale real fast tho imo"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:29:01.574000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503161972211060776,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I’d rather be a nuisance"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:29:41.018000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162137651183657,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Id rather a fun/interesting game than a safe and boring one"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:30:06.870000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162246082330624,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I mean if everyone stayed silent then truly what would be the point playing? Lol"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:31:21.080000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162557341634761,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "There is no point in playing either way 🤣"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:31:23.856000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162568984891473,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I’m plain townie"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:31:26.779000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162581244842084,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I talk"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:31:40.992000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162640858611923,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Cause if yall gonna be quiet it better be cause you’re eating corn on the cob"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:31:53.471000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162693199073401,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I only joined cause I said I would if TU does. Didn’t expect him to then sign up"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:32:04.541000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162739630276719,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Gay for TU. Wow"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:32:12.773000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162774157529178,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I love TU"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:32:15.102000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162783926063195,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Didn’t realize he had a simp"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:32:22.492000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162814922231919,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Imma put a baby in his belly"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:32:23.653000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162819791683615,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You’d have loved primo"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:32:35.536000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162869632733366,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You take that back"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:32:43.810000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162904336400445,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I’m no one’s simp"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:32:54.563000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503162949437624320,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Not even qanz"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-10T22:33:56.759000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163210306420778,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "🫤"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-10T22:35:03.588000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163490607566958,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Sure"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:35:16.566000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163545041506406,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Don’t sure me lol"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:35:30.599000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163603899912302,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It’s true BB"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:36:21.584000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163817746501672,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "The TU thing simply backfired on me. Really didn’t think he would join. Oh well. Here we are"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:36:37.582000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163884846977094,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Plain townie"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-10T22:36:48.495000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503163930619543624,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "https://tenor.com/view/drinks-gif-3180783221836936727"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:06:36.398000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186529122517122,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Just read back, and all I got is that Lisa is a grade A simp"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:07:01.091000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186632692465725,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "And for TU of all people"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:07:04.182000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186645657325760,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Yuck"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:07:15.910000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186694848118954,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Y’all have not seen the message"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:07:22.942000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186724342202590,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I posted in deadzone"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:07:36.855000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186782697685063,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "If tu joins then I will too. Thinking that he wouldn’t"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:07:42.301000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186805539733605,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Your simp message?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:07:45.900000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186820635295755,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "He did. So I’ve joined this hell hole"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T00:07:47.847000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186828801609809,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I can’t see deadzone"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T00:07:53.359000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186851920482455,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "BUT THE FUCKING NOTIFICATION IS THERE"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:08:26.367000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503186990366199879,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It doesnt surprise me that panda only reads from everything something that isn’t true. That’s why he is bad at this game"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:12:12.344000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503187938182299709,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I was going to say something mean, but no point. You do you"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:12:29.482000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503188010064154716,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Then what’s the point saying anything? Might as well continue loo"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:13:50.435000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503188349605773323,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "https://tenor.com/view/go-ahead-you-do-that-gif-8449095"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:15:42.078000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503188817870590123,
+            "phase": "night",
+            "phase_number": 1,
+            "content": ""
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:16:00.280000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503188894215176292,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Is that it?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:16:18.739000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503188971637706762,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "That’s the mean thing?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:16:55.940000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189127670272162,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I legit agree with that quote. That’s why I find these games painful"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:17:53.318000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189368330784862,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "No, that wasn't the mean thing. I've moved on"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:18:01.311000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189401855983698,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I haven’t. Say the mean thing"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:18:26.394000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189507061710858,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You already started"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:18:33.157000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189535427920024,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Nah"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:18:45.723000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189588133548283,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Pointless"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T00:19:05.869000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189672631865434,
+            "phase": "night",
+            "phase_number": 1,
+            "content": ""
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:19:12.021000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189698435223554,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "“I was going to say something but now I won’t”. Like… okay? lol"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:19:37.525000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503189805406617702,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "So glad I signed up. Love it here"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T00:47:49.344000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503196901409820732,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I'd put you out of your misery mommy but the bot tells me I can't kill people 😢"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T00:48:18.762000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503197024798113904,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Thank you daddy. It’s okay. I know you would at least try"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T00:48:45.494000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503197136919986308,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "For sure for sure"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T01:05:21.263000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201313478021182,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "🤮"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:06:11.786000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201525386842182,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You okay love?"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T01:06:22.891000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201571964584057,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I'd kill you both of I could. Twice."
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T01:06:32.044000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201610355183716,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "If*"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:06:34.771000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201621792919612,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Don’t be jelly"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T01:06:46.963000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201672929869955,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Not jealous, nauseated"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:06:56.525000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201713035808868,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Nah. Totally jealous"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:07:03.350000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503201741661802606,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You want WFD calling you mommy"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T01:11:27.740000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503202850594095246,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "He can call me mommy"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T01:11:33.535000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503202874899959858,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "As long as he subs to my OF"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T01:12:26.360000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503203096464068632,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Buys premium he can call me whatever he wants"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:12:41.742000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503203160980983958,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Gdi you should be my agent"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:15:26.089000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503203850302132314,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "https://tenor.com/view/money-show-me-the-tom-gif-24782719"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T01:27:48.571000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503206964497223841,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I’ve told you repeatedly you’re bad at this"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:28:19.699000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503207095057645598,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I’m not actually interesting in selling myself like that"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:28:44.992000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503207201144307827,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "So I ain’t bad at shit"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T01:37:54.693000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503209506757279744,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You can so that as any roll"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-05-11T01:43:39.072000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503210951187501178,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Well Panda, good luck tonight"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-05-11T01:43:51.945000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503211005180776448,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Maybe the doc will heal you again"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:47:31.296000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503211925205422143,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "But with risks. Plain townie we have no risks"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:47:42.435000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503211971926032405,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Interesting. Why do you say that?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:51:27.723000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503212916852392137,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You’ve just increased panda’s chances of dying night 1 😂"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T01:58:22.187000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503214655240409188,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Well anyway. Time for me to sleep. Goodnight all. I hope we all survive night 1"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T02:12:52.323000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503218304855314554,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Hey mommy I'm a little short on cash... Is there like a coupon day?"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-11T02:18:09.137000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503219633669541971,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "No. I’m cheap but not that cheap."
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T02:26:42.175000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503221785506877572,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "😢"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T03:14:23.258000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503233785758482583,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I am so screwed... actual plain town... cop going to string me up as sk <:__:603968300900417569>"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T03:15:37.813000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503234098464821308,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You?"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T03:15:39.631000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503234106090197042,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Probably sk"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T03:15:40.840000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503234111160979487,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Lol"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T03:32:47.244000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503238416211509300,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "SK for the 5th time no doubt"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T03:35:14.702000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503239034695319593,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Damnit"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T03:35:58.521000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503239218485395588,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "bot says I don't have the investigate ability either 😠"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T04:14:05.990000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503248812825640961,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Actually cop would have been the worst... no one would listen to me at all"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T04:48:50.019000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503257553876942879,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Lol 🤣"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T04:49:10.032000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503257637817684050,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Yeh cop can seem frustrating at times"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T05:34:26.881000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503269033108045855,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "The difference between this and being a real cop is only that we all have ptsd. The suspicion and not trusting anyone, the getting shafted constantly, the lack of respect, they're all par for the course"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T05:36:03.254000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503269437325971527,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "That's because you're sk again"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T05:36:09.735000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503269464509255792,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "For the 5th time"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T05:43:40.856000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503271356647739483,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I'm gonna investigate the shit out of you"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T05:44:32.775000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503271574411935775,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Letting the cop know, investigating me is a lost cause... will come back plain town and you all will lynch me tomorrow anyways"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T05:46:33.931000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503272082576773260,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Fool definitely bad... just sayin"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T06:10:10.777000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503278025259618304,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Hey WTF <:X_:603968580588929044>"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T06:10:52.151000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503278198794752021,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "It comes back plain townie for the sk. You're not selling it"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T06:14:45.433000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503279177250377728,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "That's what I mean, the cop will get plain town and you all will juat lynch me anyway. So town cop shouldn't waste their action. Investigate someone else"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:16:41.162000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503279662652985435,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "```Note: The Godfather can be investigated normally.\nNote: The Serial Killer is immune to investigations.```"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:19:33.772000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280386631798855,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Was it the otherway around before?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T06:19:48.312000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280447617241178,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "They used to both be immune"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:19:53.855000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280470866268222,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I feel like"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:20:04.747000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280516550492240,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I need more beer"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T06:20:18.375000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280573710602320,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "You should get more beer then"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:20:37.357000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280653326618714,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "on it mommy"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T06:21:13.669000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503280805630312518,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Good boy, daddy"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:26:20.385000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503282092090589257,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "!"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:26:41.150000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503282179185180682,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "mommy is GF kill kill"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T06:27:04.727000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503282278074290236,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Are you saying you’re sk?"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:31:10.204000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503283307679318068,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I am SK doc GF and whats the other one? All rolled into one"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:32:22.407000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503283610520785067,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "cop"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T06:32:48.419000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503283719623016548,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Helllllll yeah"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T06:33:10.429000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503283811939651695,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "frogot goon too"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T06:57:50.195000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503290018528235540,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Just don't make us call badge 502 after you get the beer bottles. They don't have a flared base."
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:00:52.511000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503336081699901440,
+            "phase": "pre-day",
+            "phase_number": 1,
+            "content": "https://klipy.com/gifs/jensen-ackles-4--k01KRB7JDBAE62Y6B70FV4MNH7N"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:01:20.875000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503336200667136131,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "only 1 kill?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:01:22.212000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503336206275055616,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "lame"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:01:47.714000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503336313238061136,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "oh wait someone healed me 😂"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:01:50.183000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503336323593932820,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "thanks doc"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T10:13:00.315000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503339134331387934,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I guess I'm not good enough to kill night 1 3 times in a row"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:15:13.976000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503339694945996860,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I'd have killed you Jealous"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T10:15:31.921000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503339770212778094,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Thanks Lisa you're a real one"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:17:38.360000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503340300536643715,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I gotchu"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:27:41.750000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503342831337603082,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "<@&603943459841114112> doc you can feel free to reach out to me if you want. You know I'm not mob. Also not SK (soul wouldn't be my night 1 kill)"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:29:32.085000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503343294116270193,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Cop you too. This should be sufficient that I am plain townie"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T10:30:09.231000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503343449917755413,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Same goes for all plain townies"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-05-11T11:43:27.378000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503361897083441152,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Well, this is good. Town doc saving someone else for once."
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T12:09:29.289000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503368448212865185,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Well done Blondie"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:12:35.577000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503444727033499659,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Lol"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:12:55.151000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503444809132670986,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Or you're the doc yourself"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:13:13.186000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503444884776943716,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Hello my love"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:13:30.646000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503444958009491631,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I am not the doc. I’m trying to figure out which one of you would heal me and why"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T17:13:51.771000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445046614298725,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "That was Lancelot"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T17:13:58.743000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445075856982168,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "He said you looked great on a horse"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:15:30.016000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445458683433100,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "He’s not wrong"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:15:55.612000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445566040834109,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Technically you can still be mob no?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:16:54.953000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445814935027742,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why are you so desperate to paint me as bad when I’m clearly not?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:17:16.768000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445906434031677,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I could be sk. Story rules me out as mob"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:17:27.732000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445952420122714,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "How?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:17:32.929000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503445974218178571,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "How what?"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:18:02.286000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446097350230076,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Does the story rule you out as mob"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:18:28.753000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446208360874054,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You really think gf killed me but I got saved by doc? Hot damn I should do the lottery"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:18:54.142000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446314850062358,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I think nothing but it's a possibility"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:19:09.006000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446377194328206,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "So again, why the desperation?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:19:26.360000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446449982148720,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You sound sus af rn lol"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:20:01.091000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446595654652015,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "No desperation, just trying to lay out the logically right possibilities to the rest of town"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:20:11.909000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446641028628541,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Logically I am not mob"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:20:20.381000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446676562776104,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "But you seem to want to cause doubts"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:20:27.166000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446705020866683,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Interesting. Noted"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:20:31.799000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446724453072957,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Again, how?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:20:40.334000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446760251723966,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You are not dumb so don’t act it"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:21:13.545000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446899548487721,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Lol maybe I am then , I don't see how so it'd my duty as townie to point this out"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:21:24.650000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503446946126364826,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Okay dumb Thomas"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:21:59.239000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447091203145871,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Now being so defensive about this IS suspicious"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:22:09.355000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447133632725315,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I’m not defensive in the slightest"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:22:16.638000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447164179845230,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You’re pretending to be an idiot"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:22:21.643000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447185172467834,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Highly Sus"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:22:26.409000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447205162389819,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I was merely pointing out you not being mob is not a 100% certainty"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:22:55.197000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447325908144189,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Alright let's both draw our conclusions then :p"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:22:57.223000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447334405800007,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You said you’re trying to think logically. Saying I’m goon, gf killed me but doc saved me is so highly unlikely"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:23:27.517000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447461467918489,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "So again. If a smart person pretends to be dumb I will be sus of them"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:23:41.286000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447519219286127,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I didn't say you are, but it's a possibility"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:23:57.350000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447586596585502,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You can waste time if you want"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:23:59.886000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447597233340607,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "SK could have tried to target you too"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:24:07.045000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447627260498071,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Or are the kills in order ?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:24:12.979000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447652149231756,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "SK literally killed soul"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:24:21.011000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447685838143498,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Again. Stop pretending to be dumb"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:24:23.468000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447696143417354,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "It didn't say that"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:24:29.125000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447719870595175,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "It literally does"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:24:31.097000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447728141893813,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Or are the kills in order ?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:24:35.543000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447746789773383,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "….."
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:24:47.143000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447795443699886,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Wait, in the roles channel then ?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:24:50.050000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447807636410479,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Look at rules and roles"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:24:59.836000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447848681738352,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Ah yes"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:25:04.728000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447869200269555,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Pretty sure TU is SK everyone"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:25:23.209000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503447946715467816,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Should be mentioned in the story too then X("
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:25:42.886000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503448029246783528,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Ok so it's indeed less likely you are mob"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T17:26:38.287000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503448261615161415,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Indeed indeed. A pretty wild af possibility. But so unlikely that it seems pointless to look that angle"
+        },
+        {
+            "user_id": 479197632074612736,
+            "username": "The_Unknown",
+            "timestamp_utc": "2026-05-11T17:27:51.457000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503448568512643243,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "At this point yes, I didn't see the roles channel X( figured that info would also be on the story"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T19:15:45.876000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503475724194152528,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Let's see who does what next i goes"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-11T19:15:50.946000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503475745459142677,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Guess*"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:18:47.928000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476487775588392,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Even if TU is Sk mob or just noob. He almost didn't even sign up. Can at least give him another day right"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:19:18.103000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476614338580490,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Jets why do you always do this"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:19:30.173000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476664963825734,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "What am I doing I been quiet"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-11T19:19:30.298000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476665488113874,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I wouldnt call TU a noob :D"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:19:48.745000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476742860312596,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why you been quiet?"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:20:10.421000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503476833776177213,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You would think he would be a stronger player with years and years of experience yes"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:20:50.830000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477003263676437,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I'm voting ordos if Blondie can take the time to vote. I vote where he votes"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:21:26.378000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477152362795226,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Are you bad jets?"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:21:44.680000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477229127204925,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I almost spoke more ,but Everytime arguments were going on. I don't like yelling."
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:22:01.694000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477300488831079,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Oh shit I missed arguments??"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:22:18.579000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477371309654117,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Oh 😱 well you being questioned mostly I think"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:22:27.713000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477409620426762,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Oh. Talking. Gotcha"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:22:33.829000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477435272794282,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Weird"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:22:54.839000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477523395379390,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Lynch me day 1 please"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:23:00.013000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477545096581281,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why?"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:23:03.080000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477557960638646,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Still time"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:23:27.080000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477658623934604,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "And why now?"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:24:02.650000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477807815327844,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why not. At least doc and cop live"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:24:26.197000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477906578345984,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I love how you play jets"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:24:27.465000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477911896854615,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Just doing my part"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:24:39.180000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477961033253047,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Aight I’ll vote for you"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:24:44.364000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503477982776393850,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Thankyou"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:25:00.311000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503478049662963835,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "But not going to make it a double"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-05-11T19:25:10.425000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503478092084281454,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Hope not doubles are bad"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:25:18.040000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503478124023648286,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "So I will wait until it seems okay to do so"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:25:36.370000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503478200905367724,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "<@&603943459841114112> just to confirm jets would really like to be lynched. So I’m down to do so"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T19:42:01.283000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503482331929776410,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why you trying for a double"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T19:42:16.609000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503482396211937360,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "We should go for a triple"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T19:44:28.167000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503482948005920969,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Then we find out you’re plain townie and it’s like ha ha ha that jealous sure is wild"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:02:13.663000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503487417020055632,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "So Lisa is bad.... thats what I get from reading up... I light have historical bias at play"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:04:56.844000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503488101450776606,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Sure"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:06:06.849000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503488395073032282,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "So who are we lynching?"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:32:41.085000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495081783722157,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Hmm... ordos maybe ?"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:32:54.325000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495137316179988,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "And why’s that?"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:33:46.436000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495355885682772,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Cause it was the first name I could remember that you are setting up for the multi"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:33:55.227000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495392757678230,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Incorrect"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:34:09.439000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495452366995609,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Nice that you tried for a triple tho"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:34:19.244000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495493492281425,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Not saying my memory is perfect"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:34:31.579000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495545229021315,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why did you want a triple?"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:34:32.986000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503495551130271848,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Triple is good... up until it is not"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T20:47:17.140000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503498756224450780,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why are people trying to set up a double lol"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-11T20:56:35.115000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503501096541356263,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why not? Gets bad girls all worked up"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T21:12:49.268000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503505182435180545,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I'm interested to see how day one plays out"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T21:12:52.486000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503505195932454963,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Normally it's nothing"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T21:12:53.716000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503505201091575849,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Today"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T21:12:56.478000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503505212676247582,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I feel different"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T21:12:59.194000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503505224067842198,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Dirty even"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:01:34.308000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517450942287912,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Ffs"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:01:40.737000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517477907206154,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Well that was dumb"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:02:29.251000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517681389928579,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Nope"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:02:43.477000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517741057835008,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "We just lost 2 townies lol"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:02:50.646000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517771127066775,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "We did"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:03:06.707000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517838491779243,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "And we can now pick fool or wfd for tomorrow because of how they wanted and pushed extra hard for a double"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:03:15.110000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517873736388660,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "And jealous not at all, weirdly"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:03:19.376000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517891629158422,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "😁"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:03:29.785000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517935287668889,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Jealous made it a triple at one point. No?"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T22:03:40.864000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503517981756362863,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "lol I figured Jets would change his vote to not himself 😂"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:03:54.652000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503518039587684524,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Would have been bloody helpful wouldn’t it lol"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-11T22:04:12.783000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503518115634483262,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Wee bit yea"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-11T22:05:48.926000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503518518887583794,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Not that I saw"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:07:15.898000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503518883674591405,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "They did"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:07:33.476000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503518957401931796,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "And he changed his vote to get the triple"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T22:44:08.361000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503528163416739840,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "I never made it a triple"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T22:44:24.777000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503528232270430209,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "I just voted jets because he voted himself"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T22:45:31.429000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503528511829442560,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Fool moved to make it 2 people instead of one"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T22:45:41.178000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503528552719716382,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "But I'd say that was more for the lols then mob like"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-11T22:48:07.739000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503529167440842863,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "I still don’t understsnd why jets was voting himself in the first place"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-11T23:33:35.866000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503540610035093526,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "I assumed he was going to be the one to move to make it a triple"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T04:35:15.747000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503616526438367305,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "wtf Yall do today"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-12T04:43:14.565000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503618534746493089,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "People died"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-12T04:43:23.999000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503618574315425902,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "People turned evil"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-12T04:43:27.804000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503618590274879658,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "People will die again"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-12T04:43:32.340000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503618609300115476,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Then fool will die tomorrow"
+        },
+        {
+            "user_id": 1057856572899999744,
+            "username": "TheBigOne",
+            "timestamp_utc": "2026-05-12T04:43:35.861000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503618624068386877,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "👀☠️👀"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T04:49:30.829000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503620112911958056,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Mondays are so damned busy I can’t even pay attention anymore"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-12T05:01:59.106000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503623251413434461,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Looks jets just being jets again"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-12T05:40:43.551000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503633000842268672,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Let himself get lynched for no reason"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T07:45:23.309000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503664373221163008,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "I should have gotten back on before lynch... but thought jets would change too..."
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-12T09:14:14.289000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503686732971905044,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Classic jets always being cool"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-12T09:14:38.340000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503686833848975370,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Now I have to vote myself to try and seem cool"
+        },
+        {
+            "user_id": 746540828432007225,
+            "username": "LisaMVP",
+            "timestamp_utc": "2026-05-12T09:14:41.787000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503686848306876446,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "you misspelt dumbarse"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T09:31:56.909000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503691189923352667,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Let my final words be arby loves his new boyfriend very much"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T09:37:00.930000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503692465079586826,
+            "phase": "night",
+            "phase_number": 2,
+            "content": "Alas poor jets, he knew him well"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-12T10:02:24.433000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503698855114313748,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Oh I thought I was the doctor"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T10:57:08.661000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503712630165082193,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "clearly"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T10:57:51.677000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503712810587390012,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Alright, 4 town alive, 2 mob, 1 SK... we need a good solid lynch town!"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-05-12T11:18:23.401000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503717976812294235,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Agreed"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T11:18:47.845000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503718079337725983,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "I am actual town though so 😭"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-05-12T11:20:08.045000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503718415720910849,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Why then did you go for the double lynch?"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-12T13:13:42.810000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503746998916874310,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Say no more"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T17:18:17.631000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503808549577298072,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Went for the arby gambit thinking jets would change"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T17:45:42.175000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503815447294775398,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "It only works when I do it"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T17:45:52.626000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503815491129704519,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Anybody else is just mob/sk pushing for max kills"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T17:45:55.996000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503815505264382104,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "🤨"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:19:20.456000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839012073373766,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "I note you didnt try and fix it <@220666545544626177>"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T19:19:31.051000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839056511897610,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Was at work"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:19:35.740000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839076179120271,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Sure"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T19:19:47.787000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839126707765379,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Mondays are crazy busy and 3pm and 5pm are my major cutoffs for shipments"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:20:08.844000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839215027228702,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Anyway, none of you will believe me, but I am cop and I know blonde is mob"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T19:20:12.206000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839229128736939,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "I work evenings now and sleep in lol"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:20:24.251000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839279649132544,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "We have little to no leeway, so time for action"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:20:36.012000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839328978075718,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "<@&603943459841114112> blonde is confirmed mob"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:20:44.836000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839365988618370,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Last chance to save this"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-12T19:20:52.167000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839396737192078,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "So he’s the goon?"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-05-12T19:21:10.290000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503839472750694650,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Yes"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-12T19:23:46.422000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503840127615631430,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "not much else to go on ..."
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T19:24:03.375000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503840198721798204,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "I'm not going to be on a lynch of town cop"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T19:25:23.869000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503840536337846383,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Plus it's dodgy as that blonde is still alive"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T19:31:30.427000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503842073793790194,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "Not that it seems to matter, the rest of the townies aren't listening anyways"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T19:31:57.677000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503842188088311848,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "There's only 4 of us left"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-12T20:54:11.606000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503862882486456351,
+            "phase": "day",
+            "phase_number": 2,
+            "content": "It was tbos dying wish that we hang fool"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-12T22:03:02.423000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503880208388980867,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Looks like gg mob or sk, I don't think we can win it from here"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-12T22:19:56.458000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503884461559906415,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Tbo cost us the game"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-05-13T05:49:31.288000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503997602197278811,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Well, that is just stupid."
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-13T05:49:53.951000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503997697252790395,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "should have switched my vote to you"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-13T05:49:57.081000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503997710380961823,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "moblonde"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-13T05:53:02.668000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1503998488789385326,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "SK needs to hwack the goon tonight for him or town to have a chance"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-13T06:28:25.473000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504007392478629978,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "<@220666545544626177> thats you probably maybe 😅  Ordos or blondey"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-13T06:33:58.784000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504008790486552576,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "https://tenor.com/view/uno-reverse-card-uno-reverse-uno-uno-reverse-card-meme-uno-ajs-gif-3947437610644768255"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T06:36:53.334000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504009522602180648,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "?"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-13T06:37:56.603000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504009787971604600,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "If you is SK kill blondey or ordos"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-13T06:38:15.760000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504009868321886320,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "If not well fuck me"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T06:42:16.735000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504010879044419665,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "The only thing I am, honestly, is surprised I’m alive lol"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T06:42:43.908000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504010993015984240,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Already put in almost 38hrs this week at work"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-05-13T06:47:28.583000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504012187029475409,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "https://tenor.com/view/just-do-it-do-it-flames-fire-shia-labeouf-gif-17696690"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T09:15:27.508000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504049427940245536,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Noones gonna kill blonde"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T09:15:34.398000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504049456839131136,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Just kill panda"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T09:29:33.187000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504052974975062086,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "How about sk kills mob goon instead, and gf hits sk. That would be a good night. Hitting me would just hurry up the mob winning"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T09:31:15.968000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504053406069690429,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "So they should feel free to target you jealous"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T09:32:44.175000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504053776036925541,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Sk wont kill mob"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T09:32:50.950000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504053804453204099,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "They never do"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T09:32:54.957000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504053821259776041,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "If they don't they lose"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T09:33:04.549000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504053861491408957,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "Yeah"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T09:34:17.040000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504054165540831252,
+            "phase": "night",
+            "phase_number": 3,
+            "content": "In any case, maybe it's best if mob and sk both hit a townie and the game just ends"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T10:01:23.945000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504060989274853478,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "Hmm, sk hit the gf"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T10:01:42.313000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504061066315960361,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "And gf maybe didn't put a kill in"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T10:01:53.880000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504061114831470613,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "So blonde is gf"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-13T10:05:20.725000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504061982402150501,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "seems legit"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-05-13T10:07:13.209000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504062454194507836,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "So, Jealous is SK"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T10:09:27.520000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504063017535668396,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "Yeah"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T10:10:28.356000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504063272700084417,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "But then again fool was the one that called you mob then they died"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T10:10:36.858000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504063308360060979,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "What trusted source just dies"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T10:16:10.911000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504064709480153109,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "So those are admissions that blonde is gf and jealous is sk?"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T15:52:09.132000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504149259186868456,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "Lynch both?"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T15:52:39.373000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504149386026946600,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "I don’t think town can win if it isn’t a double on both"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-13T18:48:46.579000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504193708101337138,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "<@220142891027136512> if you vote we can double and get sk and mob both"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T19:02:32.148000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504197170788827208,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "For the record, I don't know who the sk is, but arby is the goon (investigated last night by the cop)"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T19:02:50.917000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504197249511460964,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "If sk wants to win, during the next night phase kill arby"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-13T19:04:25.995000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504197648297758721,
+            "phase": "day",
+            "phase_number": 3,
+            "content": "I do appreciate the effort you put in though in trying to save blonde"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T22:03:51.176000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504242800739483819,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Heh I guess he was the gf"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-13T22:04:00.640000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504242840434380990,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Fool was right all along"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T02:13:18.313000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504305577461813380,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Well now the sk needs to take out arby, leaving a shoot out with no way of knowing which \"plain townie\" is sk"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T02:21:12.466000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504307566203633764,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "I’m plain townie. Funny how you’re pushing for sk to kill me and then target them on a guess lol"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T02:21:24.477000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504307616581550100,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "My guess is you’re the sk and setting up for the win. Solid move"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-14T02:36:57.800000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504311531221815458,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "I'm goon, I just wanted gf gone so I could get to stabbing"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T02:41:39.558000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504312713000521781,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Alright sk lol"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T02:41:59.526000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504312796752511117,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "I haven’t paid attention enough to trust any of you fucks this game lol"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T05:24:39.869000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504353734598332527,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "I investigated you <@220666545544626177>"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T05:24:43.129000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504353748271759391,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "You're goon"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T05:25:29.260000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504353941759066133,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Convenient"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T05:25:37.566000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504353976597090415,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Very, lol"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T05:25:39.716000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504353985614839828,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "You always investigate me night 1 but didn’t push until now"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T05:25:51.085000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504354033299623946,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "When still too risky for actual cop to come out lol"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T05:25:58.954000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504354066304602224,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "You weren't night 1 this time, you were night 3 when blonde forgot to put his kill in"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T05:26:06.176000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504354096596127764,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Still good moves I can’t really argue against"
+        },
+        {
+            "user_id": 292241540687069186,
+            "username": "Jealous",
+            "timestamp_utc": "2026-05-14T08:08:42.782000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504395018767568916,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Did I get investigated"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T08:21:58.670000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504398356963917914,
+            "phase": "night",
+            "phase_number": 4,
+            "content": "Wouldn't you like to know"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-05-14T15:20:15.484000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504503620631134238,
+            "phase": "day",
+            "phase_number": 4,
+            "content": "Not good for town"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T15:32:18.358000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504506652584317110,
+            "phase": "day",
+            "phase_number": 4,
+            "content": "The 4 of us being left isn’t good for anybody"
+        },
+        {
+            "user_id": 220666545544626177,
+            "username": "Arby3",
+            "timestamp_utc": "2026-05-14T15:32:32.591000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504506712281972780,
+            "phase": "day",
+            "phase_number": 4,
+            "content": "Sk, mob, cop, townie"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-05-14T21:32:05.740000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1504597196627251321,
+            "phase": "day",
+            "phase_number": 4,
+            "content": "Gg ordos"
+        }
+    ]
+}

@@ -1,0 +1,733 @@
+{
+    "game_summary": {
+        "game_id": "20251124-220000",
+        "game_type": "classic",
+        "number_of_players": 15,
+        "player_counts": {
+            "town": 11,
+            "mafia": 3,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-11-24T22:00:00+00:00",
+        "end_date_utc": "2025-11-29T10:01:54.353354+00:00",
+        "total_days": 5,
+        "phase_hours": 12.0,
+        "winning_faction": "Mafia",
+        "winning_players": [
+            "LisaMVP",
+            "The_Unknown",
+            "period_vampyr"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 829552473970180116,
+            "player_name": "Alavsiel",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 5",
+            "death_cause": "Game Over - Losing Player",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 4",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 777906662908100629,
+            "player_name": "Boo xo",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Ordos",
+                "Panda",
+                "TheBigOne"
+            ]
+        },
+        {
+            "player_id": 292241540687069186,
+            "player_name": "Jealous",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 3",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "The_Unknown",
+                "TheBigOne",
+                "LisaMVP"
+            ]
+        },
+        {
+            "player_id": 294464443570454528,
+            "player_name": "Jetsica",
+            "alignment": "Serial Killer",
+            "role": "Serial Killer",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Arby3",
+                "Morblnde",
+                "WhoFlungDung",
+                "TheBigOne",
+                "LisaMVP",
+                "Panda"
+            ]
+        },
+        {
+            "player_id": 746540828432007225,
+            "player_name": "LisaMVP",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 3",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Arby3",
+                "WhoFlungDung",
+                "Jealous"
+            ]
+        },
+        {
+            "player_id": 479362336264683520,
+            "player_name": "Morblnde",
+            "alignment": "Town",
+            "role": "Town Role Blocker",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "The_Unknown",
+                "period_vampyr",
+                "Jealous",
+                "Alavsiel",
+                "Boo xo",
+                "Jetsica"
+            ]
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 5",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Town",
+            "role": "Town Cop",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 3",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 469571706898350080,
+            "player_name": "Soul",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1057856572899999744,
+            "player_name": "TheBigOne",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 5",
+            "death_cause": "Game Over - Losing Player",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 479197632074612736,
+            "player_name": "The_Unknown",
+            "alignment": "Mafia",
+            "role": "Mob Goon",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 450237854329602048,
+            "player_name": "WhoFlungDung",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 4",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "period_vampyr",
+                "The_Unknown",
+                "Alavsiel"
+            ]
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 2",
+            "death_cause": "Killed by Godfather",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 760212300463603752,
+            "player_name": "period_vampyr",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T10:12:05.480755+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T10:38:12.261917+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T11:15:48.253430+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 777906662908100629,
+            "target_name": "Boo xo",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T11:53:26.097047+00:00"
+        },
+        {
+            "voter_id": 479197632074612736,
+            "voter_name": "The_Unknown",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T12:57:02.434930+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T13:20:33.939323+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T13:27:40.814948+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T13:42:04.804594+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T16:13:57.529554+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T16:14:54.344216+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jetsica",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T16:17:32.641322+00:00"
+        },
+        {
+            "voter_id": 777906662908100629,
+            "voter_name": "Boo xo",
+            "target_id": 1057856572899999744,
+            "target_name": "TheBigOne",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T17:57:25.260072+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T18:14:45.607543+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T19:18:01.549444+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 777906662908100629,
+            "target_name": "Boo xo",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T19:37:25.071642+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:07:07.316764+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:08:16.055086+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:28:26.120630+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:30:18.014304+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:33:31.412366+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:36:31.935358+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:37:06.352319+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:37:46.522678+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:38:22.691454+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:49:11.732021+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:51:49.805489+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 294464443570454528,
+            "target_name": "Jetsica",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:52:17.930817+00:00"
+        },
+        {
+            "voter_id": 777906662908100629,
+            "voter_name": "Boo xo",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:54:41.648291+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jetsica",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-11-25T21:59:46.693115+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T10:07:42.267164+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T10:09:07.438823+00:00"
+        },
+        {
+            "voter_id": 777906662908100629,
+            "voter_name": "Boo xo",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T16:21:02.598644+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T16:22:18.800034+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 760212300463603752,
+            "target_name": "period_vampyr",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T16:44:34.839970+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 1057856572899999744,
+            "target_name": "TheBigOne",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T16:56:01.914049+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 777906662908100629,
+            "target_name": "Boo xo",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T17:39:21.851060+00:00"
+        },
+        {
+            "voter_id": 479197632074612736,
+            "voter_name": "The_Unknown",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T17:50:50.802924+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T18:57:53.362896+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 777906662908100629,
+            "target_name": "Boo xo",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T19:11:46.518610+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 777906662908100629,
+            "target_name": "Boo xo",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T21:21:09.375838+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-11-26T21:24:46.546285+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T10:03:13.338548+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T10:07:08.031943+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T10:08:02.118566+00:00"
+        },
+        {
+            "voter_id": 479197632074612736,
+            "voter_name": "The_Unknown",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T11:02:48.410574+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T11:04:04.278442+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T15:38:32.478875+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T15:44:25.142228+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T16:03:14.695779+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T16:57:02.276641+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T17:47:51.590623+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T17:57:07.814548+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T21:13:35.117013+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 292241540687069186,
+            "target_name": "Jealous",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T21:22:13.874805+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T21:53:46.008529+00:00"
+        },
+        {
+            "voter_id": 292241540687069186,
+            "voter_name": "Jealous",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-11-27T21:59:53.975973+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T10:10:33.346582+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T10:11:21.507561+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T10:43:25.803633+00:00"
+        },
+        {
+            "voter_id": 479197632074612736,
+            "voter_name": "The_Unknown",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T11:33:00.847850+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T12:38:53.627522+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 450237854329602048,
+            "target_name": "WhoFlungDung",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T18:53:01.444199+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 479197632074612736,
+            "target_name": "The_Unknown",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T21:38:25.466293+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-11-28T21:54:59.396782+00:00"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+### Chapter 1: The Dark Prophecy
+Hogwarts, once a bastion of light, found itself choked by the suffocating presence of Dementors. The Ministry, panicked by a string of gruesome murders, turned the school into a prison. Within the Great Hall, Albus Dumbledore’s voice boomed with grim finality: Death Eaters walked among them. The ritual had failed to reveal their faces, leaving the students to cast their own judgment in a desperate, daily ritual of sacrifice to the Dementors.
+
+### Chapter 2: The Weasley’s Toll
+The nights grew colder. Ron Weasley, believing he could outsmart the darkness by splitting from his investigative partner, Hermione, wandered into the shadow of the Forbidden Forest. There, he met the Dark Lord himself. With a flash of sickening green light, the *Avada Kedavra* curse claimed him. Simultaneously, the halls ran red as the werewolf—Remus Lupin—slipped his chains. Ramza, a loyal defender of the school, was caught in the corridor and torn asunder, his life snuffed out by primal, lupine fury.
+
+### Chapter 3: The Web of Paranoia
+Chaos reigned in the dormitories. Einstein, a strategist of questionable sanity, attempted to implement a "double-blind" voting scheme to flush out the Mafia, only to be branded a conspirator by Gwynedd, the school's healer. As the students bickered, the Death Eaters grew bolder. Severus Snape, the school’s protector, was dragged to the gallows—lynched by his own frightened peers. The confusion reached its peak when Nolio, posing as Hermione, was caught whispering to the Death Eaters, only to be struck down by the Dementors as a traitor.
+
+### Chapter 4: The Final Stand
+The school was thinning. *I like pie* was cornered in the Ravenclaw common room and torn apart by conjured trolls, while HydroP fell to the werewolf’s claws. With Dumbledore himself meeting a dark fate at the hands of the Mafia, the light of Hogwarts flickered and died. The corridors, once filled with the echoes of spells and laughter, became nothing more than a hunting ground for the shadows, leaving the survivors to face an eternal, cold silence.

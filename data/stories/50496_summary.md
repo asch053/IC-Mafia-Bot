@@ -1,0 +1,11 @@
+### Chapter 1: The Hollow Harbinger
+The freighter mission to Ganymede was supposed to be a standard haul, but the cosmos had other plans. When an unidentified, perfectly round asteroid breached the titanium hull, the crew’s skepticism quickly turned to abject terror. It wasn’t a rock; it was a transport. Inside the wreckage lay nothing but a slick, alien residue and the promise of a nightmare. Within hours, the ship’s primary maintainer and doctor were found butchered, their remains a grotesque display of extraterrestrial intrusion. The "Mother Superior" and her infected brood had arrived, hiding in plain sight among the honest, terrified crew.
+
+### Chapter 2: The Panic Room Gambit
+As paranoia rippled through the decks like a contagion, the crew scrambled for order. With the Panic Room activated as the only sanctuary against the creeping shadows, the daily ritual of the Lynch became a trial by fire. Suspicion fell heavy on the vocal and the quiet alike. Early accusations were cast in haste—Primo found himself the subject of intense scrutiny, narrowly dodging the gallows through backroom conversations, while the crew’s frantic efforts to isolate the "Insane Crew Member"—a rogue killer stalking the halls—only led to more chaotic bloodletting.
+
+### Chapter 3: Web of Deceit
+The Biologists, struggling to find a thread of truth in the misinformation, were hunted with cold efficiency. As the Bodysnatchers systematically picked off the crew, the death toll mounted. The Insane Crew Member, A10, acted as a chaotic third party, carving his own bloody path until he was eventually silenced by those he sought to plague. The ship's halls became a tomb; the Mother Superior, Lyvidian, moved with the cunning of a predator, masquerading as a simple crew member while the infection spread through the air ducts.
+
+### Chapter 4: The Final Stand
+The endgame saw the crew’s numbers decimated. The few remaining survivors—those who had not been lynched or slaughtered in their sleep—realized too late that the corruption was absolute. Despite the desperate protection of the Panic Room and the occasional vigilante justice, the infection proved too resilient. The mission to Ganymede would never be completed; the freighter became a silent, drifting monument to a crew that failed to recognize the monster sitting at the dinner table.

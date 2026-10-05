@@ -105,6 +105,182 @@ async def save_data_summary(game, game_data, final_summary):
         logger.error(f"Failed to save game summary: {e}")
 
 
+async def update_modular_database(game, game_data, final_summary, winner):
+    """
+    Updates data/database/discord_bot.json with the completed game,
+    saves the markdown summary and story to data/stories/,
+    and re-runs build_unified_stats() so the website reflects the new game immediately.
+    """
+    logger.info("Updating modular Discord Bot database and markdown stories...")
+    try:
+        game_id = str(game_data.get('game_id', 'unknown'))
+        root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        db_path = os.path.join(root_dir, "data", "database", "discord_bot.json")
+        stories_dir = os.path.join(root_dir, "data", "stories")
+        os.makedirs(stories_dir, exist_ok=True)
+        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+
+        # 1. Narrative Overview
+        winning_players_str = ", ".join(game_data.get("winning_players", [])) if game_data.get("winning_players") else "None"
+        player_counts = game_data.get("player_counts", {})
+        narrative_summary = (
+            f"### 📋 Match Overview\n"
+            f"- **Game ID:** `{game_id}`\n"
+            f"- **Era:** Discord Modern Bot\n"
+            f"- **Game Type:** {game_data.get('game_type', 'Classic')}\n"
+            f"- **Winning Faction:** **{winner}**\n"
+            f"- **Victors:** {winning_players_str}\n"
+            f"- **Total Players:** {game_data.get('number_of_players', 0)} (Town: {player_counts.get('town', 0)}, Mafia: {player_counts.get('mafia', 0)}, Neutral: {player_counts.get('neutral', 0)})\n"
+            f"- **Total Duration:** {game_data.get('total_days', 0)} phases\n\n"
+            f"### ⚔️ Tactical Summary\n"
+            f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winner}** victory."
+        )
+
+        # 2. Story as Written
+        story_as_written = ""
+        if hasattr(game, 'narration_manager') and game.narration_manager:
+            story_as_written = game.narration_manager.get_full_story_log() or ""
+        if not story_as_written:
+            story_as_written = f"Automated game {game_id} run on Discord."
+
+        # Save markdown files into data/stories/
+        with open(os.path.join(stories_dir, f"{game_id}_summary.md"), "w", encoding="utf-8") as sf:
+            sf.write(narrative_summary)
+        with open(os.path.join(stories_dir, f"{game_id}_story.md"), "w", encoding="utf-8") as stf:
+            stf.write(story_as_written)
+
+        # 3. Assemble Box Score
+        winning_players = game_data.get("winning_players", [])
+        mvp = None
+        if winning_players:
+            mvp = {
+                "player": winning_players[0],
+                "rationale": f"Secured the victory for {winner}."
+            }
+
+        roster = []
+        winning_players_lower = [w.lower() for w in winning_players]
+        for p in final_summary.get("player_data", []):
+            pname = p.get("player_name", "Unknown")
+            is_win = (p.get("is_winner") is True) or (pname.lower() in winning_players_lower) or (str(p.get("alignment", "")).lower() == str(winner).lower())
+            roster.append({
+                "player": pname,
+                "player_id": p.get("player_id"),
+                "role": p.get("role"),
+                "alignment": p.get("alignment"),
+                "survived": (p.get("status", "").lower() == "alive"),
+                "is_winner": is_win,
+                "death_phase": p.get("death_phase"),
+                "death_cause": p.get("death_cause")
+            })
+
+        # Build chronological timeline
+        timeline = []
+        phases_seen = []
+        for p in final_summary.get("player_data", []):
+            dp = p.get("death_phase")
+            if dp and dp not in phases_seen:
+                phases_seen.append(dp)
+        for v in final_summary.get("lynch_vote_history", []):
+            vp = v.get("phase")
+            if vp and vp not in phases_seen:
+                phases_seen.append(vp)
+
+        for ph in phases_seen:
+            ph_deaths = [
+                {
+                    "player": p.get("player_name"),
+                    "role": p.get("role"),
+                    "alignment": p.get("alignment"),
+                    "cause": p.get("death_cause"),
+                    "lynched_by": p.get("lynched_by_voters")
+                }
+                for p in final_summary.get("player_data", []) if p.get("death_phase") == ph
+            ]
+            ph_votes = [v for v in final_summary.get("lynch_vote_history", []) if v.get("phase") == ph]
+            final_votes = {v["voter_name"]: v["target_name"] for v in ph_votes if "voter_name" in v and "target_name" in v}
+            tally = dict(Counter(final_votes.values()))
+
+            events = []
+            for d in ph_deaths:
+                ev_type = "Lynch" if "lynch" in (d.get("cause") or "").lower() else "Kill"
+                events.append({
+                    "phase": ph,
+                    "event": ev_type,
+                    "target": d.get("player"),
+                    "role": d.get("role"),
+                    "alignment": d.get("alignment"),
+                    "details": d.get("cause") or f"Eliminated in {ph}"
+                })
+
+            timeline.append({
+                "phase": ph,
+                "type": "day" if "day" in ph.lower() else ("night" if "night" in ph.lower() else "other"),
+                "scene": "",
+                "events": events,
+                "eliminated": ph_deaths,
+                "vote_tally": tally,
+                "votes_cast": len(ph_votes)
+            })
+
+        game_entry = {
+            "thread_id": game_id,
+            "era": "Discord",
+            "title": f"Discord Game - {game_id}",
+            "moderator": "IC Mafia Bot",
+            "game_type": game_data.get("game_type", "classic"),
+            "total_posts": len(game.chat_log) if hasattr(game, 'chat_log') and game.chat_log else 0,
+            "winning_faction": winner,
+            "summary_file": f"stories/{game_id}_summary.md",
+            "story_file": f"stories/{game_id}_story.md",
+            "box_score": {
+                "winning_faction": winner,
+                "game_type": game_data.get("game_type", "classic"),
+                "mvp": mvp,
+                "roster": roster,
+                "timeline": timeline,
+                "notable_moments": [
+                    f"Game completed in {game_data.get('total_days', 0)} phases.",
+                    f"Winning faction: {winner}."
+                ]
+            },
+            "lynch_vote_history": final_summary.get("lynch_vote_history", [])
+        }
+
+        # 4. Update data/database/discord_bot.json
+        bot_games = []
+        if os.path.exists(db_path):
+            try:
+                with open(db_path, "r", encoding="utf-8") as f:
+                    bot_games = json.load(f)
+            except Exception:
+                bot_games = []
+
+        existing_index = None
+        for idx, bg in enumerate(bot_games):
+            if str(bg.get("thread_id")) == game_id:
+                existing_index = idx
+                break
+
+        if existing_index is not None:
+            bot_games[existing_index] = game_entry
+        else:
+            bot_games.append(game_entry)
+
+        with open(db_path, "w", encoding="utf-8") as f:
+            json.dump(bot_games, f, indent=2, ensure_ascii=False)
+        logger.info(f"Updated {db_path} with Game ID {game_id}.")
+
+        # 5. Trigger website data update
+        import asyncio
+        from Website.build_unified_leaderboard import build_unified_stats
+        await asyncio.to_thread(build_unified_stats, False)
+        logger.info("Triggered Website unified data rebuild successfully.")
+
+    except Exception as e:
+        logger.error(f"Failed to update modular database: {e}", exc_info=True)
+
+
 async def save_game_summary(game, winner):
     """Gathers all game data and saves it to a JSON file and story log."""
     logger.info(f"Saving game summary for game_id: {game.game_settings['game_id']}")
@@ -176,6 +352,7 @@ async def save_game_summary(game, winner):
 
     await save_data_summary(game, game_data, final_summary)
     await save_story_log(game, alignments, end_time)
+    await update_modular_database(game, game_data, final_summary, winner)
     await export_game_stats(game)
 
 
@@ -189,4 +366,3 @@ async def export_game_stats(game):
         logger.info("Game stats exported.")
     else:
         logger.warning("Export Cog not found. Stats were not uploaded.")
-

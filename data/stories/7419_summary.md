@@ -1,0 +1,11 @@
+### Chapter 1: The Descent into Luxury
+The slums of the old world were a memory of hunger, but the Mansion was a prison of gold. Seven souls—the desperate, the hopeful, and the doomed—arrived at the Giving Game, knowing that their lives were the currency of the spectacle. Under the watchful eyes of a betting, bloodthirsty society, they were forced to coexist. Alliances formed like cracks in dry earth, fragile and dangerous. The audience, glued to their screens, hungered for the betrayal that was promised to them.
+
+### Chapter 2: The Silent Poison
+Tension peaked as the morning light hit the common area. The group counted their heads; one was missing. Dallas Ford, a man who had foolishly proposed splitting the prize—a heresy in a game built on greed—was found cold. In the privacy of his chambers, he lay naked and still, an empty glass by his bedside. Krissy Vaultman’s inspection confirmed the audience’s dark suspicions: poison. Wolfe Snow, once a quiet face in the crowd, had cast his shadow long before the sun rose.
+
+### Chapter 3: The Final Frenzy
+The loud-speakers crackled with a chilling command: *“There can only be one.”* The facade of civility shattered. Hala, a desperate soul driven to the edge, lunged for a lamp, striking Cxris down in a blur of violence. Driven by a frantic, murderous mania, Hala turned the broken shards of the lamp upon George Zoomer, intending to clear a path to victory. But the house was not done with him. Wolfe Snow, ever the tactician, moved with predatory precision, subduing the aggressor alongside his peers. In a swift, brutal conclusion, the Serial Killer was silenced.
+
+### Chapter 4: The Bitter Harvest
+The broadcast ended not with the glory of riches, but with the cold weight of a contract. Jenny, Wolfe, Krissy, and George were declared the victors, but the "prize" was a hollow one. They had escaped the slums, yes, but only by trading their freedom for five years of servitude in the military police. The Giving Game had claimed its blood, and the survivors were left to wonder if they had truly won, or simply signed their lives away to a different master.

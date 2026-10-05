@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+The world had fallen. Beyond the walls of the government-sanctioned safe house, the "Corona Quarantine" had unleashed a nightmare—a pathogen that turned humanity into ravenous, cannibalistic husks. A disparate group of survivors, brought together by the Imperial Conflict community, sought refuge in an Air BNB turned fortress. Under the watchful eye of the moderator, Nolio, they prayed for a cure while fearing the rot that might be festering within their own ranks.
+
+### Chapter 2: First Blood
+Suspicion was the first symptom of their breakdown. Cxris, accused of being a carrier after a bout of coughing, refused to be isolated. Choosing exile over detention, he ventured into the dark streets, only to be butchered by a mysterious woman. The safe house grew colder; they realized that while the zombies lingered outside, the true threat wore the faces of their companions.
+
+### Chapter 3: Web of Deceit
+The nights turned bloody. Ordos, a man who dared to challenge the government’s narrative, was found suffocated in his bed after a visit from an unseen shadow. Accusations flew like shrapnel—Jets pointed his finger at Sunstorm, while KT claimed to have overheard the doomed TU plotting. Chaos claimed TU, who was cast out and left to his fate, only to be found later with his stomach ripped open by the monsters of the night. MrBlonde, exposed by his own violent coughing fit, met a swift, lethal end at the hands of the guard.
+
+### Chapter 4: The Final Stand
+As the mansion became a pressure cooker, Goddess confessed to a dark secret: she had caused the death of Oldie in the hot tub. Guilt-ridden, she chose the path of exile, disappearing into the wastes. The conspiracy deepened when the player known as Sparky, the mastermind behind the chaos, was finally unmasked. Isolated and without his followers, the Conspiracy Theorist’s plot to overthrow the government collapsed. With the final infected citizen cured by the doctor’s steady hand, the long, terrifying nightmare finally drew to a close. The Town had held the fort; the virus was contained.

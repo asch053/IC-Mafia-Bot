@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+In the quiet town of Taconia, the shadows grew long and the air turned bitter. As the townsfolk prepared for the return of an old tradition—a game of deception hosted by the enigmatic Iluvatar and Nolio—the atmosphere was thick with unease. Twenty-four souls gathered, unaware that among them, the seeds of chaos had already been sown. Eight ruthless Mafiosi, a cold-blooded Serial Killer, and a scattered handful of protectors were thrust into a lethal dance where trust was a luxury none could afford.
+
+### Chapter 2: First Blood
+The darkness fell on Brookland forest, and the massacre began before the town could even organize. In a swift, calculated strike, the Mafia decimated the town’s law enforcement, leaving the streets vulnerable and lawless. By morning, the town square was a tomb of silence. Seeking blood to settle their nerves, the citizens turned on one of their own, **Arms**. Despite his pleas, he was cast to the ground and beaten to death by the angry mob. As his life faded, the reveal was bitter: he was but a simple, innocent villager. A grocery list fluttered from his pocket—the only evidence of a life cut short by paranoia.
+
+### Chapter 3: Web of Deceit
+The nights grew colder. Daemon, a man of wit and nightly merriment, met a grim end at the hands of the elusive taxi-driving assassin. Meanwhile, inside a home filled with traps, Genesis thought himself safe, clutching a nail-studded bat. His vigilance proved useless against the sting of venom; two snakes slithered from his bathroom, ending his vigil in a silent, agonizing death. The town’s terror deepened as the realization set in: the killer was no longer just the Mafia, but an invisible phantom striking from the shadows.
+
+### Chapter 4: The Final Stand
+Chaos reigned as fingers pointed in every direction. **TheDarkOne**, a player whose survival had been a point of heavy contention, found himself encircled by an unforgiving mob. As he attempted one final, desperate negotiation to trade secrets for his life, a gunshot rang out—the verdict of the mob was final. He collapsed, leaving the town fractured and weary. With the Mafia families still operating in the gloom and the Serial Killer ever-present, the survivors retreated into the night, knowing that for every traitor silenced, two more waited in the dark to take their place.

@@ -1,0 +1,13 @@
+### Chapter 1: The Gathering of Souls
+The Imperial Conflict community, a collective bound by late-night Discord revelry, shared drinks, and a singular, obsessive passion for Mafia, found themselves under the gaze of a new observer: Tishxo. The atmosphere was thick with the scent of cheap beer and unspoken desires. To the observer, this was more than a game—it was a social experiment. But as the sun set on the first phase, the "family" began to fracture. The serial killer Jets, playing a game of 4D chess, struck early, piercing the eye of the innocent Wild Wolf with the observer's own stolen pen. Meanwhile, the Mob struck a more calculated blow: the town doctor, KT, was found strung up by a rope, a mocking note signed by Nolio left upon her chest. The community’s protector had been silenced.
+
+### Chapter 2: The Broom Closet Accumulates
+Day 001 saw the tension reach a boiling point. The air was heavy with suspicion, though reasons for votes were scarce—a chaotic scramble for survival. In a swift, brutal turn of events, Oldie was cast out, lynched by his peers. The observer, watching from the shadows, took the grim task of dragging the body to the broom closet, already crowded with the fallen. The game was no longer a simulation; the blood on the floor was drying, and the "family" was dying.
+
+### Chapter 3: The Threat of the Eraser
+As Night 002 descended, the psychological warfare intensified. A chilling message was discovered on the observation glass: a threat against the observer and their dog, signed in purple lipstick. The threat of "Big Tish"—the volatile force that would delete players from existence—loomed over the survivors. In the darkness, the Mob continued their systematic culling; Soul was found decapitated, though the killer, Daylight, left a polite note, almost apologetic for the carnage.
+
+### Chapter 4: The Final Stand
+The days turned into a blur of accusations and shifting alliances. The community, once united in their boisterous Discord antics, found themselves cornered by the relentless march of the Mob and the internal decay of their own ranks. In a final, desperate surge of justice, the Town found their resolve. In the concluding act, Sunstorm and The Unknown (Mr. Blonde’s affiliate) were dragged to the gallows. With the final threats neutralized, the remaining Townies stood amidst the wreckage of their broken family, having secured a victory at a devastating price.
+
+***
