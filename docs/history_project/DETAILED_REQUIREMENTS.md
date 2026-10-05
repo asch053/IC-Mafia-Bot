@@ -55,9 +55,10 @@ Other Projects/Mafia History Project/
 
 #### A2. Discourse & Discord Harvesters
 * **File Paths**: `discoursehistory_extractor.py`, `discordhistory_extractor.py`
-* **Specification**: Ingests Discourse topics via REST JSON endpoints and Discord history via bot message fetching (`limit=None`, `after=timestamp`).
+* **Specification**: Ingests Discourse topics via REST JSON endpoints (`https://discourse.imperialconflict.com/t/{topic_id}.json` and `post_stream.posts` traversal) and Discord history via bot message fetching (`limit=None`, `after=timestamp`).
 * **Acceptance Criteria**:
   * `TEST-HIS-EXT-04`: Normalizes author names, timestamps (ISO 8601 UTC), and message content into identical JSONL schema.
+  * `TEST-HIS-EXT-05`: Discourse harvester maps posts directly to their parent `topic_id` without polluting transcripts with global `/posts.json` data.
 
 ---
 
@@ -167,6 +168,7 @@ Other Projects/Mafia History Project/
     "rationale": "Successfully framed the Town Cop on Day 3 and led the Mafia to a flawless victory without losing a single member."
   },
   "narrative_chronicle": "# Mafia 54: The Voyage of USS Ziusudra\n\n### Chapter 1: The Gathering Stars\nIn the cold silence of deep space...",
+  "story_as_written": "## 📜 Opening Briefing & Lore\n*Original opening by Moderator TheGameMaster*\n\nWelcome to Mafia 54...\n\n---\n\n## ⚔️ Phase Announcements & Night Stories\n### Night 1 Narrative Scene\n...",
   "box_score": {
     "total_players": 14,
     "total_phases": 8,
@@ -181,6 +183,14 @@ Other Projects/Mafia History Project/
   }
 }
 ```
+
+#### D3. Dual-Mode Story & Summary Architecture
+* **Specification**:
+  * Every game record retains two distinct narrative texts:
+    1. **`narrative_chronicle`**: AI-synthesized multi-chapter literary summary chronicle (retelling key events, tactical pivots, and resolution).
+    2. **`story_as_written`**: Verbatim original moderator story posts harvested from the match archive (Opening lore & theme, phase announcements, night kills, vote counts, and endgame role reveal epilogue).
+  * Web portal modal displays both in dedicated tabs: **📋 Game Summary** and **📖 Stories as Written**.
+
 
 ### Contract 3: Compiled Web Portal Archive (`Website/data/history_archive.json`)
 ```json

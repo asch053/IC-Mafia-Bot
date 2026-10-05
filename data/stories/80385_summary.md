@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at Number 9
+The air in the Imperial City flats was thick with the stench of rot and neglected dreams. Lieutenant Elrohir arrived at Apartment 9, drawn by a desperate plea echoing through the hallways. Inside, a bloodied man whispered a dying warning: *“It has returned.”* The game was afoot. Twenty-one souls had been gathered, a mix of lawmen, medical personnel, and innocent townsfolk, all unaware that hidden among them were six cold-blooded mobsters and a lone, frenzied serial killer. As the doors locked, the hunt began.
+
+### Chapter 2: First Blood
+The city woke to a chilling discovery. The night had claimed its first victims: Arnor the officer and Jets, a townie caught in the crossfire of the underworld. Terror gripped the residents as they scrambled to identify the "Godfather," the mastermind pulling the strings. Amidst the chaos, suspicion fell upon FrozenICE. With a resounding consensus, the town sent the traitor to the gallows, hoping to purge the rot from within.
+
+### Chapter 3: Web of Deceit
+The darkness grew deeper. While the town cheered for the lynch of FrozenICE, the serial killer—a madman known as Nolio—was busy carving a path of carnage. Maarten met a gruesome end at the hands of the killer, his desperate defense with a broomstick failing against the blade. Soon, the town turned their rage upon Nolio himself. His confession was short and brutal, and he was hoisted to the noose, ending his spree, but leaving the Mafia’s true leadership firmly in control.
+
+### Chapter 4: The Final Stand
+The Mafia's reach proved longer than the town’s reach for justice. Parrot and Skyro were identified and executed by the town, but the cost was high. The Janitor struck, turning a victim into a gasoline-drenched torch, leaving the town traumatized. Gwynedd was found murdered, a victim of the shadowy figures still prowling the halls. In the end, as the dust settled on the ruins of the flats, only one figure stood amidst the carnage: **evilsheep**, the Mayor and the mastermind Godfather, having successfully liquidated the competition and secured absolute control over the city.

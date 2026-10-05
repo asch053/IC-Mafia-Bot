@@ -1,0 +1,97 @@
+[
+  {
+    "thread_id": "manual-example-01",
+    "era": "Discord_Manual",
+    "title": "Manual Community Game 1",
+    "moderator": "CommunityHost",
+    "game_type": "classic",
+    "total_posts": 0,
+    "winning_faction": "Town",
+    "summary_file": "stories/manual-example-01_summary.md",
+    "story_file": "stories/manual-example-01_story.md",
+    "box_score": {
+      "winning_faction": "Town",
+      "game_type": "classic",
+      "mvp": {
+        "player": "Alice",
+        "rationale": "Leading the Town to victory with accurate reads."
+      },
+      "roster": [
+        {
+          "player": "Alice",
+          "player_id": "10001",
+          "role": "Detective",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Bob",
+          "player_id": "10002",
+          "role": "Godfather",
+          "alignment": "Mafia",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Lynched by Town"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 1",
+          "type": "day",
+          "scene": "The town gathers in the square to begin discussions.",
+          "events": [],
+          "eliminated": [],
+          "vote_tally": {},
+          "votes_cast": 0
+        },
+        {
+          "phase": "Day 2",
+          "type": "day",
+          "scene": "Bob was accused and eliminated by vote.",
+          "events": [
+            {
+              "phase": "Day 2",
+              "event": "Lynch",
+              "target": "Bob",
+              "role": "Godfather",
+              "alignment": "Mafia",
+              "details": "Eliminated in Day 2 (Godfather)"
+            }
+          ],
+          "eliminated": [
+            {
+              "player": "Bob",
+              "role": "Godfather",
+              "alignment": "Mafia",
+              "cause": "Lynch",
+              "lynched_by": [
+                "Alice"
+              ]
+            }
+          ],
+          "vote_tally": {
+            "Bob": 1
+          },
+          "votes_cast": 1
+        }
+      ],
+      "notable_moments": [
+        "Alice identified Bob on Day 2.",
+        "Flawless Town victory."
+      ]
+    },
+    "lynch_vote_history": [
+      {
+        "phase": "Day 2",
+        "voter_name": "Alice",
+        "voter_id": "10001",
+        "target_name": "Bob",
+        "target_id": "10002"
+      }
+    ]
+  }
+]

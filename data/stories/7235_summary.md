@@ -1,0 +1,13 @@
+### Chapter 1: The BBQ Club’s Lament
+The atmosphere in town was tense, thick with the scent of charcoal and charcoal-flavored betrayal. The BBQ Club—a group of beer-bellied, meat-loving locals—found their backyard sanctuary besieged. Their arch-nemesis, the "Health Freaks," had descended upon the town. These soy-protein-chugging, alcohol-hating fanatics, led by the enigmatic Ripped Tony, were determined to cleanse the streets of everything fun. Meanwhile, in the dark corners of Moe's Tavern, the alcoholics Zatte René and his new recruits were busy corrupting the local populace, turning unsuspecting BBQ enthusiasts into bottomless pits of booze-fueled despair.
+
+### Chapter 2: First Blood and The Vigilante's Ire
+The town square was a powder keg. Suspicion hung over everyone as the BBQ Club frantically tried to identify the Health Freaks hiding in their midst. In the chaos, the first lynchings saw local favorites like ZichtOpZee and the unfortunate Jets—a man whose only crime was loving the bottle—cast out by the mob. But the town had a darker shadow: Duffman. A ripped, boozing vigilante, he cared little for politics, only for vengeance. He prowled the night, indiscriminately pruning the ranks of both the Health Freaks and his fellow BBQ members, seeking a "balance" only he could understand.
+
+### Chapter 3: The Body Inspector’s Last Dance
+Goddess of the Dead, the town’s intrepid Body Inspector, played a dangerous game. Armed with the skills of a reformed con-artist, she tracked the fitness fanatics, flirting her way into their inner sanctums to inspect their musculature. Her investigation led her to a predator’s den. She thought she had cornered a Health Freak, only to realize the trap was set for her. The encounter turned violent, and the Body Inspector’s life was cut short—strangled by a man whose obsession with health hid a truly depraved nature.
+
+### Chapter 4: The Bowling Ball Finale
+The alcoholics attempted to hold their ground, with Melsfreefallin (Moleman) trying to rebuild their ranks at the tavern. But the Health Freaks were patient, cold, and deadly. Amok, a soldier of the fitness regime, tracked Moleman through the streets. A comedic attempt to strike with a football ended in failure, but Amok’s persistence paid off. Outside the tavern, a heavy bowling ball—a strange, violent tool of the "clean" life—put an end to Moleman’s drunken quest forever, leaving the town broken and starving for a good, greasy burger.
+
+***

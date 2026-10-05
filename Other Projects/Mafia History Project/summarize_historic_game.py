@@ -91,6 +91,7 @@ def summarize_historic_game(thread_id: str, game_meta: Dict[str, Any] = None) ->
     result = {
         "thread_id": thread_id,
         "title": game_meta.get('title', f"Mafia {thread_id}"),
+        "era": game_meta.get('era', 'Forum'),
         "moderator": segmented.get('moderator'),
         "total_posts": segmented.get('total_posts'),
         "has_explicit_closing": segmented.get('has_explicit_closing', False),

@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import re
 import time
 import logging
 import os
@@ -23,8 +24,8 @@ DISCOURSE_BASE_URL = "https://discourse.imperialconflict.com"
 DISCOURSE_CATEGORY_ID = "237"
 TOTAL_PAGES = 20 # Set this to a higher number (e.g., 20) for the full run!
 POSTS_PER_THREAD_PAGE = 25 
-REQUEST_DELAY_SECONDS = 3 
-SERVER_ERROR_BACKOFF = 10 
+REQUEST_DELAY_SECONDS = 0.5 
+SERVER_ERROR_BACKOFF = 5 
 
 logger = logging.getLogger('DiscourseExtractor') 
 
@@ -85,7 +86,7 @@ def fetch_json(url: str) -> Dict[str, Any] | None:
 
 def check_link_status(url: str) -> bool:
     """Checks if a given URL returns a non-404 status code (HEAD request)."""
-    time.sleep(1) 
+    time.sleep(0.5) 
     try:
         response = requests.head(url, timeout=5) 
         return response.status_code != 404
@@ -144,10 +145,31 @@ def fetch_discourse_thread_links() -> List[Dict[str, str]]:
     
     return final_thread_list
 
-# --- 4. STAGE 2: POST SCRAPER (JSON API - FINAL FIX) ---
+# --- 4. STAGE 2: POST SCRAPER (JSON API - TOPIC STREAM) ---
+
+def html_to_clean_markdown(html_content: str) -> str:
+    """Converts Discourse cooked HTML to clean Markdown with preserved paragraphs and lists."""
+    if not html_content:
+        return ""
+    soup = BeautifulSoup(html_content, 'html.parser')
+    for br in soup.find_all('br'):
+        br.replace_with('\n')
+    for li in soup.find_all('li'):
+        li.insert_before('\n- ')
+    for p in soup.find_all('p'):
+        p.insert_before('\n\n')
+    for bq in soup.find_all('blockquote'):
+        bq.insert_before('\n\n> ')
+    for h in ['h1', 'h2', 'h3', 'h4', 'h5', 'h6']:
+        for tag in soup.find_all(h):
+            tag.insert_before('\n\n### ')
+    text = soup.get_text()
+    text = re.sub(r'[ \t]+', ' ', text)
+    text = re.sub(r'\n{3,}', '\n\n', text)
+    return text.strip()
 
 def scrape_discourse_posts(thread_list: List[Dict[str, str]]) -> int:
-    """Scrapes ALL posts for each thread using the dedicated /posts.json endpoint."""
+    """Scrapes ALL true posts for each thread using the /t/{topic_id}.json endpoint."""
     total_posts_extracted = 0
     
     logger.critical(f"Starting post extraction for {len(thread_list)} Discourse threads...")
@@ -159,41 +181,50 @@ def scrape_discourse_posts(thread_list: List[Dict[str, str]]) -> int:
             thread_id = thread["thread_id"]
             thread_title = thread["title"]
             
-            thread_api_url = f"{DISCOURSE_BASE_URL}/posts.json?topic_id={thread_id}"
-            
-            logger.info(f"[{i+1}/{len(thread_list)}] Fetching ALL POSTS for: {thread_title}...")
+            thread_api_url = f"{DISCOURSE_BASE_URL}/t/{thread_id}.json"
+            logger.info(f"[{i+1}/{len(thread_list)}] Fetching ALL POSTS for: {thread_title} (ID: {thread_id})...")
 
             thread_data = fetch_json(thread_api_url)
-
-            # *** CRITICAL FIX APPLIED HERE ***
-            # The API returns posts under the key 'latest_posts'
-            posts_to_process = thread_data.get('latest_posts', []) if thread_data else []
-            
-            if not posts_to_process:
-                logger.warning(f"Failed to retrieve post data for thread ID {thread_id} or data is empty. Skipping.")
+            if not thread_data:
+                logger.warning(f"Failed to retrieve topic data for thread ID {thread_id}. Skipping.")
                 continue
 
-            # This total posts check is now much more reliable since we retrieve content.
-            expected_count = thread.get('total_posts', len(posts_to_process))
-            if len(posts_to_process) != expected_count:
-                logger.warning(f"    Fetched {len(posts_to_process)} posts, but expected {expected_count}. Data may be incomplete.")
+            post_stream = thread_data.get('post_stream', {})
+            posts_to_process = list(post_stream.get('posts', []))
+            stream_ids = post_stream.get('stream', [])
 
+            # Handle pagination if topic has more posts than initial page (usually > 20)
+            if len(stream_ids) > len(posts_to_process):
+                already_fetched_ids = {p.get('id') for p in posts_to_process}
+                remaining_ids = [pid for pid in stream_ids if pid not in already_fetched_ids]
+                
+                chunk_size = 50
+                for c_idx in range(0, len(remaining_ids), chunk_size):
+                    chunk = remaining_ids[c_idx:c_idx + chunk_size]
+                    more_url = f"{DISCOURSE_BASE_URL}/t/{thread_id}/posts.json"
+                    params = [('post_ids[]', pid) for pid in chunk]
+                    time.sleep(REQUEST_DELAY_SECONDS)
+                    try:
+                        resp = requests.get(more_url, params=params, timeout=30)
+                        if resp.status_code == 200:
+                            more_posts = resp.json().get('post_stream', {}).get('posts', [])
+                            posts_to_process.extend(more_posts)
+                    except Exception as err:
+                        logger.warning(f"Error fetching remaining posts for thread {thread_id}: {err}")
+
+            if not posts_to_process:
+                logger.warning(f"No posts found for thread ID {thread_id}. Skipping.")
+                continue
+
+            logger.info(f"  -> Extracted {len(posts_to_process)} true posts for '{thread_title}'")
 
             for post_num, post in enumerate(posts_to_process):
-                
-                # --- Logging Post Progress (INFO to console) ---
-                logger.info(f"    Processing post {post_num + 1}/{len(posts_to_process)}...")
-                
-                # --- Content Extraction and Cleaning ---
-                # 'cooked' contains the HTML content (confirmed by user JSON)
                 content_html = post.get('cooked', '')
-                soup = BeautifulSoup(content_html, 'html.parser')
-                content = soup.get_text(strip=True)
+                content = html_to_clean_markdown(content_html)
                 
-                # --- Metadata Extraction ---
                 timestamp_raw = post.get('created_at', 'N/A')
                 username = post.get('username', 'Unknown User')
-                post_number = post.get('post_number')
+                post_number = post.get('post_number', post_num + 1)
                 
                 specific_post_url = f"{thread['permalink']}/{post_number}"
 
@@ -202,11 +233,9 @@ def scrape_discourse_posts(thread_list: List[Dict[str, str]]) -> int:
                     "source_type": "Discourse-Post",
                     "source_id": specific_post_url,
                     "username": username,
-                    "user_id": "N/A", 
+                    "user_id": str(post.get('user_id', 'N/A')), 
                     "content": content
                 }
-                logger.info(f"Extracted post by {username} at {timestamp_raw} => {specific_post_url}")
-                logger.debug(f" Record generated: {json.dumps(record, indent=None)}")
 
                 f_out.write(json.dumps(record, ensure_ascii=False) + '\n')
                 total_posts_extracted += 1
@@ -222,7 +251,12 @@ if __name__ == "__main__":
     try:
         logger.info(f"Starting Discourse History Extractor pipeline...")
         
-        threads_to_scrape = fetch_discourse_thread_links() 
+        if os.path.exists(DISCOURSE_THREADS_FILE):
+            logger.info(f"Loading existing thread list from {DISCOURSE_THREADS_FILE}")
+            with open(DISCOURSE_THREADS_FILE, 'r', encoding='utf-8') as f:
+                threads_to_scrape = json.load(f)
+        else:
+            threads_to_scrape = fetch_discourse_thread_links() 
         
         if threads_to_scrape:
             scrape_discourse_posts(threads_to_scrape)

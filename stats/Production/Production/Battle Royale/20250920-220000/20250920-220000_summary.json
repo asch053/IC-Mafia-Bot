@@ -1,0 +1,383 @@
+{
+    "game_summary": {
+        "game_id": "20250920-220000",
+        "game_type": "battle_royale",
+        "number_of_players": 12,
+        "player_counts": {
+            "town": 0,
+            "mafia": 0,
+            "neutral": 0
+        },
+        "start_date_utc": "2025-09-20T22:00:00+00:00",
+        "end_date_utc": "2025-09-25T10:11:09.824401+00:00",
+        "total_days": 5,
+        "phase_hours": 12.0,
+        "winning_faction": "TheBigOne",
+        "winning_players": []
+    },
+    "player_data": [
+        {
+            "player_id": 829552473970180116,
+            "player_name": "Alavsiel",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 2",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Panda",
+                "LisaMVP",
+                "TheBigOne",
+                "Ordos",
+                "Genesis",
+                "Alavsiel"
+            ]
+        },
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 213337264162340864,
+            "player_name": "Genesis",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 4",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "LisaMVP",
+                "TheBigOne"
+            ]
+        },
+        {
+            "player_id": 549657242170032154,
+            "player_name": "Goddess",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 3",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "LisaMVP",
+                "Genesis",
+                "TheBigOne"
+            ]
+        },
+        {
+            "player_id": 292241540687069186,
+            "player_name": "Jealous",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 746540828432007225,
+            "player_name": "LisaMVP",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 5",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 479362336264683520,
+            "player_name": "Morblnde",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "lynched_by_voters": [
+                "Ordos",
+                "LisaMVP",
+                "Genesis",
+                "TheBigOne",
+                "Goddess",
+                "Morblnde"
+            ]
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 3",
+            "death_cause": "Inactivity",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 4",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 1057856572899999744,
+            "player_name": "TheBigOne",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "night",
+            "death_cause": "Game Over - Winning Player",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 760212300463603752,
+            "player_name": "period_vampyr",
+            "alignment": "Vigilante",
+            "role": "Vigilante",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Night 3",
+            "death_cause": "Killed by Vigilante",
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T10:12:25.469475+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T10:54:26.874609+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T11:01:08.650804+00:00"
+        },
+        {
+            "voter_id": 213337264162340864,
+            "voter_name": "Genesis",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T12:41:56.200493+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T13:55:52.606027+00:00"
+        },
+        {
+            "voter_id": 549657242170032154,
+            "voter_name": "Goddess",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T15:21:05.875613+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T16:18:17.314747+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 479362336264683520,
+            "target_name": "Morblnde",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T16:38:32.717731+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 1057856572899999744,
+            "target_name": "TheBigOne",
+            "phase": "Day 1",
+            "timestamp_utc": "2025-09-21T20:10:58.871837+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T10:09:05.215436+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T10:10:46.515868+00:00"
+        },
+        {
+            "voter_id": 760212300463603752,
+            "voter_name": "period_vampyr",
+            "target_id": 1057856572899999744,
+            "target_name": "TheBigOne",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T10:11:25.226486+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T12:51:23.047914+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T12:55:15.429809+00:00"
+        },
+        {
+            "voter_id": 549657242170032154,
+            "voter_name": "Goddess",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T13:49:26.485803+00:00"
+        },
+        {
+            "voter_id": 213337264162340864,
+            "voter_name": "Genesis",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T15:21:50.103739+00:00"
+        },
+        {
+            "voter_id": 829552473970180116,
+            "voter_name": "Alavsiel",
+            "target_id": 829552473970180116,
+            "target_name": "Alavsiel",
+            "phase": "Day 2",
+            "timestamp_utc": "2025-09-22T20:22:49.992893+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 549657242170032154,
+            "target_name": "Goddess",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T10:19:59.300081+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 549657242170032154,
+            "target_name": "Goddess",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T10:21:54.963150+00:00"
+        },
+        {
+            "voter_id": 549657242170032154,
+            "voter_name": "Goddess",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T12:53:15.858704+00:00"
+        },
+        {
+            "voter_id": 213337264162340864,
+            "voter_name": "Genesis",
+            "target_id": 549657242170032154,
+            "target_name": "Goddess",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T19:28:13.814113+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T22:06:27.537026+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 549657242170032154,
+            "target_name": "Goddess",
+            "phase": "Day 3",
+            "timestamp_utc": "2025-09-23T22:06:43.219533+00:00"
+        },
+        {
+            "voter_id": 746540828432007225,
+            "voter_name": "LisaMVP",
+            "target_id": 213337264162340864,
+            "target_name": "Genesis",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-09-24T10:10:45.700645+00:00"
+        },
+        {
+            "voter_id": 213337264162340864,
+            "voter_name": "Genesis",
+            "target_id": 746540828432007225,
+            "target_name": "LisaMVP",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-09-24T11:41:26.411771+00:00"
+        },
+        {
+            "voter_id": 1057856572899999744,
+            "voter_name": "TheBigOne",
+            "target_id": 213337264162340864,
+            "target_name": "Genesis",
+            "phase": "Day 4",
+            "timestamp_utc": "2025-09-24T12:40:35.316670+00:00"
+        }
+    ]
+}

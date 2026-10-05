@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+Suburbanville was a city choking on its own decay. Crumbs, chewing gum, and discarded trash paved the way for a powder keg of resentment. Mr. Wilkins, head of the Transportation Union, finally snapped. Deciding that the unruly, foul-mouthed passengers of his city needed a brutal re-education, he organized his loyalists—the drivers, sweepers, and ferry workers—into a shadow cabal. They would reclaim the city, one "accident" at a time. But in the shadows, another threat loomed: Harry and Barry, twins bound by a singular, violent purpose, began their own campaign of urban terror.
+
+### Chapter 2: First Blood
+The atmosphere turned deadly overnight. TBO, a self-absorbed commuter, became the first casualty, cast overboard into the storm by Eric O’Grady. Not long after, Amit Singh, a street sweeper who dared ask after the missing Barry, met a gruesome end at the hands of Harry, crushed against a tree by a city bus. The town, reeling from the loss, turned on their own, lynching Jets in a desperate, misguided attempt to find order in the chaos.
+
+### Chapter 3: Web of Deceit
+The violence escalated as the "accidents" became daily occurrences. Doctor Jane Pain was abducted and murdered by a rogue cabbie, and the serial-killing twins continued to claim victims, including Daylight, who met a violent end at a train station. Mr. Wilkins, the mastermind, was eventually cornered by Detective Smelly. In a moment of supreme irony, the man who controlled the city's transport died under the wheels of the very bus that took him home, sent flying into traffic like a discarded piece of trash.
+
+### Chapter 4: The Final Stand
+As the bodies piled up—Laquisha falling in a subway brawl, Xin Lee pushed onto the tracks by Barry, and the manic bus driver Harry meeting his end in a hail of police gunfire—only a few remained. Lionel Smith, the legal mind of the Union, found himself in a jail cell, appearing to be the last link in the chain. But in a final, stunning twist, Mayor Brunsen arrived to bail him out, revealing the city's corruption ran deeper than anyone imagined. With the Chief of Police incapacitated by a literal mountain of paperwork, Lionel faced the cameras, signaling the triumph of the Public Transportation Union. The streets of Suburbanville belonged to them.

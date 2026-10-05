@@ -1,12 +1,24 @@
 {
-    "totalGames": 7,
+    "totalGames": 19,
     "chart": {
         "labels": [
             "Ordos",
+            "Panda",
+            "Jealous",
+            "You_Fool",
+            "LisaMVP",
+            "Soul",
             "TheBigOne",
-            "WhoFlungDung"
+            "WhoFlungDung",
+            "Jets"
         ],
         "values": [
+            2,
+            2,
+            2,
+            1,
+            1,
+            1,
             1,
             1,
             1
@@ -15,75 +27,91 @@
     "leaderboard": [
         {
             "name": "Ordos",
-            "wins": 1,
-            "games": 7,
+            "wins": 2,
+            "games": 19,
+            "winRate": 10.5,
+            "survRate": 5.3,
+            "n1Deaths": 7
+        },
+        {
+            "name": "Panda",
+            "wins": 2,
+            "games": 18,
+            "winRate": 11.1,
+            "survRate": 11.1,
+            "n1Deaths": 4
+        },
+        {
+            "name": "Jealous",
+            "wins": 2,
+            "games": 14,
             "winRate": 14.3,
-            "survRate": 0.0,
-            "n1Deaths": 2
+            "survRate": 14.3,
+            "n1Deaths": 5
+        },
+        {
+            "name": "You_Fool",
+            "wins": 1,
+            "games": 19,
+            "winRate": 5.3,
+            "survRate": 5.3,
+            "n1Deaths": 7
+        },
+        {
+            "name": "LisaMVP",
+            "wins": 1,
+            "games": 16,
+            "winRate": 6.2,
+            "survRate": 6.2,
+            "n1Deaths": 5
+        },
+        {
+            "name": "Soul",
+            "wins": 1,
+            "games": 15,
+            "winRate": 6.7,
+            "survRate": 6.7,
+            "n1Deaths": 3
         },
         {
             "name": "TheBigOne",
             "wins": 1,
-            "games": 6,
-            "winRate": 16.7,
+            "games": 13,
+            "winRate": 7.7,
             "survRate": 0.0,
-            "n1Deaths": 4
+            "n1Deaths": 9
         },
         {
             "name": "WhoFlungDung",
             "wins": 1,
-            "games": 2,
-            "winRate": 50.0,
-            "survRate": 50.0,
-            "n1Deaths": 0
+            "games": 13,
+            "winRate": 7.7,
+            "survRate": 7.7,
+            "n1Deaths": 7
+        },
+        {
+            "name": "Jets",
+            "wins": 1,
+            "games": 10,
+            "winRate": 10.0,
+            "survRate": 10.0,
+            "n1Deaths": 3
         },
         {
             "name": "Arby3",
             "wins": 0,
-            "games": 7,
+            "games": 18,
             "winRate": 0.0,
             "survRate": 0.0,
-            "n1Deaths": 1
-        },
-        {
-            "name": "Jealous",
-            "wins": 0,
-            "games": 7,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 2
-        },
-        {
-            "name": "LisaMVP",
-            "wins": 0,
-            "games": 7,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 3
-        },
-        {
-            "name": "You_Fool",
-            "wins": 0,
-            "games": 7,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 3
+            "n1Deaths": 5
         },
         {
             "name": "Morblnde",
             "wins": 0,
-            "games": 6,
+            "games": 17,
             "winRate": 0.0,
             "survRate": 0.0,
-            "n1Deaths": 2
-        },
-        {
-            "name": "Panda",
-            "wins": 0,
-            "games": 6,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 1
+            "n1Deaths": 4
         },
         {
             "name": "Goddess",
@@ -102,14 +130,6 @@
             "n1Deaths": 2
         },
         {
-            "name": "Soul",
-            "wins": 0,
-            "games": 4,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 2
-        },
-        {
             "name": "Genesis",
             "wins": 0,
             "games": 3,
@@ -120,7 +140,7 @@
         {
             "name": "The_Unknown",
             "wins": 0,
-            "games": 2,
+            "games": 3,
             "winRate": 0.0,
             "survRate": 0.0,
             "n1Deaths": 1
@@ -142,7 +162,31 @@
             "n1Deaths": 0
         },
         {
-            "name": "Jets",
+            "name": "GymOfTheJungle",
+            "wins": 0,
+            "games": 2,
+            "winRate": 0.0,
+            "survRate": 0.0,
+            "n1Deaths": 1
+        },
+        {
+            "name": "Boo xo",
+            "wins": 0,
+            "games": 1,
+            "winRate": 0.0,
+            "survRate": 0.0,
+            "n1Deaths": 1
+        },
+        {
+            "name": "PolarExpress",
+            "wins": 0,
+            "games": 1,
+            "winRate": 0.0,
+            "survRate": 0.0,
+            "n1Deaths": 0
+        },
+        {
+            "name": "slifty",
             "wins": 0,
             "games": 1,
             "winRate": 0.0,

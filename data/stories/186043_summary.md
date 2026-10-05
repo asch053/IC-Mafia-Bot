@@ -1,0 +1,8 @@
+### Chapter 1: The Gathering at the Precipice
+The archives of the Imperial Conflict Mafia reach back to a singular, frantic moment in time—the genesis of "Mafia 50." It was a period marked by chaotic administrative handoffs and the heavy shadow of the softball leagues calling away the leadership. TheBigOne, acting as the interim architect, threw open the doors to the hall, beckoning a cohort of nineteen souls to step forward into the unknown.
+
+### Chapter 2: The Soft-Launch Silence
+The atmosphere was thick with the scent of unformed lore. Nineteen names were etched into the foundation stone: from the veteran Revenant and the cunning banksy to the enigmatic newcomers and those who lived in the shadow of the "#room." The air hummed with the tension of potential betrayal, but the game remained a phantom—a promise of "something everyone knows" that never fully materialized in the public record.
+
+### Chapter 3: The Expulsion of the Dissident
+Before the first night-kill could stain the floorboards, the political stability of the gathering fractured. RisingDown, ever the provocateur, dared to praise TheBigOne’s utility—an act of heresy in the eyes of the moderator arsy. With the swift, brutal stroke of a digital command—*kapow!*—RisingDown was purged from the channel. It was a pre-emptive strike, a warning to all that in this arena, even the most useful are expendable. The game ended not with a final stand, but with the chilling silence of a kicked user, leaving the destiny of Mafia 50 a mystery etched into the void.

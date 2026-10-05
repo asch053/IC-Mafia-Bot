@@ -1,0 +1,681 @@
+{
+    "game_summary": {
+        "game_id": "20260727-220000",
+        "game_type": "classic",
+        "number_of_players": 7,
+        "player_counts": {
+            "town": 6,
+            "mafia": 1,
+            "neutral": 0
+        },
+        "start_date_utc": "2026-07-27T22:00:00+00:00",
+        "end_date_utc": "2026-07-28T22:00:41.094024+00:00",
+        "total_days": 1,
+        "phase_hours": 12.0,
+        "total_phases": 2,
+        "last_phase": "pre-night",
+        "winning_faction": "Town",
+        "winning_players": [
+            "Arby3",
+            "Morblnde",
+            "Ordos",
+            "Panda",
+            "Soul",
+            "WhoFlungDung"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Godfather",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 479362336264683520,
+            "player_name": "Morblnde",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "You_Fool",
+                "Soul",
+                "Ordos"
+            ]
+        },
+        {
+            "player_id": 469571706898350080,
+            "player_name": "Soul",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 450237854329602048,
+            "player_name": "WhoFlungDung",
+            "alignment": "Town",
+            "role": "Town Doctor",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 225405842235719680,
+            "player_name": "You_Fool",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Panda",
+                "Morblnde",
+                "WhoFlungDung"
+            ]
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 469571706898350080,
+            "target_name": "Soul",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T10:01:19.430594+00:00"
+        },
+        {
+            "voter_id": 225405842235719680,
+            "voter_name": "You_Fool",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T10:01:53.849107+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T10:03:00.471050+00:00"
+        },
+        {
+            "voter_id": 469571706898350080,
+            "voter_name": "Soul",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T10:05:42.509650+00:00"
+        },
+        {
+            "voter_id": 479362336264683520,
+            "voter_name": "Morblnde",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T10:28:26.124421+00:00"
+        },
+        {
+            "voter_id": 450237854329602048,
+            "voter_name": "WhoFlungDung",
+            "target_id": 225405842235719680,
+            "target_name": "You_Fool",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T19:17:34.025384+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-28T19:19:52.248054+00:00"
+        }
+    ],
+    "chat_activity_logs": [
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:01:27.594000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421288432795679,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Totally killing tbo first, using fool"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:02:02.615000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421435321389097,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Regular game lol"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:02:02.757000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421435917111478,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "1 v 6, tough for the mobbie"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:02:07.492000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421455777009794,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Who's sk"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:02:16.137000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421492037026083,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "They could just out themselves now and save us the effort"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:02:26.252000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421534462410810,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Well it's not Lisa"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:02:36.597000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421577852489731,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "But Lisa is always mob"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:03:03.329000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531421689974624357,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Even if she didn't sign up right"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:07:12.363000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531422734498664659,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Same with me killing tbo, even if he didn't sign up"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-27T22:26:24.126000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531427565343084755,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Disappointed in the rest of those noobs..."
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T22:45:38.455000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531432406949822514,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "But you're a team of 1"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:47:31.580000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531432881430462678,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Think people thought it was Battle Royale. Or might be more sign-ups"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-27T22:47:55.024000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531432979761598658,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Lisa wouldn't miss a regular game"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T23:34:38.849000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531444739855876097,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "She knew it was a regular game I'm fairly confident"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-27T23:34:55.421000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531444809364013087,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I was teasing her yesterday about being mob"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T08:18:54.005000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531576672342769746,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Not joining is sus mobbie move <@746540828432007225> <:__:603968779810111499>"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T08:20:04.013000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531576965977346188,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "💯 Lisa is mob"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:01:38.885000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531602529723486290,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I tried to vote tbo, but it wouldn't let me"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:02:12.491000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531602670677266452,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I wonder why? 🤔"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:02:23.073000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531602715061260329,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "that said the lack of AI gen story worries me"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:02:38.688000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531602780555575390,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Have you paid your bill"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:08:10.504000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604172292624454,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Long live the town. You may lynch me mobbie but you'll never take my town heart"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T10:08:41.383000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604301808668783,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Sure sure"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:08:47.544000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604327649771530,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Bill should be paid 🤔 maybe I need to start a pay-to-win programme around here"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:09:18.094000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604455785631894,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Responding to mobbie eh"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:09:23.975000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604480452464773,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Maybe my first vote was right"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T10:10:21.896000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604723390742590,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "No but you're just becoming predictable when you're something"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:10:41.561000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531604805871603835,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I've actually been plain townie quite a few in a row now, lol"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:11:57.607000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531605124831510548,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Doesn't matter, I'm plain townie, but even after I'm lynched it'll be 1 v 4, and the dr will still be alive, so that's a win. Dr can save someone during the night, team up, lynch the mobbie, and town will still win"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:12:21.839000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531605226468151346,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "yay for town!"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T10:13:07.329000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531605417266905148,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "And if the godfather pulls off a win. Grats lol"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:16:29.011000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531606263182659677,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "If gf wins its actually more that we lost given it started at 6 v 1"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-28T10:28:11.362000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609209056006225,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Why killed Arby? <:X_:603968580588929044>"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:29:00.038000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609413218078933,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I was going to ask you the same thing?"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:29:18.983000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609492679168133,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Blonde is voting, blonde must be bad, that's the usual rule"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:29:39.272000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609577777397801,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "it is a good rule of thumb"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-28T10:29:52.457000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609633079431239,
+            "phase": "day",
+            "phase_number": 1,
+            "content": ">=O"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-28T10:30:25.010000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531609769616478260,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "That's not a denial"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-28T10:33:58.352000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531610664437682293,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Well, I'm always bad :/"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-28T10:34:15.040000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531610734432092281,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "https://klipy.com/gifs/sly-dog"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:37:09.715000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531611467072409600,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "bad to the bone?"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-28T10:37:29.669000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531611550765289523,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Bad at Risk yes"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T10:40:18.826000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531612260261171230,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "that is me too... dice hate me"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-28T10:44:22.782000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531613283487060019,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "sure, just dice :/"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T19:06:12.776000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531739573955334324,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "<@216918396539764737> <@450237854329602048>"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T19:06:43.627000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531739703353540778,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "3 ticks left to vote"
+        },
+        {
+            "user_id": 450237854329602048,
+            "username": "WhoFlungDung",
+            "timestamp_utc": "2026-07-28T19:17:15.311000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531742352828272641,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "ticks eh"
+        },
+        {
+            "user_id": 225405842235719680,
+            "username": "You_Fool",
+            "timestamp_utc": "2026-07-28T19:25:12.812000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531744355612627228,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Common parlance. I see you also chose wrong"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-28T19:35:10.974000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531746864486023441,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I didnt!"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-28T20:04:10.388000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1531754160117256212,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Figure everyone here knows"
+        }
+    ]
+}

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering in Caltabellotta
+The quiet town of Caltabellotta, Sicily, was a mask for a brewing storm. As the sun dipped behind the jagged cliffs, twenty-five souls gathered—a volatile mix of townsfolk, two warring Mafia families (the DiAngelos and the Capones), a cutthroat Serial Killer, and a web of hidden roles ranging from police to secret lovers. The air was thick with the scent of cheap tobacco and impending betrayal. No one trusted their neighbor; in the shadows of the IRC chatrooms, the first accusations were already being sharpened like knives.
+
+### Chapter 2: The Night of Dual Shadows
+The game opened not with a vote, but with a bloodletting. The two Mafia families, operating in total ignorance of each other, began their work, carving out the town's population. The Capones struck at the town’s defenders, taking down the police officer Skywarp and the lovers Oxygen and Undeath, while the DiAngelos sought to consolidate power by eliminating potential threats. Meanwhile, the Serial Killer, Lexuzis, moved silently through the dark, claiming WildFlowerSoul before eventually falling to a counter-strike by the DiAngelo family.
+
+### Chapter 3: The Web of Deceit
+Daytime in Caltabellotta was a cacophony of paranoia. Accusations flew wildly—Iluvatar pointed fingers at the inactives, while WildFlowerSoul’s desperate attempts to shift blame toward Lynns fell on deaf ears. The town’s collective guillotine claimed victims like Arocalex, BStallion, and Maarten, the latter of whom held the unique, shifting power of the Judge. As the days bled into nights, the two Mafia families began to cannibalize each other, turning the town into a literal war zone where being "Town" was merely a secondary risk to being in the crossfire of the mob.
+
+### Chapter 4: The Final Stand
+By the end, the town had been decimated. The constant cross-fire between the DiAngelo and Capone families, combined with the surgical precision of the Serial Killer and the chaos of the lynches, left the streets of Caltabellotta silent. The two Mafia families had effectively wiped the board of their enemies, but in their greed, they destroyed each other. When the dust settled, only the humble Doctor, Glue, and the Scientist, Lynns, remained—the sole survivors of a massacre that had consumed the rest of the town.

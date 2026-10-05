@@ -1,0 +1,546 @@
+{
+    "game_summary": {
+        "game_id": "20260706-220000",
+        "game_type": "classic",
+        "number_of_players": 6,
+        "player_counts": {
+            "town": 5,
+            "mafia": 1,
+            "neutral": 0
+        },
+        "start_date_utc": "2026-07-06T22:00:00+00:00",
+        "end_date_utc": "2026-07-07T22:00:37.034637+00:00",
+        "total_days": 1,
+        "phase_hours": 12.0,
+        "total_phases": 2,
+        "last_phase": "pre-night",
+        "winning_faction": "Town",
+        "winning_players": [
+            "Arby3",
+            "Morblnde",
+            "Ordos",
+            "Panda",
+            "Soul"
+        ]
+    },
+    "player_data": [
+        {
+            "player_id": 220666545544626177,
+            "player_name": "Arby3",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 294464443570454528,
+            "player_name": "Jets",
+            "alignment": "Mafia",
+            "role": "Godfather",
+            "status": "Dead",
+            "is_winner": false,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Ordos",
+                "Panda"
+            ]
+        },
+        {
+            "player_id": 479362336264683520,
+            "player_name": "Morblnde",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Night 1",
+            "death_cause": "Killed by Godfather",
+            "death_phase_number": 1,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 216918396539764737,
+            "player_name": "Ordos",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Dead",
+            "is_winner": true,
+            "death_phase": "Day 1",
+            "death_cause": "Lynched by the town",
+            "death_phase_number": 2,
+            "lynched_by_voters": [
+                "Soul",
+                "Arby3"
+            ]
+        },
+        {
+            "player_id": 220142891027136512,
+            "player_name": "Panda",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        },
+        {
+            "player_id": 469571706898350080,
+            "player_name": "Soul",
+            "alignment": "Town",
+            "role": "Plain Townie",
+            "status": "Alive",
+            "is_winner": true,
+            "death_phase": null,
+            "death_cause": null,
+            "death_phase_number": null,
+            "lynched_by_voters": null
+        }
+    ],
+    "lynch_vote_history": [
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 220666545544626177,
+            "target_name": "Arby3",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T10:07:36.997557+00:00"
+        },
+        {
+            "voter_id": 469571706898350080,
+            "voter_name": "Soul",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T10:08:44.205476+00:00"
+        },
+        {
+            "voter_id": 294464443570454528,
+            "voter_name": "Jets",
+            "target_id": 220142891027136512,
+            "target_name": "Panda",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T12:35:55.655733+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T14:53:13.512758+00:00"
+        },
+        {
+            "voter_id": 216918396539764737,
+            "voter_name": "Ordos",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T20:34:24.732020+00:00"
+        },
+        {
+            "voter_id": 220666545544626177,
+            "voter_name": "Arby3",
+            "target_id": 216918396539764737,
+            "target_name": "Ordos",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T20:49:13.027225+00:00"
+        },
+        {
+            "voter_id": 220142891027136512,
+            "voter_name": "Panda",
+            "target_id": 294464443570454528,
+            "target_name": "Jets",
+            "phase": "Day 1",
+            "timestamp_utc": "2026-07-07T21:38:52.025945+00:00"
+        }
+    ],
+    "chat_activity_logs": [
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T01:12:08.195000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523859128613601302,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Well this will be a exciting game"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T01:12:42.018000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523859270477545512,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "1 godfather an 5 plain townies"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T01:13:22.612000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523859440741253151,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Who is Ordos killing tonight"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T01:15:39.239000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523860013796556941,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Lol"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T01:15:59.081000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523860097019805716,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I thought you were joking soul then I saw roles lol 😂"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T01:16:36.181000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523860252628619296,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "I say kill Panda for trucking us not very nice"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T01:16:45.498000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523860291706687699,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Tricking"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-07T07:04:20.193000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523947762637471764,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "6 people, me a townie"
+        },
+        {
+            "user_id": 479362336264683520,
+            "username": "Morblnde",
+            "timestamp_utc": "2026-07-07T07:04:27.687000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523947794069454868,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "https://klipy.com/gifs/chuckles-im-in-danger"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T07:09:13.569000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523948993145471056,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Im town"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T08:23:15.306000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523967623141003346,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "Lose one soccer game and suddenly it's \"kill panda this, kill panda that\""
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T08:23:42.991000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523967739260047401,
+            "phase": "night",
+            "phase_number": 1,
+            "content": "The most danger you're in is from not voting don blonde"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T10:04:48.443000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523993179609628773,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Well, i got that one wrong"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T10:07:52.468000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523993951466426492,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I mean, it's probably ordos, but that would be too obvious"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T10:08:52.273000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523994202306908300,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Of the 6 players in the game at the start, I would suggest soul was the least likely to kill blonde. Making blonde second last likely"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T10:08:52.233000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523994202139000863,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Going with my gut 😜"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T10:09:50.228000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1523994445387796500,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I can assure you when the game gave me plain townie was kind of disappointed, but considering I was a role for the last few games..lynch soul 😄"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T10:56:44.221000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524006248129761361,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Its ovious"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T12:36:51.997000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524031446568931369,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "The soccer ⚽ game was against Belgium though lol 🤣"
+        },
+        {
+            "user_id": 220142891027136512,
+            "username": "Panda",
+            "timestamp_utc": "2026-07-07T19:16:18.585000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524131969724710922,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I know, I just needed to mention it"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:02:48.072000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524143669681062108,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "This is so fun."
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T20:32:20.903000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524151105473347897,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Ordos is looking guilty af"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:34:08.152000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524151555308257372,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Dafuq"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:34:42.337000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524151698690408610,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Oh thought i had my vote ib already"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:42:28.922000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524153655690002432,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Are you GF this is kinda dumb 6 player game?"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:45:33.194000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524154428582658058,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Nope"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:45:38.360000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524154450250567700,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Are you???"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:49:04.381000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524155314365136926,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Maybe soul"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:50:30.386000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524155675096121560,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "With this number town having a doctor would been better inthink"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:50:54.383000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524155775746834463,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Game seems kinda brainless"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:51:08.324000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524155834219757669,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Panda did try to paint a certain picture also"
+        },
+        {
+            "user_id": 469571706898350080,
+            "username": "Soul",
+            "timestamp_utc": "2026-07-07T20:53:13.914000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156360982397010,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "I already vetted myself..it's not me"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:54:37.186000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156710250479697,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Do better jefs"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:54:44.257000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156739908407327,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Jefs"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:54:46.273000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156748364124280,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Jwts"
+        },
+        {
+            "user_id": 216918396539764737,
+            "username": "Ordos",
+            "timestamp_utc": "2026-07-07T20:54:48.411000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156757331677357,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "Jets"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:55:25.900000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156914571939921,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You been drinking?"
+        },
+        {
+            "user_id": 294464443570454528,
+            "username": "Jets",
+            "timestamp_utc": "2026-07-07T20:55:43.593000+00:00",
+            "channel_name": "talky-talky",
+            "message_id": 1524156988781760664,
+            "phase": "day",
+            "phase_number": 1,
+            "content": "You can vote me ,but the game won't end"
+        }
+    ]
+}

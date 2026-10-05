@@ -30,7 +30,13 @@ async function fetchPortalData(endpoint) {
         if (endpoint === 'roles') fileName = 'role_definition';
         if (endpoint === 'history') fileName = 'history_archive';
         
-        const response = await fetch(`./data/${fileName}.json`);
+        const response = await fetch(`./data/${fileName}.json?v=${Date.now()}`, {
+            cache: 'no-store',
+            headers: {
+                'Cache-Control': 'no-cache',
+                'Pragma': 'no-cache'
+            }
+        });
         if (!response.ok) throw new Error(`Failed to load ${fileName}.json (Status: ${response.status})`);
         return await response.json();
     } catch (e) {

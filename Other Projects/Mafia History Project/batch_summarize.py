@@ -15,7 +15,11 @@ os.makedirs(SUMMARIES_DIR, exist_ok=True)
 
 # Load all games and filter out signups/discussions
 threads_file = os.path.join(OUTPUT_DIR, "mafia_threads.json")
+disc_threads_file = os.path.join(OUTPUT_DIR, "discourse_threads.json")
+
 SELECTED_GAMES = []
+
+# 1. Forum Games
 if os.path.exists(threads_file):
     with open(threads_file, "r", encoding="utf-8") as f:
         all_threads = json.load(f)
@@ -24,13 +28,37 @@ if os.path.exists(threads_file):
         if "signup" in title_lower or "sign up" in title_lower or "discussion" in title_lower or "rules" in title_lower:
             continue
         SELECTED_GAMES.append({
-            "thread_id": t["thread_id"],
+            "thread_id": str(t["thread_id"]),
             "title": t["title"],
             "era": "Forum",
             "theme": "Historic"
         })
-else:
-    print("Warning: mafia_threads.json not found!")
+
+# 2. Discourse Games
+EXCLUDE_DISCOURSE = [
+    "signup", "sign up", "sign-up", "sign ups",
+    "discussion", "rules", "award", "meme", 
+    "welcome to ic mafia", "starting on discord", 
+    "population status", "mafia update", "mafia 2.0"
+]
+if os.path.exists(disc_threads_file):
+    with open(disc_threads_file, "r", encoding="utf-8") as f:
+        disc_threads = json.load(f)
+    for t in disc_threads:
+        title_lower = t.get("title", "").lower()
+        posts = t.get("total_posts", 0)
+        if any(w in title_lower for w in EXCLUDE_DISCOURSE):
+            continue
+        if posts < 4:
+            continue
+        SELECTED_GAMES.append({
+            "thread_id": str(t["thread_id"]),
+            "title": t["title"],
+            "era": "Discourse",
+            "theme": "Historic"
+        })
+
+print(f"Loaded {len(SELECTED_GAMES)} total games across Forum and Discourse eras.")
 
 def run_batch():
     print(f"=== Starting Historic Game Summarization Batch for {len(SELECTED_GAMES)} Games ===")
@@ -55,17 +83,21 @@ def run_batch():
         title = game["title"]
         output_file = os.path.join(SUMMARIES_DIR, f"game_{tid}_summary.json")
         
-        print(f"\nProcessing {title} (Thread ID: {tid})...")
+        print(f"\nProcessing {title} (Thread ID: {tid}, Era: {game.get('era')})...")
         
         # Skip if already exists (Resume capability)
         if os.path.exists(output_file):
             print(f"Skipping {title} - already processed.")
             with open(output_file, 'r', encoding='utf-8') as f:
-                summaries.append(json.load(f))
+                s = json.load(f)
+                if "era" not in s:
+                    s["era"] = game.get("era", "Forum")
+                summaries.append(s)
             continue
             
         try:
             summary = summarize_historic_game(tid, game)
+            summary["era"] = game.get("era", "Discourse")
             with open(output_file, 'w', encoding='utf-8') as f:
                 json.dump(summary, f, indent=2, ensure_ascii=False)
             print(f"Saved historic summary to {output_file}")
@@ -147,20 +179,25 @@ def run_batch():
                     f.write(f"| **{p['player_name']}** | {p['role']} | {p['status']} |\n")
                 f.write("\n" + summary.get("narrative_chronicle", ""))
                 
-            print(f"Exported to modern bot format in {game_folder}")
+            print(f"Exported to modern bot format in {game_folder}", flush=True)
             summaries.append(summary)
             
+            # Incrementally write out history archive
+            portal_archive_file = os.path.join(OUTPUT_DIR, "history_archive.json")
+            with open(portal_archive_file, 'w', encoding='utf-8') as f:
+                json.dump(summaries, f, indent=2, ensure_ascii=False)
+            
             # Sleep to prevent rate limits
-            time.sleep(4)
+            time.sleep(2)
             
         except Exception as e:
-            print(f"Error processing {title}: {e}")
+            print(f"Error processing {title}: {e}", flush=True)
 
-    # Compile into test web portal history archive
+    # Compile into final test web portal history archive
     portal_archive_file = os.path.join(OUTPUT_DIR, "history_archive.json")
     with open(portal_archive_file, 'w', encoding='utf-8') as f:
         json.dump(summaries, f, indent=2, ensure_ascii=False)
-    print(f"\nSuccessfully compiled {len(summaries)} games into {portal_archive_file}!")
+    print(f"\nSuccessfully compiled {len(summaries)} games into {portal_archive_file}!", flush=True)
 
 if __name__ == "__main__":
     run_batch()

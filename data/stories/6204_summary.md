@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering of Shadows
+The Imperial Conflict community descended upon the arena once more, a volatile mix of seasoned veterans and naive newcomers. The atmosphere was thick with the scent of old grudges and the sharp tang of impending betrayal. Moderator Jets, with a flourish of dark irony, cast the roster of 35 souls into the fray. The list was a tapestry of reputations: from the "wolf in sheep’s clothing" Luker to the targets of vendettas like Ordos234 and the ever-provocative MrBlonde. As the forum lights dimmed, the whispers began. Would the Pretenders triumph, or would the Contenders seize the throne of the IC Mafia?
+
+### Chapter 2: The Weight of History
+The ghost of the previous round loomed large. HydroP, the disgraced architect of past chaos, found himself once again under the microscope. Accusations flew like arrows in the dark, with players like TBO and the enigmatic Nolio marked for early removal. The game was no longer just about survival; it was a battle of narratives. Those who had impressed in the previous cycle—Goddess_of_the_Dead and You_Fool—suddenly found themselves wearing targets on their backs, their past successes transmuted into immediate liabilities.
+
+### Chapter 3: Web of Deceit
+As the night cycle approached, the social fabric began to fray. Alliances formed in the shadows of private messages, while public discourse turned vicious. The newcomer Tishxo was watched with predatory curiosity, her outspoken nature noted as both a shield and a death warrant. Meanwhile, veterans like Torqez and the volatile MrBlonde engaged in a psychological tug-of-war, turning the arena into a pressure cooker of paranoia. The silence of the night brought no peace, only the anticipation of the first strike—a strike that would signal the true beginning of the hunt.
+
+### Chapter 4: The Void
+The chronicle of *P vs C Ic mafia 2.2* remains a fragmented legend. The official record ends in the silence of the moderator's lobby, leaving the fate of the 35 contenders suspended in a perpetual, unconfirmed night. Whether the town stood tall against the darkness or if the mafia successfully extinguished the light remains a mystery etched only in the minds of those who sat at the table.

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering in the Square
+The global credit crunch had reached even the most shadowed corners of the Imperial Conflict community, forcing a downsizing of epic proportions. In Paladgia Square, sixteen souls gathered under the watchful eyes of the moderators—Arsbury, Elrohir, and Eltara. Roles were cast by the cold precision of an Excel spreadsheet, dividing the group into a desperate Town, a hidden Mafia syndicate, and a solitary, drifting madman. The tension was palpable; as the sun dipped below the horizon, the town remained blissfully ignorant of the daggers hidden in the pockets of their neighbors.
+
+### Chapter 2: The Sheriff’s Fall
+The first light of day brought cold ironies. The town, fueled by suspicion and the desperate need to find a scapegoat, turned its collective gaze upon A10. In a swift, brutal display of democratic paranoia, they lynched the very man meant to protect them—the Sheriff. As A10’s true role was revealed, a chilling silence fell over the square. The Town’s eyes and ears had been plucked out by their own hands. In the cover of the following nights, the Mafia and the elusive Serial Killer began their work, carving a path of destruction through the ranks of the innocent and the guilty alike.
+
+### Chapter 3: The Shadow War
+The night phases became a slaughterhouse. While the Doctor, thirdrock, desperately tried to shield the innocent, the blades of the Mafia and the madness of the Serial Killer—Lexuzis—proved relentless. Mobsters Nolio and Undeath were discovered by the lynch mob and executed, but the Mafia hit back, silencing Townies one by one. Chaos reigned as the Godfather, SqueakySmit, desperately tried to maintain control of his operation, only to find himself hunted by a third party.
+
+### Chapter 4: The Final Stand
+As the dust settled, the magnitude of the carnage became clear. The Mafia’s structure had been shattered, with their Godfather falling to the blade of the Serial Killer. In a twist of fate, the lone madman, Lexuzis, had navigated the chaotic web of accusations and night-time bloodbaths to emerge as the last one standing. The Town had been decimated, and the Syndicate lay in ruin. The credit crunch had taken its toll—not just on the coffers of the town, but on its very existence. Lexuzis stood alone in the empty square, the victor of a game of shadows.

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering on Sesame Street
+The sun rose over 123 Sesame Street, but the usual cheer was absent. Behind the vibrant facades of brownstone buildings, a sinister shadow had taken root. Among the Muppets, agents of discord—the Evil Muppets—had begun their campaign of terror. But they were not the only threat; Mitt Romney, incensed by the continued federal funding of public broadcasting, lurked in the wings, intent on dismantling the neighborhood one casualty at a time. The air was thick with paranoia as citizens tried to distinguish friends from foes.
+
+### Chapter 2: The Guillotine’s Call
+The atmosphere reached a fever pitch when the resident Anything Muppet, Einstein, made a catastrophic error. Whether caught in a fit of erratic madness or a perverse desire to test the town’s resolve, Einstein loudly proclaimed his guilt to the assembly. In a darkly comedic turn, the Muppets, desperate to project authority in a crumbling society, dragged him to a makeshift studio prop—a guillotine left over from a film shoot. With a sickening thud, the blade fell, ending Einstein’s life. The town’s first act of justice was a suicide.
+
+### Chapter 3: A Web of False Prophets
+As days bled into nights, the body count climbed. The iconic Elmo, the town’s protector, vanished, leaving the citizens vulnerable to the nightly slaughters orchestrated by Big Bird’s syndicate and the targeted strikes of the vengeful politician. Tensions peaked when accusations flew against Genesis. Despite the town’s desperate attempt to clean their streets, they faltered. By lynching Genesis, they realized too late they had executed Miss Piggy, the town’s own roleblocker—stripping away their only remaining defense against the darkness.
+
+### Chapter 4: The Silent Collapse
+The records fall quiet after the loss of Miss Piggy. With the "Anything Muppets" fracturing under the weight of inactivity, heart attacks, and the systematic elimination of their special roles, the neighborhood withered. Big Bird, the orchestrator of the Evil Muppet regime, stood tall as the remaining survivors succumbed to the pressure. The street was no longer a place of learning, but a graveyard of felt and stuffing, conquered by those who sought to silence the show for good.

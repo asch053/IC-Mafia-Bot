@@ -1,0 +1,11 @@
+### Chapter 1: The Mod Rebellion
+The digital borders of *Imperial Conflict* (IC) were breached, not by external invaders, but by the very architects of the realm. A cabal of moderators—Arsy, Lizzy, Disposable Heroes, and Killabeeze—despised the "super fams" dominating their game. Declaring open war on the player base, they unleashed a series of targeted deletions. The first casualty was the hacker Moulondrax, whose systems were fried by a malicious email link, effectively silencing his defensive capabilities against the mod-led purge.
+
+### Chapter 2: The Core Collapses
+Chaos gripped the player ranks. Internal squabbling became as lethal as the mod interventions. When Luster failed to fortify the core, his own ally, PP, ordered a hitman to dismantle him. The hitman, a cold professional, reduced Luster to fragments. Meanwhile, the Mod Family continued their systematic deletion of threats; Lee, caught in an argument over leadership with PP, was scrubbed from the game interface by Killabeeze before he could even process his own betrayal.
+
+### Chapter 3: The Rogue Variable
+While the moderators hunted players, a shadow moved within the code. Smartys, a rogue developer, sought to overwrite the game in his own image. He successfully neutralized the developer Elrohir and later even attempted to sabotage the mod Arsy. However, the game’s remaining defenders were quick to pivot. I Like Pie, realizing the server code was being manipulated, baited the rogue developer into a trap, flooding his systems with endless loops and stripping his access, ultimately deleting Smartys from the game.
+
+### Chapter 4: The Final Stand
+As the game spiraled, the players lost their will to fight. Arganon quit after a public feud with Lizzy, and the vaunted attacker KTiger—also known as Big Gary—was rendered impotent by a series of comically disastrous accidents and a final burst of lightning that fried his systems. With their best assets deleting themselves or being blocked, the player resistance crumbled. PP, disgusted by the lack of cooperation, eventually abandoned the server for a console, and the surviving leader, IC Death, signaled a total surrender by signing a peace treaty. The Moderators stood alone amidst the ruins of IC, their cleansing complete.

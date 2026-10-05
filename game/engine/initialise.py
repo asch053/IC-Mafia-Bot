@@ -1,4 +1,5 @@
 # game/engine/initialise.py
+import os
 import sys
 import asyncio
 import logging
@@ -81,11 +82,27 @@ def initialize_game(self, bot, guild, cleanup_callback=None, game_type="classic"
 
     # --- Data Loading ---
     logger.debug("Loading game data from data files.")
+    bot_names_path = "data/game_setup/bot_names.txt"
     try:
-        self.npc_names = load_data("data/game_setup/bot_names.txt")
+        if not os.path.exists(bot_names_path):
+            raise FileNotFoundError(f"Bot names file '{bot_names_path}' does not exist.")
+        loaded_names = load_data(bot_names_path)
+        if isinstance(loaded_names, list):
+            self.npc_names = [name.strip() for name in loaded_names if name and name.strip()]
+        else:
+            self.npc_names = []
+            
+        if not self.npc_names:
+            raise ValueError(f"Bot names file '{bot_names_path}' is empty or contains no valid names.")
     except Exception as e:
-        logger.error(f"Error loading NPC names: {e}")
-        self.npc_names = []
+        logger.critical(
+            f"CRITICAL ERROR: Failed to load NPC bot names from '{bot_names_path}': {e}. "
+            "Gracefully falling back to generated bot names in 'Bot_##' format.",
+            exc_info=True
+        )
+        fallback_count = max(50, getattr(self, "max_players", 19) * 2)
+        self.npc_names = [f"Bot_{i:02d}" for i in range(1, fallback_count + 1)]
+        logger.info(f"Generated {len(self.npc_names)} fallback NPC names in 'Bot_##' format.")
 
     try:
         rules_list = load_data("data/game_setup/rules.txt")

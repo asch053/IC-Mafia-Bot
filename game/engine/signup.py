@@ -175,11 +175,23 @@ async def remove_player(game, user, channel):
 
 def add_npc(game):
     """Adds a single NPC to the game."""
+    if not getattr(game, 'npc_names', None):
+        logger.critical("CRITICAL ERROR: game.npc_names is missing or empty when adding NPC. Generating fallback bot names in 'Bot_##' format.")
+        fallback_count = max(50, getattr(game, 'max_players', 19) * 2)
+        game.npc_names = [f"Bot_{i:02d}" for i in range(1, fallback_count + 1)]
+
     available_names = [name for name in game.npc_names if name not in [p.display_name for p in game.players.values()]]
     if not available_names:
-        logger.error("Could not add NPC, no unique names available.")
-        return
-    npc_name = random.choice(available_names)
+        logger.critical("CRITICAL ERROR: All unique NPC names in game.npc_names are exhausted! Generating next 'Bot_##' name.")
+        existing_names = {p.display_name for p in game.players.values()}
+        idx = 1
+        while f"Bot_{idx:02d}" in existing_names:
+            idx += 1
+        npc_name = f"Bot_{idx:02d}"
+    else:
+        npc_name = random.choice(available_names)
+
     npc_id = -(len(game.players) + 1)
     game.players[npc_id] = Player(user_id=npc_id, discord_name=npc_name, display_name=npc_name)
     logger.info(f"Added NPC: {npc_name}")
+    return npc_name

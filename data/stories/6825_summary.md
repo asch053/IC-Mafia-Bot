@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+The Roman Republic stood on a precipice. As Caesar’s legions marched upon the city, the air in the Senate grew heavy with the scent of impending betrayal. The **Optimates**, led by the steadfast Pompey, sought to preserve the ancient order, while the **Populares**—Caesar’s ambitious political machine—plotted to dismantle it from within. Yet, in the shadows, two darker forces stirred: the poisoner **Livia**, a serial killer masquerading as a socialite, and the legendary gladiator **Spartacus**, whose dream of a slave uprising threatened to burn Rome to the ground.
+
+### Chapter 2: First Blood
+The streets of Rome turned into a slaughterhouse. As the populace bickered in the Forum, the night brought cold, calculated violence. The Mafia, coordinated by the ruthless Caesar, sought to solidify their grip, but the town’s investigators—Legatus Gracchus and the persistent Quaestor Nai—were on the hunt. The tension reached a breaking point when the gladiator Spartacus, wielding an arcuballista, struck down the relentless Nai, leaving the town’s investigative efforts in tatters.
+
+### Chapter 3: Web of Deceit
+Betrayal was the currency of the day. The town blundered repeatedly, lynching their own allies in a desperate, paranoid bid to sniff out the conspirators. Vercingetorix, the backup cop, watched as the town decimated its own ranks. Meanwhile, the Mafia suffered their own losses; the Egyptian queen Cleomobtra fell, and the Mafia’s influence waned as their numbers were chipped away by both the lynch mob and the persistent, growing shadow of the Spartacus faction.
+
+### Chapter 4: The Final Stand
+By the eighth day, the Republic had effectively collapsed. The streets were no longer paved with Roman law, but with the bodies of the fallen. Schniepel, a Spartacus recruit, miraculously survived an assassination attempt by the last dregs of the Mafia—only because the Mafia had run out of executioners. With the Populares decimated and the Optimates shattered, the slaves rose. The once-mighty Roman Senate lay silent, and the Spartacus rebellion achieved the unthinkable: absolute control over the city.

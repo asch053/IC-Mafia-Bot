@@ -2,8 +2,11 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Mafia Analytics</title>
-    <script src="js/api.js"></script>
+    <script src="js/api.js?v=2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
@@ -158,6 +161,16 @@
         <div class="card">
             <h2>🏛️ Mafia Game Archives & History</h2>
             <p style="color: var(--muted);">Explore over a decade of Imperial Conflict Mafia history across the Forum, Discourse, and Discord Eras.</p>
+            
+            <!-- Quick Filter Pills -->
+            <div style="display: flex; gap: 10px; margin: 15px 0 20px 0; flex-wrap: wrap; align-items: center;">
+                <span style="color: var(--muted); font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Filter Era:</span>
+                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (141)</button>
+                <button id="pill-discourse" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--orange); border-radius: 20px; background: rgba(255, 152, 0, 0.15); color: var(--orange);" onclick="setArchiveEra('Discourse')">📜 Discourse Era (35)</button>
+                <button id="pill-forum" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--blue); border-radius: 20px; background: rgba(56, 138, 207, 0.15); color: var(--blue);" onclick="setArchiveEra('Forum')">🏛️ Forum Era (84)</button>
+                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Era (22)</button>
+            </div>
+
             <div class="table-wrap">
                 <table id="archivesTable">
                     <thead>
@@ -166,16 +179,16 @@
                             <th>Era</th>
                             <th>Game Title</th>
                             <th>Winner</th>
-                            <th>Story</th>
+                            <th style="min-width: 170px;">Story & Summary</th>
                         </tr>
                         <tr>
                             <th><input class="filter-input" onkeyup="filter('archivesTable',0)" placeholder="ID..."></th>
                             <th>
-                                <select class="filter-input" onchange="filterExact('archivesTable',1, this.value)">
+                                <select id="eraSelector" class="filter-input" onchange="setArchiveEra(this.value)">
                                     <option value="">All Eras</option>
-                                    <option value="Forum">Forum (2012-2020)</option>
-                                    <option value="Discourse">Discourse</option>
-                                    <option value="Discord">Discord / Bot</option>
+                                    <option value="Discourse">Discourse (35)</option>
+                                    <option value="Forum">Forum (84)</option>
+                                    <option value="Discord">Discord / Bot (22)</option>
                                 </select>
                             </th>
                             <th><input class="filter-input" onkeyup="filter('archivesTable',2)" placeholder="Title..."></th>
@@ -189,7 +202,7 @@
         </div>
     </div>
 
-    <!-- NARRATIVE STORY & PHASE PLAY-BY-PLAY MODAL -->
+    <!-- NARRATIVE STORY, GAME SUMMARY & PHASE PLAY-BY-PLAY MODAL -->
     <div id="story-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;">
         <div style="background: var(--bg); max-width: 950px; margin: 30px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.9);">
             <button onclick="document.getElementById('story-modal').classList.add('hidden')" style="position: absolute; top: 15px; right: 20px; background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
@@ -197,23 +210,29 @@
             <div id="story-header-badges" style="display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;"></div>
             
             <!-- Modal Navigation Tabs -->
-            <div style="display: flex; gap: 10px; border-bottom: 2px solid #333; margin-bottom: 20px;">
-                <button id="modal-tab-story" class="nav-btn active" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('story')">📖 Written Narrative Story</button>
+            <div style="display: flex; gap: 10px; border-bottom: 2px solid #333; margin-bottom: 20px; flex-wrap: wrap;">
+                <button id="modal-tab-summary" class="nav-btn active" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('summary')">📋 Game Summary</button>
+                <button id="modal-tab-story" class="nav-btn" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('story')">📖 Stories as Written</button>
                 <button id="modal-tab-playbyplay" class="nav-btn" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('playbyplay')">⚡ Phase Play-by-Play & Timeline</button>
                 <button id="modal-tab-roster" class="nav-btn" style="font-size: 1rem; padding: 8px 16px;" onclick="switchStoryModalTab('roster')">👥 Cast & Box Score</button>
             </div>
 
-            <!-- Tab 1: Written Narrative Story -->
-            <div id="story-view-story">
-                <div id="story-content" style="line-height: 1.6; font-size: 1.05em;"></div>
+            <!-- Tab 1: Game Summary & Chronicle -->
+            <div id="story-view-summary">
+                <div id="story-summary-content" style="line-height: 1.6; font-size: 1.05em;"></div>
             </div>
 
-            <!-- Tab 2: Phase Play-by-Play & Timeline -->
+            <!-- Tab 2: Stories as Written (Original Mod Posts) -->
+            <div id="story-view-story" class="hidden">
+                <div id="story-written-content" style="line-height: 1.6; font-size: 1.05em;"></div>
+            </div>
+
+            <!-- Tab 3: Phase Play-by-Play & Timeline -->
             <div id="story-view-playbyplay" class="hidden">
                 <div id="story-playbyplay-content"></div>
             </div>
 
-            <!-- Tab 3: Cast & Box Score -->
+            <!-- Tab 4: Cast & Box Score -->
             <div id="story-view-roster" class="hidden">
                 <div id="story-roster-content"></div>
             </div>
@@ -324,10 +343,17 @@
         "n1_deaths": { header: "N1 Deaths", sortDesc: true, format: "int", label: "Deaths" }
     };
 
-    // Make 'records' the default page!
-    window.onload = function() { switchMode('records'); };
+    window.onload = function() {
+        const hash = (window.location.hash || '').replace('#', '');
+        if (hash === 'archives') switchMode('archives');
+        else if (hash === 'classic') switchMode('classic');
+        else if (hash === 'battle_royale' || hash === 'br') switchMode('battle_royale');
+        else if (hash === 'codex') switchMode('codex');
+        else switchMode('records');
+    };
 
     async function switchMode(mode) {
+        window.location.hash = mode;
         // 1. Manage Active Tabs
         document.getElementById('nav-records').className = mode === 'records' ? 'nav-btn special-link active' : 'nav-btn special-link';
         document.getElementById('nav-classic').className = mode === 'classic' ? 'nav-btn active' : 'nav-btn';
@@ -355,9 +381,7 @@
                     renderRoleCards(rolesData);
                 }
             } else if (mode === 'archives') {
-                if (!historyData) {
-                    historyData = await fetchPortalData('history');
-                }
+                historyData = await fetchPortalData('history');
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('view-archives').classList.remove('hidden');
                 renderArchives(historyData);
@@ -398,7 +422,8 @@
         sortedPlayers.sort((a, b) => {
             let valA = parseFloat(a[config.header]) || 0;
             let valB = parseFloat(b[config.header]) || 0;
-            return config.sortDesc ? (valB - valA) : (valA - valB);
+            if (valB !== valA) return config.sortDesc ? (valB - valA) : (valA - valB);
+            return (parseInt(b["Games Played"]) || 0) - (parseInt(a["Games Played"]) || 0);
         });
 
         const top10 = sortedPlayers.slice(0, 10);
@@ -457,13 +482,13 @@
             });
 
             const sb = document.getElementById('skillBody'); sb.innerHTML='';
-            [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore)).forEach((p,i)=>{
+            [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore) || b.games - a.games).forEach((p,i)=>{
                 let c=parseFloat(p.skillScore)>=4?'var(--gold)':(parseFloat(p.skillScore)>=2.5?'var(--green)':'var(--muted)');
-                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)">${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)">${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)">${p.u_score}</span></td></tr>`;
+                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)" title="Persuasion (P): ${p.p_score}">P: ${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)" title="Elusiveness (E): ${p.e_score}">E: ${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)" title="Understanding (U): ${p.u_score}">U: ${p.u_score}</span></td></tr>`;
             });
             const stb = document.getElementById('statsBody'); stb.innerHTML='';
             [...data.leaderboard].sort((a,b)=>b.games-a.games).forEach((p,i)=>{
-                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.winRate}%</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
+                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate !== undefined ? p.survRate + '%' : '-'}</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
             });
         } else {
             document.getElementById('view-br').classList.remove('hidden');
@@ -486,10 +511,32 @@
     function sort(tid,n){const tb=document.getElementById(tid).tBodies[0];let rows=Array.from(tb.rows);let asc=tb.getAttribute('data-asc')==='true';rows.sort((a,b)=>{let x=(a.cells[n].textContent||"").replace('%','').replace('🏆','').trim(),y=(b.cells[n].textContent||"").replace('%','').replace('🏆','').trim();let xn=parseFloat(x),yn=parseFloat(y);return(isNaN(xn)?x.localeCompare(y):xn-yn)*(asc?1:-1);});tb.setAttribute('data-asc',!asc);rows.forEach(r=>tb.appendChild(r));}
     function filterExact(tid,cidx,val){
         const trs=document.getElementById(tid).tBodies[0].rows;
-        const searchVal = val.toUpperCase();
+        const searchVal = (val || "").toUpperCase().trim();
         for(let tr of trs){
             let txt=(tr.cells[cidx].textContent||"").toUpperCase().trim();
             tr.style.display=(searchVal==="" || txt.includes(searchVal))?'':'none';
+        }
+    }
+
+    function setArchiveEra(era) {
+        const select = document.getElementById('eraSelector');
+        if (select) select.value = era;
+        filterExact('archivesTable', 1, era);
+
+        ['all', 'discourse', 'forum', 'discord'].forEach(p => {
+            const btn = document.getElementById('pill-' + p);
+            if (btn) {
+                btn.style.background = '#2a2a2a';
+                btn.style.fontWeight = 'normal';
+                btn.style.boxShadow = 'none';
+            }
+        });
+        const activeKey = era ? era.toLowerCase() : 'all';
+        const activeBtn = document.getElementById('pill-' + activeKey);
+        if (activeBtn) {
+            activeBtn.style.background = era === 'Discourse' ? 'rgba(255, 152, 0, 0.4)' : (era === 'Forum' ? 'rgba(56, 138, 207, 0.4)' : (era === 'Discord' ? 'rgba(156, 39, 176, 0.4)' : '#444'));
+            activeBtn.style.fontWeight = 'bold';
+            activeBtn.style.boxShadow = '0 0 10px rgba(255,255,255,0.2)';
         }
     }
 
@@ -537,6 +584,20 @@
         const tbody = document.getElementById('archivesBody');
         tbody.innerHTML = '';
         
+        const totalCount = data.length;
+        const discourseCount = data.filter(g => (g.era || '').toLowerCase() === 'discourse').length;
+        const forumCount = data.filter(g => (g.era || '').toLowerCase() === 'forum').length;
+        const discordCount = data.filter(g => (g.era || '').toLowerCase() === 'discord').length;
+
+        const pAll = document.getElementById('pill-all');
+        if (pAll) pAll.innerText = `🌟 All Eras (${totalCount})`;
+        const pDisc = document.getElementById('pill-discourse');
+        if (pDisc) pDisc.innerText = `📜 Discourse Era (${discourseCount})`;
+        const pForum = document.getElementById('pill-forum');
+        if (pForum) pForum.innerText = `🏛️ Forum Era (${forumCount})`;
+        const pDiscord = document.getElementById('pill-discord');
+        if (pDiscord) pDiscord.innerText = `🤖 Discord Era (${discordCount})`;
+
         data.forEach(game => {
             let winFaction = (game.box_score && game.box_score.winning_faction) ? game.box_score.winning_faction : 'Unknown';
             let winColor = 'var(--muted)';
@@ -546,34 +607,57 @@
             
             let era = game.era || "Forum";
             
+            let linkHtml = `<span style="color: var(--muted);">${game.thread_id}</span>`;
+            if (era === 'Discourse') {
+                linkHtml = `<a href="https://discourse.imperialconflict.com/t/${game.thread_id}" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: bold;">${game.thread_id} ↗</a>`;
+            } else if (era === 'Forum') {
+                linkHtml = `<a href="https://imperialconflict.com/forum/viewtopic.php?id=${game.thread_id}" target="_blank" style="color: var(--blue); text-decoration: none;">${game.thread_id} ↗</a>`;
+            }
+
+            let eraBadgeColor = 'var(--blue)';
+            if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
+            else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
+            
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td><a href="https://imperialconflict.com/forum/viewtopic.php?id=${game.thread_id}" target="_blank" style="color: var(--blue); text-decoration: none;">${game.thread_id}</a></td>
-                <td style="color: var(--muted);">${era}</td>
+                <td>${linkHtml}</td>
+                <td><span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">${era}</span></td>
                 <td style="font-weight: bold; color: white;">${game.title}</td>
                 <td><span style="background: rgba(255,255,255,0.1); color: ${winColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${winFaction}</span></td>
-                <td><button onclick="openStoryModal('${game.thread_id}')" style="background: #333; color: white; border: 1px solid #555; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 0.9em; font-weight: bold;">📖 View Story & Timeline</button></td>
+                <td>
+                    <div style="display: flex; gap: 6px; align-items: center;">
+                        <button onclick="openStoryModal('${game.thread_id}', 'summary')" title="View synthesized match summary & tactical chronicle" style="background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid var(--gold); padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85em; font-weight: bold; white-space: nowrap; transition: 0.2s;">📋 Summary</button>
+                        <button onclick="openStoryModal('${game.thread_id}', 'story')" title="Read original host stories & phase announcements as written" style="background: #2d2d38; color: #fff; border: 1px solid #555; padding: 5px 10px; cursor: pointer; border-radius: 4px; font-size: 0.85em; font-weight: bold; white-space: nowrap; transition: 0.2s;">📖 Story</button>
+                        <button onclick="openStoryModal('${game.thread_id}', 'playbyplay')" title="View phase-by-phase timeline & vote tallies" style="background: #1e1e24; color: #aaa; border: 1px solid #444; padding: 5px 8px; cursor: pointer; border-radius: 4px; font-size: 0.85em; transition: 0.2s;">⚡</button>
+                    </div>
+                </td>
             `;
             tbody.appendChild(tr);
         });
+
+        const select = document.getElementById('eraSelector');
+        if (select && select.value) {
+            setArchiveEra(select.value);
+        }
     }
 
     function switchStoryModalTab(tab) {
-        document.getElementById('modal-tab-story').className = tab === 'story' ? 'nav-btn active' : 'nav-btn';
-        document.getElementById('modal-tab-playbyplay').className = tab === 'playbyplay' ? 'nav-btn active' : 'nav-btn';
-        document.getElementById('modal-tab-roster').className = tab === 'roster' ? 'nav-btn active' : 'nav-btn';
-
-        document.getElementById('story-view-story').className = tab === 'story' ? '' : 'hidden';
-        document.getElementById('story-view-playbyplay').className = tab === 'playbyplay' ? '' : 'hidden';
-        document.getElementById('story-view-roster').className = tab === 'roster' ? '' : 'hidden';
+        ['summary', 'story', 'playbyplay', 'roster'].forEach(t => {
+            const btn = document.getElementById('modal-tab-' + t);
+            const view = document.getElementById('story-view-' + t);
+            if (btn) btn.className = (t === tab) ? 'nav-btn active' : 'nav-btn';
+            if (view) view.className = (t === tab) ? '' : 'hidden';
+        });
+        const modal = document.getElementById('story-modal');
+        if (modal) modal.scrollTop = 0;
     }
 
-    function openStoryModal(tid) {
+    function openStoryModal(tid, defaultTab = 'summary') {
         const game = historyData.find(g => g.thread_id === tid);
         if (!game) return;
 
         document.getElementById('story-title').innerText = game.title;
-        switchStoryModalTab('story');
+        switchStoryModalTab(defaultTab || 'summary');
 
         // Header Badges
         const badgesContainer = document.getElementById('story-header-badges');
@@ -584,29 +668,166 @@
         else if (winFaction.includes('Serial Killer') || winFaction.includes('Neutral')) winColor = 'var(--gold)';
 
         let era = game.era || "Forum";
-        let eraBadge = `<span style="background: rgba(255,255,255,0.1); color: #ccc; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">Era: <strong>${era}</strong></span>`;
+        let eraBadgeColor = 'var(--blue)';
+        if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
+        else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
+
+        let eraBadge = `<span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">Era: ${era}</span>`;
         let winnerBadge = `<span style="background: rgba(255,255,255,0.1); color: ${winColor}; border: 1px solid ${winColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">🏆 Winner: ${winFaction}</span>`;
+        let modBadge = game.moderator ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">Game Host: <strong>${game.moderator}</strong></span>` : '';
         let mvpBadge = '';
         if (game.box_score && game.box_score.mvp && game.box_score.mvp.player) {
             mvpBadge = `<span style="background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">⭐ MVP: ${game.box_score.mvp.player}</span>`;
         }
-        badgesContainer.innerHTML = `${eraBadge} ${winnerBadge} ${mvpBadge}`;
+        badgesContainer.innerHTML = `${eraBadge} ${winnerBadge} ${modBadge} ${mvpBadge}`;
 
-        // Tab 1: Narrative Story
+        // Tab 1: Game Summary (Chronicle + Strategic Overview)
+        const summaryContainer = document.getElementById('story-summary-content');
+        let summaryHtml = `
+            <div style="background: rgba(56,138,207,0.08); border-left: 4px solid var(--blue); padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <strong style="color: var(--blue); font-size: 1.05em;">📋 Match Chronicle & Executive Summary</strong>
+                        <div style="color: #bbb; font-size: 0.9em; margin-top: 3px;">Comprehensive strategic narrative and analytical breakdown synthesized across all game phases.</div>
+                    </div>
+                    ${game.total_posts ? `<span style="font-size: 0.85em; color: var(--muted); background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 4px;">💬 ${game.total_posts} Thread Posts</span>` : ''}
+                </div>
+            </div>
+        `;
+
+        if (game.box_score && game.box_score.notable_moments && game.box_score.notable_moments.length > 0) {
+            summaryHtml += `
+                <div style="background: rgba(255,215,0,0.08); border-left: 4px solid var(--gold); padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
+                    <h4 style="margin: 0 0 8px 0; color: var(--gold); font-size: 1.05em;">💡 Notable Tactical Moments & Highlights</h4>
+                    <ul style="margin: 0; padding-left: 20px; line-height: 1.6; color: #ddd;">
+                        ${game.box_score.notable_moments.map(m => `<li>${m}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
         const chronicle = game.narrative_chronicle || "*No narrative chronicle found for this game.*";
-        document.getElementById('story-content').innerHTML = marked.parse(chronicle);
-        const storyContent = document.getElementById('story-content');
-        storyContent.querySelectorAll('h3').forEach(el => {
+        summaryHtml += `<div class="markdown-body">${marked.parse(chronicle)}</div>`;
+        summaryContainer.innerHTML = summaryHtml;
+
+        summaryContainer.querySelectorAll('h3, h2').forEach(el => {
             el.style.color = 'var(--gold)';
             el.style.borderBottom = '1px solid #333';
             el.style.paddingBottom = '5px';
             el.style.marginTop = '25px';
         });
-        storyContent.querySelectorAll('em').forEach(el => {
+        summaryContainer.querySelectorAll('em').forEach(el => {
             el.style.color = '#ccc';
         });
 
-        // Tab 2: Phase-by-Phase Play-by-Play & Timeline
+        // Tab 2: Stories as Written (Original Thread Posts)
+        const writtenContainer = document.getElementById('story-written-content');
+        let writtenHtml = `
+            <div style="background: rgba(255,152,0,0.08); border-left: 4px solid var(--orange); padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
+                <div>
+                    <strong style="color: var(--orange); font-size: 1.05em;">📖 Stories as Written (Original Host & Thread Posts)</strong>
+                    <div style="color: #bbb; font-size: 0.9em; margin-top: 3px;">Verbatim narrative lore, opening briefings, phase transition scenes, and endgame epilogues recorded directly from the game thread.</div>
+                </div>
+            </div>
+        `;
+
+        const storyText = game.story_as_written || game.narrative_chronicle || "*No written story posts found for this game.*";
+        writtenHtml += `<div class="markdown-body">${marked.parse(storyText)}</div>`;
+        writtenContainer.innerHTML = writtenHtml;
+
+        writtenContainer.querySelectorAll('h3').forEach(el => {
+            let txt = el.innerText || '';
+            let borderColor = 'var(--gold)';
+            let titleColor = 'var(--gold)';
+            let bg = 'rgba(255, 215, 0, 0.08)';
+            
+            if (txt.includes('🗳️')) {
+                borderColor = 'var(--red)';
+                titleColor = '#ff8080';
+                bg = 'rgba(207, 56, 56, 0.08)';
+            } else if (txt.includes('🌙')) {
+                borderColor = 'var(--blue)';
+                titleColor = '#80b3ff';
+                bg = 'rgba(56, 138, 207, 0.08)';
+            } else if (txt.includes('☀️')) {
+                borderColor = 'var(--gold)';
+                titleColor = 'var(--gold)';
+                bg = 'rgba(255, 215, 0, 0.08)';
+            } else if (txt.includes('🏆')) {
+                borderColor = 'var(--green)';
+                titleColor = '#80e680';
+                bg = 'rgba(76, 175, 80, 0.08)';
+            } else if (txt.includes('📜')) {
+                borderColor = 'var(--orange)';
+                titleColor = '#ffb84d';
+                bg = 'rgba(255, 152, 0, 0.08)';
+            } else if (txt.includes('📋')) {
+                borderColor = 'var(--purp)';
+                titleColor = '#d180ff';
+                bg = 'rgba(156, 39, 176, 0.08)';
+            }
+            
+            el.style.background = bg;
+            el.style.borderLeft = `4px solid ${borderColor}`;
+            el.style.color = titleColor;
+            el.style.padding = '10px 16px';
+            el.style.borderRadius = '4px';
+            el.style.marginTop = '32px';
+            el.style.marginBottom = '12px';
+            el.style.fontSize = '1.2em';
+        });
+
+        writtenContainer.querySelectorAll('h4').forEach(el => {
+            el.style.color = 'var(--gold)';
+            el.style.fontSize = '1.05em';
+            el.style.marginTop = '20px';
+            el.style.marginBottom = '10px';
+            el.style.borderBottom = '1px solid rgba(255,255,255,0.08)';
+            el.style.paddingBottom = '4px';
+        });
+
+        writtenContainer.querySelectorAll('p').forEach(el => {
+            el.style.marginBottom = '16px';
+            el.style.lineHeight = '1.75';
+            el.style.fontSize = '1.04em';
+            el.style.color = '#e2e2e8';
+        });
+
+        writtenContainer.querySelectorAll('ul, ol').forEach(el => {
+            el.style.paddingLeft = '24px';
+            el.style.marginBottom = '18px';
+            el.style.lineHeight = '1.65';
+            el.style.color = '#ddd';
+        });
+
+        writtenContainer.querySelectorAll('li').forEach(el => {
+            el.style.marginBottom = '6px';
+        });
+
+        writtenContainer.querySelectorAll('blockquote').forEach(el => {
+            el.style.background = 'rgba(255, 152, 0, 0.05)';
+            el.style.borderLeft = '4px solid var(--orange)';
+            el.style.padding = '12px 18px';
+            el.style.borderRadius = '4px';
+            el.style.margin = '18px 0';
+            el.style.color = '#e8e8e8';
+            el.style.fontStyle = 'italic';
+        });
+
+        writtenContainer.querySelectorAll('hr').forEach(el => {
+            el.style.border = 'none';
+            el.style.borderTop = '1px solid #333';
+            el.style.margin = '35px 0';
+        });
+
+        writtenContainer.querySelectorAll('em').forEach(el => {
+            if (el.parentElement && el.parentElement.tagName === 'P') {
+                el.style.color = '#aaa';
+                el.style.fontSize = '0.92em';
+            }
+        });
+
+        // Tab 3: Phase-by-Phase Play-by-Play & Timeline
         const playByPlayContainer = document.getElementById('story-playbyplay-content');
         let playByPlayHtml = '';
 
@@ -746,7 +967,7 @@
         }
         playByPlayContainer.innerHTML = playByPlayHtml;
 
-        // Tab 3: Cast of Characters & Box Score
+        // Tab 4: Cast of Characters & Box Score
         const rosterContainer = document.getElementById('story-roster-content');
         let rosterHtml = '';
 
@@ -831,7 +1052,7 @@
             <strong>Wins:</strong> <span style="color:var(--green);">${player["Wins"]}</span> | <strong>Losses:</strong> <span style="color:var(--red);">${player["Losses"]}</span><br>
             <strong>Win Rate:</strong> ${winRate}%<br>
             <strong>Survival Rate:</strong> ${survRate}%<br>
-            <strong>Skill Score (PEU):</strong> <span style="color:var(--gold); font-weight:bold;">${parseFloat(player["Skill Score"]).toFixed(2)}</span>
+            <strong>Skill Score (PEU):</strong> <span style="color:var(--gold); font-weight:bold;">${parseFloat(player["Skill Score"]).toFixed(2)}</span> <span style="font-size:0.85em; color:var(--muted); margin-left:6px;">(P: ${player.p_score !== undefined ? player.p_score : '-'} | E: ${player.e_score !== undefined ? player.e_score : '-'} | U: ${player.u_score !== undefined ? player.u_score : '-'})</span>
         `;
         
         const ds = document.getElementById('dossier-death-stats');

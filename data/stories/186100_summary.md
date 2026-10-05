@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering Storm
+The peace following the great war between the Marvel and D.C. universes was shattered by a flash of green light. Stan Lee, the architect of the Marvel mythos, vanished into the custody of the D.C. Mafia. As a mysterious, power-sapping plague swept through the heroic ranks, tension boiled over. Marvel’s leaders—Cyclops and Captain America—rallied their forces, while in the shadows, the demonic Hellboy and his ally Abe Sapien watched, waiting for the "Big Two" to bleed each other dry.
+
+### Chapter 2: First Blood
+The war turned lethal instantly. Bruce Banner, driven by the kidnapping of his friend, transformed into the Hulk to confront the Green Lantern. Their battle was brief and apocalyptic; the Hulk ripped his rival apart, but succumbed to his own grevious wounds. Simultaneously, the mysterious Serial Killer, Hellboy, began his purge, silencing Spider-Man in the dead of night. Suspicion turned to the innocent—Genesis, a mere bystander, was caught in the crossfire when The Flash attempted to warp time itself to gain an advantage.
+
+### Chapter 3: Web of Deceit
+As the sickness weakened the factions, the lynching block became the primary arena of justice. The Flash, once a terror on the streets, was finally run down and executed by the townsfolk. The Joker, seemingly just a local nuisance, was found and eliminated by Hellboy. Marvel’s leadership began to crumble; Cyclops fell to Hellboy’s dark smoke, and Captain America was assassinated in his sleep. With the superheroes in disarray, Bane rampaged through the Daily Herald, claiming the life of Superman, leaving the town’s defenses in tatters.
+
+### Chapter 4: The Final Stand
+By the end, the board was decimated. Abe Sapien sought the cure, only to fall to Batman’s wheels. In a final, desperate act of defiance, the captive Stan Lee struck back, killing the hulking Bane with a broken chair spindle. However, the end was already written. Batman, in a cold, calculated strike, smothered the Scarlet Witch—the last of the Marvel resistance—to death. With his Marvel rivals dismantled and his D.C. cohorts decimated by the Serial Killer, Hellboy reigned supreme as the final victor, the dark horse having outmaneuvered the titans.
