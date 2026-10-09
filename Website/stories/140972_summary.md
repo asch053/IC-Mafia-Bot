@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering of Shadows
+The town was a powder keg, and the fuse had already been lit. Twenty-three souls gathered under the watchful eye of moderator *arsbury*, unaware that among them lurked two rival criminal syndicates—the Moretti and Romano families—and a solitary, deranged Serial Killer. The air grew thick with paranoia as whispers of "Godfathers" and "Secret Roles" circulated. As the first night fell, the families retreated into their respective dens, electing their leaders and marking their first targets in the darkness.
+
+### Chapter 2: The Red Harvest
+Dawn broke over a blood-stained town. The Moretti and Romano families wasted no time in asserting their dominance, while the Serial Killer—Alchoran—began a spree of terror that would soon leave the town paralyzed. The Doctor, EDN, desperately scrambled to shield the innocent, but the chaotic nature of the night, combined with the Serial Killer’s unpredictable movements, rendered many defenses moot. By the time the sun climbed high, the body count had already mounted. 
+
+### Chapter 3: The Web of Deceit
+Daylight brought no peace, only the gallows. Accusations flew like daggers; players like Nolio and Iluvatar found themselves at the center of heated bandwagons, accused not necessarily of crimes, but of being "bad for the game." The townsfolk, blinded by internal squabbles and the clever manipulations of the rival Godfathers, Gwynedd and Zarf BeebleBrix, began to turn on each other. The Police Officers, Arnor and the Watcher Skyroshroud, attempted to peel back the layers of deception, but their efforts were cut short—one silenced by the SK's blade, the other executed by the Romano family.
+
+### Chapter 4: The Final Stand
+As the reserves dwindled and the shadows lengthened, the true power dynamics were laid bare. The town's protectors—the Doctor, the Police, and the Bulletproof citizen Ps—were systematically dismantled. In a stunning display of survival, the two Godfathers, Gwynedd and Zarf, managed to steer their families through the chaos, weathering the town's lynches and the Serial Killer’s relentless pursuit. When the dust finally settled, no single faction had achieved total victory. The town lay in ruin, and the surviving titans of crime—Gwynedd, Zarf, and the elusive Alchoran—stood in a chilling, stalemate equilibrium.

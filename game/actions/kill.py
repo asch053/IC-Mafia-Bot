@@ -13,10 +13,6 @@ def handle_kill(game, killer_id: int, victim_id: int, night_outcomes: dict):
 
     killer_action = night_outcomes.get(killer_id)
     if killer_action and killer_action.get('status') == 'blocked':
-        if game.game_settings.get("game_type") == "battle_royale":
-            game.narration_manager.add_event('block_battle_royale', killer=killer, victim=victim)
-        else:
-            game.narration_manager.add_event('blocked', killer=killer, victim=victim)
         logger.info(f"Kill attempt by {killer.display_name} failed because they were blocked.")
         return
 

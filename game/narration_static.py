@@ -127,56 +127,74 @@ def _generate_static_story_part(event: dict, story_type: str = "Classic Mafia") 
             return "No after-hours emails or sudden reorganizations occurred overnight."
         return "The night was eerily quiet. No one seemed to make a move."
 
-    # Event: Successful roleblock
+    # Event: Successful roleblock in Classic mode (action thwarted, actor anonymous)
     if event_type == 'block':
-        target = event.get('target')
-        logger.info(f"Generating block event story part for target: {target}")
-        if not target or not getattr(target, 'role', None): return None
-        if not target.role.abilities: return None
-        role_label = getattr(target.role, 'display_name', None) or target.role.name
-        if story_type == "Rom Com":
-            return f"A meddling friend third-wheeled **{target.display_name}** ({role_label}) last night, preventing them from making their romantic move!"
-        elif story_type == "Office Restructuring":
-            return f"IT support unexpectedly revoked network permissions for **{target.display_name}** ({role_label}), preventing them from submitting their deliverables!"
-        return f"A shadowy figure paid a visit to the **{role_label}** last night, preventing them from performing their action."
+        action_type = event.get('action_type', 'action')
+        logger.info(f"Generating block event story part for action_type: {action_type}")
+        if action_type == 'kill':
+            if story_type == "Rom Com":
+                return "A meddling friend intervened in the nick of time, stopping a cold breakup before someone's heart could be broken!"
+            elif story_type == "Office Restructuring":
+                return "An emergency intervention halted an after-hours termination in its tracks before an employee could be handed a pink slip!"
+            return "A shadowy figure struck in the dark and thwarted an attempted murder before the killer could reach their mark."
+        elif action_type == 'heal':
+            if story_type == "Rom Com":
+                return "An attempt to offer wingman advice and relationship support was intercepted and blocked before reaching its destination."
+            elif story_type == "Office Restructuring":
+                return "HR red tape obstructed an attempt to provide job security and severance protection overnight."
+            return "A shadowy figure intercepted an attempt to deliver medical aid in the night, preventing protection from reaching its destination."
+        elif action_type == 'investigate':
+            logger.info("Investigation blocks are never shown in story generation.")
+            return None
+        elif action_type == 'block':
+            if story_type == "Rom Com":
+                return "An attempt to third-wheel and cockblock a date was intercepted and foiled before it could cause drama."
+            elif story_type == "Office Restructuring":
+                return "An attempt to stonewall a colleague's workflow was intercepted and stopped in the hallway."
+            return "A shadowy figure's attempt to stalk and interfere with another citizen was intercepted and thwarted in the dark."
+        else:
+            if story_type == "Rom Com":
+                return "A meddling friend third-wheeled a romantic move last night, preventing it from taking place."
+            elif story_type == "Office Restructuring":
+                return "IT support unexpectedly revoked system permissions and blocked an after-hours initiative from being carried out."
+            return "A shadowy figure intervened in the night and thwarted an action before it could take effect."
 
-    # Event: Roleblocker attempted block, but target had lower priority or already acted
-    if event_type == 'block_missed':
-        target = event.get('target')
-        blocker = event.get('blocker')
-        logger.info(f"Generating block missed event story part for target: {target} and blocker: {blocker}")
-        if not target or not getattr(target, 'role', None) or not blocker: return None
-        if not target.role.abilities: return None
-        role_label = getattr(target.role, 'display_name', None) or target.role.name
-        if story_type == "Rom Com":
-            return f"Someone tried to crash **{target.display_name}**'s date.\n However, they had already completed their night out and headed home."
-        elif story_type == "Office Restructuring":
-            return f"HR attempted to schedule an urgent 1-on-1 with **{target.display_name}**.\n However, they had already clocked out and logged off for the day."
-        return f"A shadowy figure stalked the **{role_label}**.\n However, when they managed to catch up to them, they had already completed their night activities and had returned home."
+    # Event: Roleblocker attempted block, but target had no action or already acted (no story emitted)
+    if event_type in ['block_missed', 'block_missed_royale']:
+        logger.info(f"Skipping story generation for missed block event: {event_type}")
+        return None
 
     # Event: Battle Royale transparent roleblock (attacker and target named)
     if event_type == 'block_battle_royale':
         target = event.get('target')
         blocker = event.get('blocker')
+        action_type = event.get('action_type', 'action')
+        action_target = event.get('action_target')
         logger.info(f"Generating battle royale block event story part for target: {target} and blocker: {blocker}")
-        if not target or not getattr(target, 'role', None) or not blocker: return None
-        if story_type == "Rom Com":
-            return f"In the middle of the singles mixer, **{target.display_name}** was cornered by **{blocker.display_name}** in an awkward conversation and couldn't make their move."
-        elif story_type == "Office Restructuring":
-            return f"In the office hallway, **{target.display_name}** was trapped in an impromptu meeting by **{blocker.display_name}** and couldn't complete their tasks."
-        return f"In the chaos of the night, **{target.display_name}** was ambushed by **{blocker.display_name}** and unable to act."
+        if not target or not blocker: return None
+        if action_type == 'investigate':
+            logger.info("Investigation blocks are never shown in battle royale narration.")
+            return None
+        target_name = target.display_name
+        blocker_name = blocker.display_name
+        act_tgt_name = action_target.display_name if action_target else "their target"
 
-    # Event: Battle Royale missed roleblock
-    if event_type == 'block_missed_royale':
-        target = event.get('target')
-        blocker = event.get('blocker')
-        logger.info(f"Generating battle royale block missed event story part for target: {target} and blocker: {blocker}")
-        if not target or not getattr(target, 'role', None) or not blocker: return None
-        if story_type == "Rom Com":
-            return f"**{blocker.display_name}** tried to third-wheel **{target.display_name}**, but they had already completed their date and slipped away."
-        elif story_type == "Office Restructuring":
-            return f"**{blocker.display_name}** tried to pull **{target.display_name}** into an urgent sync, but they had already logged off and left the office."
-        return f"**{blocker.display_name}** attempted to ambush **{target.display_name}**, but they had already completed their actions and returned home to safety."
+        if action_type == 'kill':
+            if story_type == "Rom Com":
+                return f"In the middle of the mixer, **{blocker_name}** cut in and prevented **{target_name}** from dumping **{act_tgt_name}**!"
+            elif story_type == "Office Restructuring":
+                return f"In the hallway, **{blocker_name}** stepped in and stopped **{target_name}** from serving a pink slip to **{act_tgt_name}**!"
+            return f"In the heat of battle, **{blocker_name}** ambushed **{target_name}** and prevented their deadly strike against **{act_tgt_name}**!"
+        elif action_type == 'heal':
+            if story_type == "Rom Com":
+                return f"**{blocker_name}** cornered **{target_name}**, preventing them from offering emotional support to **{act_tgt_name}**!"
+            elif story_type == "Office Restructuring":
+                return f"**{blocker_name}** held up **{target_name}** in meetings, blocking them from aiding **{act_tgt_name}**!"
+            return f"**{blocker_name}** intercepted **{target_name}**, stopping them from administering medical aid to **{act_tgt_name}**!"
+        elif action_type == 'block':
+            return f"**{blocker_name}** tackled **{target_name}**, shutting down their attempt to interfere with others!"
+        else:
+            return None
 
     # Event: Doctor protection save in Classic mode (killer anonymous)
     if event_type == 'save':

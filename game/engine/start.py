@@ -82,6 +82,11 @@ async def start_game(
         f"Sign-ups are now open for **{time_left_str}**! {spec_mention} Use `/mafiajoin` in {signup_channel_mention} to join.\n"
         f"The game will officially begin at: **{start_time_str}** (or when {game.max_players} players join)."
     )
+    if game.game_settings.get("br_skip_day"):
+        announcement += (
+            "\n\n⚡ **SPECIAL GAME RULE: DAY PHASE SKIPPED!** ⚡\n"
+            "> 🌙 **Consecutive Night Action Phases Only — No daytime discussion or lynches!**"
+        )
     logger.info(f"Game announcement: {announcement}")
 
     ann_chan = game.bot.get_channel(getattr(config, 'ANNOUNCEMENT_CHANNEL_ID', 0))

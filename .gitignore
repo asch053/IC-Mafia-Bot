@@ -61,17 +61,9 @@ env/
 .coverage
 htmlcov/
 
-.obsidian/workspace.json
-.obsidian/graph.json
-.obsidian/app.json
+# --- Obsidian & Local Scratch ---
+.obsidian/
 2026-10-03.md
-Untitled.base
-Untitled.canvas
-.obsidian/app.json
-/.obsidian
-2026-10-03.md
-Untitled.base
-Untitled.canvas
 *.base
 *.canvas
 /.obsidian

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+Gotham City was brought to its knees by a 7.6 magnitude earthquake, turning the metropolis into a fractured labyrinth of despair. As the city groaned, two criminal empires rose from the rubble: the chaotic trio of The Joker, The Riddler, and The Penguin, and the calculated, cold-blooded syndicate of Lex Luthor, Ra’s al Ghul, and Two-Face. In the shadows, the Batman moved with silence, acting as a vigilante force—not just against the mobs, but as a keeper of his own dark asylum.
+
+### Chapter 2: First Blood
+The night was unkind to the innocent. Batman’s first move was surgical; he intercepted Ramza and cast him into the depths of Arkham Asylum, removing him from the chaos of the streets. But the shadows held teeth. The Riddler, gleeful in his insanity, planted a lethal riddle at the home of Genesis. When the trigger was pressed, the blast silenced a citizen forever. The city woke to the smell of cordite and the realization that the game had truly begun.
+
+### Chapter 3: Web of Deceit
+The investigation phase was frantic. Robin and Commissioner Gordon scoured the city, but their efforts were hampered by the tactical brilliance of the syndicates. Alfred Pennyworth, the loyal protector of the Wayne legacy, became a target of desperation. As Nolio (Alfred) stumbled through the halls of Wayne Manor, drunk on the grief of his master's absence, The Riddler emerged to deliver a final, brutal riddle that ended in the stroke of a blade. Ra's al Ghul arrived shortly after, finding his quarry already cold on the floor, the syndicate’s plans thwarted by the rival mob's efficiency.
+
+### Chapter 4: The Final Stand
+Chaos reached its zenith at City Hall. The citizens, weary and bloodthirsty, turned on those they deemed traitors. The Riddler, unmasked by a falling metallic prop, was seized by the mob and cast from the City Hall roof, his neck snapping under the weight of his own hubris. Yet, the carnage continued. Remo, cornered and facing the final judgment, attempted to leave his fate to the "Coin of Fate," but the irony was bitter—the coin landed on the side of death. As the smoke cleared, the final clash between the remnants of the Justice League and the forces of Lex Luthor culminated on a broken rooftop, where Robin met his end at the hands of Lex, plunging to the streets below in a final, desperate act of defiance.

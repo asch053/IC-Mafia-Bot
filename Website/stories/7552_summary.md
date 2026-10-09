@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at the Pub
+The air was crisp, the champagne was chilling, and twenty souls—all eager to ring in 2020—converged upon the local pubs. It was supposed to be a night of celebration, a chaotic crawl through the city’s finest watering holes. But as the clock ticked toward midnight, the mood shifted. Among the revelers, cold-blooded killers and a lone, calculating psychopath lurked, turning the pub crawl into a frantic race for survival.
+
+### Chapter 2: First Blood and Liquid Courage
+The night began with suspicion hanging heavy in the air. Luker was the first to fall, dragged out into the cold by a consensus of his peers, lynched before the party had even truly begun. As the survivors retreated to the shadows, the true hostilities commenced. Paul, the lone wolf of the night, set his sights on Sam, the Godfather of the mob, but the mafia boss proved too cunning to be taken down by a mere amateur. In the ensuing carnage, Tish, the group's healer, was silenced by Riley’s blade.
+
+### Chapter 3: The Web of Deceit
+The mob soon began to cannibalize its own influence. The Godfather, Thirdrock, was identified and promptly lynched as the town began to find its footing. Yet, the chaos only intensified. Paul continued his murderous spree, cutting down TBO and then Wild, who was caught in the act of preparing his own strike. The town, desperate to regain control, purged the remaining mob leaders one by one, culminating in the dramatic downfall of Soul—the face of the mafia—as the net tightened around the conspirators.
+
+### Chapter 4: The Final Stand
+As the sun rose on the final day of the crawl, only the most dangerous predators remained. The town, bloodied but resilient, turned their collective gaze toward the final threats. In a desperate, final confrontation, both Paul—the SK—and Jordan—the last of the Godfather’s line—were brought to justice. The cheers of the surviving townspeople echoed through the streets; the pub crawl was over, the killers were purged, and the new year finally held a promise of peace.

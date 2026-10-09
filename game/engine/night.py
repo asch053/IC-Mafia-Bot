@@ -208,6 +208,8 @@ async def process_night_actions(game):
         for player_id, data in game.night_actions.items()
     }
     game.heals_on_players.clear()
+    game.blocked_players_this_night.clear()
+    game.pending_blocked_heals = []
     logger.info("Processing night actions...")
 
     # Group actions into priority bins
@@ -217,9 +219,16 @@ async def process_night_actions(game):
         priority = action_priority.get(data['type'], 99)
         actions_by_priority[priority].append(player_id)
 
-    # Sort and shuffle within priority tiers to ensure fairness
+    # 1. Resolve Priority 1 (Block) with dependency ordering & cycle resolution
+    block_pids = actions_by_priority.get(1, [])
+    if block_pids:
+        _resolve_block_actions(game, block_pids, night_outcomes)
+
+    # 2. Sort and shuffle remaining priority tiers (heal, kill, investigate, etc.)
     final_processing_order = []
     for priority in sorted(actions_by_priority.keys()):
+        if priority == 1:
+            continue
         priority_group = actions_by_priority[priority]
         random.shuffle(priority_group)
         sorted_group = sorted(priority_group, key=lambda pid: game.night_actions[pid].get('night_priority', 99))
@@ -234,6 +243,105 @@ async def process_night_actions(game):
                 handler(game, player_id, action_data['target_id'], night_outcomes)
             except Exception as e:
                 logger.error(f"Error processing action for player {player_id}: {e}", exc_info=True)
+
+    # 3. Resolve pending blocked heals: ONLY emit event if the heal would have stopped a kill
+    for bh in getattr(game, 'pending_blocked_heals', []):
+        act_tgt_id = bh['action_target_id']
+        was_attacked = False
+        if act_tgt_id and act_tgt_id in getattr(game, 'kill_attempts_on', {}):
+            if game.kill_attempts_on[act_tgt_id]:
+                was_attacked = True
+        if not was_attacked:
+            for pid, act in game.night_actions.items():
+                if act.get('type') in ('kill', 'kill_battle_royale', 'vigilante_kill') and act.get('target_id') == act_tgt_id:
+                    if night_outcomes.get(pid, {}).get('status') != 'blocked':
+                        was_attacked = True
+                        break
+        if was_attacked:
+            if hasattr(game, 'narration_manager') and game.narration_manager:
+                game.narration_manager.add_event(
+                    bh['event_type'],
+                    blocker=bh['blocker'],
+                    target=bh['target'],
+                    action_type='heal',
+                    action_target=bh['action_target']
+                )
+            logger.info(f"Blocked heal by {bh['target'].display_name}: patient was attacked. Emitted block event.")
+        else:
+            logger.info(f"Blocked heal by {bh['target'].display_name}: patient was NOT attacked. No story event emitted.")
+
+
+def _resolve_block_actions(game, blocker_pids: list, night_outcomes: dict):
+    """
+    Resolves roleblock actions with proper dependency ordering and cycle handling.
+    - Blockers with 0 active blockers targeting them resolve first.
+    - If a blocker is blocked, their queued block is cancelled and cannot block their target.
+    - Mutual blocks or cycles are resolved simultaneously so all participants are blocked.
+    """
+    remaining_blockers = set(blocker_pids)
+
+    while remaining_blockers:
+        # 1. Any remaining blocker that is already blocked cannot act
+        already_blocked = [
+            b for b in remaining_blockers
+            if night_outcomes.get(b, {}).get('status') == 'blocked'
+        ]
+        if already_blocked:
+            for b in already_blocked:
+                remaining_blockers.remove(b)
+                logger.info(f"Blocker {b} was already blocked and cannot perform their action.")
+            continue
+
+        # 2. Find blockers with 0 unblocked blockers targeting them
+        zero_incoming = [
+            b for b in remaining_blockers
+            if not any(
+                game.night_actions.get(other, {}).get('target_id') == b
+                for other in remaining_blockers
+                if other != b
+            )
+        ]
+
+        if zero_incoming:
+            # Sort by night_priority if set, then shuffle for fairness
+            random.shuffle(zero_incoming)
+            zero_incoming.sort(key=lambda pid: game.night_actions[pid].get('night_priority', 99))
+
+            acting_pid = zero_incoming[0]
+            remaining_blockers.remove(acting_pid)
+
+            action_data = game.night_actions[acting_pid]
+            handler = actions.ACTION_HANDLERS.get('block')
+            if handler:
+                try:
+                    handler(game, acting_pid, action_data['target_id'], night_outcomes)
+                except Exception as e:
+                    logger.error(f"Error processing block for player {acting_pid}: {e}", exc_info=True)
+        else:
+            # Cycle detected (e.g. A blocks B, B blocks A)
+            # All remaining blockers in this cycle mutually block each other
+            logger.info(f"Mutual block cycle detected among blockers: {remaining_blockers}")
+            is_br = str(game.game_settings.get("game_type", "")).lower() in ("battle_royale", "battle royale", "br")
+            event_type = 'block_battle_royale' if is_br else 'block'
+
+            for b in list(remaining_blockers):
+                target_id = game.night_actions[b]['target_id']
+                night_outcomes[b]['status'] = 'blocked'
+                game.blocked_players_this_night[b] = target_id
+
+                blocker_obj = game.players.get(b)
+                target_obj = game.players.get(target_id)
+                if blocker_obj and target_obj and hasattr(game, 'narration_manager') and game.narration_manager:
+                    game.narration_manager.add_event(
+                        event_type,
+                        blocker=target_obj,
+                        target=blocker_obj,
+                        action_type='block',
+                        action_target=target_obj
+                    )
+                logger.info(f"Mutual block: {blocker_obj.display_name if blocker_obj else b} blocked by target.")
+
+            remaining_blockers.clear()
 
 
 async def _resolve_night_deaths(game):

@@ -1,0 +1,11 @@
+### Chapter 1: The Games of Kings
+In the decadent, wine-soaked halls of King’s Landing, secrets are the only currency that holds value. While the Lannisters indulged in their profane entanglements, the shadows of the North reached down to envelop the capital. Lord Ned Stark arrived with his retinue, determined to bring honor to a snake pit, but the stench of deception was already thick. As the court laughed, a more sinister frost began to creep through the masonry.
+
+### Chapter 2: First Blood
+The folly of the day was absolute. In their haste to cleanse the court, the commoners turned upon their own, stringing up Prince Charming (Catelyn Stark) and Oxygen in a chaotic opening gambit. Little did they know, the real predators were already at work. Night fell, and the silence of the North claimed The Big One (Ned Stark)—the only man who could have seen through the masks. With the honorable Hand of the King dead, the city was left to the wolves.
+
+### Chapter 3: A Winter of Discontent
+The death toll mounted as the White Walker, a specter of ice and misery, moved through the city with terrifying efficiency. Maester Luwin fell, then the treacherous Littlefinger was caught in the cold, unyielding grip of the killer. Confusion reigned in the marketplace. Nolio and Torqez bickered over the failures of the town, while the mob—Robert Baratheon and his cohorts—sought to maintain their grip on a crumbling throne. The lynchings continued, claiming Torqez and Alundra, but the true threat remained hidden in plain sight.
+
+### Chapter 4: The Final Stand
+As the King himself, Robert Baratheon, was dragged to the gallows by his own subjects, the realm descended into total anarchy. The White Walker, unchecked and emboldened, continued its systematic culling of the populace. With the town's leadership decimated and the mob failing to consolidate their power, the game ended not with a bang, but with the hollow echo of a walker stalking the woods for its final victim. The North had finally come south, and it left only silence in its wake.

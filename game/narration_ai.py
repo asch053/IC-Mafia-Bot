@@ -217,21 +217,35 @@ def _generate_mechanical_summary(events: list) -> str:
                 lines.append(f"- ⚡ **{v.display_name}** was struck down for inactivity. They were the **{role_name}**.")
         # --- Blocks ---
         elif etype in ['block', 'block_battle_royale']:
+            action_type = event.get('action_type', 'action')
+            action_target = event.get('action_target')
             target = event.get('target')
             blocker = event.get('blocker')
-            if target and blocker:
-                if etype == 'block_battle_royale':
-                    lines.append(f"- 🛡️ **{target.display_name}** was blocked by **{blocker.display_name}** and could not perform their action.")
-                else:
-                    lines.append(f"- 🛡️ **{target.role.name}** was blocked by a shadowy figure and could not perform their action.")
+
+            # Investigation blocks must never show in summaries or stories
+            if action_type == 'investigate':
+                pass
+            elif etype == 'block_battle_royale':
+                blocker_name = blocker.display_name if blocker else "Someone"
+                target_name = target.display_name if target else "someone"
+                act_tgt_str = f" on **{action_target.display_name}**" if action_target else ""
+
+                if action_type == 'kill':
+                    lines.append(f"- 🛡️ **{blocker_name}** intervened and blocked **{target_name}**'s attack{act_tgt_str}!")
+                elif action_type == 'heal':
+                    lines.append(f"- 🛡️ **{blocker_name}** intervened and blocked **{target_name}** from providing medical aid{act_tgt_str}!")
+                elif action_type == 'block':
+                    lines.append(f"- 🛡️ **{blocker_name}** intervened and blocked **{target_name}** from interfering with someone!")
+            else:
+                # Classic Mafia: Only Blocked Kill, Blocked Heal (when stopping kill), and Blocked Block
+                if action_type == 'kill':
+                    lines.append("- 🛡️ An attempted murder in the night was thwarted by a shadowy figure!")
+                elif action_type == 'heal':
+                    lines.append("- 🛡️ An attempt to provide medical protection was intercepted and blocked by a shadowy figure.")
+                elif action_type == 'block':
+                    lines.append("- 🛡️ An attempt to interfere with another citizen was thwarted by a shadowy figure.")
         elif etype in ['block_missed', 'block_missed_royale']:
-            target = event.get('target')
-            blocker = event.get('blocker')
-            if target and blocker:
-                if etype == 'block_missed_royale':
-                    lines.append(f"- 🛡️ **{blocker.display_name}** attempted to block **{target.display_name}**, but they had already completed their actions.")
-                else:
-                    lines.append(f"- 🛡️ **{target.role.name}** was blocked by a shadowy figure and could not perform their action.")
+            pass
         # --- Heals & Other Saves ---
         elif etype in ['save' , 'save_battle_royale']:
             logger.info(f"Generating save event story part for event: {etype}")
@@ -441,22 +455,51 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                     event_lines.append(f"CRITICAL EVENT: {v.display_name} mysteriously vanished or dropped dead from weakness/inactivity. Their true identity was {role_name}.")
             # Block event (Classic)
             elif etype == 'block':
-                target = e.get('target')
-                role_name = target.role.name if target.role else "Unknown"
-                if target:
-                    event_lines.append(f"CRITICAL EVENT: {role_name} was BLOCKED by a shadowy figure and could not perform their action.")  
+                action_type = e.get('action_type', 'action')
+                action_target = e.get('action_target')
+                action_target_name = action_target.display_name if action_target else "their target"
+
+                if action_type == 'kill':
+                    if story_type == "Rom Com":
+                        event_lines.append(f"CRITICAL EVENT: An attempted BREAKUP / DUMPING in the night was INTERCEPTED and STOPPED by a mysterious figure before anyone's heart could be broken! An angry suitor was stopped before they could dump {action_target_name}. Focus the narrative on the thwarted breakup, NOT on the identity of the person who tried to dump them.")
+                    elif story_type == "Office Restructuring":
+                        event_lines.append(f"CRITICAL EVENT: An attempted TERMINATION / FIRING was INTERCEPTED and BLOCKED before an employee could be handed their pink slip! Management or HR was stopped before {action_target_name} could be laid off. Focus the narrative on the blocked firing, NOT on who ordered it.")
+                    else:
+                        event_lines.append(f"CRITICAL EVENT: An attempted MURDER / ASSASSINATION in the night was INTERCEPTED and THWARTED by a shadowy figure! An attacker was stopped in their tracks before they could eliminate {action_target_name}. Focus the narrative on the suspense of the thwarted attack and the intervention, NOT on the identity of the attacker.")
+                elif action_type == 'heal':
+                    if story_type == "Rom Com":
+                        event_lines.append(f"CRITICAL EVENT: An attempt by a loyal wingman to protect {action_target_name} from a breakup was INTERCEPTED and BLOCKED by a meddling third party, leaving them completely vulnerable to heartbreak!")
+                    elif story_type == "Office Restructuring":
+                        event_lines.append(f"CRITICAL EVENT: An attempt to provide job protection for {action_target_name} was INTERCEPTED and BLOCKED by red tape, leaving them vulnerable to termination!")
+                    else:
+                        event_lines.append(f"CRITICAL EVENT: An attempt to provide medical protection to {action_target_name} was INTERCEPTED and BLOCKED by a shadowy figure before it could take effect, leaving them completely defenseless against the attack tonight!")
+                elif action_type == 'block':
+                    if story_type == "Rom Com":
+                        event_lines.append("CRITICAL EVENT: An attempt to cockblock / interfere with someone was INTERCEPTED and THWARTED in the shadows!")
+                    elif story_type == "Office Restructuring":
+                        event_lines.append("CRITICAL EVENT: An attempt to sabotage / stonewall a coworker's shift was INTERCEPTED and THWARTED!")
+                    else:
+                        event_lines.append("CRITICAL EVENT: A shadowy figure's attempt to interfere with / roleblock another citizen was INTERCEPTED and THWARTED in the dark.")
+
             # Block event (Battle Royale)
             elif etype == 'block_battle_royale':
                 target = e.get('target')
                 blocker = e.get('blocker')
-                if target and blocker:
-                    event_lines.append(f"CRITICAL EVENT: **{target.display_name}** was BLOCKED by **{blocker.display_name}** and could not perform their action.")
-            # Missed Block event (Battle Royale)
-            elif etype == 'block_missed_royale':
-                target = e.get('target')
-                blocker = e.get('blocker')
-                if target and blocker:
-                    event_lines.append(f"CRITICAL EVENT: {blocker.display_name} attempted to BLOCK {target.display_name}, but they had already completed their actions.")
+                action_type = e.get('action_type', 'action')
+                action_target = e.get('action_target')
+                target_name = target.display_name if target else "someone"
+                blocker_name = blocker.display_name if blocker else "Someone"
+                act_tgt_name = action_target.display_name if action_target else "their target"
+
+                if action_type == 'kill':
+                    event_lines.append(f"CRITICAL EVENT: **{blocker_name}** intervened and BLOCKED **{target_name}** from executing an attack on **{act_tgt_name}**!")
+                elif action_type == 'heal':
+                    event_lines.append(f"CRITICAL EVENT: **{blocker_name}** intervened and BLOCKED **{target_name}** from healing **{act_tgt_name}**!")
+                elif action_type == 'block':
+                    event_lines.append(f"CRITICAL EVENT: **{blocker_name}** intervened and BLOCKED **{target_name}** from interfering with **{act_tgt_name}**!")
+            # Missed Block event: no prompt emitted
+            elif etype in ['block_missed', 'block_missed_royale']:
+                pass
             # Save (Heal) event (Classic)
             elif etype == 'save': 
                 victim = e.get('victim')

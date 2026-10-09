@@ -1,0 +1,11 @@
+### Chapter 1: The Dust of Tombstone
+The air in Tombstone, Arizona, tasted of iron, black powder, and the bitter residue of the O.K. Corral. The Earps were surrounded, their ethics questioned as much as their marksmanship. Sheriff John Behan, a man whose integrity was as thin as his wallet, found himself caught between the law and the silver-tongued whispers of the Cowboy outlaws. As the town plunged into a cycle of nighttime assassinations, the residents feared that the death was not just coming from the outlaws, but from within their own ranks. 
+
+### Chapter 2: A Sheriff’s Betrayal
+The first act of treachery was swift. Sheriff Behan, corrupted by envelopes of cash, turned his blade upon his own, eliminating Curly Bill Brocious—not to uphold the law, but to seize power for himself. He climbed the ranks of the underworld to become the new Godfather. Simultaneously, the shadows claimed Nolio, a victim of Mattie Blaylock’s laudanum-fueled, knife-wielding madness. The town’s first lynch, Einstein, was a chaotic affair; provoked into a show of force, he was gunned down in a saloon brawl that left the citizenry reeling.
+
+### Chapter 3: The Chicken Coop Massacre
+As the bodies piled up, the game of cat-and-mouse turned into a slaughter. The Earps were hunted; Warren Earp, ever the hot-head, retreated to a chicken coop to escape the vengeful Cowboys. In a sequence of desperate gunplay, bullets tore through wood and feather alike. Warren held his own with grit and lead, felling multiple outlaws before his own brother’s former ally, Pete Spence, finally put him down in the dark. The town had lost a pillar, and the outlaws thought the end was in sight.
+
+### Chapter 4: The Vendetta
+The final confrontation mirrored the legendary Earp Vendetta. Sheriff Behan and Pete Spence, cornered and desperate, attempted a final stand against the remaining defenders of Tombstone. But the tide had turned. Marshall Crawley Dake, supported by his steadfast deputies—Tia, KT, and Undeath—cornered the corrupt sheriff in the open field. Amidst the roar of rifle fire and the dust of the Arizona desert, the outlaws fell one by one. In the final, decisive moment, Tia stood over the wounded Behan, delivering justice for the deaths that had ravaged the town. The reign of the cowboys had ended; the town of Tombstone was finally, bloodily, secure.

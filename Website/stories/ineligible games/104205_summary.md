@@ -1,0 +1,10 @@
+### Chapter 1: The Whispers of Mejis
+The harvest moon hung heavy and bloated over the dusty streets of Hambri. In the kingdom of Mejis, where the silence of the plains usually promised peace, a different kind of wind was blowing. A group of travelers, drifting through the dark, gathered under the tavern's flickering lanterns. They spoke not of harvest yields or kingdom politics, but of shadows that moved with intent. Whispers of a hidden malignancy began to permeate the air—the "Wild Wild" was coming for them, and the town was ill-prepared for the coming storm.
+
+### Chapter 2: A Gathering of Ghosts
+The roster of the damned—or perhaps the desperate—was assembled. Players like Lynns, Pharaoh Metrex, and AdriusAvangion arrived, their motives as fractured as the kingdom itself. There were newcomers like DarkMason, who stumbled into the fray with naive questions about the game’s nature, and veterans like Primo, who looked upon the chaotic organization of the moderators with a jaded, cynical eye. The tension was thick, punctuated by bad jokes and the looming specter of a game that felt like it might collapse under its own weight before the first drop of blood was shed.
+
+### Chapter 3: The Silent Collapse
+It was a tragedy of inertia. As the travelers debated their fates, the threads of the investigation began to fray. Claims were made—Lynns reached out into the digital ether, and Wild Flower Soul claimed a galaxy-spanning allegiance—but the engine of the town ground to a halt. The "Wild Wild" was not a battle of bullets or blades, but a battle against apathy. The chronicles end abruptly, not with a climactic lynching or a final act of villainy, but with the hollow echo of a lobby that slowly emptied. The kingdom of Mejis remained, but the game had drifted into the void, a casualty of silence and the cruel passage of time.
+
+***

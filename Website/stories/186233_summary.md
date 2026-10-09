@@ -1,0 +1,11 @@
+### Chapter 1: The Poll of Discord
+In the hallowed, digital halls of the Imperial Conflict (IC) community, a shadow fell across the general forums. A provocateur known as Render initiated a poll, a seemingly benign instrument of democracy that served only to fracture the community. His inquiry was dripping with cynical vitriol: *Was Mafia a plague upon the board? Was it stealing the attention of the moderators? Or were the moderators themselves complicit in the chaos?*
+
+### Chapter 2: The Battle of Ideologies
+The threads erupted. Arby3, the stalwart defender of the Mafia sub-culture, stood his ground against Render’s drum-beating rhetoric. "Take away Mafia," Arby3 warned, "and the community will wither." On the other side, voices like The Great Eye parsed the political mechanics of the board, suggesting that if the moderators truly hated the Mafia spam, they would have exercised their iron grip long ago—no poll required. The debate devolved from site policy into personal barbs, with insults flying over the physical limitations of Render’s workspace and his inability to acquire a functioning keyboard.
+
+### Chapter 3: A House Divided
+The community split into factions. Genesis and Ramza Beoulve rallied to the "Join Mafia, Forget IC" banner, while voices like Alundra called for the diplomatic separation of Mafia into its own sovereign sub-forum. Tension reached a breaking point as the thread became a microcosm of the very game they debated: accusations of bias, claims of incompetence, and the encroaching realization that the forum itself had become the board, and the posters were the pieces.
+
+### Chapter 4: The Final Silence
+The climax arrived not with a thunderclap, but with a singular, cryptic pronouncement from the moderator: *"over the laptop?? not a good idea."* The thread, having served its purpose as a pressure valve for the community’s mounting frustration, was abandoned. No lynch was enacted, no game was formally declared "won," but the spirit of the conflict remained. The Mafia had survived the attempt to purge it, not by winning, but by becoming the very air the community breathed.

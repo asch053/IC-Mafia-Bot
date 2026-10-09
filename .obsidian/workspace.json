@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "tests/Tests_Overview.md",
+                "file": "Website/PRODUCTION_SETUP_GUIDE.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Tests_Overview"
+              "title": "PRODUCTION_SETUP_GUIDE"
             }
           }
         ]
@@ -161,7 +161,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "tests/Tests_Overview.md",
+                "file": "Website/PRODUCTION_SETUP_GUIDE.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -188,44 +188,44 @@
       "bases:Create new base": false
     }
   },
-  "active": "71c081cc6a370a6d",
+  "active": "0330e70a8c4f47d1",
   "lastOpenFiles": [
+    "Website/stories/TEST-002_story.md",
+    "Website/stories/TEST-002_summary.md",
+    "Website/database/ineligible_games.json",
+    "Website/stories/ineligible games/manual-example-01_story.md",
+    "Website/stories/ineligible games/manual-example-01_summary.md",
+    "Website/stories/ineligible games/TEST-002_story.md",
+    "Website/stories/ineligible games/TEST-002_summary.md",
+    "Website/stories/ineligible games/7905_story.md",
+    "Website/stories/ineligible games/7905_summary.md",
+    "Website/stories/ineligible games/7590_story.md",
+    "Website/stories/ineligible games/7590_summary.md",
+    "Website/stories/ineligible games/7063_story.md",
+    "Website/stories/ineligible games/7063_summary.md",
+    "Website/stories/ineligible games/6204_story.md",
+    "Website/stories/ineligible games/6204_summary.md",
+    "Website/stories/ineligible games/200897_story.md",
+    "Website/stories/ineligible games/200897_summary.md",
+    "Website/stories/ineligible games/190697_story.md",
+    "Website/stories/ineligible games/190697_summary.md",
+    "Website/stories/ineligible games/186043_story.md",
+    "Website/stories/ineligible games/186043_summary.md",
+    "Website/stories/ineligible games/183039_story.md",
+    "Website/stories/ineligible games/183039_summary.md",
+    "Website/stories/ineligible games/181020_story.md",
+    "Website/stories/ineligible games/181020_summary.md",
+    "Website/stories/ineligible games/176487_story.md",
+    "Website/stories/ineligible games/176487_summary.md",
+    "Website/stories/ineligible games",
     "Other Projects/Mafia History Project/test_formatter.py",
     "Other Projects/Mafia History Project/output/modern_bot_format/historic_6053/historic_6053_summary.json",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6053/game_historic_6053_story.md",
     "Other Projects/Mafia History Project/output/modern_bot_format/historic_6053",
     "Other Projects/Mafia History Project/output/summaries/game_6053_summary.json",
     "Other Projects/Mafia History Project/output/modern_bot_format/historic_6204/historic_6204_summary.json",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6204/game_historic_6204_story.md",
     "Other Projects/Mafia History Project/output/modern_bot_format/historic_6204",
     "Other Projects/Mafia History Project/output/summaries/game_6204_summary.json",
     "Other Projects/Mafia History Project/output/modern_bot_format/historic_6219/historic_6219_summary.json",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6219/game_historic_6219_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6219",
-    "Other Projects/Mafia History Project/output/summaries/game_6219_summary.json",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6347/game_historic_6347_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6347/historic_6347_summary.json",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6452/game_historic_6452_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6556/game_historic_6556_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6631/game_historic_6631_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6680/game_historic_6680_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6772/game_historic_6772_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6825/game_historic_6825_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6871/game_historic_6871_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6906/game_historic_6906_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6913/game_historic_6913_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6930/game_historic_6930_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_6954/game_historic_6954_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7043/game_historic_7043_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7063/game_historic_7063_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7077/game_historic_7077_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7107/game_historic_7107_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7130/game_historic_7130_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7164/game_historic_7164_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7187/game_historic_7187_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7235/game_historic_7235_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7275/game_historic_7275_story.md",
-    "Other Projects/Mafia History Project/output/modern_bot_format/historic_7321/game_historic_7321_story.md",
     "Untitled.canvas"
   ]
 }

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at the Academy
+The halls of the institution were meant for learning, but as the sun set on the Imperial Conflict community, a darker lesson was being taught. Students gathered, whispering in the shadows, their eyes darting toward one another. The atmosphere was thick with paranoia; accusations flew faster than schoolyard rumors. Among them stood Arby3, a polarizing figure whose loud, abrasive presence and "strict mod" persona drew both respect and ire. The students were on edge, waiting for the first sign of betrayal.
+
+### Chapter 2: The Nurse’s Silent Exit
+The silence of the night was broken only by the creeping footsteps of a student obsessed with cinematic flair—a self-proclaimed Legolas, armed with a makeshift bow and a twisted sense of "tactical irony." Elrohir, the school nurse, was busy sanitizing the medical wing, unaware that she was being hunted. The confrontation was brutal; a shot to the knee, a pinning of the hand, and finally, a lethal concoction of prescription pills. As the light faded from her eyes, the killer whispered a final, chilling mockery: "I guess today is a good day to die."
+
+### Chapter 3: Web of Deceit
+Dawn brought the discovery of the nurse's demise, and with it, a frenzy of accusations. Noir found himself the target of a burgeoning bandwagon, labeled a pariah by those claiming to be the "nerds" of the class. Meanwhile, Ps and Elrohir engaged in a deadly dance of words, probing for weaknesses, while Arby3 attempted to deflect the suspicion, painting himself as an outsider to the "nerd conspiracy." 
+
+### Chapter 4: The Final Stand
+The tension reached a boiling point as the student body, fed up with the chaos and the creeping terror, turned their gaze toward Arby3. Sensing the walls closing in and the consensus firming, the students united. They had finally had enough of his machinations. In a decisive moment of collective justice, Arby3 was removed, bringing a temporary, blood-stained end to the immediate threat within the hallowed halls.

@@ -110,6 +110,25 @@ class TestHandleActions(unittest.IsolatedAsyncioTestCase):
             logger.exception(f"[ERROR] Test failed in {self._testMethodName}: {e}")
             raise
 
+    def test_handle_block_when_blocker_blocked_cannot_act(self):
+        msg = f"[START] {self._testMethodName} - Testing blocked blocker cannot block target"
+        print(f"\n{msg}"); logger.info(msg)
+        
+        try:
+            night_outcomes = {202: {'status': 'blocked'}, 101: {'status': None}}
+            handle_block(self.mock_game, 202, 101, night_outcomes)
+            
+            # Target 101 must NOT be blocked, and no blocked_players_this_night entry
+            self.assertIsNone(night_outcomes[101]['status'])
+            self.assertNotIn(101, self.mock_game.blocked_players_this_night)
+            self.mock_game.narration_manager.add_event.assert_not_called()
+            
+            outcome_msg = "[OUTCOME] Success! Blocked blocker cleanly suppressed."
+            print(outcome_msg); logger.info(outcome_msg)
+        except Exception as e:
+            logger.exception(f"[ERROR] Test failed in {self._testMethodName}: {e}")
+            raise
+
     def test_handle_kill_target_immune(self):
         msg = f"[START] {self._testMethodName} - Testing kill against immune target state"
         print(f"\n{msg}"); logger.info(msg)

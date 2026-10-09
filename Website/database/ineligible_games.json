@@ -1,0 +1,1983 @@
+[
+  {
+    "thread_id": "200897",
+    "era": "Forum",
+    "title": "IC mafia!",
+    "moderator": "[TI] Primo",
+    "game_type": "classic",
+    "total_posts": 20,
+    "winning_faction": "Neutral",
+    "summary_file": "stories/ineligible games/200897_summary.md",
+    "story_file": "stories/ineligible games/200897_story.md",
+    "box_score": {
+      "winning_faction": "Neutral",
+      "inferred": true,
+      "mvp": {
+        "player": "[TI] Primo",
+        "rationale": "Executed a flawless zero-day deception, tricking the entire community into arriving for a game that didn't actually exist."
+      },
+      "roster": [
+        {
+          "player": "dpenguins",
+          "role": "Town Leg-Humper",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "RisingDown",
+          "role": "Inactive Hopeful",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Future Moderator",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "You_Fool",
+          "role": "Prepared Enthusiast",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Arby3",
+          "role": "Keeper of the Relics",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "jamjamburrito",
+          "role": "Clueless Newbie",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "{Sexy}EvilRunt",
+          "role": "Lore Teacher",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 1 / Night 1",
+          "event": "Modkill",
+          "target": "The Game Itself",
+          "details": "Moderator [TI] Primo immediately aborted the game in the opening post as a prank on the community."
+        }
+      ],
+      "notable_moments": [
+        "Primo successfully bait-and-switched the entire IC Mafia community with a fake signup thread.",
+        "RisingDown was openly disappointed that they couldn't use the game as an excuse to go inactive.",
+        "Arby3 revealed they still kept ancient Mafia PMs, including 'nekked pics' from a previous game.",
+        "{Sexy}EvilRunt took the time in a troll thread to genuinely explain the rules of Mafia to newcomer jamjamburrito."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2016-08-06",
+    "eligible": false
+  },
+  {
+    "thread_id": "190697",
+    "era": "Forum",
+    "title": "Mafia 54!",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 42,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/190697_summary.md",
+    "story_file": "stories/ineligible games/190697_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game failed to reach the minimum player threshold for initiation."
+      },
+      "roster": [
+        {
+          "player": "Arby",
+          "role": "N/A",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Torqez",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Revnant",
+          "role": "N/A",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "EvilRunt",
+          "role": "N/A",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Game failed to launch due to insufficient player registration.",
+        "Community debate regarding the viability of forum-based versus IRC-based Mafia.",
+        "Multiple high-profile players explicitly chose to abstain due to lack of time or interest."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2014-01-17",
+    "eligible": false
+  },
+  {
+    "thread_id": "186043",
+    "era": "Forum",
+    "title": "Mafia 50 Sign-Up!",
+    "moderator": "TheBigOne",
+    "game_type": "classic",
+    "total_posts": 26,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/186043_summary.md",
+    "story_file": "stories/ineligible games/186043_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "arsy",
+        "rationale": "Asserted absolute moderator authority by silencing a participant before the game could even commence, effectively ending the proceedings."
+      },
+      "roster": [
+        {
+          "player": "TheBigOne",
+          "role": "Architect",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "EvilRunt",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Revenant",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Shadowwolfs",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "banksy",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Prince Charming / Melvin",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wendy",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wiwi",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Nolio",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Keerb",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Thor",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "RisingDown",
+          "role": "Dissident",
+          "alignment": "Town",
+          "survived": false,
+          "death_phase": "Day 0 / Night 0"
+        },
+        {
+          "player": "Nick",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Ramza",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Thirdrock",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Genesis",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Primo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Remo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 0",
+          "event": "Modkill",
+          "target": "RisingDown",
+          "details": "Kicked by arsy for praising TheBigOne."
+        }
+      ],
+      "notable_moments": [
+        "The signup process was interrupted by softball league commitments.",
+        "Moderator 'arsy' executed an immediate administrative expulsion of a player during signups.",
+        "Game failed to reach a formal Day 1 phase due to lack of moderator follow-through."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2013-06-10",
+    "eligible": false
+  },
+  {
+    "thread_id": "183039",
+    "era": "Forum",
+    "title": "My Mafia changes explained",
+    "moderator": "Einstein",
+    "game_type": "classic",
+    "total_posts": 7,
+    "winning_faction": "Neutral",
+    "summary_file": "stories/ineligible games/183039_summary.md",
+    "story_file": "stories/ineligible games/183039_story.md",
+    "box_score": {
+      "winning_faction": "Neutral",
+      "inferred": true,
+      "mvp": {
+        "player": "Einstein",
+        "rationale": "As the moderator, he was the sole driver of the game's mechanics, narrative, and ultimate dissolution, single-handedly dictating the flow of the entire session."
+      },
+      "roster": [
+        {
+          "player": "Arby3",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Undeath",
+          "role": "Investigator",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Torqez",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Alundra",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "The Yell",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Kemp",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Avogardo",
+          "role": "Unknown",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Noir",
+          "role": "Unknown",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Neutral",
+          "details": "Game resolved with Neutral victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Introduction of dice rolls for tie-breaking to reduce guaranteed kill outcomes.",
+        "Implementation of Day and Night roles to obfuscate player activity.",
+        "Global 'Event' roleblock mechanic intended to assist the Serial Killer.",
+        "Secret Moderator investigation interference implemented to counter high-skill Mafia play.",
+        "Moderator established a policy of ignoring specific players (Avogardo and Noir) for the duration of the game."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2013-03-14",
+    "eligible": false
+  },
+  {
+    "thread_id": "181020",
+    "era": "Forum",
+    "title": "Mafia 38 ideas",
+    "moderator": "Oxygen",
+    "game_type": "classic",
+    "total_posts": 14,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/181020_summary.md",
+    "story_file": "stories/ineligible games/181020_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Arby3",
+        "rationale": "Arby3 provided the most coherent critique of game balance, accurately predicting that excessive complexity would destroy the core 'trust factor' required for the game to function."
+      },
+      "roster": [
+        {
+          "player": "Oxygen",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Arby3",
+          "role": "Purist Strategist",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "TheBigOne",
+          "role": "Speed-Mafia Advocate",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Poley",
+          "role": "Cautious Analyst",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "RisingDown",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Arsy",
+          "role": "Enforcer",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Satanic Spawn",
+          "role": "Critic",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Observer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Proposed creation of a 25-player 'Complex Role' Mafia variant.",
+        "Debate between 'Complex Strategy' vs 'Speed Mafia' (1-hour rounds).",
+        "Arsy mod-kicked RisingDown from the room for commentary on TheBigOne's contribution.",
+        "Discussion of 'Flint' as a recurring character/liability in moderator-led games."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2013-02-13",
+    "eligible": false
+  },
+  {
+    "thread_id": "176487",
+    "era": "Forum",
+    "title": "Mafia!",
+    "moderator": "Undeath",
+    "game_type": "classic",
+    "total_posts": 2,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/176487_summary.md",
+    "story_file": "stories/ineligible games/176487_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Undeath",
+        "rationale": "The moderator successfully maintained an enigmatic, albeit non-functional, presence throughout the thread's lifespan."
+      },
+      "roster": [
+        {
+          "player": "Primo<KT|Away>",
+          "role": "Unknown",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Pre-game",
+          "event": "Modkill",
+          "target": "None",
+          "details": "Game failed to initiate due to lack of player roster."
+        }
+      ],
+      "notable_moments": [
+        "The moderator repeatedly asserted their status as the 'Trump of IC', effectively diverting the game thread into a monologue.",
+        "The total lack of gameplay activity resulted in a null-sum event."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2012-11-28",
+    "eligible": false
+  },
+  {
+    "thread_id": "169654",
+    "era": "Forum",
+    "title": "IC Mafia Petition",
+    "moderator": "Twisted Metal",
+    "game_type": "classic",
+    "total_posts": 89,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/169654_summary.md",
+    "story_file": "stories/ineligible games/169654_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Twisted Metal",
+        "rationale": "As the initiator and moderator-hopeful, Twisted Metal successfully drove the community engagement that revived interest in the IC Mafia format."
+      },
+      "roster": [
+        {
+          "player": "Twisted Metal",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Zarf BeebleBrix",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Arby3",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "RisingDown",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Poley",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Undeath",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Einstein",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wild Flower Soul",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": false,
+          "death_phase": "N/A (Withdrew)"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "N/A (Withdrew)",
+          "event": "Elimination",
+          "target": "Wild Flower Soul",
+          "role": "Participant",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Withdrew) (Participant)"
+        }
+      ],
+      "notable_moments": [
+        "The petition reached 19 potential players, demonstrating strong community mobilization.",
+        "Gwynedd accurately predicted that WFS would be the GF (Godfather) and that she herself would die early, showing the community's meta-awareness.",
+        "The thread ended as a purely administrative petition; the actual game rounds never commenced due to lack of a finalized moderator schedule."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2012-08-02",
+    "eligible": false
+  },
+  {
+    "thread_id": "152032",
+    "era": "Forum",
+    "title": "IC Resistance (Mafia-like game)",
+    "moderator": "[TI] Primo",
+    "game_type": "classic",
+    "total_posts": 8,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/152032_summary.md",
+    "story_file": "stories/ineligible games/152032_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "N/A",
+        "rationale": "The game failed to progress past the signup and conceptual phase; no tactical gameplay occurred."
+      },
+      "roster": [
+        {
+          "player": "[TI] Primo",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Arby3",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Sephiroth",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "[TI] Wendy",
+          "role": "Participant",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "[TI] Primo",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "details": "Eliminated in N/A (Moderator)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Arby3",
+          "role": "Participant",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Sephiroth",
+          "role": "Participant",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "[TI] Wendy",
+          "role": "Participant",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant)"
+        }
+      ],
+      "notable_moments": [
+        "The moderator attempted to transition the community from standard Mafia to the Resistance format.",
+        "Arby3 initiated a symbolic 'lynch' against the moderator, setting a tone of player-mod friction.",
+        "Players expressed collective disdain for the instructional video, leading to a breakdown in organizational momentum.",
+        "The thread ceased activity before the inaugural mission team was selected."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2011-12-01",
+    "eligible": false
+  },
+  {
+    "thread_id": "148341",
+    "era": "Forum",
+    "title": "IC Mafia 29!",
+    "moderator": "[TI] arsbury",
+    "game_type": "classic",
+    "total_posts": 21,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/148341_summary.md",
+    "story_file": "stories/ineligible games/148341_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game was cancelled due to insufficient sign-ups before any gameplay occurred."
+      },
+      "roster": [
+        {
+          "player": "[RisingDown]",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "[TI] Primo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "[RisingDown]",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Unknown)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "[TI] Primo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Unknown)"
+        }
+      ],
+      "notable_moments": [
+        "Game cancelled by Moderator [TI] arsbury due to lack of sign-ups.",
+        "Discussion of shifting community focus from Mafia to Diplomacy or Resistance-style games."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2011-10-16",
+    "eligible": false
+  },
+  {
+    "thread_id": "139450",
+    "era": "Forum",
+    "title": "Mafia MK II - Anyone interested in a full forum version?",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 6,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/139450_summary.md",
+    "story_file": "stories/ineligible games/139450_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Torqez",
+        "rationale": "As the moderator and architect of the game, Torqez was the sole driving force behind the initiative, ultimately choosing to cancel the project due to lack of community consensus."
+      },
+      "roster": [
+        {
+          "player": "Torqez",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Elrohir",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Wild Flower Soul",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "[RPA] Arocalex",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Testudinidae",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Torqez",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "details": "Eliminated in N/A (Moderator)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Elrohir",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant/Observer)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Wild Flower Soul",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant/Observer)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "[RPA] Arocalex",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant/Observer)"
+        },
+        {
+          "phase": "N/A",
+          "event": "Elimination",
+          "target": "Testudinidae",
+          "role": "Participant/Observer",
+          "alignment": "Town",
+          "details": "Eliminated in N/A (Participant/Observer)"
+        }
+      ],
+      "notable_moments": [
+        "The game was canceled before the player roster was finalized or the game start was triggered.",
+        "Elrohir expressed concerns regarding the 'forum-only' format's impact on game balance and enjoyment.",
+        "Wild Flower Soul criticized the idea as being redundant given existing games in the community."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2011-06-21",
+    "eligible": false
+  },
+  {
+    "thread_id": "72307",
+    "era": "Forum",
+    "title": "Mafia!!",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 17,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/72307_summary.md",
+    "story_file": "stories/ineligible games/72307_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "N/A",
+        "rationale": "The game concluded due to inactivity/lack of momentum; no player impact was recorded."
+      },
+      "roster": [
+        {
+          "player": "Wild Flower Soul",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "[RPA] Arocalex",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "The game suffered from extremely low post volume (17 total posts).",
+        "The thread was abandoned by the community and the moderator before a first phase could conclude.",
+        "Wild Flower Soul attempted to initiate a role-call for returning players.",
+        "[RPA] Arocalex provided flavor-text commentary but failed to engage in active game mechanics."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-07-08",
+    "eligible": false
+  },
+  {
+    "thread_id": "123062",
+    "era": "Forum",
+    "title": "IRC Mafia",
+    "moderator": "Elrohir",
+    "game_type": "classic",
+    "total_posts": 7,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/123062_summary.md",
+    "story_file": "stories/ineligible games/123062_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Iluvatar",
+        "rationale": "Though no game-winning play occurred, Iluvatar remains the historical focal point of the thread, recognized by peers for his legacy and influence on the meta-game."
+      },
+      "roster": [
+        {
+          "player": "Iluvatar",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "None"
+        },
+        {
+          "player": "Nolio",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "None"
+        },
+        {
+          "player": "Final_Doom",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "None"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "None",
+          "event": "Elimination",
+          "target": "Iluvatar",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in None (Unknown)"
+        },
+        {
+          "phase": "None",
+          "event": "Elimination",
+          "target": "Nolio",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in None (Unknown)"
+        },
+        {
+          "phase": "None",
+          "event": "Elimination",
+          "target": "Final_Doom",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in None (Unknown)"
+        }
+      ],
+      "notable_moments": [
+        "Game thread served primarily as an alpha-test lobby for IRC-based Mafia mechanics.",
+        "The game concluded prematurely due to the moderator declaring it a work-in-progress.",
+        "Final_Doom underwent a moniker change to 'Thanks_Iluvatar' during the proceedings."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2010-11-11",
+    "eligible": false
+  },
+  {
+    "thread_id": "104205",
+    "era": "Forum",
+    "title": "Mafia 25: Going straigt to the wild wild",
+    "moderator": "Dirty Iluvatar",
+    "game_type": "classic",
+    "total_posts": 42,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/104205_summary.md",
+    "story_file": "stories/ineligible games/104205_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Pharaoh Metrex",
+        "rationale": "Kept the thread engagement alive longest by pointing out the moderator's typo, briefly distracting from the looming inactivity."
+      },
+      "roster": [
+        {
+          "player": "Lynns",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Pharaoh Metrex",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wild Flower Soul",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "AdriusAvangion",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "DarkMason",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "[TI] Primo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "The Yell",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Game failed to launch beyond the sign-up phase due to moderator inactivity.",
+        "DarkMason demonstrated total unfamiliarity with Mafia mechanics.",
+        "Lynns attempted to use email as a game communication channel, violating traditional forum-based play."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2010-04-08",
+    "eligible": false
+  },
+  {
+    "thread_id": "86305",
+    "era": "Forum",
+    "title": "mafia wars facebook who plays",
+    "moderator": "shunt",
+    "game_type": "classic",
+    "total_posts": 13,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/86305_summary.md",
+    "story_file": "stories/ineligible games/86305_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "mkb1",
+        "rationale": "Successfully derailed the moderator's recruitment objective by introducing the 'Crock Duck' defense, preventing the formation of a coherent game."
+      },
+      "roster": [
+        {
+          "player": "shunt",
+          "role": "Moderator / Recruiter",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "The Yell",
+          "role": "Dissident",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wild Flower Soul",
+          "role": "Dissident",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "mkb1",
+          "role": "Chaos Agent",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Phase 1",
+          "event": "Modkill",
+          "target": "Game Integrity",
+          "details": "The thread was overwhelmed by off-topic spam and recruitment requests, effectively ending the game logic."
+        }
+      ],
+      "notable_moments": [
+        "Introduction of the 'Crock Duck' as an existential threat to all users.",
+        "The clash between the Moderator's recruitment goal and user disdain for Mafia Wars app spam.",
+        "The complete absence of a traditional Mafia game loop, resulting in a meta-narrative collapse."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-11-19",
+    "eligible": false
+  },
+  {
+    "thread_id": "85882",
+    "era": "Forum",
+    "title": "Mafia in Review",
+    "moderator": "K",
+    "game_type": "classic",
+    "total_posts": 5,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/85882_summary.md",
+    "story_file": "stories/ineligible games/85882_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "K",
+        "rationale": "As the Moderator, K initiated the archival mission, acting as the catalyst for the entire discussion despite the lack of a formal resolution."
+      },
+      "roster": [
+        {
+          "player": "K",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Elrohir",
+          "role": "Chronicler",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "[RPA] Arocalex",
+          "role": "Archivist",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 1",
+          "event": "Save",
+          "target": "Imperial History",
+          "details": "Attempted archival of past game statistics and secret roles."
+        }
+      ],
+      "notable_moments": [
+        "Discussion regarding the location of 'Arsy's Stats' - a long-lost community artifact.",
+        "Arocalex suggested that the lack of primary source data made a full statistical review impossible.",
+        "The thread concluded without a formal game resolution, functioning as a meta-discussion rather than an active game."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-11-16",
+    "eligible": false
+  },
+  {
+    "thread_id": "82103",
+    "era": "Forum",
+    "title": "Irc Mafia",
+    "moderator": "Evil Jets",
+    "game_type": "classic",
+    "total_posts": 11,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/82103_summary.md",
+    "story_file": "stories/ineligible games/82103_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "[RPA] Arocalex",
+        "rationale": "Provided the most active engagement and attempted to drive the game forward through aggressive solicitation."
+      },
+      "roster": [
+        {
+          "player": "Listos",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Painintheass",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "evilsheep",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Wild Flower Soul",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Elrohir",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "[RPA] Arocalex",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "The game failed to progress past the recruitment phase.",
+        "Players spent the entirety of the log debating the merit and speed of IRC-based Mafia versus traditional forum-based Mafia.",
+        "Total lack of gameplay mechanics recorded."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-10-07",
+    "eligible": false
+  },
+  {
+    "thread_id": "83338",
+    "era": "Forum",
+    "title": "Mafia 22!!",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 5,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/83338_summary.md",
+    "story_file": "stories/ineligible games/83338_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "N/A",
+        "rationale": "The game failed to progress past the signup phase; no gameplay occurred to warrant an MVP."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Signups",
+          "event": "None",
+          "target": "N/A",
+          "details": "Game stalled during signup phase; no players were confirmed to have started."
+        }
+      ],
+      "notable_moments": [
+        "The game is widely recognized in the archives as a 'vaporware' project, as the signup post served as the only active communication from the moderator."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-10-19",
+    "eligible": false
+  },
+  {
+    "thread_id": "265",
+    "era": "Forum",
+    "title": "IC Mafia",
+    "moderator": "K",
+    "game_type": "classic",
+    "total_posts": 3,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/265_summary.md",
+    "story_file": "stories/ineligible games/265_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game concluded before any gameplay actions occurred."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "The game thread was opened by Moderator K but remained devoid of player activity or chronological progression.",
+        "Categorized as a 'Ghost Game' due to total lack of documentation beyond the moderator's opening post."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-03-01",
+    "eligible": false
+  },
+  {
+    "thread_id": "69663",
+    "era": "Forum",
+    "title": "bring back mafia game",
+    "moderator": "[RPA] Arocalex",
+    "game_type": "classic",
+    "total_posts": 6,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/69663_summary.md",
+    "story_file": "stories/ineligible games/69663_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game failed to reach sufficient participation levels to generate gameplay."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Day 1",
+          "event": "Modkill",
+          "target": "N/A",
+          "details": "Game failed to launch due to inactivity."
+        }
+      ],
+      "notable_moments": [
+        "The game is considered a 'Ghost Archive' as no actual mechanics were triggered beyond the moderator's opening prompt."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-06-17",
+    "eligible": false
+  },
+  {
+    "thread_id": "56839",
+    "era": "Forum",
+    "title": "IC Mafia 19!! by [TI] arsbury",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 5,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/56839_summary.md",
+    "story_file": "stories/ineligible games/56839_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game concluded due to extreme inactivity (abandoned) before any substantive gameplay, lynch, or night action could occur."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Game failed to launch due to critical player inactivity.",
+        "Thread archived with only 5 total posts.",
+        "Lack of moderator debrief indicates an unceremonious closure."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2009-03-11",
+    "eligible": false
+  },
+  {
+    "thread_id": "37954",
+    "era": "Forum",
+    "title": "IC Mafia 15!! by [TI] arsbury",
+    "moderator": "Torqez",
+    "game_type": "classic",
+    "total_posts": 3,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/37954_summary.md",
+    "story_file": "stories/ineligible games/37954_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game failed to progress past the registration phase."
+      },
+      "roster": [
+        {
+          "player": "[TI] arsbury",
+          "role": "Unknown",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 0",
+          "event": "Sign-up",
+          "target": "N/A",
+          "details": "The game thread was initiated but lacked sufficient activity to commence."
+        }
+      ],
+      "notable_moments": [
+        "The game is widely considered a 'Ghost Thread' in IC Mafia history, as the registration phase saw no further momentum.",
+        "Thread archived with only 3 posts total, indicating an immediate stagnation."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-11-04",
+    "eligible": false
+  },
+  {
+    "thread_id": "30413",
+    "era": "Forum",
+    "title": "Mafia Game!!",
+    "moderator": "Gladiator",
+    "game_type": "classic",
+    "total_posts": 4,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/30413_summary.md",
+    "story_file": "stories/ineligible games/30413_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game thread was abandoned before mechanical play commenced; no meaningful actions were taken."
+      },
+      "roster": [
+        {
+          "player": "[RPA] Arocalex",
+          "role": "Unknown",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "The Yell",
+          "role": "Unknown",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "Discussion regarding the decline of Hitchhiker's Guide style humor in the wake of Steve Jobs.",
+        "Arocalex provided a nostalgic anecdote regarding the first radio in Springfield.",
+        "Thread abandoned by the community and moderator without transitioning from the sign-up phase to gameplay."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-09-13",
+    "eligible": false
+  },
+  {
+    "thread_id": "16557",
+    "era": "Forum",
+    "title": "mafia game",
+    "moderator": "Gladiator",
+    "game_type": "classic",
+    "total_posts": 14,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/16557_summary.md",
+    "story_file": "stories/ineligible games/16557_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Gladiator",
+        "rationale": "As the moderator, his decision to halt the proceedings and call for a fresh start defined the outcome of the thread."
+      },
+      "roster": [
+        {
+          "player": "arsbury",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "~KT~",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Pre-Game",
+          "event": "Modkill",
+          "target": "The Game Itself",
+          "details": "The game failed to initialize due to a lack of active engagement and moderator deferral."
+        }
+      ],
+      "notable_moments": [
+        "The thread achieved 42 views, which the moderator noted as a 'humongous' level of interest.",
+        "A meta-game 'holiday' state prevented the commencement of standard Mafia mechanics.",
+        "The community attempted to lobby for a restart, acknowledging the hiatus of the previous meta-era."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-06-13",
+    "eligible": false
+  },
+  {
+    "thread_id": "14820",
+    "era": "Forum",
+    "title": "mafia game",
+    "moderator": "Gladiator",
+    "game_type": "classic",
+    "total_posts": 1,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/14820_summary.md",
+    "story_file": "stories/ineligible games/14820_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game failed to initiate beyond the opening post; no gameplay occurred."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "The game failed to launch due to inactivity following a prolonged community break.",
+        "Moderator Gladiator expressed confusion regarding the status of the thread."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-05-31",
+    "eligible": false
+  },
+  {
+    "thread_id": "6735",
+    "era": "Forum",
+    "title": "Mafia",
+    "moderator": "Oxygen",
+    "game_type": "classic",
+    "total_posts": 3,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/6735_summary.md",
+    "story_file": "stories/ineligible games/6735_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Iluvatar",
+        "rationale": "Through his dialogue, he successfully transitioned the thread from a failed game state into a historical record of community nostalgia, effectively 'winning' the narrative space."
+      },
+      "roster": [
+        {
+          "player": "Iluvatar",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Nolio",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Final_Doom",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Game Conclusion",
+          "event": "Overview",
+          "target": "Draw",
+          "details": "Game resolved with Draw victory condition."
+        }
+      ],
+      "notable_moments": [
+        "The game failed to launch due to moderator abandonment (Oxygen).",
+        "Players engaged in meta-commentary regarding historical players Monkeywrench and Arganon.",
+        "Player 'Final_Doom' underwent a symbolic name change to 'Thanks_Iluvatar' within the thread."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-04-02",
+    "eligible": false
+  },
+  {
+    "thread_id": "5705",
+    "era": "Forum",
+    "title": "Mafia?? :(",
+    "moderator": "Gratitude",
+    "game_type": "classic",
+    "total_posts": 6,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/5705_summary.md",
+    "story_file": "stories/ineligible games/5705_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Gratitude",
+        "rationale": "As the moderator, they held the keys to the game. Their attempt to organize despite the absence of the key figure, Arsy, was the central act of the thread."
+      },
+      "roster": [
+        {
+          "player": "Gratitude",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": "N/A"
+        },
+        {
+          "player": "Lynns",
+          "role": "Citizen",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": "N/A"
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Pre-Game",
+          "event": "Modkill",
+          "target": "N/A",
+          "details": "Game abandoned due to lack of participation and moderator uncertainty."
+        }
+      ],
+      "notable_moments": [
+        "The thread serves as a meta-commentary on the difficulty of starting games without established leadership.",
+        "A cryptic biker joke was the only piece of lore provided during the session.",
+        "The game failed to reach the threshold of required players to initiate a Night 0 or Day 1."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2008-03-26",
+    "eligible": false
+  },
+  {
+    "thread_id": "7905",
+    "era": "Discourse",
+    "title": "Mafia 420 boogaloo",
+    "moderator": "JamesISunstorm",
+    "game_type": "classic",
+    "total_posts": 15,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/7905_summary.md",
+    "story_file": "stories/ineligible games/7905_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "None",
+        "rationale": "The game failed to progress past the sign-up phase; no gameplay occurred."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Sign-ups",
+          "event": "N/A",
+          "target": "N/A",
+          "details": "Game stalled at the sign-up stage and was abandoned by the moderator."
+        }
+      ],
+      "notable_moments": [
+        "Moderator explicitly referenced Mr. Blonde's games as a benchmark for slow starts.",
+        "The thread contains only 15 posts, all concentrated on the initial sign-up process.",
+        "Complete lack of gameplay data renders the match a 'Ghost Thread'."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2020-03-27",
+    "eligible": false
+  },
+  {
+    "thread_id": "7590",
+    "era": "Discourse",
+    "title": "Mafia 86? 89? I honestly don't know",
+    "moderator": "Mrblonde",
+    "game_type": "classic",
+    "total_posts": 23,
+    "winning_faction": "Draw",
+    "summary_file": "stories/ineligible games/7590_summary.md",
+    "story_file": "stories/ineligible games/7590_story.md",
+    "box_score": {
+      "winning_faction": "Draw",
+      "inferred": true,
+      "mvp": {
+        "player": "Mrblonde",
+        "rationale": "As the moderator, he successfully gathered a few hopefuls but ultimately oversaw a project that failed to reach critical mass for initialization."
+      },
+      "roster": [
+        {
+          "player": "Zeraph",
+          "role": "Volunteer",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Mrblonde",
+          "role": "Moderator",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Pre-Game",
+          "event": "Modkill",
+          "target": "The Game Itself",
+          "details": "Lack of player registration forced a permanent cessation of development."
+        }
+      ],
+      "notable_moments": [
+        "The meta-humor of naming a game '86? 89?' indicating total administrative confusion.",
+        "The unattainable requirement of 50 players, which likely prevented the game from ever launching."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2020-01-07",
+    "eligible": false
+  },
+  {
+    "thread_id": "7063",
+    "era": "Discourse",
+    "title": "Dinner for Two? - Mafia 69",
+    "moderator": "Nai",
+    "game_type": "classic",
+    "total_posts": 28,
+    "winning_faction": "Neutral",
+    "summary_file": "stories/ineligible games/7063_summary.md",
+    "story_file": "stories/ineligible games/7063_story.md",
+    "box_score": {
+      "winning_faction": "Neutral",
+      "inferred": true,
+      "mvp": {
+        "player": "N/A",
+        "rationale": "The game failed to reach a playable state; no player activity occurred to warrant an MVP selection."
+      },
+      "roster": [],
+      "timeline": [
+        {
+          "phase": "Sign-ups",
+          "event": "Modkill",
+          "target": "Game",
+          "details": "Game failed to launch/inactivity. No roles were distributed."
+        }
+      ],
+      "notable_moments": [
+        "Game 7063 remained in the sign-up phase indefinitely.",
+        "The thread terminated at post 28 without a start signal or role distribution."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2019-09-05",
+    "eligible": false
+  },
+  {
+    "thread_id": "6204",
+    "era": "Discourse",
+    "title": "P vs C Ic mafia 2.2",
+    "moderator": "Jets",
+    "game_type": "classic",
+    "total_posts": 7,
+    "winning_faction": "Neutral",
+    "summary_file": "stories/ineligible games/6204_summary.md",
+    "story_file": "stories/ineligible games/6204_story.md",
+    "box_score": {
+      "winning_faction": "Neutral",
+      "inferred": true,
+      "mvp": {
+        "player": "Jets",
+        "rationale": "As the moderator, his role was the sole orchestrator of the game's atmosphere and the curator of the complex, 35-player roster, though the game concluded without a clear mechanical resolution."
+      },
+      "roster": [
+        {
+          "player": "HydroP",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": false,
+          "death_phase": "Unknown"
+        },
+        {
+          "player": "Goddess_of_the_Dead",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Tishxo",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Luker",
+          "role": "Unknown",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Arby3",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "TBO",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Mrblonde",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        },
+        {
+          "player": "Ordos234",
+          "role": "Unknown",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Unknown",
+          "event": "Elimination",
+          "target": "HydroP",
+          "role": "Unknown",
+          "alignment": "Town",
+          "details": "Eliminated in Unknown (Unknown)"
+        }
+      ],
+      "notable_moments": [
+        "High tension noted between MrBlonde and Ordos234, framed by the moderator as a 'mud-wrestling' grudge.",
+        "The moderator explicitly warned players that past performance (e.g., being a 'good' player) acts as a mechanical disadvantage by making players high-priority targets.",
+        "The game featured an unusually high player count of 35, making early game consensus nearly impossible."
+      ]
+    },
+    "lynch_vote_history": [],
+    "start_date": "2019-05-16",
+    "eligible": false
+  }
+]

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering Storm
+The sleepy town of Forks, Washington, became the epicenter of an ancient, supernatural war. The Cullens, a family of "vegetarian" vampires, found their peaceful existence shattered by the arrival of the Volturi—the ruling elite of the vampire world—who had come to eradicate them. But as the fog rolled into the forest, a third, darker power emerged: Blade, the daywalking hunter, who cared little for Cullen politics and sought only the extinction of all vampire-kind.
+
+### Chapter 2: First Blood
+The terror began at night. The Volturi and the hunter Blade both struck, their combined carnage claiming the life of Jacob Black, the shape-shifting protector, before the town even realized the extent of the threat. The townsfolk, gripped by hysteria and failing to identify their true enemies, turned on their own. Poley was the first to fall to the mob’s vigilante justice, beaten to death after being falsely accused of dark dealings.
+
+### Chapter 3: Web of Deceit
+As the days bled into night, the body count soared. The Volturi’s enforcer, Jane, struck down KT, but the hunter Blade proved his superiority by engaging Jane in a brutal, bone-snapping duel that left the witch decapitated. However, the Cullens were not spared; Felix, the relentless Volturi survivor, tore Alice Cullen limb from limb in a forest ambush. Meanwhile, the town, spiraling into bloodlust, burned the house of Undeath and Flint to the ground, killing two more innocent souls who had the misfortune of being in the wrong place at the wrong time.
+
+### Chapter 4: The Final Stand
+The carnage was relentless. Blade continued his systematic eradication, dispatching EvilRunt and eventually catching Edward Cullen, whose centuries of life ended at the edge of the hunter’s blades. The town, now a graveyard of both humans and immortals, finally turned on Alec of the Volturi, burning his remains in a restaurant smoker. With the vampire coven decimated by both the hunter and the townsfolk, and the town itself reduced to ashes and sorrow, the Moderator declared the slaughter finished. Few remained, and no one truly stood tall amidst the wreckage of Forks.

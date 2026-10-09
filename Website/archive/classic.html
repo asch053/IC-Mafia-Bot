@@ -66,8 +66,12 @@
         </div>
 
         <div class="card">
-            <h2>📈 Mafia History</h2>
-            <div style="height: 300px;"><canvas id="trendChart"></canvas></div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+                <h2 style="margin: 0;">📈 Mafia History & Era Evolution</h2>
+                <div style="color: var(--muted); font-size: 0.85em;">Cumulative win rates across all 202 games • Vertical dashed lines separate historical eras</div>
+            </div>
+            <div id="meta-era-bar" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 10px; margin-bottom: 15px;"></div>
+            <div style="height: 330px; position: relative;"><canvas id="trendChart"></canvas></div>
         </div>
 
         <div class="split-grid">
@@ -104,6 +108,99 @@
         google.script.run.withSuccessHandler(render).getDashboardData('classic');
     };
 
+    const eraDividersPlugin = {
+        id: 'eraDividers',
+        afterDraw(chart, args, options) {
+            const { ctx, chartArea, scales } = chart;
+            if (!chartArea || !scales || !scales.x) return;
+            const { top, bottom, left, right } = chartArea;
+            const x = scales.x;
+            const dividers = (options && options.dividers) || [];
+            if (!dividers.length) return;
+
+            const totalPoints = chart.data.labels.length;
+            ctx.save();
+
+            dividers.forEach((div) => {
+                if (div.startIndex > 0 && div.startIndex < totalPoints) {
+                    const prevX = x.getPixelForValue(div.startIndex - 1);
+                    const curX = x.getPixelForValue(div.startIndex);
+                    const lineX = (prevX + curX) / 2;
+
+                    if (lineX >= left && lineX <= right) {
+                        ctx.beginPath();
+                        ctx.setLineDash([5, 5]);
+                        ctx.strokeStyle = div.color || 'rgba(255, 255, 255, 0.45)';
+                        ctx.lineWidth = 1.5;
+                        ctx.moveTo(lineX, top);
+                        ctx.lineTo(lineX, bottom);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                }
+
+                const startPix = div.startIndex === 0 ? left : (x.getPixelForValue(div.startIndex - 1) + x.getPixelForValue(div.startIndex)) / 2;
+                const endPix = div.endIndex >= totalPoints - 1 ? right : (x.getPixelForValue(div.endIndex) + x.getPixelForValue(div.endIndex + 1)) / 2;
+                const centerPix = (startPix + endPix) / 2;
+
+                if (centerPix >= left && centerPix <= right) {
+                    const widthSpan = endPix - startPix;
+                    const displayText = widthSpan < 110 ? div.label.replace(' Era', '') : `${div.label} (${div.count})`;
+
+                    ctx.font = 'bold 11px sans-serif';
+                    const textW = ctx.measureText(displayText).width;
+                    const padX = 7;
+                    const badgeW = textW + (padX * 2);
+                    const badgeH = 19;
+                    const badgeX = Math.max(left + 2, Math.min(right - badgeW - 2, centerPix - (badgeW / 2)));
+                    const badgeY = top + 8;
+
+                    ctx.fillStyle = 'rgba(20, 20, 26, 0.85)';
+                    ctx.beginPath();
+                    if (ctx.roundRect) {
+                        ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 4);
+                    } else {
+                        ctx.rect(badgeX, badgeY, badgeW, badgeH);
+                    }
+                    ctx.fill();
+
+                    ctx.strokeStyle = div.color || '#888';
+                    ctx.lineWidth = 1;
+                    ctx.stroke();
+
+                    ctx.fillStyle = div.color || '#fff';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(displayText, badgeX + (badgeW / 2), badgeY + (badgeH / 2));
+                }
+            });
+
+            ctx.restore();
+        }
+    };
+
+    function renderMetaEraBar(dividers) {
+        const bar = document.getElementById('meta-era-bar');
+        if (!bar || !dividers || !dividers.length) return;
+        bar.innerHTML = dividers.map(d => {
+            const s = d.stats || {};
+            return `
+                <div style="background: rgba(255,255,255,0.03); border: 1px solid #333; border-top: 3px solid ${d.color}; border-radius: 6px; padding: 8px 12px; font-size: 0.82em;">
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 3px;">
+                        <strong style="color: ${d.color}; font-size: 1.05em;">${d.label}</strong>
+                        <span style="color: #888; font-size: 0.85em;">${d.years}</span>
+                    </div>
+                    <div style="color: #ddd; margin-bottom: 5px; font-weight: bold;">${d.count} Games (Games ${d.startIndex + 1}–${d.endIndex + 1})</div>
+                    <div style="display: flex; gap: 8px; font-size: 0.88em; flex-wrap: wrap;">
+                        <span style="color: var(--blue);" title="Town Wins: ${s.townWins||0}">Town: <strong>${s.townPct||0}%</strong></span>
+                        <span style="color: var(--red);" title="Mafia Wins: ${s.mafiaWins||0}">Mafia: <strong>${s.mafiaPct||0}%</strong></span>
+                        <span style="color: var(--gold);" title="Neutral/SK Wins: ${s.neutralWins||0}">SK/Neut: <strong>${s.neutralPct||0}%</strong></span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
     function render(data) {
         document.getElementById('loader').style.display = 'none';
         document.getElementById('app').style.display = 'block';
@@ -117,18 +214,44 @@
         document.getElementById('c-draw').innerText = s.Draw + s.Neutral;
         document.getElementById('c-draw-pct').innerText = s.Total ? (((s.Draw+s.Neutral)/s.Total)*100).toFixed(1)+"%" : "0%";
 
+        renderMetaEraBar(data.eraDividers);
+
         new Chart(document.getElementById('trendChart'), {
             type: 'line',
+            plugins: [eraDividersPlugin],
             data: {
                 labels: data.trend.map(d=>d.date),
                 datasets: [
-                    {label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true},
-                    {label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true},
-                    {label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true},
-                    {label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true}
+                    {label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true,pointRadius:data.trend.length>50?0:2,pointHoverRadius:4},
+                    {label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true,pointRadius:data.trend.length>50?0:2,pointHoverRadius:4},
+                    {label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true,pointRadius:data.trend.length>50?0:2,pointHoverRadius:4},
+                    {label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true,pointRadius:data.trend.length>50?0:2,pointHoverRadius:4}
                 ]
             },
-            options: { responsive: true, maintainAspectRatio: false, scales: { y: { stacked: true, max: 100 }, x: { display: false } } }
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: {mode:'index',intersect:false},
+                scales: {
+                    y: { stacked: true, max: 100, ticks: { callback: v => v + '%', color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+                    x: { display: true, ticks: { maxTicksLimit: 10, color: '#888' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+                },
+                plugins: {
+                    eraDividers: {
+                        dividers: data.eraDividers || []
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: items => {
+                                if(!items.length) return '';
+                                const idx = items[0].dataIndex;
+                                return (data.trend[idx] && data.trend[idx].label) ? data.trend[idx].label : items[0].label;
+                            },
+                            label: item => ` ${item.dataset.label}: ${item.raw}%`
+                        }
+                    }
+                }
+            }
         });
 
         const skillList = [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore));

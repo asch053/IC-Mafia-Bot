@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at the Boar’s Nest
+The peace of Hazzard County was shattered not by the roar of the General Lee’s engine, but by the creeping shadow of Boss Hogg. Returning to town with a thirst for control, the nefarious mastermind set his sights on supplanting the Duke family. Tension hung thick in the air at the Boar’s Nest. When the sun rose on the first morning, the town was horrified to find Daisy Duke—the heart and soul of the community—murdered. In a desperate, misguided fervor, the town turned their suspicion upon EvilRunt. Ignoring pleas of innocence, the residents hoisted him to the gallows, snaping his neck in a chilling display of vigilante justice.
+
+### Chapter 2: Web of Deceit
+As the days bled into one another, Hazzard became a landscape of paranoia. The town’s protectors, Bo and Luke Duke, found themselves paralyzed by the infighting. Nolio, blinded by a vengeful rage against TBO, stumbled into a trap of his own making, only to be struck down with a 4x4. The town’s bloodlust grew insatiable; they lynched Genesis, only to watch in horror as he died an innocent man. The cycle of tragedy continued as the residents cast Ramza from the rooftops, a brutal execution for a man who claimed to be one of their own.
+
+### Chapter 3: The Burning of the Serial Killer
+The identity of the terror stalks the backroads became clear when the mask of Uncle Jessie slipped. It was KT, who had been running down innocent residents with cold, calculated precision. Realizing they had been played, the town mobilized one last time. They captured KT, smeared her in tar, and set her ablaze in the dusty streets. It was a gruesome end to a chaotic reign of terror, but the shadow of Boss Hogg remained.
+
+### Chapter 4: The Final Stand
+With the Serial Killer gone, the surviving residents narrowed their sights on the true enemy. Luke Duke, emboldened by the narrowing path to justice, finally cornered the elusive Deputy Enus Strake. Gunfire erupted, and Star99—the man behind the badge—fell facedown in the dirt. However, as the dust settled, the silence of Hazzard spoke volumes. The town was decimated, its ranks thinned by the treachery of the Mafia and the cruelty of the Serial Killer. Boss Hogg remained at large, his influence still poisoning the county, leaving the survivors to reckon with a fractured, broken home.
