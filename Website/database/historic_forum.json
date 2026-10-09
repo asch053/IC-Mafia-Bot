@@ -6197,10 +6197,10 @@
     "story_file": "stories/142153_story.md",
     "box_score": {
       "winning_faction": "Mafia",
-      "inferred": true,
+      "inferred": false,
       "mvp": {
         "player": "Ps",
-        "rationale": "Though ultimately failing to secure the town's survival, Ps was the most active participant in attempting to organize defense mechanisms and role-based tactics, drawing significant heat and focus throughout the game."
+        "rationale": "Orchestrated the Usurper faction's endgame strategy and led the Mafia to a decisive victory over the Kingdom of Anzio."
       },
       "roster": [
         {
@@ -6208,99 +6208,200 @@
           "role": "Usurper",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 2",
+          "death_cause": "Lynched"
         },
         {
           "player": "Arby3",
           "role": "Usurper",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Foreign Assassin"
         },
         {
           "player": "Arnor",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Usurpers"
+        },
+        {
+          "player": "Ben",
+          "role": "Usurper",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Destroyyoutoo",
+          "role": "Queen",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Elrohir",
+          "role": "Usurper",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "fette",
+          "role": "Knight",
+          "alignment": "Town",
+          "survived": false,
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Foreign Assassin"
+        },
+        {
+          "player": "GeneralSkulls",
+          "role": "Knight",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Genesis",
-          "role": "Barber Surgeon",
+          "role": "Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Usurpers"
+        },
+        {
+          "player": "Gwynedd",
+          "role": "Knight",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "HappyJedi",
           "role": "King",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Foreign Assassin"
+        },
+        {
+          "player": "KT",
+          "role": "Usurper",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Lexuzis",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Usurpers"
         },
         {
           "player": "Melvin",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 3",
+          "death_cause": "Lynched"
         },
         {
           "player": "Neptunes",
           "role": "Usurper",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Foreign Assassin"
         },
         {
           "player": "Nolio",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
         },
         {
           "player": "Oxygen",
           "role": "King's Bodyguard",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Usurpers"
+        },
+        {
+          "player": "Ps",
+          "role": "Usurper",
+          "alignment": "Mafia",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "RisingDown",
+          "role": "Knight",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "The Yell",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 4",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Walking_Corpse",
+          "role": "Foreign Assassin",
+          "alignment": "Neutral",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Wendy",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Foreign Assassin"
+        },
+        {
+          "player": "You_Fool",
+          "role": "Knight",
+          "alignment": "Town",
+          "survived": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Zarf BeebleBrix",
           "role": "Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Usurpers"
         }
       ],
       "timeline": [
         {
           "phase": "Day 1",
           "event": "Lynch",
-          "target": "Arandur",
-          "details": "The town misidentified Arandur as the primary threat."
+          "target": "Nolio",
+          "details": "The court lynched Nolio."
         },
         {
           "phase": "Night 1",
@@ -6311,20 +6412,80 @@
         {
           "phase": "Night 1",
           "event": "Kill",
+          "target": "Arnor",
+          "details": "The Usurpers eliminated Arnor."
+        },
+        {
+          "phase": "Night 1",
+          "event": "Kill",
+          "target": "fette",
+          "details": "The Foreign Assassin eliminated fette."
+        },
+        {
+          "phase": "Night 1",
+          "event": "Kill",
           "target": "HappyJedi",
-          "details": "The Usurpers assassinated the King."
+          "details": "The Foreign Assassin assassinated King HappyJedi."
         },
         {
           "phase": "Day 2",
           "event": "Lynch",
+          "target": "Arandur",
+          "details": "The court lynched Usurper Arandur."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Genesis",
+          "details": "The Usurpers eliminated Barber Surgeon Genesis."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Lexuzis",
+          "details": "The Usurpers eliminated Lexuzis."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Neptunes",
+          "details": "The Foreign Assassin eliminated Usurper Neptunes."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Oxygen",
+          "details": "The Usurpers assassinated King's Bodyguard Oxygen."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Wendy",
+          "details": "The Foreign Assassin eliminated Wendy."
+        },
+        {
+          "phase": "Night 2",
+          "event": "Kill",
+          "target": "Zarf BeebleBrix",
+          "details": "The Usurpers eliminated Zarf BeebleBrix."
+        },
+        {
+          "phase": "Day 3",
+          "event": "Lynch",
           "target": "Melvin",
-          "details": "High tension and conflicting accusations led to the lynch of Melvin."
+          "details": "The court lynched Melvin."
+        },
+        {
+          "phase": "Day 4",
+          "event": "Lynch",
+          "target": "The Yell",
+          "details": "The court lynched The Yell."
         }
       ],
       "notable_moments": [
         "The creation of the 'King Pro Tempore' role, a purely social construction by player Ps that became a major point of contention.",
-        "Oxygen accidentally/purposely attempted to out the Queen ('Ps') early in the thread.",
-        "The meta-game discussion regarding FailCup standings and previous moderator reputations influencing trust levels."
+        "Oxygen attempted to out the Queen early in the thread.",
+        "Usurpers successfully attained numerical dominance, securing a decisive victory for the Mafia faction."
       ]
     },
     "lynch_vote_history": [],

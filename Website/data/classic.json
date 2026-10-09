@@ -1870,6 +1870,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "Ps",
+            "skillScore": 4.43,
+            "p_score": 3.9,
+            "e_score": 5.0,
+            "u_score": 4.4,
+            "games": 5,
+            "winRate": 60.0,
+            "survRate": 100.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
             "name": "evilsheep_Naked",
             "skillScore": 4.43,
             "p_score": 4.4,
@@ -1902,18 +1914,6 @@
             "games": 1,
             "winRate": 100.0,
             "survRate": 0.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
-            "name": "Neptunes",
-            "skillScore": 4.33,
-            "p_score": 4.4,
-            "e_score": 3.6,
-            "u_score": 5.0,
-            "games": 2,
-            "winRate": 100.0,
-            "survRate": 50.0,
             "n1Deaths": 0,
             "d1Lynches": 0
         },
@@ -2038,6 +2038,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "Neptunes",
+            "skillScore": 3.73,
+            "p_score": 4.4,
+            "e_score": 1.8,
+            "u_score": 5.0,
+            "games": 2,
+            "winRate": 100.0,
+            "survRate": 50.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
             "name": "Kratom",
             "skillScore": 3.7,
             "p_score": 3.8,
@@ -2047,18 +2059,6 @@
             "winRate": 88.9,
             "survRate": 33.3,
             "n1Deaths": 1,
-            "d1Lynches": 0
-        },
-        {
-            "name": "Ps",
-            "skillScore": 3.7,
-            "p_score": 3.6,
-            "e_score": 5.0,
-            "u_score": 2.5,
-            "games": 4,
-            "winRate": 50.0,
-            "survRate": 100.0,
-            "n1Deaths": 0,
             "d1Lynches": 0
         },
         {
@@ -2098,6 +2098,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "Ben",
+            "skillScore": 3.63,
+            "p_score": 3.9,
+            "e_score": 2.6,
+            "u_score": 4.4,
+            "games": 3,
+            "winRate": 66.7,
+            "survRate": 66.7,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
             "name": "Star99",
             "skillScore": 3.6,
             "p_score": 3.2,
@@ -2108,18 +2120,6 @@
             "survRate": 50.0,
             "n1Deaths": 0,
             "d1Lynches": 0
-        },
-        {
-            "name": "Arandur",
-            "skillScore": 3.57,
-            "p_score": 3.8,
-            "e_score": 3.0,
-            "u_score": 3.9,
-            "games": 3,
-            "winRate": 66.7,
-            "survRate": 66.7,
-            "n1Deaths": 0,
-            "d1Lynches": 1
         },
         {
             "name": "Bussa Cap",
@@ -2290,18 +2290,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "Walking Corpse",
-            "skillScore": 3.17,
-            "p_score": 2.4,
-            "e_score": 2.8,
-            "u_score": 4.3,
-            "games": 10,
-            "winRate": 40.0,
-            "survRate": 10.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
             "name": "Sunstorm",
             "skillScore": 3.17,
             "p_score": 3.3,
@@ -2420,6 +2408,18 @@
             "survRate": 0.0,
             "n1Deaths": 0,
             "d1Lynches": 1
+        },
+        {
+            "name": "Elrohir",
+            "skillScore": 3.03,
+            "p_score": 2.9,
+            "e_score": 1.8,
+            "u_score": 4.4,
+            "games": 12,
+            "winRate": 33.3,
+            "survRate": 33.3,
+            "n1Deaths": 2,
+            "d1Lynches": 0
         },
         {
             "name": "EDN",
@@ -2602,10 +2602,22 @@
             "d1Lynches": 2
         },
         {
-            "name": "Oxygen",
+            "name": "Arandur",
             "skillScore": 2.9,
             "p_score": 2.9,
-            "e_score": 1.5,
+            "e_score": 1.9,
+            "u_score": 3.9,
+            "games": 3,
+            "winRate": 66.7,
+            "survRate": 66.7,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
+            "name": "Oxygen",
+            "skillScore": 2.87,
+            "p_score": 2.9,
+            "e_score": 1.4,
             "u_score": 4.3,
             "games": 16,
             "winRate": 37.5,
@@ -2646,6 +2658,18 @@
             "games": 8,
             "winRate": 37.5,
             "survRate": 25.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
+            "name": "Destroyyoutoo",
+            "skillScore": 2.8,
+            "p_score": 2.6,
+            "e_score": 3.9,
+            "u_score": 1.9,
+            "games": 5,
+            "winRate": 20.0,
+            "survRate": 20.0,
             "n1Deaths": 0,
             "d1Lynches": 0
         },
@@ -2843,8 +2867,8 @@
         },
         {
             "name": "Melvin85",
-            "skillScore": 2.53,
-            "p_score": 2.9,
+            "skillScore": 2.57,
+            "p_score": 3.0,
             "e_score": 1.7,
             "u_score": 3.0,
             "games": 24,
@@ -2900,18 +2924,6 @@
             "survRate": 0.0,
             "n1Deaths": 0,
             "d1Lynches": 1
-        },
-        {
-            "name": "Zarf_Beeblebrix",
-            "skillScore": 2.5,
-            "p_score": 2.7,
-            "e_score": 4.6,
-            "u_score": 0.2,
-            "games": 5,
-            "winRate": 20.0,
-            "survRate": 40.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
         },
         {
             "name": "Dangerous",
@@ -3214,18 +3226,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "Ben",
-            "skillScore": 2.47,
-            "p_score": 3.4,
-            "e_score": 1.5,
-            "u_score": 2.5,
-            "games": 2,
-            "winRate": 50.0,
-            "survRate": 50.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
             "name": "Rivan",
             "skillScore": 2.43,
             "p_score": 3.6,
@@ -3234,6 +3234,18 @@
             "games": 2,
             "winRate": 50.0,
             "survRate": 50.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
+            "name": "Walking Corpse",
+            "skillScore": 2.4,
+            "p_score": 2.4,
+            "e_score": 2.9,
+            "u_score": 1.9,
+            "games": 11,
+            "winRate": 36.4,
+            "survRate": 18.2,
             "n1Deaths": 0,
             "d1Lynches": 0
         },
@@ -3322,6 +3334,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "Zarf_Beeblebrix",
+            "skillScore": 2.3,
+            "p_score": 2.7,
+            "e_score": 4.0,
+            "u_score": 0.2,
+            "games": 5,
+            "winRate": 20.0,
+            "survRate": 40.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
+        },
+        {
             "name": "Admetus",
             "skillScore": 2.3,
             "p_score": 1.5,
@@ -3358,16 +3382,16 @@
             "d1Lynches": 1
         },
         {
-            "name": "Arnor",
-            "skillScore": 2.2,
-            "p_score": 2.4,
-            "e_score": 1.1,
-            "u_score": 3.1,
-            "games": 11,
-            "winRate": 18.2,
-            "survRate": 0.0,
-            "n1Deaths": 3,
-            "d1Lynches": 3
+            "name": "The Yell",
+            "skillScore": 2.23,
+            "p_score": 2.5,
+            "e_score": 4.2,
+            "u_score": 0.0,
+            "games": 5,
+            "winRate": 0.0,
+            "survRate": 80.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
         },
         {
             "name": "iluvatar",
@@ -3382,16 +3406,16 @@
             "d1Lynches": 1
         },
         {
-            "name": "The Yell",
+            "name": "Arnor",
             "skillScore": 2.17,
             "p_score": 2.4,
-            "e_score": 4.1,
-            "u_score": 0.0,
-            "games": 5,
-            "winRate": 0.0,
-            "survRate": 80.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
+            "e_score": 1.0,
+            "u_score": 3.1,
+            "games": 11,
+            "winRate": 18.2,
+            "survRate": 0.0,
+            "n1Deaths": 3,
+            "d1Lynches": 3
         },
         {
             "name": "Metrex",
@@ -3415,18 +3439,6 @@
             "winRate": 30.0,
             "survRate": 30.0,
             "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
-            "name": "Lexuzis",
-            "skillScore": 2.13,
-            "p_score": 2.4,
-            "e_score": 3.1,
-            "u_score": 0.9,
-            "games": 9,
-            "winRate": 11.1,
-            "survRate": 22.2,
-            "n1Deaths": 2,
             "d1Lynches": 0
         },
         {
@@ -3502,6 +3514,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "Panda",
+            "skillScore": 2.1,
+            "p_score": 2.5,
+            "e_score": 2.1,
+            "u_score": 1.7,
+            "games": 80,
+            "winRate": 28.7,
+            "survRate": 25.0,
+            "n1Deaths": 13,
+            "d1Lynches": 7
+        },
+        {
             "name": "The_Unknown",
             "skillScore": 2.1,
             "p_score": 2.3,
@@ -3550,18 +3574,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "Panda",
-            "skillScore": 2.07,
-            "p_score": 2.5,
-            "e_score": 2.0,
-            "u_score": 1.7,
-            "games": 79,
-            "winRate": 29.1,
-            "survRate": 24.1,
-            "n1Deaths": 13,
-            "d1Lynches": 7
-        },
-        {
             "name": "Shadowwolfs",
             "skillScore": 2.07,
             "p_score": 2.7,
@@ -3598,18 +3610,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "Wendy",
-            "skillScore": 2.03,
-            "p_score": 2.5,
-            "e_score": 1.7,
-            "u_score": 1.9,
-            "games": 16,
-            "winRate": 18.8,
-            "survRate": 18.8,
-            "n1Deaths": 1,
-            "d1Lynches": 1
-        },
-        {
             "name": "Gavin",
             "skillScore": 2.03,
             "p_score": 2.0,
@@ -3632,6 +3632,18 @@
             "survRate": 17.0,
             "n1Deaths": 14,
             "d1Lynches": 3
+        },
+        {
+            "name": "Wendy",
+            "skillScore": 2.0,
+            "p_score": 2.5,
+            "e_score": 1.6,
+            "u_score": 1.9,
+            "games": 16,
+            "winRate": 18.8,
+            "survRate": 18.8,
+            "n1Deaths": 1,
+            "d1Lynches": 1
         },
         {
             "name": "Aries1986",
@@ -3658,14 +3670,14 @@
             "d1Lynches": 3
         },
         {
-            "name": "Elrohir",
+            "name": "Lexuzis",
             "skillScore": 1.97,
-            "p_score": 2.7,
-            "e_score": 1.1,
-            "u_score": 2.1,
-            "games": 11,
-            "winRate": 27.3,
-            "survRate": 27.3,
+            "p_score": 2.4,
+            "e_score": 2.6,
+            "u_score": 0.9,
+            "games": 9,
+            "winRate": 11.1,
+            "survRate": 22.2,
             "n1Deaths": 2,
             "d1Lynches": 0
         },
@@ -3814,6 +3826,18 @@
             "d1Lynches": 3
         },
         {
+            "name": "KT",
+            "skillScore": 1.9,
+            "p_score": 2.9,
+            "e_score": 1.3,
+            "u_score": 1.5,
+            "games": 30,
+            "winRate": 36.7,
+            "survRate": 30.0,
+            "n1Deaths": 2,
+            "d1Lynches": 1
+        },
+        {
             "name": "Gamzee",
             "skillScore": 1.9,
             "p_score": 2.2,
@@ -3910,6 +3934,18 @@
             "d1Lynches": 0
         },
         {
+            "name": "You_Fool",
+            "skillScore": 1.83,
+            "p_score": 2.1,
+            "e_score": 2.4,
+            "u_score": 1.0,
+            "games": 103,
+            "winRate": 23.3,
+            "survRate": 19.4,
+            "n1Deaths": 10,
+            "d1Lynches": 15
+        },
+        {
             "name": "ordos234",
             "skillScore": 1.83,
             "p_score": 2.1,
@@ -3982,30 +4018,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "You_Fool",
-            "skillScore": 1.8,
-            "p_score": 2.1,
-            "e_score": 2.3,
-            "u_score": 1.0,
-            "games": 102,
-            "winRate": 23.5,
-            "survRate": 18.6,
-            "n1Deaths": 10,
-            "d1Lynches": 15
-        },
-        {
-            "name": "KT",
-            "skillScore": 1.8,
-            "p_score": 2.8,
-            "e_score": 1.2,
-            "u_score": 1.4,
-            "games": 29,
-            "winRate": 34.5,
-            "survRate": 27.6,
-            "n1Deaths": 2,
-            "d1Lynches": 1
-        },
-        {
             "name": "Thirdrock",
             "skillScore": 1.8,
             "p_score": 2.6,
@@ -4054,18 +4066,6 @@
             "d1Lynches": 1
         },
         {
-            "name": "Destroyyoutoo",
-            "skillScore": 1.8,
-            "p_score": 2.0,
-            "e_score": 3.4,
-            "u_score": 0.0,
-            "games": 4,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
             "name": "Killas",
             "skillScore": 1.8,
             "p_score": 2.0,
@@ -4102,18 +4102,6 @@
             "d1Lynches": 0
         },
         {
-            "name": "Arby3",
-            "skillScore": 1.77,
-            "p_score": 2.0,
-            "e_score": 2.0,
-            "u_score": 1.3,
-            "games": 99,
-            "winRate": 29.3,
-            "survRate": 17.2,
-            "n1Deaths": 19,
-            "d1Lynches": 9
-        },
-        {
             "name": "Nolio",
             "skillScore": 1.77,
             "p_score": 2.4,
@@ -4123,7 +4111,7 @@
             "winRate": 24.4,
             "survRate": 17.8,
             "n1Deaths": 2,
-            "d1Lynches": 7
+            "d1Lynches": 8
         },
         {
             "name": "Hans Gruber",
@@ -4136,6 +4124,18 @@
             "survRate": 0.0,
             "n1Deaths": 0,
             "d1Lynches": 0
+        },
+        {
+            "name": "Arby3",
+            "skillScore": 1.73,
+            "p_score": 2.0,
+            "e_score": 1.9,
+            "u_score": 1.3,
+            "games": 99,
+            "winRate": 29.3,
+            "survRate": 17.2,
+            "n1Deaths": 19,
+            "d1Lynches": 9
         },
         {
             "name": "Soul",
@@ -4196,6 +4196,18 @@
             "survRate": 28.6,
             "n1Deaths": 1,
             "d1Lynches": 1
+        },
+        {
+            "name": "GeneralSkulls",
+            "skillScore": 1.7,
+            "p_score": 2.1,
+            "e_score": 3.0,
+            "u_score": 0.0,
+            "games": 5,
+            "winRate": 0.0,
+            "survRate": 20.0,
+            "n1Deaths": 0,
+            "d1Lynches": 0
         },
         {
             "name": "Nai",
@@ -4534,6 +4546,18 @@
             "d1Lynches": 17
         },
         {
+            "name": "RisingDown",
+            "skillScore": 1.37,
+            "p_score": 2.3,
+            "e_score": 1.5,
+            "u_score": 0.3,
+            "games": 16,
+            "winRate": 12.5,
+            "survRate": 18.8,
+            "n1Deaths": 3,
+            "d1Lynches": 0
+        },
+        {
             "name": "gnaphalta",
             "skillScore": 1.37,
             "p_score": 1.2,
@@ -4580,18 +4604,6 @@
             "survRate": 14.7,
             "n1Deaths": 2,
             "d1Lynches": 4
-        },
-        {
-            "name": "RisingDown",
-            "skillScore": 1.3,
-            "p_score": 2.3,
-            "e_score": 1.3,
-            "u_score": 0.3,
-            "games": 15,
-            "winRate": 13.3,
-            "survRate": 13.3,
-            "n1Deaths": 3,
-            "d1Lynches": 0
         },
         {
             "name": "Proventius Avenicci",
@@ -5122,18 +5134,6 @@
             "d1Lynches": 2
         },
         {
-            "name": "GeneralSkulls",
-            "skillScore": 0.73,
-            "p_score": 2.0,
-            "e_score": 0.2,
-            "u_score": 0.0,
-            "games": 4,
-            "winRate": 0.0,
-            "survRate": 0.0,
-            "n1Deaths": 0,
-            "d1Lynches": 0
-        },
-        {
             "name": "Deci",
             "skillScore": 0.73,
             "p_score": 2.0,
@@ -5219,6 +5219,18 @@
         },
         {
             "name": "Rchi",
+            "skillScore": 0.67,
+            "p_score": 2.0,
+            "e_score": 0.0,
+            "u_score": 0.0,
+            "games": 1,
+            "winRate": 0.0,
+            "survRate": 0.0,
+            "n1Deaths": 1,
+            "d1Lynches": 0
+        },
+        {
+            "name": "fette",
             "skillScore": 0.67,
             "p_score": 2.0,
             "e_score": 0.0,
