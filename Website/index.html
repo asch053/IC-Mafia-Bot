@@ -9,6 +9,7 @@
     <script src="js/api.js?v=2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
     <style>
         :root {
             --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575;
@@ -531,6 +532,16 @@
 </div>
 
 <script>
+    function escStr(s) { return encodeURIComponent(s || ''); }
+    function safeMarkdown(md) {
+        if (typeof marked === 'undefined') return md || '';
+        const parsed = marked.parse(md || '');
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(parsed);
+        }
+        return parsed;
+    }
+
     let trendChart, brChart;
     let currentClassicData = null, currentClassicEra = 'all', currentClassicChartMode = 'line';
     let recordsData = []; // Holds the fetched Apps Script data for the Hall of Records
@@ -736,7 +747,7 @@
 
             tr.innerHTML = `
                 <td class="rank-col">${rankDisplay}</td>
-                <td><a href="javascript:void(0)" onclick="openPlayerDossier('${player["Player Name"]}')" style="color:white; font-size: 1.1em; text-decoration: none; border-bottom: 1px dotted #ccc;"><strong>${player["Player Name"]}</strong></a> <br><small style="color:var(--muted);">${player["Games Played"]} ${eraSub}</small></td>
+                <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(player["Player Name"])}'))" style="color:white; font-size: 1.1em; text-decoration: none; border-bottom: 1px dotted #ccc;"><strong>${player["Player Name"]}</strong></a> <br><small style="color:var(--muted);">${player["Games Played"]} ${eraSub}</small></td>
                 <td style="font-weight: bold; font-size: 1.1em; color: var(--blue);">${displayValue}</td>
             `;
             tbody.appendChild(tr);
@@ -1020,7 +1031,7 @@
             let c = parseFloat(p.skillScore) >= 4 ? 'var(--gold)' : (parseFloat(p.skillScore) >= 2.5 ? 'var(--green)' : 'var(--muted)');
             sb.innerHTML += `<tr>
                 <td style="color:#666">${i+1}</td>
-                <td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a> <br><small style="color:var(--muted);">${p.games} games</small></td>
+                <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a> <br><small style="color:var(--muted);">${p.games} games</small></td>
                 <td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td>
                 <td>
                     <span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)" title="Persuasion (P): ${p.p_score}">P: ${p.p_score}</span>
@@ -1072,7 +1083,7 @@
                 let d1 = (p.d1Lynches !== undefined && p.d1Lynches !== null) ? p.d1Lynches : 0;
                 stb.innerHTML+=`<tr>
                     <td style="color:#666">${i+1}</td>
-                    <td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td>
+                    <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td>
                     <td>${p.games}</td>
                     <td>${p.winRate}%</td>
                     <td>${p.survRate !== undefined ? p.survRate + '%' : '-'}</td>
@@ -1092,12 +1103,42 @@
             const bb = document.getElementById('brBody'); bb.innerHTML='';
             data.leaderboard.forEach((p,i)=>{
                 let w=p.wins>0?`<span class="win-badge">🏆 ${p.wins}</span>`:'-';
-                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
             });
         }
     }
 
-    function filter(tid,cidx){const trs=document.getElementById(tid).tBodies[0].rows;const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();for(let tr of trs){let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');let show=true;if(val.startsWith('>')){if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;}else if(val.startsWith('<')){if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;}else{if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;}tr.style.display=show?'':'none';}}
+    function updateRanks(tid) {
+        if (tid === 'skillTable' || tid === 'statsTable' || tid === 'recordsTable') {
+            const tb = document.getElementById(tid)?.tBodies[0];
+            if (!tb) return;
+            let rank = 1;
+            for (let r of tb.rows) {
+                if (r.style.display !== 'none' && r.cells.length > 0) {
+                    r.cells[0].textContent = rank++;
+                }
+            }
+        }
+    }
+
+    function filter(tid,cidx){
+        const trs=document.getElementById(tid).tBodies[0].rows;
+        const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();
+        for(let tr of trs){
+            let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');
+            let show=true;
+            if(val.startsWith('>')){
+                if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;
+            }else if(val.startsWith('<')){
+                if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;
+            }else{
+                if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;
+            }
+            tr.style.display=show?'':'none';
+        }
+        updateRanks(tid);
+    }
+
     function sort(tid, n) {
         const tb = document.getElementById(tid).tBodies[0];
         let rows = Array.from(tb.rows);
@@ -1128,12 +1169,8 @@
             return (asc ? 1 : -1) * x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' });
         });
         tb.setAttribute(attrKey, !asc);
-        rows.forEach((r, idx) => {
-            if (tid === 'skillTable' || tid === 'statsTable') {
-                r.cells[0].textContent = idx + 1;
-            }
-            tb.appendChild(r);
-        });
+        rows.forEach(r => tb.appendChild(r));
+        updateRanks(tid);
     }
 
     function filterExact(tid, cidx, val) {
@@ -1153,6 +1190,7 @@
             }
             tr.style.display = show ? '' : 'none';
         }
+        updateRanks(tid);
     }
 
     function setArchiveEra(era) {
@@ -1386,7 +1424,7 @@
         }
 
         const chronicle = game.narrative_chronicle || "*No narrative chronicle found for this game.*";
-        summaryHtml += `<div class="markdown-body">${marked.parse(chronicle)}</div>`;
+        summaryHtml += `<div class="markdown-body">${safeMarkdown(chronicle)}</div>`;
         summaryContainer.innerHTML = summaryHtml;
 
         summaryContainer.querySelectorAll('h3, h2').forEach(el => {
@@ -1414,7 +1452,7 @@
         `;
 
         const storyText = game.story_as_written || game.narrative_chronicle || "*No written story posts found for this game.*";
-        writtenHtml += `<div class="markdown-body">${marked.parse(storyText)}</div>`;
+        writtenHtml += `<div class="markdown-body">${safeMarkdown(storyText)}</div>`;
         writtenContainer.innerHTML = writtenHtml;
 
         writtenContainer.querySelectorAll('h3').forEach(el => {
@@ -1561,7 +1599,7 @@
                                 <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
                                     <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${icon}</span>
                                     <div>
-                                        <strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${d.player}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${d.player}</a></strong> 
+                                        <strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(d.player)}'))" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${d.player}</a></strong> 
                                         <span style="color: var(--muted);">— ${d.role || 'Unknown'} (${d.alignment || 'Unknown'})</span>
                                         <div style="font-size: 0.85em; color: #aaa; margin-top: 2px;">${cause}</div>
                                         ${voterList}
@@ -1625,7 +1663,7 @@
                             <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
                                 <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${evType}</span>
                                 <div>
-                                    ${ev.target ? `<strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${ev.target}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${ev.target}</a></strong>` : ''}
+                                    ${ev.target ? `<strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(ev.target)}'))" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${ev.target}</a></strong>` : ''}
                                     ${ev.role ? `<span style="color: var(--muted);"> (${ev.role}${ev.alignment ? ' - ' + ev.alignment : ''})</span>` : ''}
                                     <div style="font-size: 0.9em; color: #ccc; margin-top: 2px;">${ev.details || ''}</div>
                                 </div>
@@ -1693,7 +1731,7 @@
 
                                 return `
                                     <tr style="border-bottom: 1px solid #2a2a2a;">
-                                        <td style="padding: 10px;"><a href="javascript:void(0)" onclick="openPlayerDossier('${p.player}')" style="font-weight: bold; color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${p.player}</a></td>
+                                        <td style="padding: 10px;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.player)}'))" style="font-weight: bold; color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${p.player}</a></td>
                                         <td style="padding: 10px; color: #ddd;">${p.role || 'Unknown'}</td>
                                         <td style="padding: 10px;"><span style="color: ${alignColor}; font-weight: bold;">${alignment}</span></td>
                                         <td style="padding: 10px;">${statusBadge}</td>
@@ -1714,12 +1752,21 @@
     let currentDossierGames = [];
 
     async function openPlayerDossier(playerName) {
+        if (!playerName) return;
         // Ensure leaderboard data is loaded
         if (recordsData.length === 0) {
             recordsData = await fetchPortalData('leaderboard');
         }
         
-        const player = recordsData.find(p => p["Player Name"] === playerName);
+        const target = (playerName || "").toString().toLowerCase().trim();
+        const player = recordsData.find(p => {
+            const pName = (p["Player Name"] || "").toString().toLowerCase().trim();
+            if (pName === target) return true;
+            if (p["Aliases"] && Array.isArray(p["Aliases"])) {
+                return p["Aliases"].some(a => (a || "").toString().toLowerCase().trim() === target);
+            }
+            return false;
+        });
         if (!player) {
             alert("Could not find detailed records for " + playerName);
             return;

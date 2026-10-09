@@ -468,7 +468,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
                 str(g.get("era", default_era)),
                 str(g.get("title", "")),
                 str(g.get("start_date", "")),
-                str(g.get("moderator", "")),
+                str(g.get("author") or g.get("moderator", "")),
                 str(g.get("game_type", "classic")),
                 str(box.get("winning_faction", g.get("winning_faction", "Unknown"))),
                 len(roster),

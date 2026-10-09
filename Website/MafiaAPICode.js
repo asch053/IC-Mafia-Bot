@@ -27,7 +27,7 @@ function getDashboardData(mode) {
 function calculateClassicStats_() {
   let games = getSheetData_('Games');
   games = games.filter(g => g.game_type && g.game_type.toLowerCase().trim() === 'classic');
-  games.sort((a, b) => new Date(a.start_time_utc) - new Date(b.start_time_utc));
+  games.sort((a, b) => new Date(a.start_date || a.start_time_utc || '1970-01-01') - new Date(b.start_date || b.start_time_utc || '1970-01-01'));
 
   let factionStats = { Town: 0, Mafia: 0, Neutral: 0, Draw: 0, Total: 0 };
   let trendData = [];
@@ -40,8 +40,9 @@ function calculateClassicStats_() {
     else if (winner === 'Draw') factionStats.Draw++;
     else { factionStats.Neutral++; winner = 'Neutral'; }
 
+    let dStr = g.start_date || (g.start_time_utc ? new Date(g.start_time_utc).toLocaleDateString() : 'Unknown');
     trendData.push({
-      date: new Date(g.start_time_utc).toLocaleDateString(),
+      date: dStr,
       townPct: ((factionStats.Town / factionStats.Total) * 100).toFixed(1),
       mafiaPct: ((factionStats.Mafia / factionStats.Total) * 100).toFixed(1),
       neutralPct: ((factionStats.Neutral / factionStats.Total) * 100).toFixed(1),
@@ -76,7 +77,21 @@ function calculateBattleRoyaleStats_() {
   games = games.filter(g => g.game_type && g.game_type.toLowerCase().includes('battle'));
   const gameIds = new Set(games.map(g => g.game_id));
   let gamePhaseMap = {};
-  games.forEach(g => { gamePhaseMap[g.game_id] = parseInt(g.total_phases) || 1; });
+  games.forEach(g => { gamePhaseMap[g.game_id] = parseInt(g.total_phases || g.total_days) || 1; });
+
+  // Infer max phases from player death_phase records if total_phases was not stored
+  players.forEach(p => {
+    if (!gameIds.has(p.game_id)) return;
+    if (p.death_phase) {
+      const match = String(p.death_phase).match(/(\d+)/);
+      if (match) {
+        const ph = parseInt(match[0]);
+        if (!gamePhaseMap[p.game_id] || ph > gamePhaseMap[p.game_id]) {
+          gamePhaseMap[p.game_id] = ph;
+        }
+      }
+    }
+  });
 
   let pStats = {};
   let winCounts = { 'Draw': 0 };

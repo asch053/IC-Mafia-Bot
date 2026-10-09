@@ -916,6 +916,7 @@ def build_battle_royale_stats():
     if not os.path.exists(prod_dir):
         return
         
+    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
     br_games = 0
     combatant_stats = {}
     seen_gids = set()
@@ -944,11 +945,12 @@ def build_battle_royale_stats():
                 seen_gids.add(gid)
                 
                 br_games += 1
-                winning_players = [p.lower() for p in summary.get("winning_players", [])]
-                winner_name = summary.get("winning_faction", "Draw")
+                winning_players = [resolve_player_identity(p, None, user_map)[1].lower() for p in summary.get("winning_players", [])]
+                _, winner_name = resolve_player_identity(summary.get("winning_faction", "Draw"), None, user_map)
                 
                 for p in player_data:
-                    pname = p.get("player_name", "Unknown")
+                    raw_name = p.get("player_name", "Unknown")
+                    _, pname = resolve_player_identity(raw_name, p.get("player_id"), user_map)
                     is_win = (pname.lower() in winning_players) or (p.get("is_winner") is True) or (pname.lower() == winner_name.lower())
                     is_survived = (p.get("status", "").lower() == "alive")
                     death_phase = p.get("death_phase") or ""
