@@ -37,13 +37,16 @@ Doctor Jane Pain - head of surgery at Suburbanville Memorial, she will heal one 
 
 Chief Kowalsky - SFD’s finest man, he may order his department to put out fires or rush ambulances to rescue the wounded. He may do this TWO TIMES over the course of the game, thus preventing any harm from coming to his target.
 
-DA Xin Lee - Mayor Brunsen’s righthand man, he will try to determine the source of the commotion. He is immune for ONE assassination attempt. He can choose to prosecute 1 resident (2 total times) during any DAY phase of his choosing. He will have a 75% chance of winning the legal battle. Should he win, the opponent will die. Should he lose, he dies.
+DA Xin Lee
+- Mayor Brunsen’s righthand man, he will try to determine the source of the commotion. He is immune for ONE assassination attempt. He can choose to prosecute 1 resident (2 total times) during any DAY phase of his choosing. He will have a 75% chance of winning the legal battle. Should he win, the opponent will die. Should he lose, he dies.
 
-Abu el Banat - PI, he has been secretly tasked by Mayor Brunsen with finding out where the root of the problem is. He will be able to investigate 2 TIMES during the game. His investigations will reveal ANY role. He is immune to being killed at night until and during Night 3. If most voted at the end of Day phase, he will have a 50% chance of killing the last person who voted for him instead, thus surviving the lynch.
+Abu el Banat
+- PI, he has been secretly tasked by Mayor Brunsen with finding out where the root of the problem is. He will be able to investigate 2 TIMES during the game. His investigations will reveal ANY role. He is immune to being killed at night until and during Night 3. If most voted at the end of Day phase, he will have a 50% chance of killing the last person who voted for him instead, thus surviving the lynch.
 
 MAFIA
 
-Mr. Wilkins - The head of the Transportation Union, he has long hoped for a better relation between Public Transportation employees and passengers. Having realised it to be unlikely, he took it upon himself to teach everyone else City workers are people too. Every night phase, Mr. Wilkins will choose a player to kill. If investigated, he will appear to be a normal citizen. He cannot die during night phase.
+Mr. Wilkins
+- The head of the Transportation Union, he has long hoped for a better relation between Public Transportation employees and passengers. Having realised it to be unlikely, he took it upon himself to teach everyone else City workers are people too. Every night phase, Mr. Wilkins will choose a player to kill. If investigated, he will appear to be a normal citizen. He cannot die during night phase.
 
 Lionel Smith - member of the Transportation Union’s litigation team, he will bury you in paperwork! He will be able to roleblock any player of his choosing during night phase, but he can do so only THREE TIMES for the duration of the game. Cannot block the same player two nights in a row.
 

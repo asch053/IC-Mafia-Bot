@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1015 Summary
+# Discord Mafia 1015: Nolio's Court Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Nolio  

@@ -1,7 +1,101 @@
 ## 📜 Opening Briefing & Lore
 *Original opening by Moderator **[TI] arsbury***
 
-Unlucky for some - its the 13th IC Mafia!! We're going old school for this game, so read on for more information on the roles and more importantly, when to sign up.The following are the catergories of characters, all chosen completely at random (using an Excel spreadsheet formula) from the list of those signed up:- 2 mafia families (each with 6 normal mobsters)- 1 serial killer- 1 doctor- 2 police officers- 2 secret pro-town roles- 1 judge (allegiance unknown)- 2 lovers (allegiance unknown)- 7 townsfolkOnly the mafia families will know who is in their family. Everyone else will be in the dark and each families will not know who is in the other.Each phase of the game begins with the night. The following can happen during this time:- The two mafia families each choose one person to kill. This means 2 mafia kills per night.- Each mafia family will be made up of 6 mobsters without any special abilities. All members of the family will have equal say in any decision made.- The serial killer chooses one person per night to kill.- Doctor chooses one person to spare in the event that that person is chosen for death by the mafia families or serial killer. If the doctor tries to heal the SK, he will be cured and become an ordinary townsperson.- Police officers can choose one person to investigate between them. They will then be told of this person's role. They can do what they like with this information but revealing it may make it obvious they are police and make them a target for the mafias/SK.- The judge has the unique ability to make decisions when there is a votes draw at the lynching deadline. If there is a draw, the judge will secretly choose who will face the gallows. A player may be allocated this role in addition to their original role. The judge's allegiance is unknown.- The lovers are special as they know each other's role. However, if one of them is killed, the other will commit suicide. They are also unique as they are able to win the game if they are the sole survivors, even if they are on different teams. Players are allocated the lover role in addition to their original role.During the day, the town will find out who has been murdered. All townspeople (including the secret mafia families, serial killer, police officer, and doctor) can then vote who they think are the mafia. There will be a deadline to which townspeople must vote by. If there is a draw, the judge will have a set time to send his choice of who to lynch to the moderator. If the judge is dead and there is a draw or if the judge does not send his choice in time, the judge choice is void and the deadline will be extended and only those drawing will be voted on. If there is still a draw by the new deadline, there will be no lynching. Once the result is in, the person will then be dead and their role will be revealed. Then that round is over and night begins again when a mafia family, serial killer, police officer and doctor secretly make their next choices.The secret roles are secret! They are both pro-town but that is all I will say!The mafia wins if they manage to kill everyone else off, including all mafia members of the enemy family. The serial killer wins if he/she is the last person alive and the rest win if they manage to kill both the mafia families and kill/cure the serial killer. The lovers win if they are the sole survivors.Everyone is allowed to post in the thread during the day phase to discuss who they think is mafia or try to make themselves less suspicious (if they are mafia!). You may NOT quote any part of messages sent by the game moderators. Doing so will result in your sudden death.If any townsfolk miss the lynching voting on at most 2 occasions, they will be mod killed and replaced with a reserve. If no reserves are remaining, their role will be removed and revealed. Reserves will no longer be used after the 4th night.If you die, the game is over for you and you are not permitted to discuss the game with any of the people still playing. Doing so will result in a ban from future games.Finally, this game will use the help of two additional moderators to write the DAY and NIGHT phases whilst I am not around. These will be ElBekko and Eltara!! --- SIGN UP --- For those who want to play, please ingame arsyf00 in #779 with a message saying who you are and that you want to play mafia.Deadline to do this is 22:00 forum time on Saturday 26th April.Once the deadline is reached, I will use a random Excel formula to pick 25 people to play and 1 reserve and will publish the list below. Role descriptions will be sent out shortly after and we'll begin!Again, you cannot sign up if you are forum banned.PLAYER LIST:1. Arocalex MAFIA (DIANGELO FAMILY) - LYNCHED2. Amok - MAFIA (DIANGELO FAMILY) - KILLED BY CAPONE MAFIA3. BStallion MAFIA (CAPONE FAMILY) - LYNCHED4. Chees - POLICE - KILLED BY BOTH MAFIAS5. DarkSide MAFIA (DIANGELO FAMILY) - LYNCHED6. Decimus TOWNSPERSON - KILLED BY CAPONE MAFIA7. Elrohir - MAFIA ( CAPONE FAMILY) - KILLED BY DIANGELO MAFIA8. Eminence - MAFIA (DIANGELO FAMILY) - LYNCHED9. FoohonClover - CHICKEN/DIANGELO MAFIA - KILLED BY CAPONE MAFIA10. Gladiator MAFIA (CAPONE FAMILY) - KILLED BY DIANGELO MAFIA11. Glue DOCTOR - SURVIVOR12. Gratitude TOWNSPERSON/LOVER - SUICIDE13. Gwynedd TOWNSPERSON - KILLED BY DIANGELO MAFIA14. HolyEmpire TOWNSPERSON - KILLED BY CAPONE MAFIA15. Iluvatar MAFIA (CAPONE FAMILY) - LYNCHED16. Jets TOWNSPERSON - LYNCHED17. Lexuzis SERIAL KILLER - KILLED BY DIANGELO MAFIA18. Lynns - SCIENTIST - SURVIVOR19. Maarten TOWNSPERSON/JUDGE - LYNCHED20. Oxygen TOWNSPERSON/LOVER - KILLED BY CAPONE MAFIA21. Skywarp - POLICE - KILLED BY CAPONE MAFIA22. TheDarkOne MAFIA (CAPONE FAMILY) - KILLED BY DIANGELO MAFIA23. The_Unknown - MAFIA (DIANGELO FAMILY) - LYNCHED24. Undeath TOWNSPERSON - KILLED BY CAPONE MAFIA25. WildFlowerSoul MAFIA (CAPONE FAMILY) - MURDERED BY SK26. ZichtOpZee - MAFIA (DIANGELO FAMILY) - LYNCHEDReserve: KTIf you have any questions, just give me a shout!
+Unlucky for some - its the 13th IC Mafia!! We're going old school for this game, so read on for more information on the roles and more importantly, when to sign up.
+
+The following are the catergories of characters, all chosen completely at random (using an Excel spreadsheet formula) from the list of those signed up:- 2 mafia families (each with 6 normal mobsters)- 1 serial killer- 1 doctor- 2 police officers- 2 secret pro-town roles- 1 judge (allegiance unknown)- 2 lovers (allegiance unknown)- 7 townsfolkOnly the mafia families will know who is in their family. Everyone else will be in the dark and each families will not know who is in the other.
+
+Each phase of the game begins with the night. The following can happen during this time:- The two mafia families each choose one person to kill. This means 2 mafia kills per night.
+- Each mafia family will be made up of 6 mobsters without any special abilities. All members of the family will have equal say in any decision made.
+- The serial killer chooses one person per night to kill.
+- Doctor chooses one person to spare in the event that that person is chosen for death by the mafia families or serial killer. If the doctor tries to heal the SK, he will be cured and become an ordinary townsperson.
+- Police officers can choose one person to investigate between them. They will then be told of this person's role. They can do what they like with this information but revealing it may make it obvious they are police and make them a target for the mafias/SK.
+- The judge has the unique ability to make decisions when there is a votes draw at the lynching deadline. If there is a draw, the judge will secretly choose who will face the gallows. A player may be allocated this role in addition to their original role. The judge's allegiance is unknown.
+- The lovers are special as they know each other's role. However, if one of them is killed, the other will commit suicide. They are also unique as they are able to win the game if they are the sole survivors, even if they are on different teams. Players are allocated the lover role in addition to their original role.
+
+During the day, the town will find out who has been murdered. All townspeople (including the secret mafia families, serial killer, police officer, and doctor) can then vote who they think are the mafia. There will be a deadline to which townspeople must vote by. If there is a draw, the judge will have a set time to send his choice of who to lynch to the moderator. If the judge is dead and there is a draw or if the judge does not send his choice in time, the judge choice is void and the deadline will be extended and only those drawing will be voted on. If there is still a draw by the new deadline, there will be no lynching. Once the result is in, the person will then be dead and their role will be revealed. Then that round is over and night begins again when a mafia family, serial killer, police officer and doctor secretly make their next choices.
+
+The secret roles are secret! They are both pro-town but that is all I will say!
+
+The mafia wins if they manage to kill everyone else off, including all mafia members of the enemy family. The serial killer wins if he/she is the last person alive and the rest win if they manage to kill both the mafia families and kill/cure the serial killer. The lovers win if they are the sole survivors.
+
+Everyone is allowed to post in the thread during the day phase to discuss who they think is mafia or try to make themselves less suspicious (if they are mafia!). You may NOT quote any part of messages sent by the game moderators. Doing so will result in your sudden death.
+
+If any townsfolk miss the lynching voting on at most 2 occasions, they will be mod killed and replaced with a reserve. If no reserves are remaining, their role will be removed and revealed. Reserves will no longer be used after the 4th night.
+
+If you die, the game is over for you and you are not permitted to discuss the game with any of the people still playing. Doing so will result in a ban from future games.
+
+Finally, this game will use the help of two additional moderators to write the DAY and NIGHT phases whilst I am not around. These will be ElBekko and Eltara!! --
+- SIGN UP --
+- For those who want to play, please ingame arsyf00 in #779 with a message saying who you are and that you want to play mafia.
+
+Deadline to do this is 22:00 forum time on Saturday 26th April.
+
+Once the deadline is reached, I will use a random Excel formula to pick 25 people to play and 1 reserve and will publish the list below. Role descriptions will be sent out shortly after and we'll begin!
+
+Again, you cannot sign up if you are forum banned.PLAYER LIST:
+
+1. Arocalex MAFIA (DIANGELO FAMILY)
+- LYNCHED
+2. Amok
+- MAFIA (DIANGELO FAMILY)
+- KILLED BY CAPONE MAFIA
+3. BStallion MAFIA (CAPONE FAMILY)
+- LYNCHED
+4. Chees
+- POLICE
+- KILLED BY BOTH MAFIAS
+5. DarkSide MAFIA (DIANGELO FAMILY)
+- LYNCHED
+6. Decimus TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+7. Elrohir
+- MAFIA ( CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+8. Eminence
+- MAFIA (DIANGELO FAMILY)
+- LYNCHED
+9. FoohonClover
+- CHICKEN/DIANGELO MAFIA
+- KILLED BY CAPONE MAFIA
+10. Gladiator MAFIA (CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+11. Glue DOCTOR
+- SURVIVOR
+12. Gratitude TOWNSPERSON/LOVER
+- SUICIDE
+13. Gwynedd TOWNSPERSON
+- KILLED BY DIANGELO MAFIA
+14. HolyEmpire TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+15. Iluvatar MAFIA (CAPONE FAMILY)
+- LYNCHED
+16. Jets TOWNSPERSON
+- LYNCHED
+17. Lexuzis SERIAL KILLER
+- KILLED BY DIANGELO MAFIA
+18. Lynns
+- SCIENTIST
+- SURVIVOR
+19. Maarten TOWNSPERSON/JUDGE
+- LYNCHED
+20. Oxygen TOWNSPERSON/LOVER
+- KILLED BY CAPONE MAFIA
+21. Skywarp
+- POLICE
+- KILLED BY CAPONE MAFIA
+22. TheDarkOne MAFIA (CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+23. The_Unknown
+- MAFIA (DIANGELO FAMILY)
+- LYNCHED
+24. Undeath TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+25. WildFlowerSoul MAFIA (CAPONE FAMILY)
+- MURDERED BY SK
+26. ZichtOpZee
+- MAFIA (DIANGELO FAMILY)
+- LYNCHEDReserve: KTIf you have any questions, just give me a shout!
 
 ---
 
@@ -11,10 +105,111 @@ Unlucky for some - its the 13th IC Mafia!! We're going old school for this game,
 
 ### 🌙 Night / Day Narrative Scene (25-Apr-2008 22:12:36)
 
-Unlucky for some - its the 13th IC Mafia!! We're going old school for this game, so read on for more information on the roles and more importantly, when to sign up.The following are the catergories of characters, all chosen completely at random (using an Excel spreadsheet formula) from the list of those signed up:- 2 mafia families (each with 6 normal mobsters)- 1 serial killer- 1 doctor- 2 police officers- 2 secret pro-town roles- 1 judge (allegiance unknown)- 2 lovers (allegiance unknown)- 7 townsfolkOnly the mafia families will know who is in their family. Everyone else will be in the dark and each families will not know who is in the other.Each phase of the game begins with the night. The following can happen during this time:- The two mafia families each choose one person to kill. This means 2 mafia kills per night.- Each mafia family will be made up of 6 mobsters without any special abilities. All members of the family will have equal say in any decision made.- The serial killer chooses one person per night to kill.- Doctor chooses one person to spare in the event that that person is chosen for death by the mafia families or serial killer. If the doctor tries to heal the SK, he will be cured and become an ordinary townsperson.- Police officers can choose one person to investigate between them. They will then be told of this person's role. They can do what they like with this information but revealing it may make it obvious they are police and make them a target for the mafias/SK.- The judge has the unique ability to make decisions when there is a votes draw at the lynching deadline. If there is a draw, the judge will secretly choose who will face the gallows. A player may be allocated this role in addition to their original role. The judge's allegiance is unknown.- The lovers are special as they know each other's role. However, if one of them is killed, the other will commit suicide. They are also unique as they are able to win the game if they are the sole survivors, even if they are on different teams. Players are allocated the lover role in addition to their original role.During the day, the town will find out who has been murdered. All townspeople (including the secret mafia families, serial killer, police officer, and doctor) can then vote who they think are the mafia. There will be a deadline to which townspeople must vote by. If there is a draw, the judge will have a set time to send his choice of who to lynch to the moderator. If the judge is dead and there is a draw or if the judge does not send his choice in time, the judge choice is void and the deadline will be extended and only those drawing will be voted on. If there is still a draw by the new deadline, there will be no lynching. Once the result is in, the person will then be dead and their role will be revealed. Then that round is over and night begins again when a mafia family, serial killer, police officer and doctor secretly make their next choices.The secret roles are secret! They are both pro-town but that is all I will say!The mafia wins if they manage to kill everyone else off, including all mafia members of the enemy family. The serial killer wins if he/she is the last person alive and the rest win if they manage to kill both the mafia families and kill/cure the serial killer. The lovers win if they are the sole survivors.Everyone is allowed to post in the thread during the day phase to discuss who they think is mafia or try to make themselves less suspicious (if they are mafia!). You may NOT quote any part of messages sent by the game moderators. Doing so will result in your sudden death.If any townsfolk miss the lynching voting on at most 2 occasions, they will be mod killed and replaced with a reserve. If no reserves are remaining, their role will be removed and revealed. Reserves will no longer be used after the 4th night.If you die, the game is over for you and you are not permitted to discuss the game with any of the people still playing. Doing so will result in a ban from future games.Finally, this game will use the help of two additional moderators to write the DAY and NIGHT phases whilst I am not around. These will be ElBekko and Eltara!! --- SIGN UP --- For those who want to play, please ingame arsyf00 in #779 with a message saying who you are and that you want to play mafia.Deadline to do this is 22:00 forum time on Saturday 26th April.Once the deadline is reached, I will use a random Excel formula to pick 25 people to play and 1 reserve and will publish the list below. Role descriptions will be sent out shortly after and we'll begin!Again, you cannot sign up if you are forum banned.PLAYER LIST:1. Arocalex MAFIA (DIANGELO FAMILY) - LYNCHED2. Amok - MAFIA (DIANGELO FAMILY) - KILLED BY CAPONE MAFIA3. BStallion MAFIA (CAPONE FAMILY) - LYNCHED4. Chees - POLICE - KILLED BY BOTH MAFIAS5. DarkSide MAFIA (DIANGELO FAMILY) - LYNCHED6. Decimus TOWNSPERSON - KILLED BY CAPONE MAFIA7. Elrohir - MAFIA ( CAPONE FAMILY) - KILLED BY DIANGELO MAFIA8. Eminence - MAFIA (DIANGELO FAMILY) - LYNCHED9. FoohonClover - CHICKEN/DIANGELO MAFIA - KILLED BY CAPONE MAFIA10. Gladiator MAFIA (CAPONE FAMILY) - KILLED BY DIANGELO MAFIA11. Glue DOCTOR - SURVIVOR12. Gratitude TOWNSPERSON/LOVER - SUICIDE13. Gwynedd TOWNSPERSON - KILLED BY DIANGELO MAFIA14. HolyEmpire TOWNSPERSON - KILLED BY CAPONE MAFIA15. Iluvatar MAFIA (CAPONE FAMILY) - LYNCHED16. Jets TOWNSPERSON - LYNCHED17. Lexuzis SERIAL KILLER - KILLED BY DIANGELO MAFIA18. Lynns - SCIENTIST - SURVIVOR19. Maarten TOWNSPERSON/JUDGE - LYNCHED20. Oxygen TOWNSPERSON/LOVER - KILLED BY CAPONE MAFIA21. Skywarp - POLICE - KILLED BY CAPONE MAFIA22. TheDarkOne MAFIA (CAPONE FAMILY) - KILLED BY DIANGELO MAFIA23. The_Unknown - MAFIA (DIANGELO FAMILY) - LYNCHED24. Undeath TOWNSPERSON - KILLED BY CAPONE MAFIA25. WildFlowerSoul MAFIA (CAPONE FAMILY) - MURDERED BY SK26. ZichtOpZee - MAFIA (DIANGELO FAMILY) - LYNCHEDReserve: KTIf you have any questions, just give me a shout!
+Unlucky for some - its the 13th IC Mafia!! We're going old school for this game, so read on for more information on the roles and more importantly, when to sign up.
+
+The following are the catergories of characters, all chosen completely at random (using an Excel spreadsheet formula) from the list of those signed up:- 2 mafia families (each with 6 normal mobsters)- 1 serial killer- 1 doctor- 2 police officers- 2 secret pro-town roles- 1 judge (allegiance unknown)- 2 lovers (allegiance unknown)- 7 townsfolkOnly the mafia families will know who is in their family. Everyone else will be in the dark and each families will not know who is in the other.
+
+Each phase of the game begins with the night. The following can happen during this time:- The two mafia families each choose one person to kill. This means 2 mafia kills per night.
+- Each mafia family will be made up of 6 mobsters without any special abilities. All members of the family will have equal say in any decision made.
+- The serial killer chooses one person per night to kill.
+- Doctor chooses one person to spare in the event that that person is chosen for death by the mafia families or serial killer. If the doctor tries to heal the SK, he will be cured and become an ordinary townsperson.
+- Police officers can choose one person to investigate between them. They will then be told of this person's role. They can do what they like with this information but revealing it may make it obvious they are police and make them a target for the mafias/SK.
+- The judge has the unique ability to make decisions when there is a votes draw at the lynching deadline. If there is a draw, the judge will secretly choose who will face the gallows. A player may be allocated this role in addition to their original role. The judge's allegiance is unknown.
+- The lovers are special as they know each other's role. However, if one of them is killed, the other will commit suicide. They are also unique as they are able to win the game if they are the sole survivors, even if they are on different teams. Players are allocated the lover role in addition to their original role.
+
+During the day, the town will find out who has been murdered. All townspeople (including the secret mafia families, serial killer, police officer, and doctor) can then vote who they think are the mafia. There will be a deadline to which townspeople must vote by. If there is a draw, the judge will have a set time to send his choice of who to lynch to the moderator. If the judge is dead and there is a draw or if the judge does not send his choice in time, the judge choice is void and the deadline will be extended and only those drawing will be voted on. If there is still a draw by the new deadline, there will be no lynching. Once the result is in, the person will then be dead and their role will be revealed. Then that round is over and night begins again when a mafia family, serial killer, police officer and doctor secretly make their next choices.
+
+The secret roles are secret! They are both pro-town but that is all I will say!
+
+The mafia wins if they manage to kill everyone else off, including all mafia members of the enemy family. The serial killer wins if he/she is the last person alive and the rest win if they manage to kill both the mafia families and kill/cure the serial killer. The lovers win if they are the sole survivors.
+
+Everyone is allowed to post in the thread during the day phase to discuss who they think is mafia or try to make themselves less suspicious (if they are mafia!). You may NOT quote any part of messages sent by the game moderators. Doing so will result in your sudden death.
+
+If any townsfolk miss the lynching voting on at most 2 occasions, they will be mod killed and replaced with a reserve. If no reserves are remaining, their role will be removed and revealed. Reserves will no longer be used after the 4th night.
+
+If you die, the game is over for you and you are not permitted to discuss the game with any of the people still playing. Doing so will result in a ban from future games.
+
+Finally, this game will use the help of two additional moderators to write the DAY and NIGHT phases whilst I am not around. These will be ElBekko and Eltara!! --
+- SIGN UP --
+- For those who want to play, please ingame arsyf00 in #779 with a message saying who you are and that you want to play mafia.
+
+Deadline to do this is 22:00 forum time on Saturday 26th April.
+
+Once the deadline is reached, I will use a random Excel formula to pick 25 people to play and 1 reserve and will publish the list below. Role descriptions will be sent out shortly after and we'll begin!
+
+Again, you cannot sign up if you are forum banned.PLAYER LIST:
+
+1. Arocalex MAFIA (DIANGELO FAMILY)
+- LYNCHED
+2. Amok
+- MAFIA (DIANGELO FAMILY)
+- KILLED BY CAPONE MAFIA
+3. BStallion MAFIA (CAPONE FAMILY)
+- LYNCHED
+4. Chees
+- POLICE
+- KILLED BY BOTH MAFIAS
+5. DarkSide MAFIA (DIANGELO FAMILY)
+- LYNCHED
+6. Decimus TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+7. Elrohir
+- MAFIA ( CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+8. Eminence
+- MAFIA (DIANGELO FAMILY)
+- LYNCHED
+9. FoohonClover
+- CHICKEN/DIANGELO MAFIA
+- KILLED BY CAPONE MAFIA
+10. Gladiator MAFIA (CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+11. Glue DOCTOR
+- SURVIVOR
+12. Gratitude TOWNSPERSON/LOVER
+- SUICIDE
+13. Gwynedd TOWNSPERSON
+- KILLED BY DIANGELO MAFIA
+14. HolyEmpire TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+15. Iluvatar MAFIA (CAPONE FAMILY)
+- LYNCHED
+16. Jets TOWNSPERSON
+- LYNCHED
+17. Lexuzis SERIAL KILLER
+- KILLED BY DIANGELO MAFIA
+18. Lynns
+- SCIENTIST
+- SURVIVOR
+19. Maarten TOWNSPERSON/JUDGE
+- LYNCHED
+20. Oxygen TOWNSPERSON/LOVER
+- KILLED BY CAPONE MAFIA
+21. Skywarp
+- POLICE
+- KILLED BY CAPONE MAFIA
+22. TheDarkOne MAFIA (CAPONE FAMILY)
+- KILLED BY DIANGELO MAFIA
+23. The_Unknown
+- MAFIA (DIANGELO FAMILY)
+- LYNCHED
+24. Undeath TOWNSPERSON
+- KILLED BY CAPONE MAFIA
+25. WildFlowerSoul MAFIA (CAPONE FAMILY)
+- MURDERED BY SK
+26. ZichtOpZee
+- MAFIA (DIANGELO FAMILY)
+- LYNCHEDReserve: KTIf you have any questions, just give me a shout!
 
 ---
 
 ## 🏆 Endgame Resolution & Role Reveals
 
-Here we go then!Roles have been allocated and descriptions have been sent out to everyone!Have a good game guys --- In the quiet town of Caltabellotta, Sicily, the inhabitants of the town were getting ready for the night. People were closing their blinds and bringing in their laundry from the lines.On the other side of town, a few members of the mafia were high up in the cliffs making a deal with some out of town people. It didn
+Here we go then!
+
+Roles have been allocated and descriptions have been sent out to everyone!
+
+Have a good game guys --
+- In the quiet town of Caltabellotta, Sicily, the inhabitants of the town were getting ready for the night. People were closing their blinds and bringing in their laundry from the lines.
+
+On the other side of town, a few members of the mafia were high up in the cliffs making a deal with some out of town people. It didn

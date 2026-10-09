@@ -85,7 +85,8 @@ Space - If Thanos gains possession of the space stone, he can no longer be preve
 
 Mind - If Thanos gains possession of the mind stone, he will be able to influence the opinions and votes during 1 lynch phase. When activated, his target will be the one lynched no matter the votes at end of day phase. Can only be used 1 time.
 
-Reality - If Thanos gains possession of the reality stone, he will be able to distort a target players surroundings enough to convert him to his cause. That player will then join the Black Order as a full member. Under the influence of the reality stone, that player will lose any abilities they may have previously had. Can only be used 1 time.
+Reality
+- If Thanos gains possession of the reality stone, he will be able to distort a target players surroundings enough to convert him to his cause. That player will then join the Black Order as a full member. Under the influence of the reality stone, that player will lose any abilities they may have previously had. Can only be used 1 time.
 
 Power - If Thanos gains possession of the power stone, he will be able to use sheer power to destroy a target player during any phase. Death is delivered instantly upon activation of the stone. Can only be used 1 time.
 

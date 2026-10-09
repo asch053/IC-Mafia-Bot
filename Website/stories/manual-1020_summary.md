@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1020 Summary
+# Discord Mafia 1020: Goddess's Wrath Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Goddess  

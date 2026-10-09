@@ -1,67 +1,39 @@
-# Discord Mafia 1014: Puny Penguin's Arctic
+# The Chronicle of Discord Mafia 1014: Puny Penguin's Arctic
 
-*Recorded & Moderated by Game Master **PunyPenguin***
-
-- **Era:** Discord Historic Manual
-- **Start Date:** 2019-11-17
-- **Winning Faction:** **Mob**
-- **Total Players:** 12
+*Recorded by Game Master PunyPenguin*
 
 ---
 
-## ⚔️ Tactical Phase-by-Phase Timeline
+### Prologue: The Assembly
+In the historic manual era of the Discord Mafia community, **12** players entered the fray for Game 1014. Factions formed in the shadows, alliances were forged in whisper channels, and the town prepared for what would become an intense tactical conflict.
 
-### Night 1
+### The Conflict
+#### Night 1
+The tension reached a breaking point as **Gamzee**, who stood as **Plain Town** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **WildWolf**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
-- **Elimination:** **Gamzee** (Plain Town - Town) — *Gamzee (Plain Town) died (by Mob)*
-- **Elimination:** **WildWolf** (Plain Town - Town) — *WildWolf (Plain Town) died (by SK)*
+#### Day 1
+The tension reached a breaking point as **Alex b**, who stood as **Mob gf** for the **Mafia**, fell (Unknown).
+The tension reached a breaking point as **Hexie**, who stood as **Town Doc** for the **Town**, fell (Lynched).
+The tension reached a breaking point as **TBO**, who stood as **Plain Town** for the **Town**, fell (Lynched).
 
-### Day 1
+#### Night 2
+The tension reached a breaking point as **MrBlonde**, who stood as **Plain Town** for the **Town**, fell (by SK).
+The tension reached a breaking point as **niganati**, who stood as **Town Cop** for the **Town**, fell (by Mob).
 
-- **Elimination:** **Alex b** (Mob gf - Mafia) — *Alex b (Mob gf) died (Unknown)*
-- **Elimination:** **Hexie** (Town Doc - Town) — *Hexie (Town Doc) died (Lynched)*
-- **Elimination:** **TBO** (Plain Town - Town) — *TBO (Plain Town) died (Lynched)*
+#### Day 2
+The tension reached a breaking point as **Arby3**, who stood as **SK** for the **SK**, fell (Lynched).
+The tension reached a breaking point as **Emperor Ulysses**, who stood as **Plain Town** for the **Town**, fell (Lynched).
 
-### Night 2
-
-- **Elimination:** **MrBlonde** (Plain Town - Town) — *MrBlonde (Plain Town) died (by SK)*
-- **Elimination:** **niganati** (Town Cop - Town) — *niganati (Town Cop) died (by Mob)*
-
-### Day 2
-
-- **Elimination:** **Arby3** (SK - SK) — *Arby3 (SK) died (Lynched)*
-- **Elimination:** **Emperor Ulysses** (Plain Town - Town) — *Emperor Ulysses (Plain Town) died (Lynched)*
-
-### Night 3
-
-- **Elimination:** **You_Fool** (Town RB - Town) — *You_Fool (Town RB) died (by Mob)*
-
----
-
-## 👥 Roster & Final Standings
-
-| Player | Role | Alignment | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Ordos** | Mob RB | Mafia | Survived (Winner) |
-| **sCriv** | Mob Cop | Mafia | Survived (Winner) |
-| **Alex b** | Mob gf | Mafia | Dead (Day 1 - Unknown) |
-| **Arby3** | SK | SK | Dead (Day 2 - Lynched) |
-| **Emperor Ulysses** | Plain Town | Town | Dead (Day 2 - Lynched) |
-| **Gamzee** | Plain Town | Town | Dead (Night 1 - by Mob) |
-| **Hexie** | Town Doc | Town | Dead (Day 1 - Lynched) |
-| **MrBlonde** | Plain Town | Town | Dead (Night 2 - by SK) |
-| **TBO** | Plain Town | Town | Dead (Day 1 - Lynched) |
-| **WildWolf** | Plain Town | Town | Dead (Night 1 - by SK) |
-| **You_Fool** | Town RB | Town | Dead (Night 3 - by Mob) |
-| **niganati** | Town Cop | Town | Dead (Night 2 - by Mob) |
-
----
-
-### 🏆 Epilogue: Final Resolution
-
-When the conflict concluded, **Mob** secured the victory!
+#### Night 3
+The tension reached a breaking point as **You_Fool**, who stood as **Town RB** for the **Town**, fell (by Mob).
 
 
-Surviving combatants:
+### Epilogue: Final Resolution
+When the dust cleared, **Mob** stood triumphant! 
+
+Among the brave who lived to tell the tale:
 - **Ordos**
 - **sCriv**
+
+The record of Discord Mafia 1014: Puny Penguin's Arctic is thus etched into the permanent chronicle.

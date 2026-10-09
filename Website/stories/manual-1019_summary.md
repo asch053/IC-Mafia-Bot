@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1019 Summary
+# Discord Mafia 1019: Genesis's Creation Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Genesis  

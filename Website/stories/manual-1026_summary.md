@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1026 Summary
+# Discord Mafia 1026: Genesis's End Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Genesis  

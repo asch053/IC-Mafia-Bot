@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1018 Summary
+# Discord Mafia 1018: Schneipel's Trap Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Schneipel  

@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1007 Summary
+# Discord Mafia 1007: Schnipel's Mystery Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Schnipel  

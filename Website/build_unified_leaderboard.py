@@ -35,6 +35,7 @@ CANONICAL_NAMES = {
     "549657242170032154": "Goddess",
     "386804810617323531": "melsfreefallin",
     "220142891027136512": "Panda",
+    "216918396539764737": "Ordos",
     "undeath": "Undeath",
     "risingdown": "RisingDown",
     "wildflowersoul": "WildFlowerSoul",
@@ -325,85 +326,8 @@ def load_markdown_file(rel_or_abs_path):
             return ""
     return ""
 
-def build_unified_stats(sync_sheets=False):
-    print("Building unified multi-era stats from modular databases...")
-    os.makedirs(DATA_DIR, exist_ok=True)
-    os.makedirs(DB_DIR, exist_ok=True)
-    os.makedirs(STORIES_DIR, exist_ok=True)
-
-    sync_new_production_games()
-
-    forum_games = load_json(os.path.join(DB_DIR, "historic_forum.json"), [])
-    discourse_games = load_json(os.path.join(DB_DIR, "historic_discourse.json"), [])
-    discord_bot_games = load_json(os.path.join(DB_DIR, "discord_bot.json"), [])
-    discord_manual_games = load_json(os.path.join(DB_DIR, "discord_manual.json"), [])
-
-    print(f"Loaded: {len(forum_games)} Forum, {len(discourse_games)} Discourse, {len(discord_bot_games)} Discord Bot, {len(discord_manual_games)} Discord Manual games.")
-
-    all_source_games = forum_games + discourse_games + discord_bot_games + discord_manual_games
-    history_archive = []
-    
-    for g in all_source_games:
-        if g.get("eligible") is False:
-            continue
-        tid = str(g.get("thread_id", "unknown"))
-        era = g.get("era", "Forum")
-        
-        summary_file = g.get("summary_file") or f"stories/{tid}_summary.md"
-        story_file = g.get("story_file") or f"stories/{tid}_story.md"
-        
-        narrative_chronicle = load_markdown_file(summary_file)
-        story_as_written = load_markdown_file(story_file)
-        
-        box = g.get("box_score") or {}
-        if not box.get("timeline"):
-            roster = box.get("roster", [])
-            syn_timeline = []
-            for p in roster:
-                dp = p.get("death_phase")
-                if dp:
-                    syn_timeline.append({
-                        "phase": dp,
-                        "event": "Elimination",
-                        "target": p.get("player"),
-                        "role": p.get("role"),
-                        "alignment": p.get("alignment"),
-                        "details": f"Eliminated in {dp} ({p.get('role', 'Unknown')})"
-                    })
-            if not syn_timeline:
-                syn_timeline.append({
-                    "phase": "Game Conclusion",
-                    "event": "Overview",
-                    "target": box.get("winning_faction", "All"),
-                    "details": f"Game resolved with {box.get('winning_faction', 'Unknown')} victory condition."
-                })
-            box["timeline"] = syn_timeline
-
-        game_entry = {
-            "thread_id": tid,
-            "era": era,
-            "title": g.get("title", f"{era} Game {tid}"),
-            "start_date": g.get("start_date", ""),
-            "moderator": g.get("moderator", "Game Host"),
-            "game_type": g.get("game_type", "classic"),
-            "total_posts": g.get("total_posts"),
-            "narrative_chronicle": narrative_chronicle,
-            "story_as_written": story_as_written,
-            "summary_file": summary_file,
-            "story_file": story_file,
-            "box_score": box,
-            "lynch_vote_history": g.get("lynch_vote_history", [])
-        }
-        history_archive.append(game_entry)
-
-    out_history = os.path.join(DATA_DIR, "history_archive.json")
-    with open(out_history, 'w', encoding='utf-8') as f:
-        json.dump(history_archive, f, indent=4, ensure_ascii=False)
-    print(f"Saved {len(history_archive)} games to {out_history}.")
-
-    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
+def compute_player_leaderboard(games_list, user_map):
     player_stats = {}
-
     def get_player(p_id, p_name):
         if p_id not in player_stats:
             player_stats[p_id] = {
@@ -442,9 +366,7 @@ def build_unified_stats(sync_sheets=False):
             }
         return player_stats[p_id]
 
-    game_stats = {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0}
-
-    for game in history_archive:
+    for game in games_list:
         box = game.get("box_score", {})
         if not box: continue
         
@@ -452,14 +374,8 @@ def build_unified_stats(sync_sheets=False):
         winning_faction = box.get("winning_faction", "Unknown")
         total_phases = get_game_total_phases(game)
         vote_history = game.get("lynch_vote_history", [])
-        
-        game_stats["Total"] += 1
         wf_lower = winning_faction.lower() if isinstance(winning_faction, str) else "unknown"
-        if "town" in wf_lower: game_stats["Town"] += 1
-        elif "mafia" in wf_lower: game_stats["Mafia"] += 1
-        elif "draw" in wf_lower: game_stats["Draw"] += 1
-        else: game_stats["Neutral"] += 1
-        
+
         for p in roster:
             raw_name = p.get("player", "Unknown")
             raw_pid = p.get("player_id")
@@ -470,7 +386,6 @@ def build_unified_stats(sync_sheets=False):
             death_cause = (p.get("death_cause") or "").lower()
             
             canonical_id, canonical_name = resolve_player_identity(raw_name, raw_pid, user_map)
-            
             ps = get_player(canonical_id, canonical_name)
             if canonical_id in CANONICAL_NAMES:
                 ps["Player Name"] = CANONICAL_NAMES[canonical_id]
@@ -492,6 +407,7 @@ def build_unified_stats(sync_sheets=False):
             ps["_aliases"].add(raw_name)
             ps["_games"].append({
                 "thread_id": str(game.get("thread_id", "")),
+                "game_id": str(game.get("game_id", "")),
                 "era": game.get("era", "Unknown"),
                 "title": game.get("title", "Mafia Game"),
                 "role": role,
@@ -525,7 +441,6 @@ def build_unified_stats(sync_sheets=False):
                     if "night 1" in dp_lower or "night one" in dp_lower:
                         ps["N1 Deaths"] += 1
 
-            # --- PEU Calculations ---
             # 1. Elusiveness (E)
             if survived:
                 lived = total_phases
@@ -605,7 +520,7 @@ def build_unified_stats(sync_sheets=False):
                 else:
                     ps["_p_scores"].append(4.8 if is_winner else 2.5)
 
-    leaderboard = []
+    result_dict = {}
     for pid, ps in player_stats.items():
         if ps["Games Played"] > 0:
             ps["Survival %"] = round((ps["_survived_count"] / ps["Games Played"]) * 100, 1)
@@ -656,7 +571,233 @@ def build_unified_stats(sync_sheets=False):
 
         clean_ps["Aliases"] = sorted(list(seen_aliases.values()), key=lambda x: (x.lower(), x))
         clean_ps["Games"] = ps["_games"]
-        leaderboard.append(clean_ps)
+        result_dict[pid] = clean_ps
+    return result_dict
+
+FORUM_GAME_ID_MAP = {
+    "844": "11",
+    "6880": "12",
+    "9921": "13",
+    "35451": "14",
+    "38590": "15",
+    "39258": "15.1",
+    "44647": "16",
+    "50496": "17",
+    "54849": "18",
+    "58647": "19",
+    "80385": "20",
+    "82572": "21",
+    "84210": "22",
+    "85134": "23",
+    "93305": "24",
+    "139357": "25",
+    "140972": "26",
+    "142153": "27",
+    "145042": "28",
+    "153449": "29",
+    "174143": "30",
+    "175063": "31",
+    "176810": "32",
+    "177411": "33",
+    "178353": "34",
+    "179654": "35",
+    "180235": "36",
+    "180756": "37",
+    "181405": "38",
+    "181955": "39",
+    "182698": "40",
+    "183110": "41",
+    "183598": "42",
+    "184133": "43",
+    "184555": "44",
+    "184809": "45",
+    "185122": "46",
+    "185333": "47",
+    "185552": "48",
+    "185734": "49",
+    "186100": "50",
+    "186442": "51",
+    "186801": "52",
+    "189576": "53",
+    "203868": "54",
+}
+
+DISCOURSE_GAME_ID_MAP = {
+    "6053": "55",
+    "6219": "56",
+    "6347": "57",
+    "6452": "58",
+    "6556": "59",
+    "6631": "60",
+    "6680": "61",
+    "6772": "62",
+    "6825": "63",
+    "6871": "64",
+    "6906": "65",
+    "6913": "65.1",
+    "6930": "66",
+    "6954": "67",
+    "7043": "68",
+    "7077": "70",
+    "7107": "71",
+    "7130": "72",
+    "7164": "73",
+    "7187": "74",
+    "7235": "75",
+    "7275": "76",
+    "7321": "77",
+    "7347": "78",
+    "7419": "79",
+    "7475": "80",
+    "7513": "81",
+    "7552": "82",
+    "7703": "84",
+    "7879": "86",
+    "8118": "88"
+}
+
+def get_canonical_game_id(era, tid, title=""):
+    clean_tid = str(tid).replace("manual-", "").strip()
+    if era == "Forum":
+        return FORUM_GAME_ID_MAP.get(clean_tid, clean_tid)
+    elif era == "Discourse":
+        return DISCOURSE_GAME_ID_MAP.get(clean_tid, clean_tid)
+    elif era == "Discord_Manual":
+        return clean_tid
+    elif "Discord" in era:
+        m = re.search(r'(Classic\s*#?\d+|Battle\s*Royale\s*#?\d+)', title, re.IGNORECASE)
+        if m:
+            clean = m.group(1).replace('Battle Royale', 'BR').replace('Battle royale', 'BR')
+            return clean
+        return clean_tid
+    return clean_tid
+
+def build_unified_stats(sync_sheets=False):
+    print("Building unified multi-era stats from modular databases...")
+    os.makedirs(DATA_DIR, exist_ok=True)
+    os.makedirs(DB_DIR, exist_ok=True)
+    os.makedirs(STORIES_DIR, exist_ok=True)
+
+    sync_new_production_games()
+
+    forum_games = load_json(os.path.join(DB_DIR, "historic_forum.json"), [])
+    discourse_games = load_json(os.path.join(DB_DIR, "historic_discourse.json"), [])
+    discord_bot_games = load_json(os.path.join(DB_DIR, "discord_bot.json"), [])
+    discord_manual_games = load_json(os.path.join(DB_DIR, "discord_manual.json"), [])
+
+    print(f"Loaded: {len(forum_games)} Forum, {len(discourse_games)} Discourse, {len(discord_bot_games)} Discord Bot, {len(discord_manual_games)} Discord Manual games.")
+
+    all_source_games = forum_games + discourse_games + discord_bot_games + discord_manual_games
+    history_archive = []
+    
+    for g in all_source_games:
+        if g.get("eligible") is False:
+            continue
+        tid = str(g.get("thread_id", "unknown"))
+        era = g.get("era", "Forum")
+        
+        summary_file = g.get("summary_file") or f"stories/{tid}_summary.md"
+        story_file = g.get("story_file") or f"stories/{tid}_story.md"
+        
+        narrative_chronicle = load_markdown_file(summary_file)
+        story_as_written = load_markdown_file(story_file)
+        
+        box = g.get("box_score") or {}
+        if not box.get("timeline"):
+            roster = box.get("roster", [])
+            syn_timeline = []
+            for p in roster:
+                dp = p.get("death_phase")
+                if dp:
+                    syn_timeline.append({
+                        "phase": dp,
+                        "event": "Elimination",
+                        "target": p.get("player"),
+                        "role": p.get("role"),
+                        "alignment": p.get("alignment"),
+                        "details": f"Eliminated in {dp} ({p.get('role', 'Unknown')})"
+                    })
+            if not syn_timeline:
+                syn_timeline.append({
+                    "phase": "Game Conclusion",
+                    "event": "Overview",
+                    "target": box.get("winning_faction", "All"),
+                    "details": f"Game resolved with {box.get('winning_faction', 'Unknown')} victory condition."
+                })
+            box["timeline"] = syn_timeline
+
+        game_id = get_canonical_game_id(era, tid, g.get("title", ""))
+        game_entry = {
+            "game_id": game_id,
+            "thread_id": tid,
+            "era": era,
+            "title": g.get("title", f"{era} Game {tid}"),
+            "start_date": g.get("start_date", ""),
+            "moderator": g.get("moderator", "Game Host"),
+            "author": g.get("author") or g.get("moderator", "Game Host"),
+            "game_type": g.get("game_type", "classic"),
+            "total_posts": g.get("total_posts"),
+            "narrative_chronicle": narrative_chronicle,
+            "story_as_written": story_as_written,
+            "summary_file": summary_file,
+            "story_file": story_file,
+            "box_score": box,
+            "lynch_vote_history": g.get("lynch_vote_history", [])
+        }
+        history_archive.append(game_entry)
+
+    def parse_archive_sort_key(g):
+        sd = g.get("start_date") or "1970-01-01"
+        gid = str(g.get("game_id", ""))
+        nums = re.findall(r"\d+(?:\.\d+)?", gid)
+        val = float(nums[0]) if nums else 0.0
+        return (sd, val)
+
+    history_archive.sort(key=parse_archive_sort_key)
+
+    out_history = os.path.join(DATA_DIR, "history_archive.json")
+    with open(out_history, 'w', encoding='utf-8') as f:
+        json.dump(history_archive, f, indent=4, ensure_ascii=False)
+    print(f"Saved {len(history_archive)} games to {out_history}.")
+
+    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
+    
+    # Separate Classic Games (excluding Battle Royale) for Mafia Classic stats and leaderboard
+    classic_games = [g for g in history_archive if g.get("game_type", "classic").lower() != "battle_royale"]
+    print(f"Isolated {len(classic_games)} Classic games (excluding {len(history_archive) - len(classic_games)} Battle Royale games) for Classic Mode analytics.")
+
+    game_stats = {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0}
+    for game in classic_games:
+        box = game.get("box_score", {})
+        if not box: continue
+        winning_faction = box.get("winning_faction", "Unknown")
+        game_stats["Total"] += 1
+        wf_lower = winning_faction.lower() if isinstance(winning_faction, str) else "unknown"
+        if "town" in wf_lower: game_stats["Town"] += 1
+        elif "mafia" in wf_lower or "mob" in wf_lower: game_stats["Mafia"] += 1
+        elif "draw" in wf_lower or wf_lower in ["n/a", "unknown"]: game_stats["Draw"] += 1
+        else: game_stats["Neutral"] += 1
+
+    # 1. Calculate All-Time Career Leaderboard (Classic Mode Only)
+    all_players_dict = compute_player_leaderboard(classic_games, user_map)
+
+    # 2. Calculate Era-Specific Leaderboards (Classic Mode Only)
+    eras = ["Forum", "Discourse", "Discord_Manual", "Discord"]
+    era_leaderboards = {}
+    for era in eras:
+        era_games = [g for g in classic_games if g.get("era") == era]
+        era_leaderboards[era] = compute_player_leaderboard(era_games, user_map)
+
+    # 3. Attach era_stats to each player in all_players_dict
+    for pid, ps in all_players_dict.items():
+        ps["era_stats"] = {}
+        for era in eras:
+            if pid in era_leaderboards[era]:
+                # Exclude nested Games/Aliases to keep leaderboard.json compact
+                sub = {k: v for k, v in era_leaderboards[era][pid].items() if k not in ["Games", "Aliases", "era_stats"]}
+                ps["era_stats"][era] = sub
+
+    leaderboard = list(all_players_dict.values())
         
     out_leaderboard = os.path.join(DATA_DIR, "leaderboard.json")
     with open(out_leaderboard, 'w', encoding='utf-8') as f:
@@ -684,26 +825,52 @@ def build_unified_stats(sync_sheets=False):
     classic_leaderboard.sort(key=lambda x: (x["skillScore"], x["games"]), reverse=True)
     classic_data["leaderboard"] = classic_leaderboard
     
-    # Calculate Meta History Trend across all games chronologically
-    sorted_games = sorted(history_archive, key=lambda g: g.get("start_date") or "1970-01-01")
+    # Calculate Meta History Trend across Classic games chronologically
+    sorted_games = sorted(classic_games, key=lambda g: g.get("start_date") or "1970-01-01")
     cum_town = 0
     cum_mafia = 0
     cum_neutral = 0
     cum_draw = 0
     trend = []
 
+    era_labels = {
+        "Forum": "Forum Era",
+        "Discourse": "Discourse Era",
+        "Discord_Manual": "Discord Manual",
+        "Discord": "Discord Bot"
+    }
+
+    era_stats = {
+        "Forum": {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0, "label": "Forum Era"},
+        "Discourse": {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0, "label": "Discourse Era"},
+        "Discord_Manual": {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0, "label": "Discord Manual"},
+        "Discord": {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0, "label": "Discord Bot"}
+    }
+
     for i, g in enumerate(sorted_games, 1):
         box = g.get("box_score", {}) or {}
         wf = box.get("winning_faction", "Unknown")
         wf_lower = wf.lower() if isinstance(wf, str) else "unknown"
+        era_raw = g.get("era") or "Unknown"
+        era_label = era_labels.get(era_raw, era_raw)
+
+        if era_raw not in era_stats:
+            era_stats[era_raw] = {"Total": 0, "Town": 0, "Mafia": 0, "Draw": 0, "Neutral": 0, "label": era_label}
+
+        era_stats[era_raw]["Total"] += 1
+
         if "town" in wf_lower:
             cum_town += 1
+            era_stats[era_raw]["Town"] += 1
         elif "mafia" in wf_lower or "mob" in wf_lower:
             cum_mafia += 1
+            era_stats[era_raw]["Mafia"] += 1
         elif "draw" in wf_lower or wf_lower in ["n/a", "unknown"]:
             cum_draw += 1
+            era_stats[era_raw]["Draw"] += 1
         else:
             cum_neutral += 1
+            era_stats[era_raw]["Neutral"] += 1
 
         t_pct = round((cum_town / i) * 100, 1)
         m_pct = round((cum_mafia / i) * 100, 1)
@@ -714,8 +881,13 @@ def build_unified_stats(sync_sheets=False):
         title = g.get("title") or f"Game {i}"
         trend.append({
             "gameNum": i,
+            "gameId": g.get("game_id", ""),
             "date": sd,
-            "label": f"Game {i}: {title} ({sd})",
+            "title": title,
+            "era": era_raw,
+            "eraLabel": era_label,
+            "winningFaction": wf,
+            "label": f"Game {i}: {title} [{era_label}] ({sd})",
             "townPct": t_pct,
             "mafiaPct": m_pct,
             "neutralPct": n_pct,
@@ -723,6 +895,7 @@ def build_unified_stats(sync_sheets=False):
         })
 
     classic_data["trend"] = trend
+    classic_data["eraStats"] = era_stats
     
     with open(classic_path, 'w', encoding='utf-8') as f:
         json.dump(classic_data, f, indent=4, ensure_ascii=False)
@@ -743,6 +916,7 @@ def build_battle_royale_stats():
     if not os.path.exists(prod_dir):
         return
         
+    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
     br_games = 0
     combatant_stats = {}
     seen_gids = set()
@@ -771,11 +945,12 @@ def build_battle_royale_stats():
                 seen_gids.add(gid)
                 
                 br_games += 1
-                winning_players = [p.lower() for p in summary.get("winning_players", [])]
-                winner_name = summary.get("winning_faction", "Draw")
+                winning_players = [resolve_player_identity(p, None, user_map)[1].lower() for p in summary.get("winning_players", [])]
+                _, winner_name = resolve_player_identity(summary.get("winning_faction", "Draw"), None, user_map)
                 
                 for p in player_data:
-                    pname = p.get("player_name", "Unknown")
+                    raw_name = p.get("player_name", "Unknown")
+                    _, pname = resolve_player_identity(raw_name, p.get("player_id"), user_map)
                     is_win = (pname.lower() in winning_players) or (p.get("is_winner") is True) or (pname.lower() == winner_name.lower())
                     is_survived = (p.get("status", "").lower() == "alive")
                     death_phase = p.get("death_phase") or ""

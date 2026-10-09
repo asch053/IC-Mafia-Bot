@@ -1,85 +1,49 @@
-# Discord Mafia 1011: Arby's Gambit
+# The Chronicle of Discord Mafia 1011: Arby's Gambit
 
-*Recorded & Moderated by Game Master **Arby3***
-
-- **Era:** Discord Historic Manual
-- **Start Date:** 2019-10-27
-- **Winning Faction:** **Draw**
-- **Total Players:** 21
+*Recorded by Game Master Arby3*
 
 ---
 
-## ⚔️ Tactical Phase-by-Phase Timeline
+### Prologue: The Assembly
+In the historic manual era of the Discord Mafia community, **21** players entered the fray for Game 1011. Factions formed in the shadows, alliances were forged in whisper channels, and the town prepared for what would become an intense tactical conflict.
 
-### Day 1
+### The Conflict
+#### Day 1
+The tension reached a breaking point as **Nolio**, who stood as **Killer Kittens Doc** for the ****, fell (Eliminated).
+The tension reached a breaking point as **Playboy**, who stood as **Dead Presidents Doc** for the ****, fell (Eliminated).
+The tension reached a breaking point as **PunyPenguin**, who stood as **Dead Presidents RB** for the ****, fell (Lynched).
+The tension reached a breaking point as **Steel Beans**, who stood as **Killer Kittens RB** for the ****, fell (Eliminated).
 
-- **Elimination:** **Nolio** (Killer Kittens Doc - ) — *Nolio (Killer Kittens Doc) died (Eliminated)*
-- **Elimination:** **Playboy** (Dead Presidents Doc - ) — *Playboy (Dead Presidents Doc) died (Eliminated)*
-- **Elimination:** **PunyPenguin** (Dead Presidents RB - ) — *PunyPenguin (Dead Presidents RB) died (Lynched)*
-- **Elimination:** **Steel Beans** (Killer Kittens RB - ) — *Steel Beans (Killer Kittens RB) died (Eliminated)*
+#### Day 2
+The tension reached a breaking point as **Daichen**, who stood as **Dusty Diamond Doc** for the ****, fell (Eliminated).
+The tension reached a breaking point as **Emperor Ulysses**, who stood as **Red Devels RB** for the ****, fell (Lynched).
+The tension reached a breaking point as **MrBlonde**, who stood as **Red Devils Leader** for the ****, fell (Eliminated).
+The tension reached a breaking point as **Twitch**, who stood as **East Side Doc** for the ****, fell (Eliminated).
 
-### Day 2
+#### Day 3
+The tension reached a breaking point as **Goddess**, who stood as **East Side RB** for the ****, fell (Eliminated).
+The tension reached a breaking point as **Herb**, who stood as **Dusty Diamond RB** for the ****, fell (Lynched).
+The tension reached a breaking point as **Ohgren**, who stood as **Wild Dogs Doc** for the ****, fell (Eliminated).
+The tension reached a breaking point as **TBO**, who stood as **Big Babies Leader** for the ****, fell (Lynched).
+The tension reached a breaking point as **You_Fool**, who stood as **Wild Docs RB** for the ****, fell (Eliminated).
+The tension reached a breaking point as **sCriv**, who stood as **Killer Kittens Leader** for the ****, fell (Eliminated).
 
-- **Elimination:** **Daichen** (Dusty Diamond Doc - ) — *Daichen (Dusty Diamond Doc) died (Eliminated)*
-- **Elimination:** **Emperor Ulysses** (Red Devels RB - ) — *Emperor Ulysses (Red Devels RB) died (Lynched)*
-- **Elimination:** **MrBlonde** (Red Devils Leader - ) — *MrBlonde (Red Devils Leader) died (Eliminated)*
-- **Elimination:** **Twitch** (East Side Doc - ) — *Twitch (East Side Doc) died (Eliminated)*
+#### Day 4
+The tension reached a breaking point as **Gamzee**, who stood as **Big Babies Doc** for the ****, fell (Lynched).
+The tension reached a breaking point as **Ordos**, who stood as **Dusty Diamond Leader** for the ****, fell (Lynched).
+The tension reached a breaking point as **Schniepel**, who stood as **East Side Leader** for the ****, fell (Lynched).
+The tension reached a breaking point as **niganati**, who stood as **Red Devils Doc** for the ****, fell (Eliminated).
 
-### Day 3
-
-- **Elimination:** **Goddess** (East Side RB - ) — *Goddess (East Side RB) died (Eliminated)*
-- **Elimination:** **Herb** (Dusty Diamond RB - ) — *Herb (Dusty Diamond RB) died (Lynched)*
-- **Elimination:** **Ohgren** (Wild Dogs Doc - ) — *Ohgren (Wild Dogs Doc) died (Eliminated)*
-- **Elimination:** **TBO** (Big Babies Leader - ) — *TBO (Big Babies Leader) died (Lynched)*
-- **Elimination:** **You_Fool** (Wild Docs RB - ) — *You_Fool (Wild Docs RB) died (Eliminated)*
-- **Elimination:** **sCriv** (Killer Kittens Leader - ) — *sCriv (Killer Kittens Leader) died (Eliminated)*
-
-### Day 4
-
-- **Elimination:** **Gamzee** (Big Babies Doc - ) — *Gamzee (Big Babies Doc) died (Lynched)*
-- **Elimination:** **Ordos** (Dusty Diamond Leader - ) — *Ordos (Dusty Diamond Leader) died (Lynched)*
-- **Elimination:** **Schniepel** (East Side Leader - ) — *Schniepel (East Side Leader) died (Lynched)*
-- **Elimination:** **niganati** (Red Devils Doc - ) — *niganati (Red Devils Doc) died (Eliminated)*
-
-### Day 5
-
-- **Elimination:** **Alex b** (big Babies RB - ) — *Alex b (big Babies RB) died (Lynched)*
-- **Elimination:** **Jets** (Wild Dogs Leader - ) — *Jets (Wild Dogs Leader) died (Lynched)*
-- **Elimination:** **The_Unknown** (Dead Presidents leader - ) — *The_Unknown (Dead Presidents leader) died (Lynched)*
-
----
-
-## 👥 Roster & Final Standings
-
-| Player | Role | Alignment | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Alex b** | big Babies RB | Unknown | Dead (Day 5 - Lynched) |
-| **Daichen** | Dusty Diamond Doc | Unknown | Dead (Day 2 - Eliminated) |
-| **Emperor Ulysses** | Red Devels RB | Unknown | Dead (Day 2 - Lynched) |
-| **Gamzee** | Big Babies Doc | Unknown | Dead (Day 4 - Lynched) |
-| **Goddess** | East Side RB | Unknown | Dead (Day 3 - Eliminated) |
-| **Herb** | Dusty Diamond RB | Unknown | Dead (Day 3 - Lynched) |
-| **Jets** | Wild Dogs Leader | Unknown | Dead (Day 5 - Lynched) |
-| **MrBlonde** | Red Devils Leader | Unknown | Dead (Day 2 - Eliminated) |
-| **Nolio** | Killer Kittens Doc | Unknown | Dead (Day 1 - Eliminated) |
-| **Ohgren** | Wild Dogs Doc | Unknown | Dead (Day 3 - Eliminated) |
-| **Ordos** | Dusty Diamond Leader | Unknown | Dead (Day 4 - Lynched) |
-| **Playboy** | Dead Presidents Doc | Unknown | Dead (Day 1 - Eliminated) |
-| **PunyPenguin** | Dead Presidents RB | Unknown | Dead (Day 1 - Lynched) |
-| **Schniepel** | East Side Leader | Unknown | Dead (Day 4 - Lynched) |
-| **Steel Beans** | Killer Kittens RB | Unknown | Dead (Day 1 - Eliminated) |
-| **TBO** | Big Babies Leader | Unknown | Dead (Day 3 - Lynched) |
-| **The_Unknown** | Dead Presidents leader | Unknown | Dead (Day 5 - Lynched) |
-| **Twitch** | East Side Doc | Unknown | Dead (Day 2 - Eliminated) |
-| **You_Fool** | Wild Docs RB | Unknown | Dead (Day 3 - Eliminated) |
-| **niganati** | Red Devils Doc | Unknown | Dead (Day 4 - Eliminated) |
-| **sCriv** | Killer Kittens Leader | Unknown | Dead (Day 3 - Eliminated) |
-
----
-
-### 🏆 Epilogue: Final Resolution
-
-When the conflict concluded, **Draw** secured the victory!
+#### Day 5
+The tension reached a breaking point as **Alex b**, who stood as **big Babies RB** for the ****, fell (Lynched).
+The tension reached a breaking point as **Jets**, who stood as **Wild Dogs Leader** for the ****, fell (Lynched).
+The tension reached a breaking point as **The_Unknown**, who stood as **Dead Presidents leader** for the ****, fell (Lynched).
 
 
-No players survived the conflict.
+### Epilogue: Final Resolution
+When the dust cleared, **Draw** stood triumphant! 
+
+Among the brave who lived to tell the tale:
+- No survivors remained.
+
+The record of Discord Mafia 1011: Arby's Gambit is thus etched into the permanent chronicle.

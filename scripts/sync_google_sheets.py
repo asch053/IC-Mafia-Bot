@@ -147,35 +147,35 @@ DISC_55_65_DATES = {
 }
 
 MANUAL_START_DATES = {
-    "998": "2019-08-04",
-    "999": "2019-08-11",
-    "1001": "2019-08-18",
-    "1002": "2019-08-25",
-    "1003": "2019-09-01",
-    "1004": "2019-09-08",
-    "1005": "2019-09-15",
-    "1006": "2019-09-22",
-    "1007": "2019-09-29",
-    "1008": "2019-10-06",
-    "1009": "2019-10-13",
-    "1010": "2019-10-20",
-    "1011": "2019-10-27",
-    "1012": "2019-11-03",
-    "1013": "2019-11-10",
-    "1014": "2019-11-17",
-    "1015": "2019-11-24",
-    "1016": "2019-12-01",
-    "1017": "2019-12-08",
-    "1018": "2019-12-15",
-    "1019": "2019-12-22",
-    "1020": "2019-12-29",
-    "1021": "2020-01-05",
-    "1022": "2020-01-12",
-    "1023": "2020-01-19",
-    "1024": "2020-01-26",
-    "1025": "2020-02-02",
-    "1026": "2020-02-09",
-    "1027": "2020-02-16"
+    "998": "2022-01-31",
+    "999": "2022-02-02",
+    "1001": "2022-02-23",
+    "1002": "2022-03-02",
+    "1003": "2022-03-27",
+    "1004": "2022-05-31",
+    "1005": "2023-01-04",
+    "1006": "2023-01-23",
+    "1007": "2023-02-05",
+    "1008": "2023-02-12",
+    "1009": "2023-02-18",
+    "1010": "2023-02-24",
+    "1011": "2023-03-01",
+    "1012": "2023-03-07",
+    "1013": "2023-03-19",
+    "1014": "2023-04-05",
+    "1015": "2023-05-27",
+    "1016": "2023-08-29",
+    "1017": "2023-09-16",
+    "1018": "2023-10-04",
+    "1019": "2023-12-03",
+    "1020": "2023-12-15",
+    "1021": "2023-12-23",
+    "1022": "2024-02-27",
+    "1023": "2025-07-02",
+    "1024": "2025-10-17",
+    "1025": "2025-10-31",
+    "1026": "2026-05-26",
+    "1027": "2026-06-01"
 }
 
 def get_useful_name(gid):
@@ -468,7 +468,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
                 str(g.get("era", default_era)),
                 str(g.get("title", "")),
                 str(g.get("start_date", "")),
-                str(g.get("moderator", "")),
+                str(g.get("author") or g.get("moderator", "")),
                 str(g.get("game_type", "classic")),
                 str(box.get("winning_faction", g.get("winning_faction", "Unknown"))),
                 len(roster),
@@ -491,23 +491,27 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
     sync_worksheet(sheet, "Discord_Bot", era_headers, bot_rows)
     sync_worksheet(sheet, "Discord_Manual", era_headers, manual_rows)
 
-    # 3. Master Games Tab
-    all_games = forum_games + discourse_games + discord_bot_games + discord_manual_games
+    # 3. Master Games Tab (Built from complete, chronologically sorted history_archive)
+    history_archive = load_json(os.path.join(WEBSITE_DATA_DIR, "history_archive.json"), [])
+    if not history_archive:
+        history_archive = load_json(os.path.join(DATA_DIR, "history_archive.json"), [])
+        
     master_game_headers = [
         "Game_ID", "Era", "Title", "Start_Date", "Moderator", "Game_Type", "Winning_Faction", 
         "Total_Players", "Total_Posts", "MVP_Player", "Summary_File", "Story_File"
     ]
     master_game_rows = []
-    for g in all_games:
+    for g in history_archive:
         box = g.get("box_score") or {}
         mvp = box.get("mvp") or {}
         roster = box.get("roster") or []
+        gid = str(g.get("game_id", "") or g.get("thread_id", ""))
         master_game_rows.append([
-            str(g.get("thread_id", "")),
+            gid,
             str(g.get("era", "Unknown")),
             str(g.get("title", "")),
             str(g.get("start_date", "")),
-            str(g.get("moderator", "")),
+            str(g.get("author") or g.get("moderator", "")),
             str(g.get("game_type", "classic")),
             str(box.get("winning_faction", g.get("winning_faction", "Unknown"))),
             len(roster),
@@ -527,13 +531,14 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
     user_map = load_json(os.path.join(WEBSITE_DATA_DIR, "master_user_map.json"), {})
     
     try:
-        from Website.build_unified_leaderboard import resolve_player_identity
+        from Website.build_unified_leaderboard import resolve_player_identity, CANONICAL_NAMES
     except ImportError:
+        CANONICAL_NAMES = {"216918396539764737": "Ordos"}
         def resolve_player_identity(name, pid, umap):
             return str(pid or f"historic_{name.lower().replace(' ', '_')}"), name
 
-    for g in all_games:
-        gid = str(g.get("thread_id", ""))
+    for g in history_archive:
+        gid = str(g.get("game_id", "") or g.get("thread_id", ""))
         era = str(g.get("era", "Unknown"))
         box = g.get("box_score") or {}
         roster = box.get("roster") or []
@@ -548,6 +553,9 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
                 is_win = (align.lower() == wf) if wf else False
             
             canonical_id, canonical_name = resolve_player_identity(raw_name, p.get("player_id"), user_map)
+            if canonical_id in CANONICAL_NAMES:
+                canonical_name = CANONICAL_NAMES[canonical_id]
+                
             master_player_rows.append([
                 gid,
                 era,
@@ -567,18 +575,24 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         "Game_ID", "Era", "Phase", "Voter_ID", "Voter_Name", "Target_ID", "Target_Name"
     ]
     master_vote_rows = []
-    for g in all_games:
-        gid = str(g.get("thread_id", ""))
+    for g in history_archive:
+        gid = str(g.get("game_id", "") or g.get("thread_id", ""))
         era = str(g.get("era", "Unknown"))
         for v in g.get("lynch_vote_history", []):
+            v_name = str(v.get("voter_name", ""))
+            t_name = str(v.get("target_name", ""))
+            v_id, v_cname = resolve_player_identity(v_name, v.get("voter_id"), user_map)
+            t_id, t_cname = resolve_player_identity(t_name, v.get("target_id"), user_map)
+            if v_id in CANONICAL_NAMES: v_cname = CANONICAL_NAMES[v_id]
+            if t_id in CANONICAL_NAMES: t_cname = CANONICAL_NAMES[t_id]
             master_vote_rows.append([
                 gid,
                 era,
                 str(v.get("phase", "")),
-                str(v.get("voter_id", "")),
-                str(v.get("voter_name", "")),
-                str(v.get("target_id", "")),
-                str(v.get("target_name", ""))
+                str(v_id),
+                str(v_cname),
+                str(t_id),
+                str(t_cname)
             ])
     if master_vote_rows:
         sync_worksheet(sheet, "Votes", master_vote_headers, master_vote_rows)

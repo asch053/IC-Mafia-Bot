@@ -409,7 +409,9 @@ It is now day phase. Everyone has until 2200hrs gmt 29 June to vote.
 
 ### Day 9
 
-Lurker had been going around the barracks talking about how if he was in charge this situation never would’ve happened and how he knew who the collaborators were from day 1. But everyone knew better than to listen to his drivel and decided it was time for him to die. They tied Luker to the winches on 4 different vehicles then started winding them in. As Luker’s arms and legs were torn from his torso and he was lying in a pool of his own blood the other townies realised as annoying as he was he’s innocent.
+Lurker had been going around the barracks talking about how if he was in charge this situation never would’ve happened and how he knew who the collaborators were from day 
+
+1. But everyone knew better than to listen to his drivel and decided it was time for him to die. They tied Luker to the winches on 4 different vehicles then started winding them in. As Luker’s arms and legs were torn from his torso and he was lying in a pool of his own blood the other townies realised as annoying as he was he’s innocent.
 
 Luker the townie is dead.
 

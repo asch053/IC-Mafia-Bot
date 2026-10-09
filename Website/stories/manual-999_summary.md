@@ -1,4 +1,4 @@
-# Discord Manual Mafia 999 Summary
+# Discord Mafia 999: Hydro's Syndicate Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** HydroP  

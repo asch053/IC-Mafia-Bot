@@ -63,9 +63,11 @@ Sidney Prescott- Main character, beloved by all her friends and those watching. 
 
 Clarice Starling- This new FBI agent is on the scene. Here to help town with her intellect and instinct. Cops get 1 investigation per night.
 
-Gale Weathers- This nosey reporter has used her skills to land her all the info she needs. She may not be a detective by trade but she sure is by heart. Gale gets to help out Clarice. She gets 1 extra investigation to be used during the night phase of her choice. Gale takes over investigations if clarice dies
+Gale Weathers
+- This nosey reporter has used her skills to land her all the info she needs. She may not be a detective by trade but she sure is by heart. Gale gets to help out Clarice. She gets 1 extra investigation to be used during the night phase of her choice. Gale takes over investigations if clarice dies
 
-Dr. Loomis- He may be a shrink but he’s got the healing touch. A shrink is exactly who you need around when there are a bunch of psychos running amok. Dr. Loomis can heal one person a night. If he heals Michael, Michael loses his 1 day kill. If he heals Jason he becomes town. Can’t heal the same person twice in a row, can heal himself.
+Dr. Loomis
+- He may be a shrink but he’s got the healing touch. A shrink is exactly who you need around when there are a bunch of psychos running amok. Dr. Loomis can heal one person a night. If he heals Michael, Michael loses his 1 day kill. If he heals Jason he becomes town. Can’t heal the same person twice in a row, can heal himself.
 
 Helen Shivers- she may be the easy girl around, every horror movie has one but she definitely knows how to put up a fight. Helen roleblocks one person per night.
 
@@ -165,9 +167,11 @@ Sidney Prescott- Main character, beloved by all her friends and those watching. 
 
 Clarice Starling- This new FBI agent is on the scene. Here to help town with her intellect and instinct. Cops get 1 investigation per night.
 
-Gale Weathers- This nosey reporter has used her skills to land her all the info she needs. She may not be a detective by trade but she sure is by heart. Gale gets to help out Clarice. She gets 1 extra investigation to be used during the night phase of her choice. Gale takes over investigations if clarice dies
+Gale Weathers
+- This nosey reporter has used her skills to land her all the info she needs. She may not be a detective by trade but she sure is by heart. Gale gets to help out Clarice. She gets 1 extra investigation to be used during the night phase of her choice. Gale takes over investigations if clarice dies
 
-Dr. Loomis- He may be a shrink but he’s got the healing touch. A shrink is exactly who you need around when there are a bunch of psychos running amok. Dr. Loomis can heal one person a night. If he heals Michael, Michael loses his 1 day kill. If he heals Jason he becomes town. Can’t heal the same person twice in a row, can heal himself.
+Dr. Loomis
+- He may be a shrink but he’s got the healing touch. A shrink is exactly who you need around when there are a bunch of psychos running amok. Dr. Loomis can heal one person a night. If he heals Michael, Michael loses his 1 day kill. If he heals Jason he becomes town. Can’t heal the same person twice in a row, can heal himself.
 
 Helen Shivers- she may be the easy girl around, every horror movie has one but she definitely knows how to put up a fight. Helen roleblocks one person per night.
 

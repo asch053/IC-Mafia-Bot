@@ -285,7 +285,13 @@ async def update_modular_database(game, game_data, final_summary, winner):
             try:
                 with open(db_path, "r", encoding="utf-8") as f:
                     bot_games = json.load(f)
-            except Exception:
+            except Exception as e:
+                logger.error(f"Failed to read existing database at {db_path}: {e}", exc_info=True)
+                import shutil
+                try:
+                    shutil.copy2(db_path, f"{db_path}.corrupt.bak")
+                except Exception:
+                    pass
                 bot_games = []
 
         existing_index = None
@@ -299,8 +305,10 @@ async def update_modular_database(game, game_data, final_summary, winner):
         else:
             bot_games.append(game_entry)
 
-        with open(db_path, "w", encoding="utf-8") as f:
+        temp_db_path = f"{db_path}.tmp"
+        with open(temp_db_path, "w", encoding="utf-8") as f:
             json.dump(bot_games, f, indent=2, ensure_ascii=False)
+        os.replace(temp_db_path, db_path)
         logger.info(f"Updated {db_path} with Game ID {game_id}.")
 
         # 5. Trigger website data update

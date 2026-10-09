@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1025 Summary
+# Discord Mafia 1025: Gwynedd's Revival Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Gwynedd  

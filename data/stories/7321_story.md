@@ -9,7 +9,9 @@ I have been watching the subjects closely. They all seem to have just ended a ga
 
 They seem to play this chat based game online with a bunch of random people.
 
-Mafia is a game played by the IC community on Discord, it has become a way of life, a sort of cult. They play, laugh, cry, get drunk, and rage.They mostly just get drunk and talk about NSFW things. The subjects love to hate each other and all secretly want to bang ( especially TU, he definitely wants to bang Ordos).
+Mafia is a game played by the IC community on Discord, it has become a way of life, a sort of cult. They play, laugh, cry, get drunk, and rage.
+
+They mostly just get drunk and talk about NSFW things. The subjects love to hate each other and all secretly want to bang ( especially TU, he definitely wants to bang Ordos).
 
 Most importantly, they have all become a family in their own right, every person playing their own unique role in the game and in the community. There is something that makes every one of them special, something that only they bring to the table.
 
@@ -31,7 +33,8 @@ Hydro - Town cop, has some weird uncanny 6th sense. He uses his intuition to sni
 
 Goddess- Town Roleblocker, she has the the ability to completely distract people from what is happening in the game and stay stealthily unnoticed while she does what she needs to do. Gets to block one person per night but cannot block the same person twice in a row.
 
-KT- Town Doc, lovely, sweet, innocent kt cares about all her mafia friends, she works hard to save them and they love her for it. She does so with her little pet kitty that follows her around. Gets 1 heal per night, cannot heal the same person twice in a row. If she cannot save them she sings them a little song to send them off to the afterlife.
+KT
+- Town Doc, lovely, sweet, innocent kt cares about all her mafia friends, she works hard to save them and they love her for it. She does so with her little pet kitty that follows her around. Gets 1 heal per night, cannot heal the same person twice in a row. If she cannot save them she sings them a little song to send them off to the afterlife.
 
 Tish- Starts off as normal innocent townie, Tish. If Nolio decides to troll (rb) her or Goddess Decides to send her cookies (rb) she becomes Big Tish ( see neutral roles).
 
@@ -43,21 +46,26 @@ Zarfy- pretends that he doesn’t want to play. He has been over the rules exact
 
 Mob:
 
-Daylight - Gf , has the option to put in a kill at night, whether or not he does it is up to him. He is super sneaky and if investigated will come back as town. Gets to put in 1 kill a night and assign which mob member carries it out. If he is killed his kill ability will be passed on to a random remaining mob member.
+Daylight
+- Gf , has the option to put in a kill at night, whether or not he does it is up to him. He is super sneaky and if investigated will come back as town. Gets to put in 1 kill a night and assign which mob member carries it out. If he is killed his kill ability will be passed on to a random remaining mob member.
 
 TBO- Mob Cop, sends his cows out once a night to figure out who someone is. Kind of like investigative homing pigeons. He plays a bad guy well, staying in the shadows easily, popping in every now and then but always watching in the dark to figure out who is who. Gets 1 investigation per night.
 
-Nolio- Mob Roleblocker, he is particularly good at eloquently writing his way around situations and figuring them out. He’s also always mob, even when he’s town. He uses this to do what he needs to do and stop others from doing what they need to. Gets to block one person per night but cannot block the same person twice in a row.
+Nolio
+- Mob Roleblocker, he is particularly good at eloquently writing his way around situations and figuring them out. He’s also always mob, even when he’s town. He uses this to do what he needs to do and stop others from doing what they need to. Gets to block one person per night but cannot block the same person twice in a row.
 
-Mrblonde- This sneaky mobbie is excellent at hiding in the shadows. He likes to hide behind telling people he is every role in the game and with memes. He used to be the meme kind, beloved by all for his entertaining qualities. Now, he’s mad that ordos has surpassed him in the meme department. That’s enough to make anyone a bad guy. Plain mobbie.
+Mrblonde
+- This sneaky mobbie is excellent at hiding in the shadows. He likes to hide behind telling people he is every role in the game and with memes. He used to be the meme kind, beloved by all for his entertaining qualities. Now, he’s mad that ordos has surpassed him in the meme department. That’s enough to make anyone a bad guy. Plain mobbie.
 
 The_Unknown- One of the few to have achieved the allusive flawless mob victory. Plain mobbie.
 
 Neutral Roles
 
-Jets- Serial Killer, his dream role comes to fruition, one way or another. He gets to be in a league all his own playing 4d mafia. Wearing his heart on his sleeve he plays his butt off and works to make-do with what he knows, which being in a faction all on his own is nothing. Nonetheless he uses his entertaining theories to throw people off his scent because he isn’t particularly sneaky, if investigated he comes back town. Gets 1 kill per night.
+Jets
+- Serial Killer, his dream role comes to fruition, one way or another. He gets to be in a league all his own playing 4d mafia. Wearing his heart on his sleeve he plays his butt off and works to make-do with what he knows, which being in a faction all on his own is nothing. Nonetheless he uses his entertaining theories to throw people off his scent because he isn’t particularly sneaky, if investigated he comes back town. Gets 1 kill per night.
 
-Big Tish- BIG TISH WILL DELETE YOU AND YOUR DOG IRL. She is on a team all on her own. If Tish gets roleblocked she becomes bug tish on day 3. She starts deleting people and their dogs from the game because they are annoying, she’s done with everyone’s sillyness, and she wants to. Come at her, bruh. Big Tish can decide to align herself with any of the factions to secure a win or she can win being the last one standing. Gets 1 kill per day phase starting on day 3, kill happens immediately.
+Big Tish
+- BIG TISH WILL DELETE YOU AND YOUR DOG IRL. She is on a team all on her own. If Tish gets roleblocked she becomes bug tish on day 3. She starts deleting people and their dogs from the game because they are annoying, she’s done with everyone’s sillyness, and she wants to. Come at her, bruh. Big Tish can decide to align herself with any of the factions to secure a win or she can win being the last one standing. Gets 1 kill per day phase starting on day 3, kill happens immediately.
 
 ---
 
@@ -95,7 +103,9 @@ The game has begun. I started it on an extended night phase to see how this part
 
 Either way some interesting developments happened within the game itself last night. It seems as though we have some actual killing going on, this was an unexpected development. I was quite taken aback by the discovery this morning. It seems as though not only did the serial killer known as Jets put in a kill last night he also carried it out. This has become interesting indeed. I found young wild wolf’s body early this morning as I was enjoying my morning coffee, walking over to start reviewing my notes from the day before. There he lay on the ground, in a pool of blood, something protruding out of his eye. It looks like a pen. I immediately took out my notebook to document this development, only to realize that my pen was missing, upon closer inspection it was my pen that had been taken. How peculiar and fascinating. I am using this opportunity to remind myself to be more vigilant, more careful.
 
-Coincidentally wild’s body wasn’t the only one I found this morning. My head was full after I found wild, I was excited to see where this would lead. As I was walking and talking to myself, making notes on my phone voice recorder since my pen had been taken, I noticed a sticky note stuck to the wall in front of me. I only noticed because I almost walked right into said wall. The note stated, “this way <------”
+Coincidentally wild’s body wasn’t the only one I found this morning. My head was full after I found wild, I was excited to see where this would lead. As I was walking and talking to myself, making notes on my phone voice recorder since my pen had been taken, I noticed a sticky note stuck to the wall in front of me. I only noticed because I almost walked right into said wall. The note stated, “this way <
+
+”
 
 So, I followed it. I came across 5 notes in total pointing me in the direction I was to go, although to be fair I wasn’t sure the notes were meant for me, I still followed. I am nothing if not curious. The last few notes had something smeared on them, it looked like dried blood but I couldn’t be too sure, until I saw her. Sweet, sweet KT (cxris) hung up by a rope, a note stabbed into her chest that read, “You can’t save everyone love, Nolio”. The town doctor was no more.
 

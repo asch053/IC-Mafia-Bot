@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1014 Summary
+# Discord Mafia 1014: Puny Penguin's Arctic Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** PunyPenguin  

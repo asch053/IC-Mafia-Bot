@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1023 Summary
+# Discord Mafia 1023: Goddess's Triumph Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Goddess  

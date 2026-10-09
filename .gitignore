@@ -67,3 +67,4 @@ htmlcov/
 *.base
 *.canvas
 /.obsidian
+.obsidian/workspace.json

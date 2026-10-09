@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1010 Summary
+# Discord Mafia 1010: Gamzee's Chaos Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Gamzee  

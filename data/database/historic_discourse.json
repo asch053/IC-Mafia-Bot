@@ -22,84 +22,96 @@
           "role": "Paul Bocuse",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Arby",
           "role": "Home Cook",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "ordos234",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "You_Fool",
           "role": "Nigella Lawson",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Swagga",
           "role": "Wolfgang Puck",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "TBO",
           "role": "Jamie Oliver",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "melvin",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": true
         },
         {
           "player": "MrBlonde",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": true
         },
         {
           "player": "Oldie",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": true
         },
         {
           "player": "thirdrock",
           "role": "Anton Ego",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 8"
+          "death_phase": "Day 8",
+          "is_winner": false
         },
         {
           "player": "Nolio",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 9"
+          "death_phase": "Night 9",
+          "is_winner": true
         },
         {
           "player": "Undeath",
           "role": "Townie",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -229,63 +241,72 @@
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": false
         },
         {
           "player": "Ordos",
           "role": "Infected Civilian",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "TU",
           "role": "Plain Civilian",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "MrBlonde",
           "role": "Infected Civilian",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Oldie",
           "role": "Infected Civilian",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Goddess",
           "role": "Plain Civilian",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": true
         },
         {
           "player": "Jets",
           "role": "Plain Civilian",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": true
         },
         {
           "player": "Sparky",
           "role": "Conspiracy Theorist",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "YouFool",
           "role": "Infected Civilian",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": "N/A"
+          "death_phase": null,
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -363,7 +384,8 @@
           "role": "Mafia",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -404,14 +426,16 @@
           "role": "Volunteer",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Mrblonde",
           "role": "Moderator",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -452,63 +476,72 @@
           "role": "Recruiter",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Mrs. Claus",
           "role": "Protector",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Scrooge",
           "role": "Killer/Antagonist",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 8"
+          "death_phase": "Day 8",
+          "is_winner": false
         },
         {
           "player": "Jack Frost",
           "role": "Leader/Killer",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 8"
+          "death_phase": "Day 8",
+          "is_winner": false
         },
         {
           "player": "Hans Gruber",
           "role": "Killer",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "Goddess",
           "role": "Yule Goat",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": true
         },
         {
           "player": "Ordos",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": true
         },
         {
           "player": "Frosty the Snowman",
           "role": "Amok",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "death_phase": "Night 6",
+          "is_winner": true
         },
         {
           "player": "Angry Elf",
           "role": "Protector",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -565,109 +598,184 @@
       },
       "roster": [
         {
+          "player": "Sunstorm",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Jets",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "KT",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "You_Fool",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": true,
+          "death_phase": "Night 1",
+          "death_cause": "Drugged and killed by Paul (SK)"
+        },
+        {
           "player": "Luker",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": true,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
         },
         {
-          "player": "Tish",
-          "role": "Ingrid (Doc)",
+          "player": "Tishxo",
+          "role": "Ingrid (Doctor)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "is_winner": true,
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Riley (Plain Mob)"
         },
         {
           "player": "Thirdrock",
           "role": "Sam (Godfather)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Lynched"
         },
         {
           "player": "TBO",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "is_winner": true,
+          "death_phase": "Night 3",
+          "death_cause": "Killed by Paul (SK)"
         },
         {
-          "player": "Blonde",
+          "player": "Mrblonde",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "is_winner": true,
+          "death_phase": "Night 3",
+          "death_cause": "Killed by Jordan (Plain Mob)"
         },
         {
-          "player": "Hydro",
-          "role": "Sawyer (Mob RB/GF)",
+          "player": "HydroP",
+          "role": "Sawyer (Mob Roleblocker)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "is_winner": false,
+          "death_phase": "Day 3",
+          "death_cause": "Lynched"
         },
         {
           "player": "Wild",
           "role": "Riley (Plain Mob)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 4"
+          "is_winner": false,
+          "death_phase": "Night 4",
+          "death_cause": "Killed by Paul (SK)"
         },
         {
           "player": "Oldie",
-          "role": "Rowan (Town RB)",
+          "role": "Rowan (Town Roleblocker)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 4"
+          "is_winner": true,
+          "death_phase": "Day 4",
+          "death_cause": "Lynched"
         },
         {
           "player": "Genesis",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "is_winner": true,
+          "death_phase": "Night 5",
+          "death_cause": "Killed by Louis (Mob)"
         },
         {
           "player": "Undeath",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "is_winner": true,
+          "death_phase": "Night 5",
+          "death_cause": "Killed by Paul (SK)"
         },
         {
           "player": "Soul",
-          "role": "Louis (GF)",
+          "role": "Louis (Mob)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "is_winner": false,
+          "death_phase": "Day 5",
+          "death_cause": "Lynched"
         },
         {
-          "player": "Arby",
-          "role": "Brendan (Cop)",
+          "player": "Arby3",
+          "role": "Brendan (Town Cop)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "is_winner": true,
+          "death_phase": "Night 6",
+          "death_cause": "Killed by Paul (SK)"
         },
         {
           "player": "Ordos",
           "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "is_winner": true,
+          "death_phase": "Night 6",
+          "death_cause": "Killed by Jordan (Mob)"
         },
         {
           "player": "NoobMasterTk69",
-          "role": "Paul (SK)",
-          "alignment": "Neutral",
+          "role": "Paul (Serial Killer)",
+          "alignment": "Serial Killer",
           "survived": false,
-          "death_phase": "Day 6"
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Lynched"
         },
         {
           "player": "TU",
-          "role": "Jordan (GF)",
+          "role": "Jordan (Godfather)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 6"
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Swagga",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": true,
+          "death_phase": "Day 1",
+          "death_cause": "Replaced / Inactive"
         }
       ],
       "timeline": [
@@ -751,56 +859,64 @@
           "role": "Elizabeth Palmer",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Oldie",
           "role": "Personality",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "You_Fool",
           "role": "Personality",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Ordos",
           "role": "Personality",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Thirdrock",
           "role": "George Mayer (Cop)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "death_phase": "Night 5",
+          "is_winner": false
         },
         {
           "player": "Damian Dark",
           "role": "Personality",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Spanky",
           "role": "Paul Edwards",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": false
         },
         {
           "player": "Charlie",
           "role": "Mafia Godfather",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -872,49 +988,56 @@
           "role": "TBO",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Cxris",
           "role": "Plain Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": true
         },
         {
           "player": "Hala",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Jenny Sparkles",
           "role": "Soul",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Wolfe Snow",
           "role": "Goddess",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Krissy Vaultman",
           "role": "Hydro",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "George Zoomer",
           "role": "Nolio",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -968,56 +1091,64 @@
           "role": "China / Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Stalin",
           "role": "Russia / Roleblocker",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Rama IX",
           "role": "Thailand / Doc",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Hồ Chí Minh",
           "role": "Vietnam / Suicider",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Donald Trump",
           "role": "America / GodFather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Hirohito",
           "role": "Japan / Roleblocker",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Kim Jong-un",
           "role": "North Korea / Serial Killer",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Saint Micheal",
           "role": "Vatican City / SK Replacement",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -1071,49 +1202,56 @@
           "role": "Plain Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "KT",
           "role": "Town Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Oldie",
           "role": "Plain Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": true
         },
         {
           "player": "Soul",
           "role": "Plain Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "Sunstorm",
           "role": "Plain Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": true
         },
         {
           "player": "The Unknown",
           "role": "Mobbie",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Hydro",
           "role": "Town Cop",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -1186,77 +1324,88 @@
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night Final"
+          "death_phase": "Night Final",
+          "is_winner": false
         },
         {
           "player": "Simon",
           "role": "Cop",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Dwight",
           "role": "Roleblocker",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Gavin",
           "role": "Hitman",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Rick Grimes",
           "role": "Leader",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": true
         },
         {
           "player": "Michonne",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "Daryl",
           "role": "Roleblocker",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Sasha",
           "role": "Special",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night Final"
+          "death_phase": "Night Final",
+          "is_winner": true
         },
         {
           "player": "Denise",
           "role": "Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "The Governor",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": "N/A"
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Eugene",
           "role": "Advisor",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -1318,53 +1467,184 @@
       },
       "roster": [
         {
-          "player": "Jets",
-          "role": "Alcoholic",
-          "alignment": "Neutral",
-          "survived": false,
-          "death_phase": "Day 1"
+          "player": "Mrblonde",
+          "role": "Health Freak (Mob)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
-          "player": "ZichtOpZee",
+          "player": "Amok",
+          "role": "Health Freak (Mob)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Jets",
+          "role": "Alcoholic",
+          "alignment": "Independent",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 5",
+          "death_cause": "Squashed and lynched"
+        },
+        {
+          "player": "ordos234",
+          "role": "BBQ-club member (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 6",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "oldie",
+          "role": "BBQ-club member (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 6",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "Melsfreefallin",
+          "role": "Moleman (Alcoholic)",
+          "alignment": "Independent",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 5",
+          "death_cause": "Killed by Mob with bowling ball"
+        },
+        {
+          "player": "thirdrock",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": false,
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Duffman"
         },
         {
           "player": "Goddess_of_the_Dead",
           "role": "Body Inspector",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "is_winner": false,
+          "death_phase": "Night 3",
+          "death_cause": "Killed by Mob"
         },
         {
-          "player": "Melsfreefallin",
-          "role": "Alcoholic",
-          "alignment": "Neutral",
+          "player": "Nai",
+          "role": "Zatte René",
+          "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "is_winner": false,
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "Tishxo",
+          "role": "BBQ-club member (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 6",
+          "death_cause": "Burned in bonfire by Mob"
+        },
+        {
+          "player": "ZichtOpZee",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Nolio",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 4",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "PickleGym",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 4",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Daylight",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 3",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Genesis",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 3",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "You_fool",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 4",
+          "death_cause": "Killed by Duffman"
+        },
+        {
+          "player": "Soul",
+          "role": "Alcoholic",
+          "alignment": "Independent",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Lynched"
         },
         {
           "player": "TheBigOne",
           "role": "Duffman (SK)",
-          "alignment": "Town",
+          "alignment": "Serial Killer",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": false,
+          "death_phase": "Day 4",
+          "death_cause": "Lynched"
         },
         {
           "player": "Cxris",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": false,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
         },
         {
           "player": "Melvin",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": false,
+          "death_phase": "Day 3",
+          "death_cause": "Lynched"
         }
       ],
       "timeline": [
@@ -1418,28 +1698,32 @@
           "role": "Roleblocker",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Xiomara Myers",
           "role": "Backup Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Zarah Myers",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 5"
+          "death_phase": "Night 5",
+          "is_winner": false
         },
         {
           "player": "Sarah Humphrey",
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -1477,18 +1761,85 @@
       },
       "roster": [
         {
-          "player": "ZoZ",
-          "role": "Plain Mob",
+          "player": "Goddess_of_the_Dead",
+          "role": "Pops (Godfather)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Sunstorm",
+          "role": "Plain Town",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": false,
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Mother-in-Law (SK)"
+        },
+        {
+          "player": "Nai",
+          "role": "Father-in-law (Backup SK)",
+          "alignment": "Serial Killer",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 1",
+          "death_cause": "Killed by Pops (GF)"
+        },
+        {
+          "player": "Melvin",
+          "role": "Plain Mob",
+          "alignment": "Mafia",
+          "survived": false,
+          "is_winner": true,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Jets",
+          "role": "Plain Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
+        },
+        {
+          "player": "Oldie",
+          "role": "Plain Town",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Mother-in-Law (SK)"
+        },
+        {
+          "player": "Ordos",
+          "role": "Mother (Doctor)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 2",
+          "death_cause": "Killed by Mob"
+        },
+        {
+          "player": "ZoZ",
+          "role": "Plain Mob",
+          "alignment": "Mafia",
+          "survived": false,
+          "is_winner": true,
+          "death_phase": "Day 2",
+          "death_cause": "Lynched"
         },
         {
           "player": "Rizzy",
           "role": "Plain Mob",
-          "alignment": "Town",
+          "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": true,
+          "death_phase": "Day 2",
+          "death_cause": "Mod-killed for inactivity"
         }
       ],
       "timeline": [
@@ -1536,21 +1887,24 @@
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Ordos",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "The_Unknown",
           "role": "Unknown",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -1598,42 +1952,48 @@
           "role": "Speaker (Supplanted)",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Rizzy",
           "role": "Agent of Death",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "Tenme",
           "role": "Assassin",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "Tishxo",
           "role": "Jailer",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "Oldie",
           "role": "Speaker",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "RandO",
           "role": "Speaker",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -1690,45 +2050,57 @@
       "roster": [
         {
           "player": "Tishxo",
-          "role": "Mob",
-          "alignment": "Mafia",
-          "survived": false,
-          "death_phase": "Day 1"
+          "role": "Town Cop",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Torqez",
-          "role": "Cop",
+          "role": "Town Doctor",
           "alignment": "Town",
-          "survived": false,
-          "death_phase": "Night 1"
-        },
-        {
-          "player": "ZoZ",
-          "role": "Plain Town",
-          "alignment": "Town",
-          "survived": false,
-          "death_phase": "Day 2"
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "TheBigOne",
-          "role": "Plain Town",
+          "role": "Townie",
           "alignment": "Town",
-          "survived": false,
-          "death_phase": "Day 2"
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "ZoZ",
+          "role": "Townie",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Genesis",
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Endgame"
+          "is_winner": false,
+          "death_phase": "Day 4",
+          "death_cause": "Abstained and conceded"
         },
         {
           "player": "Mrblonde",
-          "role": "Mob",
+          "role": "Plain Mob",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Endgame"
+          "is_winner": false,
+          "death_phase": "Day 4",
+          "death_cause": "Chopping block / conceded"
         }
       ],
       "timeline": [
@@ -1811,39 +2183,148 @@
       },
       "roster": [
         {
-          "player": "Sandy Brown",
-          "role": "Beta Tester",
-          "alignment": "Town",
-          "survived": false,
-          "death_phase": "Night 1"
+          "player": "The_Unknown",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         },
         {
-          "player": "Brad York",
-          "role": "Beta Tester",
+          "player": "ZichtOpZee",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Thirdrock",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Xenon",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Soul",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Tishxo",
+          "role": "Developer Mob Team (DMT)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "You_Fool",
+          "role": "Diego Sanchez (Beta Tester)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Grenade tied in mouth / lynched"
+        },
+        {
+          "player": "Kratom",
+          "role": "Beta Tester (Plain Townie)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Blast zone / lynched"
+        },
+        {
+          "player": "Undeath",
+          "role": "Beta Tester (Plain Townie)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 3",
+          "death_cause": "Slit throat in casino by Harry Greenstone (Mob)"
+        },
+        {
+          "player": "Melsfreefallin",
+          "role": "Officer Gary Popin (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 3",
+          "death_cause": "Shot twice in face by Gina Davis (Mob)"
+        },
+        {
+          "player": "Masse",
+          "role": "Beta Tester (Plain Townie)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 4",
+          "death_cause": "AFK lynched"
+        },
+        {
+          "player": "Mrblonde",
+          "role": "Sandy Brown (Beta Tester)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 5",
+          "death_cause": "Shot herself testing respawn bug"
+        },
+        {
+          "player": "Oldie",
+          "role": "Brad York (Beta Tester)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 5",
+          "death_cause": "Brawled and killed in strip club by Mob"
         },
         {
           "player": "Torqez",
           "role": "Beta Tester",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Killed by TBO in arena pit"
         },
         {
-          "player": "TBO",
+          "player": "TheBigOne",
           "role": "Beta Tester",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Eaten by lions in arena pit"
         },
         {
           "player": "Nai",
           "role": "Beta Tester",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "is_winner": false,
+          "death_phase": "Day 6",
+          "death_cause": "Eaten by lions in arena pit"
         }
       ],
       "timeline": [
@@ -1909,35 +2390,40 @@
           "role": "The Reaper",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Pollux",
           "role": "Soldier",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Cassius au Bellona",
           "role": "Leader",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "End of Game"
+          "death_phase": "End of Game",
+          "is_winner": false
         },
         {
           "player": "The Jackal",
           "role": "Leader",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "End of Game"
+          "death_phase": "End of Game",
+          "is_winner": false
         },
         {
           "player": "Missy",
           "role": "Student",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -1969,7 +2455,7 @@
     "moderator": "Tishxo",
     "game_type": "classic",
     "total_posts": 15,
-    "winning_faction": "Neutral",
+    "winning_faction": "Mafia",
     "summary_file": "stories/6930_summary.md",
     "story_file": "stories/6930_story.md",
     "box_score": {
@@ -1981,25 +2467,67 @@
       },
       "roster": [
         {
-          "player": "Jimmy 'Jigsaw'",
-          "role": "Townie",
+          "player": "Jets",
+          "role": "Jimmy 'Jigsaw' (Psychos Mob)",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": false,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Tishxo",
+          "role": "Psychos Mob",
+          "alignment": "Mafia",
+          "survived": true,
+          "is_winner": false,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "HydroP",
+          "role": "Chess Club Nerd (Town)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "is_winner": false,
+          "death_phase": "Night 1",
+          "death_cause": "Hacked to pieces with chainsaw by Leatherface"
+        },
+        {
+          "player": "Genesis",
+          "role": "High School Student (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 1",
+          "death_cause": "Murdered in cemetery"
+        },
+        {
+          "player": "You_Fool",
+          "role": "Sidney Prescott (Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Night 3",
+          "death_cause": "Ambushed after window incident"
+        },
+        {
+          "player": "Nai",
+          "role": "Mr. Nai (Teacher - Town)",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 2",
+          "death_cause": "Lynched"
         },
         {
           "player": "Kristy",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Pre-game/Night 0"
-        },
-        {
-          "player": "Ron",
-          "role": "Townie",
-          "alignment": "Town",
-          "survived": false,
-          "death_phase": "Pre-game/Night 0"
+          "is_winner": false,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched"
         }
       ],
       "timeline": [
@@ -2040,35 +2568,40 @@
           "role": "Kelly Alba (Political Hopeful)",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Ephralia",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day Final"
+          "death_phase": "Day Final",
+          "is_winner": true
         },
         {
           "player": "Oldie",
           "role": "Townie",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Swagga",
           "role": "Jessica Jones (Mob Roleblocker)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day Final"
+          "death_phase": "Day Final",
+          "is_winner": false
         },
         {
           "player": "Genesis",
           "role": "Vito Barzini (Godfather)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day Final"
+          "death_phase": "Day Final",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2119,10 +2652,102 @@
       "roster": [
         {
           "player": "Daylight",
-          "role": "Graduate / Job Seeker",
+          "role": "Unemployed Graduate",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "is_winner": true,
+          "death_phase": "Night 1",
+          "death_cause": "Disappeared in Times Square / lost job hunt"
+        },
+        {
+          "player": "Jets",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "TheBigOne",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Genesis",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Mrblonde",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Ordos",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Torqez",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Tishxo",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Undeath",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "ZoZ",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Soul",
+          "role": "Employed Graduate",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
         }
       ],
       "timeline": [
@@ -2164,63 +2789,72 @@
           "role": "Head Mod",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": true
         },
         {
           "player": "Stefan",
           "role": "Developer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Master Mike",
           "role": "Developer",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "TBO (I Like Pie)",
           "role": "Former Mod",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "Big Gary",
           "role": "Spammer",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Jets",
           "role": "Noob/Multi",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Zoz (Cloud)",
           "role": "Pinwheel Vet",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Random",
           "role": "Noob",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Thirdrock",
           "role": "Noob/Multi",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2293,154 +2927,176 @@
           "role": "Ordinary Mob",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "thirdrock",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "KT",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": false
         },
         {
           "player": "TBO",
           "role": "Vercingetorix (Backup Cop)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": false
         },
         {
           "player": "Tishxo",
           "role": "Priestess",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "Ordos234",
           "role": "Livia (Serial Killer)",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "TU",
           "role": "Caesar (Godfather)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "HydroP",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "player1",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Goddess of the Dead",
           "role": "Spartacus",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Jets",
           "role": "Pompey (Roleblocker)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Tortoise",
           "role": "Town Cop 1",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Mels",
           "role": "Mob Roleblocker",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Torqez",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "death_phase": "Night 5",
+          "is_winner": false
         },
         {
           "player": "GenesisMelvin85",
           "role": "Town Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Nai",
           "role": "Quaestor (Town Cop 2)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Kratom",
           "role": "Spartacus",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "Daylight",
           "role": "Ordinary Mob",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "SwaggaNolio",
           "role": "Spartacus",
           "alignment": "Neutral",
           "survived": true,
-          "death_phase": "N/A"
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Oldie",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": false
         },
         {
           "player": "Dukey",
           "role": "Brutus Germanicus (Mob)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": false
         },
         {
           "player": "Undeathyoufool",
           "role": "Cleomobtra (Suicider Mob)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2494,63 +3150,72 @@
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "Lionel Smith",
           "role": "Mafia",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Eric O'Grady",
           "role": "Mafia",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": true
         },
         {
           "player": "Harry",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Barry",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 6"
+          "death_phase": "Night 6",
+          "is_winner": false
         },
         {
           "player": "Inspector Kelly",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Doctor Jane Pain",
           "role": "Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Xin Lee",
           "role": "DA",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "Abu el Banat",
           "role": "PI",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "death_phase": "Night 6",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2623,42 +3288,48 @@
           "role": "Town Cop",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Methuselah",
           "role": "Roleblocker",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Azli'el",
           "role": "Roleblocker",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Anak",
           "role": "Serial Killer/Antagonist",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Judi'el",
           "role": "Divided",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": false
         },
         {
           "player": "Mob",
           "role": "Divided",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2712,70 +3383,80 @@
           "role": "Town Mayor",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "Jesse James",
           "role": "Gang Leader",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "John Wesley Hardin",
           "role": "Gang Roleblock",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Billy the Kid",
           "role": "Gang Gunfighter",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Bill Longley",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Wyatt Earp",
           "role": "Town Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": true
         },
         {
           "player": "Bat Masterson",
           "role": "Town Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "Wild Bill Hickok",
           "role": "Town Gunfighter",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": true
         },
         {
           "player": "Big Nose Kate",
           "role": "Town Roleblock",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": true
         },
         {
           "player": "Butch Cassidy",
           "role": "Gang Member",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -2883,189 +3564,216 @@
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 0"
+          "death_phase": "Night 0",
+          "is_winner": true
         },
         {
           "player": "Mr Blonde",
           "role": "Backup Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Lethal",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Ordos",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": true
         },
         {
           "player": "Dr Harry Cox",
           "role": "Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": true
         },
         {
           "player": "Tishxo",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "KT",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "Dukey",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": false
         },
         {
           "player": "Melvin",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": true
         },
         {
           "player": "Nai",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Jets",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": true
         },
         {
           "player": "You Fool",
           "role": "Backup Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": true
         },
         {
           "player": "Goddess of the Dead",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Thirdrock",
           "role": "Survivor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 5"
+          "death_phase": "Night 5",
+          "is_winner": true
         },
         {
           "player": "ZoZ",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Melsfreefallin",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "death_phase": "Night 6",
+          "is_winner": true
         },
         {
           "player": "HydroP",
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "Daylight",
           "role": "Suicider",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": true
         },
         {
           "player": "TBO",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 7"
+          "death_phase": "Night 7",
+          "is_winner": false
         },
         {
           "player": "Torqez",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "Nolio",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 8"
+          "death_phase": "Night 8",
+          "is_winner": true
         },
         {
           "player": "Kratom",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 8"
+          "death_phase": "Day 8",
+          "is_winner": true
         },
         {
           "player": "Genesis",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 9"
+          "death_phase": "Night 9",
+          "is_winner": true
         },
         {
           "player": "Luker",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 9"
+          "death_phase": "Day 9",
+          "is_winner": true
         },
         {
           "player": "TU",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 10"
+          "death_phase": "Night 10",
+          "is_winner": true
         },
         {
           "player": "Rizzy",
           "role": "Collaborator",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 10"
+          "death_phase": "Day 10",
+          "is_winner": false
         },
         {
           "player": "Zeraph",
           "role": "Townie",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -3137,49 +3845,56 @@
           "role": "Sheriff",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": true
         },
         {
           "player": "Dr. Darius Robins",
           "role": "Crazy Doctor",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Night 1"
+          "death_phase": "Night 1",
+          "is_winner": false
         },
         {
           "player": "Janice Jacobsson",
           "role": "Citizen",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "Jimmy McGarty",
           "role": "Citizen",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": true
         },
         {
           "player": "A-10",
           "role": "Citizen",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Endgame"
+          "death_phase": "Endgame",
+          "is_winner": true
         },
         {
           "player": "Player 1",
           "role": "CIA",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Endgame"
+          "death_phase": "Endgame",
+          "is_winner": false
         },
         {
           "player": "Truck Johnson",
           "role": "Deputy",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Endgame"
+          "death_phase": "Endgame",
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -3251,56 +3966,64 @@
           "role": "Ebony Maw",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "SupCom",
           "role": "Citizen",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "Sushi",
           "role": "Citizen (Soul Stone)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": true
         },
         {
           "player": "Undeath",
           "role": "The Collector",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Genesis",
           "role": "Citizen (Power Stone)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": true
         },
         {
           "player": "Nai",
           "role": "Citizen (Power Stone)",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": true
         },
         {
           "player": "TU",
           "role": "Red Skull",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "Rizzy",
           "role": "Thor Odinson",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": true
         }
       ],
       "timeline": [
@@ -3373,56 +4096,64 @@
           "role": "Godfather",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 8"
+          "death_phase": "Night 8",
+          "is_winner": false
         },
         {
           "player": "Azmadi",
           "role": "Bodyguard",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 3"
+          "death_phase": "Night 3",
+          "is_winner": true
         },
         {
           "player": "Nai",
           "role": "Roleblocker",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "I_like_pie",
           "role": "Mafia",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 4"
+          "death_phase": "Night 4",
+          "is_winner": false
         },
         {
           "player": "KT",
           "role": "Mafia",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "thirdrock",
           "role": "Cop (Hidden)",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": true
         },
         {
           "player": "The_Unknown",
           "role": "Good Knight",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 8"
+          "death_phase": "Night 8",
+          "is_winner": true
         },
         {
           "player": "Sushi",
           "role": "Braeden Rhysling",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 8"
+          "death_phase": "Night 8",
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -3482,56 +4213,64 @@
           "role": "Unknown",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Unknown"
+          "death_phase": "Unknown",
+          "is_winner": false
         },
         {
           "player": "Goddess_of_the_Dead",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Tishxo",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Luker",
           "role": "Unknown",
           "alignment": "Mafia",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Arby3",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "TBO",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Mrblonde",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         },
         {
           "player": "Ordos234",
           "role": "Unknown",
           "alignment": "Town",
           "survived": true,
-          "death_phase": null
+          "death_phase": null,
+          "is_winner": false
         }
       ],
       "timeline": [
@@ -3575,105 +4314,120 @@
           "role": "Godfather (The Pope)",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 6"
+          "death_phase": "Day 6",
+          "is_winner": false
         },
         {
           "player": "TheBigOne",
           "role": "Salvatore Greco",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 5"
+          "death_phase": "Day 5",
+          "is_winner": false
         },
         {
           "player": "MTG_Dad",
           "role": "Piddu Greco",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Night 5"
+          "death_phase": "Night 5",
+          "is_winner": false
         },
         {
           "player": "Luker",
           "role": "Ciaschiteddu Greco",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Nolio",
           "role": "Pietro Greco",
           "alignment": "Mafia",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "Suicidal",
           "role": "Serial Killer",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "Translucent",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "Genesis",
           "role": "Cop",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 2"
+          "death_phase": "Night 2",
+          "is_winner": false
         },
         {
           "player": "EvilRunt",
           "role": "Wild Card",
           "alignment": "Neutral",
           "survived": false,
-          "death_phase": "Day 1"
+          "death_phase": "Day 1",
+          "is_winner": false
         },
         {
           "player": "You_fool",
           "role": "Doctor",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "HydroP",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 3"
+          "death_phase": "Day 3",
+          "is_winner": false
         },
         {
           "player": "Ordos234",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 4"
+          "death_phase": "Day 4",
+          "is_winner": false
         },
         {
           "player": "Rizzy",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Night 6"
+          "death_phase": "Night 6",
+          "is_winner": false
         },
         {
           "player": "Arby",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 7"
+          "death_phase": "Day 7",
+          "is_winner": false
         },
         {
           "player": "NolioMissy",
           "role": "Townie",
           "alignment": "Town",
           "survived": false,
-          "death_phase": "Day 2"
+          "death_phase": "Day 2",
+          "is_winner": false
         }
       ],
       "timeline": [

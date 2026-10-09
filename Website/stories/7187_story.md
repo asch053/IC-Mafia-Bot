@@ -35,7 +35,8 @@ Dr. Jack (Doc) - Each night, the Doc may select one player to heal. The chosen p
 
 - 
 
-Shelly Tirfy (Roleblocker) - Every night phase, the Roleblocker will choose one player, rendering that player’s night time abilities useless for that night. He cannot choose the same player two nights in a row. The Roleblocker will not be informed if they have blocked a role (exception: if a roleblocker blocks a night kill, the fact that a night kill was blocked by a roleblocker would be made publicly known). The roleblocker may not select the same person two nights in a row. -
+Shelly Tirfy (Roleblocker)
+- Every night phase, the Roleblocker will choose one player, rendering that player’s night time abilities useless for that night. He cannot choose the same player two nights in a row. The Roleblocker will not be informed if they have blocked a role (exception: if a roleblocker blocks a night kill, the fact that a night kill was blocked by a roleblocker would be made publicly known). The roleblocker may not select the same person two nights in a row. -
 
 Mob roles:
 
@@ -43,11 +44,13 @@ All members of the mob will be placed in a Discord server of their own.
 
 - 
 
-Sarah Humphrey (Godfather) - Each night, the Godfather may choose one player to kill and one member of the mob to conduct the kill. If the Godfather fails to include who will be conducting the kill, the Godfather is assumed to be conducting the kill. The Godfather cannot be killed at night. If the cop investigates the Godfather, the Godfather will appear as a Townie. If GF dies, kills get passed on.
+Sarah Humphrey (Godfather)
+- Each night, the Godfather may choose one player to kill and one member of the mob to conduct the kill. If the Godfather fails to include who will be conducting the kill, the Godfather is assumed to be conducting the kill. The Godfather cannot be killed at night. If the cop investigates the Godfather, the Godfather will appear as a Townie. If GF dies, kills get passed on.
 
 - 
 
-Donald Smith (Mob roleblocker) - Every night phase, the Mob Roleblocker will choose one player, rendering that player’s night time abilities useless for that night. He cannot choose the same player two nights in a row. The Mob Roleblocker will not be informed if they have blocked a role (exception: if a roleblocker blocks a character conducting a night kill, the fact that a night kill was blocked by a roleblocker would be made publicly known). The roleblocker may not select the same person two nights in a row.
+Donald Smith (Mob roleblocker)
+- Every night phase, the Mob Roleblocker will choose one player, rendering that player’s night time abilities useless for that night. He cannot choose the same player two nights in a row. The Mob Roleblocker will not be informed if they have blocked a role (exception: if a roleblocker blocks a character conducting a night kill, the fact that a night kill was blocked by a roleblocker would be made publicly known). The roleblocker may not select the same person two nights in a row.
 
 -Cory Chance ( Employee of the Month)- Gets a one time day time kill.
 

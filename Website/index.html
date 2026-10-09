@@ -9,6 +9,7 @@
     <script src="js/api.js?v=2"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
     <style>
         :root {
             --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575;
@@ -56,6 +57,55 @@
         .win-badge { background: rgba(255, 215, 0, 0.15); color: var(--gold); padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .rank-col { font-weight: bold; color: var(--orange); width: 40px; }
 
+        /* Era Filter Buttons */
+        .era-filter-group { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+        .era-filter-btn {
+            background: #232323;
+            border: 1px solid #444;
+            color: #ccc;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .era-filter-btn:hover {
+            background: #333;
+            color: #fff;
+            border-color: #666;
+        }
+        .era-filter-btn.active {
+            background: rgba(255, 255, 255, 0.12);
+            color: #fff;
+            border-color: var(--btn-accent, var(--gold));
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.25);
+        }
+
+        /* Chart View Mode Toggle */
+        .chart-mode-btn {
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            padding: 4px 11px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border-radius: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chart-mode-btn:hover {
+            color: #fff;
+        }
+        .chart-mode-btn.active {
+            background: #333;
+            color: var(--gold);
+            box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
         /* Dark Mode Select Dropdown */
         .record-selector { width: 100%; background: var(--input-bg); color: white; border: 1px solid #444; padding: 12px; font-size: 16px; border-radius: 5px; margin-bottom: 20px; cursor: pointer; }
         .record-selector optgroup { background: var(--bg); color: var(--muted); font-style: normal; font-weight: bold; }
@@ -81,43 +131,84 @@
     <div id="loader"><div class="spinner"></div><p>Accessing Archives...</p></div>
 
     <div id="view-records" class="hidden">
-        <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
-            <h2 style="margin-bottom: 5px;">🏆 The Mafia Hall of Records</h2>
-            
-            <p style="color: var(--muted); margin-top: 0; margin-bottom: 20px; font-style: italic;">
-                *Statistics calculated from Classic Mode games only*
-            </p>
+        <div class="card" style="max-width: 900px; margin: 0 auto;">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="margin-bottom: 5px;">🏆 The Mafia Hall of Records</h2>
+                <p style="color: var(--muted); margin: 0; font-style: italic;">
+                    *Statistics calculated from Classic Mode games only*
+                </p>
+            </div>
 
-            <select id="metricSelector" class="record-selector" onchange="renderRecordsTable()" style="text-align: left;">
-                <optgroup label="Competitive Ratings">
-                    <option value="skill">Top 10: Overall Skill Score</option>
-                    <option value="survivor">Greatest Survivor (Highest Survival %)</option>
-                    <option value="redshirt">Red Shirt (Highest Death Rate)</option>
-                    <option value="accuracy">Best Scumhunter (Highest Vote Accuracy %)</option>
-                </optgroup>
-                <optgroup label="Participation & Outcomes">
-                    <option value="games_played">Most Games Played</option>
-                    <option value="wins">Most Wins</option>
-                    <option value="losses">Most Losses</option>
-                </optgroup>
-                <optgroup label="Faction Loyalty">
-                    <option value="town_games">Most Town Games</option>
-                    <option value="mob_games">Most Mafia Games</option>
-                    <option value="sk_games">Most Neutral/SK Games</option>
-                    <option value="plain_town">Most Plain Townie</option>
-                </optgroup>
-                <optgroup label="Faction Success">
-                    <option value="town_wins">Most Town Wins</option>
-                    <option value="mob_wins">Most Mafia Wins</option>
-                    <option value="sk_wins">Most Neutral/SK Wins</option>
-                </optgroup>
-                <optgroup label="Tragedy & Death">
-                    <option value="lynched">Most Times Lynched</option>
-                    <option value="d1_lynched">Most Day 1 Lynches</option>
-                    <option value="night_deaths">Most Total Night Deaths</option>
-                    <option value="n1_deaths">Most Night 1 Deaths</option>
-                </optgroup>
-            </select>
+            <!-- Controls Panel -->
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid #333; border-radius: 8px; padding: 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 14px;">
+                
+                <!-- Metric Dropdown -->
+                <div>
+                    <label style="display: block; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px;">Record Category & Metric</label>
+                    <select id="metricSelector" class="record-selector" onchange="renderRecordsTable()" style="margin-bottom: 0;">
+                        <optgroup label="Competitive Ratings">
+                            <option value="skill">Top 10: Overall Skill Score</option>
+                            <option value="survivor">Greatest Survivor (Highest Survival %)</option>
+                            <option value="redshirt">Red Shirt (Highest Death Rate)</option>
+                            <option value="accuracy">Best Scumhunter (Highest Vote Accuracy %)</option>
+                        </optgroup>
+                        <optgroup label="Participation & Outcomes">
+                            <option value="games_played">Most Games Played</option>
+                            <option value="wins">Most Wins</option>
+                            <option value="losses">Most Losses</option>
+                        </optgroup>
+                        <optgroup label="Faction Loyalty">
+                            <option value="town_games">Most Town Games</option>
+                            <option value="mob_games">Most Mafia Games</option>
+                            <option value="sk_games">Most Neutral/SK Games</option>
+                            <option value="plain_town">Most Plain Townie</option>
+                        </optgroup>
+                        <optgroup label="Faction Success">
+                            <option value="town_wins">Most Town Wins</option>
+                            <option value="mob_wins">Most Mafia Wins</option>
+                            <option value="sk_wins">Most Neutral/SK Wins</option>
+                        </optgroup>
+                        <optgroup label="Tragedy & Death">
+                            <option value="lynched">Most Times Lynched</option>
+                            <option value="d1_lynched">Most Day 1 Lynches</option>
+                            <option value="night_deaths">Most Total Night Deaths</option>
+                            <option value="n1_deaths">Most Night 1 Deaths</option>
+                        </optgroup>
+                    </select>
+                </div>
+
+                <!-- Era and Min Games Filters Row -->
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px;">
+                    <!-- Era Filter Pills -->
+                    <div style="flex: 1; min-width: 280px;">
+                        <label style="display: block; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px;">Filter by Era</label>
+                        <div class="era-filter-group" id="recordsEraFilters">
+                            <button class="era-filter-btn active" data-records-era="all" onclick="setRecordsEra('all')" style="--btn-accent:var(--gold);">🌟 All Eras</button>
+                            <button class="era-filter-btn" data-records-era="Forum" onclick="setRecordsEra('Forum')" style="--btn-accent:#ffb74d;">🏛️ Forum</button>
+                            <button class="era-filter-btn" data-records-era="Discourse" onclick="setRecordsEra('Discourse')" style="--btn-accent:#64b5f6;">📜 Discourse</button>
+                            <button class="era-filter-btn" data-records-era="Discord_Manual" onclick="setRecordsEra('Discord_Manual')" style="--btn-accent:#81c784;">✍️ Manual</button>
+                            <button class="era-filter-btn" data-records-era="Discord" onclick="setRecordsEra('Discord')" style="--btn-accent:#ba68c8;">🤖 Bot</button>
+                        </div>
+                    </div>
+
+                    <!-- Min Games Filter Pills -->
+                    <div>
+                        <label style="display: block; font-size: 0.75rem; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); margin-bottom: 6px;">Minimum Games</label>
+                        <div class="era-filter-group" id="recordsMinGamesFilters">
+                            <button class="era-filter-btn" data-min-games="0" onclick="setRecordsMinGames(0)">0</button>
+                            <button class="era-filter-btn active" data-min-games="10" onclick="setRecordsMinGames(10)">10</button>
+                            <button class="era-filter-btn" data-min-games="15" onclick="setRecordsMinGames(15)">15</button>
+                            <button class="era-filter-btn" data-min-games="20" onclick="setRecordsMinGames(20)">20</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Active Filter Badge / Subtitle -->
+            <div id="recordsFilterIndicator" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center;">
+                <span id="recordsFilterText">Showing top players across <strong>All Eras</strong> with <strong>10+ games</strong></span>
+                <span id="recordsPlayerPoolCount" style="color: #888;"></span>
+            </div>
 
             <div class="table-wrap">
                 <table id="recordsTable">
@@ -142,20 +233,97 @@
             <div class="stat-box" style="border-color: var(--grey);"><div class="sb-title">Draws/Other</div><div class="sb-val" id="c-draw">0</div><div class="sb-sub" id="c-draw-pct">0%</div></div>
         </div>
         <div class="card">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
-                <h2 style="margin:0;">📈 Meta History (All 202 Classic Games)</h2>
-                <div style="font-size:12px; color:#aaa; display:flex; gap:12px; align-items:center;">
-                    <span><span style="color:#ffb74d;">■</span> Forum Era (1-84)</span>
-                    <span><span style="color:#64b5f6;">■</span> Discourse (85-119)</span>
-                    <span><span style="color:#81c784;">■</span> Discord Manual (120-148)</span>
-                    <span><span style="color:#ba68c8;">■</span> Discord Bot (149-202)</span>
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
+                <div>
+                    <h2 style="margin:0;" id="classic-chart-title">📈 Meta History: All Classic Games (140 Games)</h2>
+                    <div id="classic-chart-subtitle" style="font-size:12px; color:var(--muted); margin-top:3px;">
+                        Cumulative faction win rates across all eras (2008 – Present)
+                    </div>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                    <div style="display:flex; gap:2px; background:#222; padding:3px; border-radius:20px; border:1px solid #444;">
+                        <button id="btn-chart-line" class="chart-mode-btn active" onclick="setClassicChartMode('line')">📈 Win Rates</button>
+                        <button id="btn-chart-stack" class="chart-mode-btn" onclick="setClassicChartMode('stacked')">📊 100% Share</button>
+                    </div>
+                    <div class="era-filter-group" id="classicEraFilters">
+                        <button class="era-filter-btn active" data-era="all" onclick="setClassicEra('all')" style="--btn-accent:var(--gold);">🌟 All Eras (140)</button>
+                        <button class="era-filter-btn" data-era="Forum" onclick="setClassicEra('Forum')" style="--btn-accent:#ffb74d;">🏛️ Forum (45)</button>
+                        <button class="era-filter-btn" data-era="Discourse" onclick="setClassicEra('Discourse')" style="--btn-accent:#64b5f6;">📜 Discourse (31)</button>
+                        <button class="era-filter-btn" data-era="Discord_Manual" onclick="setClassicEra('Discord_Manual')" style="--btn-accent:#81c784;">✍️ Manual (29)</button>
+                        <button class="era-filter-btn" data-era="Discord" onclick="setClassicEra('Discord')" style="--btn-accent:#ba68c8;">🤖 Bot (35)</button>
+                    </div>
                 </div>
             </div>
-            <div style="height: 320px;"><canvas id="trendChart"></canvas></div>
+            <div style="height: 350px;"><canvas id="trendChart"></canvas></div>
         </div>
         <div class="split-grid">
-            <div class="card"><h2>🧠 Skill Leaderboard</h2><div class="table-wrap"><table id="skillTable"><thead><tr><th onclick="sort('skillTable',0)">#</th><th onclick="sort('skillTable',1)">Player</th><th onclick="sort('skillTable',2)">Skill</th><th>Breakdown</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('skillTable',1)"></th><th><input class="filter-input" onkeyup="filter('skillTable',2)"></th><th></th></tr></thead><tbody id="skillBody"></tbody></table></div></div>
-            <div class="card"><h2>⚔️ Stats Leaderboard</h2><div class="table-wrap"><table id="statsTable"><thead><tr><th onclick="sort('statsTable',0)">#</th><th onclick="sort('statsTable',1)">Player</th><th onclick="sort('statsTable',2)">Games</th><th onclick="sort('statsTable',3)">Win%</th><th onclick="sort('statsTable',4)">Surv%</th><th>N1</th><th>D1</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('statsTable',1)"></th><th><input class="filter-input" onkeyup="filter('statsTable',2)"></th><th><input class="filter-input" onkeyup="filter('statsTable',3)"></th><th><input class="filter-input" onkeyup="filter('statsTable',4)"></th><th></th><th></th></tr></thead><tbody id="statsBody"></tbody></table></div></div>
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+                    <div>
+                        <h2 style="margin:0;">🧠 Skill Leaderboard</h2>
+                        <div id="skillFilterSub" style="font-size:12px; color:var(--muted); margin-top:2px;">Minimum 10 games required</div>
+                    </div>
+                    <div class="era-filter-group" id="skillMinGamesFilters" style="display:flex; gap:4px;">
+                        <button class="era-filter-btn" data-skill-min="0" onclick="setSkillMinGames(0)" style="padding:3px 10px; font-size:0.75rem;">0+</button>
+                        <button class="era-filter-btn" data-skill-min="5" onclick="setSkillMinGames(5)" style="padding:3px 10px; font-size:0.75rem;">5+</button>
+                        <button class="era-filter-btn active" data-skill-min="10" onclick="setSkillMinGames(10)" style="padding:3px 10px; font-size:0.75rem;">10+</button>
+                        <button class="era-filter-btn" data-skill-min="15" onclick="setSkillMinGames(15)" style="padding:3px 10px; font-size:0.75rem;">15+</button>
+                        <button class="era-filter-btn" data-skill-min="20" onclick="setSkillMinGames(20)" style="padding:3px 10px; font-size:0.75rem;">20+</button>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table id="skillTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sort('skillTable',0)">#</th>
+                                <th onclick="sort('skillTable',1)">Player</th>
+                                <th onclick="sort('skillTable',2)">Skill</th>
+                                <th>Breakdown</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th><input class="filter-input" onkeyup="filter('skillTable',1)"></th>
+                                <th><input class="filter-input" onkeyup="filter('skillTable',2)"></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody id="skillBody"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="card">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:12px;">
+                    <div>
+                        <h2 style="margin:0;">⚔️ Stats Leaderboard</h2>
+                        <div style="font-size:12px; color:var(--muted); margin-top:2px;">Click any column header to sort</div>
+                    </div>
+                </div>
+                <div class="table-wrap">
+                    <table id="statsTable">
+                        <thead>
+                            <tr>
+                                <th onclick="sort('statsTable',0)" title="Sort by Rank">#</th>
+                                <th onclick="sort('statsTable',1)" title="Sort by Player Name">Player</th>
+                                <th onclick="sort('statsTable',2)" title="Sort by Games Played">Games</th>
+                                <th onclick="sort('statsTable',3)" title="Sort by Win Rate">Win%</th>
+                                <th onclick="sort('statsTable',4)" title="Sort by Survival Rate">Surv%</th>
+                                <th onclick="sort('statsTable',5)" title="Sort by Night 1 Deaths">N1</th>
+                                <th onclick="sort('statsTable',6)" title="Sort by Day 1 Lynches">D1</th>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',1)"></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',2)"></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',3)"></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',4)"></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',5)"></th>
+                                <th><input class="filter-input" onkeyup="filter('statsTable',6)"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="statsBody"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -176,21 +344,23 @@
             <!-- Quick Filter Pills -->
             <div style="display: flex; gap: 10px; margin: 15px 0 20px 0; flex-wrap: wrap; align-items: center;">
                 <span style="color: var(--muted); font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Filter Era:</span>
-                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (202)</button>
-                <button id="pill-discourse" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--orange); border-radius: 20px; background: rgba(255, 152, 0, 0.15); color: var(--orange);" onclick="setArchiveEra('Discourse')">📜 Discourse Era (35)</button>
-                <button id="pill-forum" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--blue); border-radius: 20px; background: rgba(56, 138, 207, 0.15); color: var(--blue);" onclick="setArchiveEra('Forum')">🏛️ Forum Era (84)</button>
-                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Era (83)</button>
+                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (159)</button>
+                <button id="pill-forum" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--blue); border-radius: 20px; background: rgba(56, 138, 207, 0.15); color: var(--blue);" onclick="setArchiveEra('Forum')">🏛️ Forum Era (45)</button>
+                <button id="pill-discourse" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--orange); border-radius: 20px; background: rgba(255, 152, 0, 0.15); color: var(--orange);" onclick="setArchiveEra('Discourse')">📜 Discourse Era (31)</button>
+                <button id="pill-manual" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--green); border-radius: 20px; background: rgba(76, 175, 80, 0.15); color: var(--green);" onclick="setArchiveEra('Discord_Manual')">✍️ Discord Manual (29)</button>
+                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Bot (54)</button>
             </div>
 
             <div class="table-wrap">
                 <table id="archivesTable">
                     <thead>
                         <tr>
-                            <th onclick="sort('archivesTable',0)" style="cursor:pointer">Thread ID ↕</th>
+                            <th onclick="sort('archivesTable',0)" style="cursor:pointer">Game ID ↕</th>
                             <th onclick="sort('archivesTable',1)" style="cursor:pointer">Era ↕</th>
                             <th onclick="sort('archivesTable',2)" style="cursor:pointer">Start Date ↕</th>
                             <th onclick="sort('archivesTable',3)" style="cursor:pointer">Game Title ↕</th>
-                            <th onclick="sort('archivesTable',4)" style="cursor:pointer">Winner ↕</th>
+                            <th onclick="sort('archivesTable',4)" style="cursor:pointer">Author ↕</th>
+                            <th onclick="sort('archivesTable',5)" style="cursor:pointer">Winner ↕</th>
                             <th style="min-width: 170px;">Story & Summary</th>
                         </tr>
                         <tr>
@@ -198,14 +368,16 @@
                             <th>
                                 <select id="eraSelector" class="filter-input" onchange="setArchiveEra(this.value)">
                                     <option value="">All Eras</option>
-                                    <option value="Discourse">Discourse</option>
                                     <option value="Forum">Forum</option>
-                                    <option value="Discord">Discord / Bot</option>
+                                    <option value="Discourse">Discourse</option>
+                                    <option value="Discord_Manual">Discord Manual</option>
+                                    <option value="Discord">Discord Bot</option>
                                 </select>
                             </th>
                             <th><input class="filter-input" onkeyup="filter('archivesTable',2)" placeholder="Date..."></th>
                             <th><input class="filter-input" onkeyup="filter('archivesTable',3)" placeholder="Title..."></th>
-                            <th><input class="filter-input" onkeyup="filter('archivesTable',4)" placeholder="Faction..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',4)" placeholder="Author..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',5)" placeholder="Faction..."></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -360,8 +532,20 @@
 </div>
 
 <script>
+    function escStr(s) { return encodeURIComponent(s || ''); }
+    function safeMarkdown(md) {
+        if (typeof marked === 'undefined') return md || '';
+        const parsed = marked.parse(md || '');
+        if (typeof DOMPurify !== 'undefined') {
+            return DOMPurify.sanitize(parsed);
+        }
+        return parsed;
+    }
+
     let trendChart, brChart;
+    let currentClassicData = null, currentClassicEra = 'all', currentClassicChartMode = 'line';
     let recordsData = []; // Holds the fetched Apps Script data for the Hall of Records
+    let currentRecordsEra = 'all', currentRecordsMinGames = 10;
     let rolesData = null; // Cache for the roles definition
 
     let historyData = null; // Cache for archives
@@ -438,7 +622,7 @@
                     const data = await fetchPortalData('leaderboard');
                     document.getElementById('loader').classList.add('hidden');
                     document.getElementById('view-records').classList.remove('hidden');
-                    recordsData = data.filter(p => parseInt(p["Games Played"]) > 5);
+                    recordsData = data;
                     renderRecordsTable();
                 }
             } else {
@@ -451,7 +635,33 @@
         }
     }
 
-    // Renders the specific Hall of Records dropdown table
+    // Era Filtering for Hall of Records
+    function setRecordsEra(eraKey) {
+        currentRecordsEra = eraKey;
+        document.querySelectorAll('[data-records-era]').forEach(btn => {
+            if (btn.getAttribute('data-records-era') === eraKey) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderRecordsTable();
+    }
+
+    // Minimum Games Filtering for Hall of Records (0, 10, 15, 20)
+    function setRecordsMinGames(minVal) {
+        currentRecordsMinGames = parseInt(minVal);
+        document.querySelectorAll('[data-min-games]').forEach(btn => {
+            if (parseInt(btn.getAttribute('data-min-games')) === currentRecordsMinGames) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderRecordsTable();
+    }
+
+    // Renders the Hall of Records dropdown table with era and minimum games filters
     function renderRecordsTable() {
         const metricKey = document.getElementById("metricSelector").value;
         const config = metricsConfig[metricKey];
@@ -461,16 +671,56 @@
         tbody.innerHTML = ""; 
         valueHeader.innerText = config.label;
 
-        let sortedPlayers = [...recordsData];
+        if (!recordsData || !recordsData.length) return;
 
-        sortedPlayers.sort((a, b) => {
+        const isAll = (!currentRecordsEra || currentRecordsEra === 'all');
+        const eraLabels = {
+            'all': 'All Eras',
+            'Forum': 'Forum Era',
+            'Discourse': 'Discourse Era',
+            'Discord_Manual': 'Discord Manual',
+            'Discord': 'Discord Bot'
+        };
+        const eraName = eraLabels[currentRecordsEra] || currentRecordsEra;
+
+        // 1. Map player pool according to selected era
+        let pool = recordsData.map(p => {
+            if (isAll) {
+                return p;
+            }
+            if (p.era_stats && p.era_stats[currentRecordsEra]) {
+                return {
+                    ...p.era_stats[currentRecordsEra],
+                    "Player Name": p["Player Name"],
+                    "Aliases": p["Aliases"]
+                };
+            }
+            return null;
+        }).filter(Boolean);
+
+        // 2. Filter by minimum games
+        const minG = parseInt(currentRecordsMinGames) || 0;
+        const eligiblePool = pool.filter(p => (parseInt(p["Games Played"]) || 0) >= minG && (parseInt(p["Games Played"]) || 0) > 0);
+
+        // Update filter indicator text & player pool count
+        const filterTextEl = document.getElementById('recordsFilterText');
+        if (filterTextEl) {
+            filterTextEl.innerHTML = `Showing top players in <strong>${eraName}</strong> with <strong>${minG}+ games</strong>`;
+        }
+        const poolCountEl = document.getElementById('recordsPlayerPoolCount');
+        if (poolCountEl) {
+            poolCountEl.innerText = `${eligiblePool.length} players eligible`;
+        }
+
+        // 3. Sort players by metric
+        eligiblePool.sort((a, b) => {
             let valA = parseFloat(a[config.header]) || 0;
             let valB = parseFloat(b[config.header]) || 0;
             if (valB !== valA) return config.sortDesc ? (valB - valA) : (valA - valB);
             return (parseInt(b["Games Played"]) || 0) - (parseInt(a["Games Played"]) || 0);
         });
 
-        const top10 = sortedPlayers.slice(0, 10);
+        const top10 = eligiblePool.slice(0, 10);
 
         top10.forEach((player, index) => {
             let tr = document.createElement("tr");
@@ -493,16 +743,306 @@
                 displayValue = Math.round(rawValue);
             }
 
+            const eraSub = isAll ? 'career games' : `${eraName} games`;
+
             tr.innerHTML = `
                 <td class="rank-col">${rankDisplay}</td>
-                <td><a href="javascript:void(0)" onclick="openPlayerDossier('${player["Player Name"]}')" style="color:white; font-size: 1.1em; text-decoration: none; border-bottom: 1px dotted #ccc;"><strong>${player["Player Name"]}</strong></a> <br><small style="color:var(--muted);">${player["Games Played"]} total games</small></td>
+                <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(player["Player Name"])}'))" style="color:white; font-size: 1.1em; text-decoration: none; border-bottom: 1px dotted #ccc;"><strong>${player["Player Name"]}</strong></a> <br><small style="color:var(--muted);">${player["Games Played"]} ${eraSub}</small></td>
                 <td style="font-weight: bold; font-size: 1.1em; color: var(--blue);">${displayValue}</td>
             `;
             tbody.appendChild(tr);
         });
 
         if (top10.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center;">Not enough player data yet.</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; padding: 25px; color: var(--muted); font-style: italic;">No players match the current filter (${eraName} with ${minG}+ games). Try lowering the minimum games filter.</td></tr>`;
+        }
+    }
+
+    // Chart Mode Toggle for Mafia Classic Meta History (Win Rates vs 100% Share)
+    function setClassicChartMode(mode) {
+        currentClassicChartMode = mode;
+        const btnLine = document.getElementById('btn-chart-line');
+        const btnStack = document.getElementById('btn-chart-stack');
+        if (btnLine && btnStack) {
+            if (mode === 'line') {
+                btnLine.classList.add('active');
+                btnStack.classList.remove('active');
+            } else {
+                btnStack.classList.add('active');
+                btnLine.classList.remove('active');
+            }
+        }
+        renderClassicChart(currentClassicEra);
+    }
+
+    // Era Filtering for Mafia Classic Meta History Chart
+    function setClassicEra(eraKey) {
+        currentClassicEra = eraKey;
+        document.querySelectorAll('#classicEraFilters .era-filter-btn').forEach(btn => {
+            if (btn.getAttribute('data-era') === eraKey) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderClassicChart(eraKey);
+    }
+
+    function renderClassicChart(eraKey) {
+        if (!currentClassicData || !currentClassicData.trend) return;
+        const rawTrend = currentClassicData.trend;
+        const isAll = (!eraKey || eraKey === 'all');
+
+        let filteredPoints = [];
+        let stats = { Total: 0, Town: 0, Mafia: 0, Draw: 0, Neutral: 0 };
+        let chartTitle = '';
+        let chartSubtitle = '';
+
+        if (isAll) {
+            chartTitle = `📈 Meta History: All Classic Games (${rawTrend.length} Games)`;
+            chartSubtitle = 'Faction win rate evolution across all eras (2008 – Present)';
+            stats = currentClassicData.gameStats || { Total: rawTrend.length, Town: 0, Mafia: 0, Draw: 0, Neutral: 0 };
+            filteredPoints = rawTrend.map(d => ({
+                ...d,
+                xLabel: `G${d.gameNum} (${d.date})`,
+                tipLabel: d.label || `Game ${d.gameNum}: ${d.title} [${d.eraLabel}] (${d.date})`,
+                townPct: d.townPct,
+                mafiaPct: d.mafiaPct,
+                neutralPct: d.neutralPct,
+                drawPct: d.drawPct
+            }));
+        } else {
+            const eraMeta = {
+                'Forum': { title: 'Forum Era', desc: 'Classic Forum Mafia on the original forums (2008 – 2018)' },
+                'Discourse': { title: 'Discourse Era', desc: 'Games hosted on Discourse forums (2019 – 2020)' },
+                'Discord_Manual': { title: 'Discord Manual Era', desc: 'Early community Discord games run manually (2019 – 2020)' },
+                'Discord': { title: 'Discord Bot Era', desc: 'Modern automated bot-driven classic games (2025 – Present)' }
+            };
+            const info = eraMeta[eraKey] || { title: eraKey, desc: `Games in ${eraKey}` };
+
+            const eraMatches = rawTrend.filter(d => d.era === eraKey);
+            chartTitle = `📈 Meta History: ${info.title} (${eraMatches.length} Games)`;
+            chartSubtitle = info.desc;
+
+            let cumT = 0, cumM = 0, cumD = 0, cumN = 0;
+            filteredPoints = eraMatches.map((d, idx) => {
+                const num = idx + 1;
+                const wf = (d.winningFaction || '').toLowerCase();
+                if (wf.includes('town')) cumT++;
+                else if (wf.includes('mafia') || wf.includes('mob')) cumM++;
+                else if (wf.includes('draw') || wf === 'n/a' || wf === 'unknown') cumD++;
+                else cumN++;
+
+                const tPct = Number(((cumT / num) * 100).toFixed(1));
+                const mPct = Number(((cumM / num) * 100).toFixed(1));
+                const nPct = Number(((cumN / num) * 100).toFixed(1));
+                const dPct = Number(Math.max(0, (100 - tPct - mPct - nPct)).toFixed(1));
+
+                return {
+                    ...d,
+                    xLabel: `G${d.gameNum} (${d.date})`,
+                    tipLabel: `${d.eraLabel || d.era} #${num} (Global G${d.gameNum}): ${d.title} (${d.date})`,
+                    townPct: tPct,
+                    mafiaPct: mPct,
+                    neutralPct: nPct,
+                    drawPct: dPct
+                };
+            });
+
+            if (currentClassicData.eraStats && currentClassicData.eraStats[eraKey]) {
+                stats = currentClassicData.eraStats[eraKey];
+            } else {
+                stats = {
+                    Total: filteredPoints.length,
+                    Town: cumT,
+                    Mafia: cumM,
+                    Draw: cumD,
+                    Neutral: cumN
+                };
+            }
+        }
+
+        // Update Titles
+        const titleEl = document.getElementById('classic-chart-title');
+        if (titleEl) titleEl.innerText = chartTitle;
+        const subEl = document.getElementById('classic-chart-subtitle');
+        if (subEl) subEl.innerText = chartSubtitle;
+
+        // Update Top Stat Boxes
+        const total = stats.Total || 0;
+        const town = stats.Town || 0;
+        const mafia = stats.Mafia || 0;
+        const other = (stats.Draw || 0) + (stats.Neutral || 0);
+
+        document.getElementById('c-total').innerText = total;
+        document.getElementById('c-town').innerText = town;
+        document.getElementById('c-town-pct').innerText = total ? ((town / total) * 100).toFixed(1) + "%" : "0%";
+        document.getElementById('c-mafia').innerText = mafia;
+        document.getElementById('c-mafia-pct').innerText = total ? ((mafia / total) * 100).toFixed(1) + "%" : "0%";
+        document.getElementById('c-draw').innerText = other;
+        document.getElementById('c-draw-pct').innerText = total ? ((other / total) * 100).toFixed(1) + "%" : "0%";
+
+        // Rebuild Chart
+        if (trendChart) trendChart.destroy();
+
+        const isStacked = (currentClassicChartMode === 'stacked');
+
+        trendChart = new Chart(document.getElementById('trendChart'), {
+            type: 'line',
+            data: {
+                labels: filteredPoints.map(d => `Game ${d.gameNum}`),
+                datasets: [
+                    {
+                        label: 'Town',
+                        data: filteredPoints.map(d => d.townPct),
+                        borderColor: '#388acf',
+                        backgroundColor: isStacked ? 'rgba(56,138,207,0.35)' : 'rgba(56,138,207,0.06)',
+                        fill: isStacked,
+                        tension: 0.3,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#388acf'
+                    },
+                    {
+                        label: 'Mafia',
+                        data: filteredPoints.map(d => d.mafiaPct),
+                        borderColor: '#e74c3c',
+                        backgroundColor: isStacked ? 'rgba(231,76,60,0.35)' : 'rgba(231,76,60,0.06)',
+                        fill: isStacked,
+                        tension: 0.3,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#e74c3c'
+                    },
+                    {
+                        label: 'Neutral / SK',
+                        data: filteredPoints.map(d => d.neutralPct),
+                        borderColor: '#f39c12',
+                        backgroundColor: isStacked ? 'rgba(243,156,18,0.35)' : 'rgba(243,156,18,0.06)',
+                        fill: isStacked,
+                        tension: 0.3,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#f39c12'
+                    },
+                    {
+                        label: 'Draw / Other',
+                        data: filteredPoints.map(d => d.drawPct),
+                        borderColor: '#95a5a6',
+                        backgroundColor: isStacked ? 'rgba(149,165,166,0.35)' : 'rgba(149,165,166,0.06)',
+                        fill: isStacked,
+                        tension: 0.3,
+                        borderWidth: 2.5,
+                        pointRadius: 0,
+                        pointHoverRadius: 6,
+                        pointBackgroundColor: '#95a5a6'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                interaction: { mode: 'index', intersect: false },
+                scales: {
+                    y: {
+                        stacked: isStacked,
+                        min: 0,
+                        max: isStacked ? 100 : undefined,
+                        ticks: { callback: v => v + '%', color: '#888' },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    },
+                    x: {
+                        display: true,
+                        ticks: {
+                            maxTicksLimit: 14,
+                            color: '#888',
+                            callback: function(val, index) {
+                                const pt = filteredPoints[index];
+                                return pt ? pt.xLabel : '';
+                            }
+                        },
+                        grid: { color: 'rgba(255,255,255,0.05)' }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ddd',
+                            font: { size: 12, weight: 'bold' },
+                            usePointStyle: true,
+                            pointStyle: 'circle',
+                            padding: 16
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(18, 18, 24, 0.95)',
+                        borderColor: '#444',
+                        borderWidth: 1,
+                        padding: 10,
+                        titleFont: { size: 13, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        callbacks: {
+                            title: items => {
+                                if (!items.length) return '';
+                                const idx = items[0].dataIndex;
+                                const pt = filteredPoints[idx];
+                                return pt ? pt.tipLabel : items[0].label;
+                            },
+                            label: item => ` ${item.dataset.label}: ${item.raw}%`
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    let currentSkillMinGames = 10;
+
+    function setSkillMinGames(minVal) {
+        currentSkillMinGames = parseInt(minVal);
+        document.querySelectorAll('#skillMinGamesFilters .era-filter-btn').forEach(btn => {
+            if (parseInt(btn.getAttribute('data-skill-min')) === currentSkillMinGames) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        const sub = document.getElementById('skillFilterSub');
+        if (sub) {
+            sub.innerText = currentSkillMinGames > 0 ? `Minimum ${currentSkillMinGames} games required` : 'All players (no minimum)';
+        }
+        renderSkillTable();
+    }
+
+    function renderSkillTable() {
+        if (!currentClassicData || !currentClassicData.leaderboard) return;
+        const sb = document.getElementById('skillBody');
+        if (!sb) return;
+        sb.innerHTML = '';
+        const minG = currentSkillMinGames || 0;
+        const filtered = currentClassicData.leaderboard
+            .filter(p => (parseInt(p.games) || 0) >= minG)
+            .sort((a,b) => parseFloat(b.skillScore) - parseFloat(a.skillScore) || b.games - a.games);
+
+        filtered.forEach((p, i) => {
+            let c = parseFloat(p.skillScore) >= 4 ? 'var(--gold)' : (parseFloat(p.skillScore) >= 2.5 ? 'var(--green)' : 'var(--muted)');
+            sb.innerHTML += `<tr>
+                <td style="color:#666">${i+1}</td>
+                <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a> <br><small style="color:var(--muted);">${p.games} games</small></td>
+                <td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td>
+                <td>
+                    <span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)" title="Persuasion (P): ${p.p_score}">P: ${p.p_score}</span>
+                    <span class="comp-score" style="border:1px solid var(--green);color:var(--green)" title="Elusiveness (E): ${p.e_score}">E: ${p.e_score}</span>
+                    <span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)" title="Understanding (U): ${p.u_score}">U: ${p.u_score}</span>
+                </td>
+            </tr>`;
+        });
+
+        if (filtered.length === 0) {
+            sb.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted); font-style:italic;">No players match the minimum ${minG} games requirement.</td></tr>`;
         }
     }
 
@@ -511,116 +1051,45 @@
         document.getElementById('loader').classList.add('hidden');
         if (mode === 'classic') {
             document.getElementById('view-classic').classList.remove('hidden');
-            const s = data.gameStats;
-            document.getElementById('c-total').innerText = s.Total;
-            document.getElementById('c-town').innerText = s.Town;
-            document.getElementById('c-town-pct').innerText = s.Total?((s.Town/s.Total)*100).toFixed(1)+"%":"0%";
-            document.getElementById('c-mafia').innerText = s.Mafia;
-            document.getElementById('c-mafia-pct').innerText = s.Total?((s.Mafia/s.Total)*100).toFixed(1)+"%":"0%";
-            document.getElementById('c-draw').innerText = s.Draw+s.Neutral;
-            document.getElementById('c-draw-pct').innerText = s.Total?(((s.Draw+s.Neutral)/s.Total)*100).toFixed(1)+"%":"0%";
+            currentClassicData = data;
 
-            if(trendChart) trendChart.destroy();
+            if (data.eraStats) {
+                const eraCounts = {
+                    'all': data.trend ? data.trend.length : 140,
+                    'Forum': data.eraStats && data.eraStats.Forum ? data.eraStats.Forum.Total : 45,
+                    'Discourse': data.eraStats && data.eraStats.Discourse ? data.eraStats.Discourse.Total : 31,
+                    'Discord_Manual': data.eraStats && data.eraStats.Discord_Manual ? data.eraStats.Discord_Manual.Total : 29,
+                    'Discord': data.eraStats && data.eraStats.Discord ? data.eraStats.Discord.Total : 35
+                };
+                const eraLabels = {
+                    'all': `🌟 All Eras (${eraCounts.all})`,
+                    'Forum': `🏛️ Forum Era (${eraCounts.Forum})`,
+                    'Discourse': `📜 Discourse (${eraCounts.Discourse})`,
+                    'Discord_Manual': `✍️ Discord Manual (${eraCounts.Discord_Manual})`,
+                    'Discord': `🤖 Discord Bot (${eraCounts.Discord})`
+                };
+                document.querySelectorAll('.era-filter-btn').forEach(btn => {
+                    const era = btn.getAttribute('data-era');
+                    if (eraLabels[era]) btn.innerText = eraLabels[era];
+                });
+            }
 
-            const eraDividersPlugin = {
-                id: 'eraDividers',
-                afterDraw(chart) {
-                    const {ctx, chartArea: {top, bottom, left, right}, scales: {x}} = chart;
-                    const trendData = data.trend;
-                    if (!trendData || !trendData.length) return;
+            renderClassicChart(currentClassicEra || 'all');
+            renderSkillTable();
 
-                    const eras = [];
-                    let currentEra = null;
-                    trendData.forEach((d, idx) => {
-                        const eraName = d.eraLabel || d.era || 'Unknown';
-                        if (eraName !== currentEra) {
-                            eras.push({ era: eraName, startIndex: idx });
-                            currentEra = eraName;
-                        }
-                    });
-
-                    ctx.save();
-                    eras.forEach((item, i) => {
-                        const xPos = x.getPixelForValue(item.startIndex);
-                        // Vertical divider dashed line (except before the very first game)
-                        if (i > 0 && xPos >= left && xPos <= right) {
-                            ctx.beginPath();
-                            ctx.setLineDash([5, 5]);
-                            ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
-                            ctx.lineWidth = 1.5;
-                            ctx.moveTo(xPos, top);
-                            ctx.lineTo(xPos, bottom);
-                            ctx.stroke();
-                        }
-                        // Era label text badge above each era region
-                        const nextXPos = (i < eras.length - 1) ? x.getPixelForValue(eras[i+1].startIndex) : right;
-                        const midX = (xPos + nextXPos) / 2;
-                        if (midX >= left && midX <= right) {
-                            ctx.fillStyle = '#ffb74d';
-                            ctx.font = 'bold 11px sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText(item.era.toUpperCase(), midX, top + 15);
-                        }
-                    });
-                    ctx.restore();
-                }
-            };
-
-            trendChart = new Chart(document.getElementById('trendChart'), {
-                type:'line',
-                plugins: [eraDividersPlugin],
-                data:{
-                    labels: data.trend.map(d=>`Game ${d.gameNum}`),
-                    datasets:[
-                        {label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
-                        {label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
-                        {label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
-                        {label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5}
-                    ]
-                },
-                options:{
-                    responsive:true,
-                    maintainAspectRatio:false,
-                    interaction:{mode:'index',intersect:false},
-                    scales:{
-                        y:{stacked:true,max:100,ticks:{callback:v=>v+'%',color:'#888'},grid:{color:'rgba(255,255,255,0.05)'}},
-                        x:{
-                            display:true,
-                            ticks:{
-                                maxTicksLimit:15,
-                                color:'#888',
-                                callback: function(val, index) {
-                                    const pt = data.trend[index];
-                                    return pt ? `G${pt.gameNum} (${pt.date})` : '';
-                                }
-                            },
-                            grid:{color:'rgba(255,255,255,0.05)'}
-                        }
-                    },
-                    plugins:{
-                        tooltip:{
-                            callbacks:{
-                                title:items=>{
-                                    if(!items.length)return'';
-                                    const idx=items[0].dataIndex;
-                                    const pt=data.trend[idx];
-                                    return pt ? (pt.label || `Game ${pt.gameNum} (${pt.date})`) : items[0].label;
-                                },
-                                label:item=>` ${item.dataset.label}: ${item.raw}%`
-                            }
-                        }
-                    }
-                }
-            });
-
-            const sb = document.getElementById('skillBody'); sb.innerHTML='';
-            [...data.leaderboard].sort((a,b)=>parseFloat(b.skillScore)-parseFloat(a.skillScore) || b.games - a.games).forEach((p,i)=>{
-                let c=parseFloat(p.skillScore)>=4?'var(--gold)':(parseFloat(p.skillScore)>=2.5?'var(--green)':'var(--muted)');
-                sb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td><td><span class="comp-score" style="border:1px solid var(--purp);color:var(--purp)" title="Persuasion (P): ${p.p_score}">P: ${p.p_score}</span><span class="comp-score" style="border:1px solid var(--green);color:var(--green)" title="Elusiveness (E): ${p.e_score}">E: ${p.e_score}</span><span class="comp-score" style="border:1px solid var(--orange);color:var(--orange)" title="Understanding (U): ${p.u_score}">U: ${p.u_score}</span></td></tr>`;
-            });
             const stb = document.getElementById('statsBody'); stb.innerHTML='';
             [...data.leaderboard].sort((a,b)=>b.games-a.games).forEach((p,i)=>{
-                stb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate !== undefined ? p.survRate + '%' : '-'}</td><td>${p.n1Deaths||'-'}</td><td>${p.d1Lynches||'-'}</td></tr>`;
+                let n1 = (p.n1Deaths !== undefined && p.n1Deaths !== null) ? p.n1Deaths : 0;
+                let d1 = (p.d1Lynches !== undefined && p.d1Lynches !== null) ? p.d1Lynches : 0;
+                stb.innerHTML+=`<tr>
+                    <td style="color:#666">${i+1}</td>
+                    <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td>
+                    <td>${p.games}</td>
+                    <td>${p.winRate}%</td>
+                    <td>${p.survRate !== undefined ? p.survRate + '%' : '-'}</td>
+                    <td>${n1}</td>
+                    <td>${d1}</td>
+                </tr>`;
             });
         } else {
             document.getElementById('view-br').classList.remove('hidden');
@@ -634,20 +1103,94 @@
             const bb = document.getElementById('brBody'); bb.innerHTML='';
             data.leaderboard.forEach((p,i)=>{
                 let w=p.wins>0?`<span class="win-badge">🏆 ${p.wins}</span>`:'-';
-                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier('${p.name}')" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
             });
         }
     }
 
-    function filter(tid,cidx){const trs=document.getElementById(tid).tBodies[0].rows;const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();for(let tr of trs){let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');let show=true;if(val.startsWith('>')){if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;}else if(val.startsWith('<')){if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;}else{if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;}tr.style.display=show?'':'none';}}
-    function sort(tid,n){const tb=document.getElementById(tid).tBodies[0];let rows=Array.from(tb.rows);let asc=tb.getAttribute('data-asc')==='true';rows.sort((a,b)=>{let x=(a.cells[n].textContent||"").replace('%','').replace('🏆','').trim(),y=(b.cells[n].textContent||"").replace('%','').replace('🏆','').trim();let xn=parseFloat(x),yn=parseFloat(y);return(isNaN(xn)?x.localeCompare(y):xn-yn)*(asc?1:-1);});tb.setAttribute('data-asc',!asc);rows.forEach(r=>tb.appendChild(r));}
-    function filterExact(tid,cidx,val){
-        const trs=document.getElementById(tid).tBodies[0].rows;
-        const searchVal = (val || "").toUpperCase().trim();
-        for(let tr of trs){
-            let txt=(tr.cells[cidx].textContent||"").toUpperCase().trim();
-            tr.style.display=(searchVal==="" || txt.includes(searchVal))?'':'none';
+    function updateRanks(tid) {
+        if (tid === 'skillTable' || tid === 'statsTable' || tid === 'recordsTable') {
+            const tb = document.getElementById(tid)?.tBodies[0];
+            if (!tb) return;
+            let rank = 1;
+            for (let r of tb.rows) {
+                if (r.style.display !== 'none' && r.cells.length > 0) {
+                    r.cells[0].textContent = rank++;
+                }
+            }
         }
+    }
+
+    function filter(tid,cidx){
+        const trs=document.getElementById(tid).tBodies[0].rows;
+        const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();
+        for(let tr of trs){
+            let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');
+            let show=true;
+            if(val.startsWith('>')){
+                if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;
+            }else if(val.startsWith('<')){
+                if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;
+            }else{
+                if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;
+            }
+            tr.style.display=show?'':'none';
+        }
+        updateRanks(tid);
+    }
+
+    function sort(tid, n) {
+        const tb = document.getElementById(tid).tBodies[0];
+        let rows = Array.from(tb.rows);
+        let attrKey = 'data-asc-' + n;
+        let asc = tb.getAttribute(attrKey) === 'true';
+        rows.sort((a, b) => {
+            let x = (a.cells[n].textContent || "").replace('%', '').replace('🏆', '').replace('↗', '').replace('↕', '').trim();
+            let y = (b.cells[n].textContent || "").replace('%', '').replace('🏆', '').replace('↗', '').replace('↕', '').trim();
+            if (!x && !y) return 0;
+            if (!x) return 1;
+            if (!y) return -1;
+            
+            // 1. Date format: YYYY-MM-DD
+            const dateRe = /^\d{4}-\d{2}-\d{2}$/;
+            if (dateRe.test(x) && dateRe.test(y)) {
+                return (asc ? 1 : -1) * x.localeCompare(y);
+            }
+            
+            // 2. Pure numbers & decimals (e.g. 11, 13.1, 998, 0, -)
+            let cleanX = (x === '-' || x === 'N/A') ? '0' : x;
+            let cleanY = (y === '-' || y === 'N/A') ? '0' : y;
+            let xn = parseFloat(cleanX), yn = parseFloat(cleanY);
+            if (!isNaN(xn) && !isNaN(yn) && /^-?\d+(\.\d+)?$/.test(cleanX) && /^-?\d+(\.\d+)?$/.test(cleanY)) {
+                return (asc ? 1 : -1) * (xn - yn);
+            }
+            
+            // 3. Natural alphanumeric sort for strings like "Classic #01", "BR #02"
+            return (asc ? 1 : -1) * x.localeCompare(y, undefined, { numeric: true, sensitivity: 'base' });
+        });
+        tb.setAttribute(attrKey, !asc);
+        rows.forEach(r => tb.appendChild(r));
+        updateRanks(tid);
+    }
+
+    function filterExact(tid, cidx, val) {
+        const trs = document.getElementById(tid).tBodies[0].rows;
+        const searchVal = (val || "").toUpperCase().trim();
+        for (let tr of trs) {
+            let txt = (tr.cells[cidx].textContent || "").toUpperCase().trim();
+            let show = false;
+            if (searchVal === "") {
+                show = true;
+            } else if (searchVal === "DISCORD") {
+                show = (txt === "DISCORD");
+            } else if (searchVal === "DISCORD_MANUAL") {
+                show = (txt === "DISCORD_MANUAL");
+            } else {
+                show = txt.includes(searchVal);
+            }
+            tr.style.display = show ? '' : 'none';
+        }
+        updateRanks(tid);
     }
 
     function setArchiveEra(era) {
@@ -655,7 +1198,7 @@
         if (select) select.value = era;
         filterExact('archivesTable', 1, era);
 
-        ['all', 'discourse', 'forum', 'discord'].forEach(p => {
+        ['all', 'forum', 'discourse', 'manual', 'discord'].forEach(p => {
             const btn = document.getElementById('pill-' + p);
             if (btn) {
                 btn.style.background = '#2a2a2a';
@@ -663,10 +1206,20 @@
                 btn.style.boxShadow = 'none';
             }
         });
-        const activeKey = era ? era.toLowerCase() : 'all';
+        let activeKey = 'all';
+        if (era === 'Forum') activeKey = 'forum';
+        else if (era === 'Discourse') activeKey = 'discourse';
+        else if (era === 'Discord_Manual') activeKey = 'manual';
+        else if (era === 'Discord') activeKey = 'discord';
+
         const activeBtn = document.getElementById('pill-' + activeKey);
         if (activeBtn) {
-            activeBtn.style.background = era === 'Discourse' ? 'rgba(255, 152, 0, 0.4)' : (era === 'Forum' ? 'rgba(56, 138, 207, 0.4)' : (era === 'Discord' ? 'rgba(156, 39, 176, 0.4)' : '#444'));
+            let bg = '#444';
+            if (activeKey === 'forum') bg = 'rgba(56, 138, 207, 0.4)';
+            else if (activeKey === 'discourse') bg = 'rgba(255, 152, 0, 0.4)';
+            else if (activeKey === 'manual') bg = 'rgba(76, 175, 80, 0.4)';
+            else if (activeKey === 'discord') bg = 'rgba(156, 39, 176, 0.4)';
+            activeBtn.style.background = bg;
             activeBtn.style.fontWeight = 'bold';
             activeBtn.style.boxShadow = '0 0 10px rgba(255,255,255,0.2)';
         }
@@ -716,19 +1269,33 @@
         const tbody = document.getElementById('archivesBody');
         tbody.innerHTML = '';
         
+        if (!data || !data.length) return;
+
+        // Ensure archive is sorted chronologically by start_date ascending (oldest first)
+        data.sort((a, b) => {
+            let cmp = (a.start_date || '').localeCompare(b.start_date || '');
+            if (cmp !== 0) return cmp;
+            let numA = parseFloat((a.game_id || '').replace(/[^\d.]/g, '')) || 0;
+            let numB = parseFloat((b.game_id || '').replace(/[^\d.]/g, '')) || 0;
+            return numA - numB;
+        });
+
         const totalCount = data.length;
-        const discourseCount = data.filter(g => (g.era || '').toLowerCase() === 'discourse').length;
         const forumCount = data.filter(g => (g.era || '').toLowerCase() === 'forum').length;
-        const discordCount = data.filter(g => (g.era || '').toLowerCase().includes('discord')).length;
+        const discourseCount = data.filter(g => (g.era || '').toLowerCase() === 'discourse').length;
+        const manualCount = data.filter(g => (g.era || '').toLowerCase() === 'discord_manual').length;
+        const discordCount = data.filter(g => (g.era || '').toLowerCase() === 'discord').length;
 
         const pAll = document.getElementById('pill-all');
         if (pAll) pAll.innerText = `🌟 All Eras (${totalCount})`;
-        const pDisc = document.getElementById('pill-discourse');
-        if (pDisc) pDisc.innerText = `📜 Discourse Era (${discourseCount})`;
         const pForum = document.getElementById('pill-forum');
         if (pForum) pForum.innerText = `🏛️ Forum Era (${forumCount})`;
+        const pDisc = document.getElementById('pill-discourse');
+        if (pDisc) pDisc.innerText = `📜 Discourse Era (${discourseCount})`;
+        const pManual = document.getElementById('pill-manual');
+        if (pManual) pManual.innerText = `✍️ Discord Manual (${manualCount})`;
         const pDiscord = document.getElementById('pill-discord');
-        if (pDiscord) pDiscord.innerText = `🤖 Discord Era (${discordCount})`;
+        if (pDiscord) pDiscord.innerText = `🤖 Discord Bot (${discordCount})`;
 
         data.forEach(game => {
             let winFaction = (game.box_score && game.box_score.winning_faction) ? game.box_score.winning_faction : 'Unknown';
@@ -738,24 +1305,33 @@
             else if (winFaction.includes('Serial Killer') || winFaction.includes('Neutral')) winColor = 'var(--gold)';
             
             let era = game.era || "Forum";
+            let gidDisplay = game.game_id || game.thread_id;
             
-            let linkHtml = `<span style="color: var(--muted);">${game.thread_id}</span>`;
+            let linkHtml = `<span style="color: var(--muted); font-weight: bold;">${gidDisplay}</span>`;
             if (era === 'Discourse') {
-                linkHtml = `<a href="https://discourse.imperialconflict.com/t/${game.thread_id}" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: bold;">${game.thread_id} ↗</a>`;
+                linkHtml = `<a href="https://discourse.imperialconflict.com/t/${game.thread_id}" target="_blank" style="color: var(--orange); text-decoration: none; font-weight: bold;" title="Discourse Topic #${game.thread_id}">${gidDisplay} ↗</a>`;
             } else if (era === 'Forum') {
-                linkHtml = `<a href="https://imperialconflict.com/forum/viewtopic.php?id=${game.thread_id}" target="_blank" style="color: var(--blue); text-decoration: none;">${game.thread_id} ↗</a>`;
+                linkHtml = `<a href="https://imperialconflict.com/forum/viewtopic.php?id=${game.thread_id}" target="_blank" style="color: var(--blue); text-decoration: none; font-weight: bold;" title="Forum Thread #${game.thread_id}">${gidDisplay} ↗</a>`;
+            } else if (era === 'Discord_Manual') {
+                linkHtml = `<span style="color: #81c784; font-weight: bold;">${gidDisplay}</span>`;
+            } else {
+                linkHtml = `<span style="color: #ba68c8; font-weight: bold;">${gidDisplay}</span>`;
             }
 
             let eraBadgeColor = 'var(--blue)';
             if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
-            else if (era === 'Discord' || era === 'Discord_Manual') eraBadgeColor = 'var(--purp)';
+            else if (era === 'Discord_Manual') eraBadgeColor = '#81c784';
+            else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
+
+            let author = game.author || game.moderator || 'Game Host';
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${linkHtml}</td>
-                <td><span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">${era}</span></td>
+                <td><span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">${era === 'Discord_Manual' ? 'Manual' : era}</span></td>
                 <td style="color: var(--muted); font-size: 0.9em; white-space: nowrap;">${game.start_date || '—'}</td>
                 <td style="font-weight: bold; color: white;">${game.title}</td>
+                <td style="color: #e0e0e0; font-weight: 500;">${author}</td>
                 <td><span style="background: rgba(255,255,255,0.1); color: ${winColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${winFaction}</span></td>
                 <td>
                     <div style="display: flex; gap: 6px; align-items: center;">
@@ -803,17 +1379,21 @@
         let era = game.era || "Forum";
         let eraBadgeColor = 'var(--blue)';
         if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
-        else if (era === 'Discord' || era === 'Discord_Manual') eraBadgeColor = 'var(--purp)';
+        else if (era === 'Discord_Manual') eraBadgeColor = '#81c784';
+        else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
 
-        let eraBadge = `<span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">Era: ${era}</span>`;
+        let gidDisplay = game.game_id || game.thread_id;
+        let idBadge = `<span style="background: rgba(255,255,255,0.08); color: #fff; border: 1px solid #666; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">Game ID: <strong>${gidDisplay}</strong></span>`;
+        let eraBadge = `<span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">Era: ${era === 'Discord_Manual' ? 'Discord Manual' : era}</span>`;
         let dateBadge = game.start_date ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">📅 Started: <strong>${game.start_date}</strong></span>` : '';
         let winnerBadge = `<span style="background: rgba(255,255,255,0.1); color: ${winColor}; border: 1px solid ${winColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">🏆 Winner: ${winFaction}</span>`;
-        let modBadge = game.moderator ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">Game Host: <strong>${game.moderator}</strong></span>` : '';
+        let host = game.author || game.moderator;
+        let modBadge = host ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">✍️ Author: <strong>${host}</strong></span>` : '';
         let mvpBadge = '';
         if (game.box_score && game.box_score.mvp && game.box_score.mvp.player) {
             mvpBadge = `<span style="background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">⭐ MVP: ${game.box_score.mvp.player}</span>`;
         }
-        badgesContainer.innerHTML = `${eraBadge} ${dateBadge} ${winnerBadge} ${modBadge} ${mvpBadge}`;
+        badgesContainer.innerHTML = `${idBadge} ${eraBadge} ${dateBadge} ${winnerBadge} ${modBadge} ${mvpBadge}`;
 
         // Tab 1: Game Summary (Chronicle + Strategic Overview)
         const summaryContainer = document.getElementById('story-summary-content');
@@ -844,7 +1424,7 @@
         }
 
         const chronicle = game.narrative_chronicle || "*No narrative chronicle found for this game.*";
-        summaryHtml += `<div class="markdown-body">${marked.parse(chronicle)}</div>`;
+        summaryHtml += `<div class="markdown-body">${safeMarkdown(chronicle)}</div>`;
         summaryContainer.innerHTML = summaryHtml;
 
         summaryContainer.querySelectorAll('h3, h2').forEach(el => {
@@ -872,7 +1452,7 @@
         `;
 
         const storyText = game.story_as_written || game.narrative_chronicle || "*No written story posts found for this game.*";
-        writtenHtml += `<div class="markdown-body">${marked.parse(storyText)}</div>`;
+        writtenHtml += `<div class="markdown-body">${safeMarkdown(storyText)}</div>`;
         writtenContainer.innerHTML = writtenHtml;
 
         writtenContainer.querySelectorAll('h3').forEach(el => {
@@ -1019,7 +1599,7 @@
                                 <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
                                     <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${icon}</span>
                                     <div>
-                                        <strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${d.player}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${d.player}</a></strong> 
+                                        <strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(d.player)}'))" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${d.player}</a></strong> 
                                         <span style="color: var(--muted);">— ${d.role || 'Unknown'} (${d.alignment || 'Unknown'})</span>
                                         <div style="font-size: 0.85em; color: #aaa; margin-top: 2px;">${cause}</div>
                                         ${voterList}
@@ -1083,7 +1663,7 @@
                             <div style="display: flex; align-items: flex-start; gap: 10px; margin: 8px 0; background: #222228; padding: 10px; border-radius: 4px;">
                                 <span style="${badgeStyle} padding: 3px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; white-space: nowrap;">${evType}</span>
                                 <div>
-                                    ${ev.target ? `<strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier('${ev.target}')" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${ev.target}</a></strong>` : ''}
+                                    ${ev.target ? `<strong style="color: white; font-size: 1.05em;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(ev.target)}'))" style="color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${ev.target}</a></strong>` : ''}
                                     ${ev.role ? `<span style="color: var(--muted);"> (${ev.role}${ev.alignment ? ' - ' + ev.alignment : ''})</span>` : ''}
                                     <div style="font-size: 0.9em; color: #ccc; margin-top: 2px;">${ev.details || ''}</div>
                                 </div>
@@ -1151,7 +1731,7 @@
 
                                 return `
                                     <tr style="border-bottom: 1px solid #2a2a2a;">
-                                        <td style="padding: 10px;"><a href="javascript:void(0)" onclick="openPlayerDossier('${p.player}')" style="font-weight: bold; color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${p.player}</a></td>
+                                        <td style="padding: 10px;"><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.player)}'))" style="font-weight: bold; color: white; text-decoration: none; border-bottom: 1px dotted #ccc;">${p.player}</a></td>
                                         <td style="padding: 10px; color: #ddd;">${p.role || 'Unknown'}</td>
                                         <td style="padding: 10px;"><span style="color: ${alignColor}; font-weight: bold;">${alignment}</span></td>
                                         <td style="padding: 10px;">${statusBadge}</td>
@@ -1172,12 +1752,21 @@
     let currentDossierGames = [];
 
     async function openPlayerDossier(playerName) {
+        if (!playerName) return;
         // Ensure leaderboard data is loaded
         if (recordsData.length === 0) {
             recordsData = await fetchPortalData('leaderboard');
         }
         
-        const player = recordsData.find(p => p["Player Name"] === playerName);
+        const target = (playerName || "").toString().toLowerCase().trim();
+        const player = recordsData.find(p => {
+            const pName = (p["Player Name"] || "").toString().toLowerCase().trim();
+            if (pName === target) return true;
+            if (p["Aliases"] && Array.isArray(p["Aliases"])) {
+                return p["Aliases"].some(a => (a || "").toString().toLowerCase().trim() === target);
+            }
+            return false;
+        });
         if (!player) {
             alert("Could not find detailed records for " + playerName);
             return;
@@ -1281,6 +1870,7 @@
             let eraColor = 'var(--muted)';
             if (g.era === 'Forum') eraColor = 'var(--blue)';
             else if (g.era === 'Discourse') eraColor = 'var(--orange)';
+            else if (g.era === 'Discord_Manual') eraColor = 'var(--green)';
             else if (g.era === 'Discord') eraColor = 'var(--purp)';
 
             let alignColor = 'white';
@@ -1299,13 +1889,14 @@
                 outcomeBadge = `<span style="color: var(--green); font-weight: bold;">🛡️ Survived</span>`;
             }
 
+            let gidDisplay = g.game_id || g.thread_id;
             return `
                 <tr style="border-bottom: 1px solid #282832; transition: 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
                     <td style="padding: 10px 12px; color: #666; font-size: 0.85em;">${idx + 1}</td>
-                    <td style="padding: 10px 12px;"><span style="background: rgba(255,255,255,0.06); color: ${eraColor}; border: 1px solid ${eraColor}; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; font-weight: bold;">${g.era}</span></td>
+                    <td style="padding: 10px 12px;"><span style="background: rgba(255,255,255,0.06); color: ${eraColor}; border: 1px solid ${eraColor}; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; font-weight: bold;">${g.era === 'Discord_Manual' ? 'Manual' : g.era}</span></td>
                     <td style="padding: 10px 12px; font-weight: bold; color: white;">
                         ${g.title}
-                        <div style="font-size: 0.78em; color: var(--muted); font-weight: normal;">ID: ${g.thread_id}</div>
+                        <div style="font-size: 0.78em; color: var(--muted); font-weight: normal;">Game ID: ${gidDisplay}</div>
                     </td>
                     <td style="padding: 10px 12px;">
                         <span style="color: ${alignColor}; font-weight: 500;">${g.role}</span>

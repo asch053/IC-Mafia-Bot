@@ -3,7 +3,9 @@
 
 “Town roles”
 
-Lucky Ham- Arms dealer- He is an arms dealer every day phase he gives a high powered weapon out that can be used during night phase. For the person receiving the weapon it is a one time use. Can not give the same person the weapon 2 days in a row. Can’t give weapon to himself. (gives weapon the person receiving weapon gets a night time kill)
+Lucky Ham
+- Arms dealer
+- He is an arms dealer every day phase he gives a high powered weapon out that can be used during night phase. For the person receiving the weapon it is a one time use. Can not give the same person the weapon 2 days in a row. Can’t give weapon to himself. (gives weapon the person receiving weapon gets a night time kill)
 
 Joey Dollar- A 19 yr old Hacker that can find information about just about everyone (1 investigation a night)
 
@@ -99,7 +101,9 @@ Town investigation
 
 “Town roles”
 
-Lucky Ham- Arms dealer- He is an arms dealer every day phase he gives a high powered weapon out that can be used during night phase. For the person receiving the weapon it is a one time use. Can not give the same person the weapon 2 days in a row. Can’t give weapon to himself. (gives weapon the person receiving weapon gets a night time kill)
+Lucky Ham
+- Arms dealer
+- He is an arms dealer every day phase he gives a high powered weapon out that can be used during night phase. For the person receiving the weapon it is a one time use. Can not give the same person the weapon 2 days in a row. Can’t give weapon to himself. (gives weapon the person receiving weapon gets a night time kill)
 
 Joey Dollar- A 19 yr old Hacker that can find information about just about everyone (1 investigation a night)
 

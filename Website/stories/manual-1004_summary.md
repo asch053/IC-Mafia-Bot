@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1004 Summary
+# Discord Mafia 1004: Blonde's Reservoir Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** MrBlonde  

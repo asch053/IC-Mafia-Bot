@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1002 Summary
+# Discord Mafia 1002: Gamzee's Carnage Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Gamzee  

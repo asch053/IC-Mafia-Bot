@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1005 Summary
+# Discord Mafia 1005: TBO's Reckoning Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** TBO  

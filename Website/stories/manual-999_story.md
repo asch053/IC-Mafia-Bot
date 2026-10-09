@@ -1,85 +1,45 @@
-# Discord Mafia 999: Hydro's Syndicate
+# The Chronicle of Discord Mafia 999: Hydro's Syndicate
 
-*Recorded & Moderated by Game Master **HydroP***
-
-- **Era:** Discord Historic Manual
-- **Start Date:** 2019-08-11
-- **Winning Faction:** **Mob**
-- **Total Players:** 16
+*Recorded by Game Master HydroP*
 
 ---
 
-## 📢 Moderator Phase Announcements & Vote Directives
+### Prologue: The Assembly
+In the historic manual era of the Discord Mafia community, **16** players entered the fray for Game 999. Factions formed in the shadows, alliances were forged in whisper channels, and the town prepared for what would become an intense tactical conflict.
 
-- **[2019-08-11 00:02:14] MrStemo:** Vote Daylight - Hangman if you are out there please end the phase now and vet me as town for all to see, let's get some direction going straight away, all roles can then report in 😜
-- **[2019-08-11 00:11:03] HydroP:** vote daylight!
+### The Conflict
+#### Night 2
+The tension reached a breaking point as **TBO**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
----
+#### Day 2
+The tension reached a breaking point as **Twitch**, who stood as **Plain Town** for the **Town**, fell (Inactive).
+The tension reached a breaking point as **sCriv**, who stood as **Town Seer** for the **Town**, fell (Inactive).
 
-## ⚔️ Tactical Phase-by-Phase Timeline
+#### Night 3
+The tension reached a breaking point as **Goddess**, who stood as **Plain Town** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **Jets**, who stood as **Plain Town** for the **Town**, fell (NPC Action).
+The tension reached a breaking point as **You_Fool**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
-### Night 2
+#### Day 3
+The tension reached a breaking point as **Arby3**, who stood as **SK** for the **SK**, fell (Inactive).
+The tension reached a breaking point as **Cxris**, who stood as **Mob Lynch Block** for the **Mafia**, fell (Lynched).
+The tension reached a breaking point as **niganati**, who stood as **Plain Town** for the **Town**, fell (Inactive).
 
-- **Elimination:** **TBO** (Plain Town - Town) — *TBO (Plain Town) died (by SK)*
+#### Night 4
+The tension reached a breaking point as **Schniepel**, who stood as **Town Shield Maiden** for the **Town**, fell (by Mob).
 
-### Day 2
-
-- **Elimination:** **Twitch** (Plain Town - Town) — *Twitch (Plain Town) died (Inactive)*
-- **Elimination:** **sCriv** (Town Seer - Town) — *sCriv (Town Seer) died (Inactive)*
-
-### Night 3
-
-- **Elimination:** **Goddess** (Plain Town - Town) — *Goddess (Plain Town) died (by Mob)*
-- **Elimination:** **Jets** (Plain Town - Town) — *Jets (Plain Town) died (NPC Action)*
-- **Elimination:** **You_Fool** (Plain Town - Town) — *You_Fool (Plain Town) died (by SK)*
-
-### Day 3
-
-- **Elimination:** **Arby3** (SK - SK) — *Arby3 (SK) died (Inactive)*
-- **Elimination:** **Cxris** (Mob Lynch Block - Mafia) — *Cxris (Mob Lynch Block) died (Lynched)*
-- **Elimination:** **niganati** (Plain Town - Town) — *niganati (Plain Town) died (Inactive)*
-
-### Night 4
-
-- **Elimination:** **Schniepel** (Town Shield Maiden - Town) — *Schniepel (Town Shield Maiden) died (by Mob)*
-
-### Day 4
-
-- **Elimination:** **MrBlonde** (Town Blacksmith - Town) — *MrBlonde (Town Blacksmith) died (Lynched)*
-- **Elimination:** **NearlyPeaceful** (Plain Town - Town) — *NearlyPeaceful (Plain Town) died (Eliminated)*
-- **Elimination:** **Tish** (Town Jarl - Town) — *Tish (Town Jarl) died (Eliminated)*
-
----
-
-## 👥 Roster & Final Standings
-
-| Player | Role | Alignment | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Gamzee** | Mob Gamzee the Rower | Mafia | Survived (Winner) |
-| **Ordos** | Mob Lookout | Mafia | Survived (Winner) |
-| **The_Unknown** | Mob God Father | Mafia | Survived (Winner) |
-| **Arby3** | SK | SK | Dead (Day 3 - Inactive) |
-| **Cxris** | Mob Lynch Block | Mafia | Dead (Day 3 - Lynched) |
-| **Goddess** | Plain Town | Town | Dead (Night 3 - by Mob) |
-| **Jets** | Plain Town | Town | Dead (Night 3 - NPC Action) |
-| **MrBlonde** | Town Blacksmith | Town | Dead (Day 4 - Lynched) |
-| **NearlyPeaceful** | Plain Town | Town | Dead (Day 4 - Eliminated) |
-| **Schniepel** | Town Shield Maiden | Town | Dead (Night 4 - by Mob) |
-| **TBO** | Plain Town | Town | Dead (Night 2 - by SK) |
-| **Tish** | Town Jarl | Town | Dead (Day 4 - Eliminated) |
-| **Twitch** | Plain Town | Town | Dead (Day 2 - Inactive) |
-| **You_Fool** | Plain Town | Town | Dead (Night 3 - by SK) |
-| **niganati** | Plain Town | Town | Dead (Day 3 - Inactive) |
-| **sCriv** | Town Seer | Town | Dead (Day 2 - Inactive) |
-
----
-
-### 🏆 Epilogue: Final Resolution
-
-When the conflict concluded, **Mob** secured the victory!
+#### Day 4
+The tension reached a breaking point as **MrBlonde**, who stood as **Town Blacksmith** for the **Town**, fell (Lynched).
+The tension reached a breaking point as **NearlyPeaceful**, who stood as **Plain Town** for the **Town**, fell (Eliminated).
+The tension reached a breaking point as **Tish**, who stood as **Town Jarl** for the **Town**, fell (Eliminated).
 
 
-Surviving combatants:
+### Epilogue: Final Resolution
+When the dust cleared, **Mob** stood triumphant! 
+
+Among the brave who lived to tell the tale:
 - **Gamzee**
 - **Ordos**
 - **The_Unknown**
+
+The record of Discord Mafia 999: Hydro's Syndicate is thus etched into the permanent chronicle.

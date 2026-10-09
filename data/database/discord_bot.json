@@ -1294,10 +1294,10 @@
           "player_id": 1057856572899999744,
           "role": "Vigilante",
           "alignment": "Vigilante",
-          "survived": false,
+          "survived": true,
           "is_winner": false,
-          "death_phase": "night",
-          "death_cause": "Game Over - Winning Player"
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "You_Fool",
@@ -1923,10 +1923,10 @@
           "player_id": 216918396539764737,
           "role": "Vigilante",
           "alignment": "Vigilante",
-          "survived": false,
+          "survived": true,
           "is_winner": false,
-          "death_phase": "night",
-          "death_cause": "Game Over - Losing Player"
+          "death_phase": null,
+          "death_cause": null
         },
         {
           "player": "Panda",
@@ -3350,7 +3350,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -4816,8 +4816,8 @@
           "alignment": "Serial Killer",
           "survived": false,
           "is_winner": false,
-          "death_phase": null,
-          "death_cause": null
+          "death_phase": "Day 3",
+          "death_cause": "Eliminated at Endgame"
         },
         {
           "player": "LisaMVP",
@@ -17250,7 +17250,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -17750,7 +17750,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -18179,7 +18179,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -18586,7 +18586,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -19012,7 +19012,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -19467,7 +19467,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -19950,7 +19950,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },
@@ -21220,7 +21220,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         }
@@ -21809,7 +21809,7 @@
           "role": "Vigilante",
           "alignment": "Vigilante",
           "survived": true,
-          "is_winner": true,
+          "is_winner": false,
           "death_phase": null,
           "death_cause": null
         },

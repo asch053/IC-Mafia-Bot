@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1012 Summary
+# Discord Mafia 1012: Jets' Jetstream Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Jets  
