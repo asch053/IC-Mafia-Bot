@@ -20,7 +20,7 @@ Covers the 15 user-specified invariants:
 """
 import unittest
 import asyncio
-from unittest.mock import MagicMock, AsyncMock, patch
+from unittest.mock import MagicMock, AsyncMock, patch, Mock
 import sys
 import os
 import discord
@@ -991,6 +991,399 @@ class TestMergedForceCommands(unittest.IsolatedAsyncioTestCase):
             "No game is currently active.",
             ephemeral=True
         )
+
+
+class TestRoleblockDependencyResolutionAndDaySkipVisibility(unittest.IsolatedAsyncioTestCase):
+    """
+    Validates:
+    1. Blocker A targeting Blocker B prevents B from acting/blocking their target.
+    2. Mutual blocks (Blocker A targets B, B targets A) block both and neither can affect third parties.
+    3. Three-blocker dependency chain (A -> B -> C -> Target).
+    4. Day phase skip visibility across rules header, dynamic rules, start announcement, and status message.
+    """
+
+    def setUp(self):
+        self.mock_bot = MagicMock()
+        self.mock_guild = MagicMock()
+        self.game = Game(self.mock_bot, self.mock_guild)
+        self.game.game_settings["phase_number"] = 1
+        self.game.game_settings["current_phase"] = "night"
+        self.game.game_settings["phase_end_time"] = datetime.now(timezone.utc) + timedelta(hours=12)
+        self.game.game_settings["game_type"] = "classic"
+
+    async def test_roleblocker_a_blocks_roleblocker_b_preventing_b_from_blocking_doctor(self):
+        """Blocker A blocks Blocker B; Blocker B targets Doctor C; Doctor C heals Victim V; Killer K attacks Victim V."""
+        from game.engine.night import process_night_actions, _resolve_night_deaths
+
+        # Players
+        p_rb1 = Mock(id=1, display_name="RB1", is_alive=True, is_npc=False)
+        p_rb1.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_rb2 = Mock(id=2, display_name="RB2", is_alive=True, is_npc=False)
+        p_rb2.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=3, display_name="Doctor", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        p_victim = Mock(id=4, display_name="Victim", is_alive=True, is_npc=False, death_info={})
+        p_victim.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        p_killer = Mock(id=5, display_name="Killer", is_alive=True, is_npc=False)
+        p_killer.role = Mock(name="Godfather", abilities=["kill"], night_priority=3, is_night_immune=True)
+
+        self.game.players = {1: p_rb1, 2: p_rb2, 3: p_doc, 4: p_victim, 5: p_killer}
+
+        # Queue actions:
+        # RB1 blocks RB2
+        # RB2 blocks Doctor (id 3)
+        # Doctor heals Victim (id 4)
+        # Killer kills Victim (id 4)
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "block", "target_id": 3, "night_priority": 1},
+            3: {"type": "heal", "target_id": 4, "night_priority": 2},
+            5: {"type": "kill", "target_id": 4, "night_priority": 3},
+        }
+
+        await process_night_actions(self.game)
+
+        # RB2 must be recorded in blocked_players_this_night (blocked by RB1)
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # Doctor (3) must NOT be blocked!
+        self.assertNotIn(3, self.game.blocked_players_this_night)
+        # Doctor must have successfully healed Victim (4)
+        self.assertIn(3, self.game.heals_on_players.get(4, []))
+
+        # Now resolve deaths
+        await _resolve_night_deaths(self.game)
+
+        # Victim must survive because Doctor successfully healed them!
+        self.assertTrue(p_victim.is_alive)
+
+    async def test_roleblocker_mutual_block(self):
+        """Blocker A blocks B, and Blocker B blocks A. Both are blocked."""
+        from game.engine.night import process_night_actions
+
+        p_rb1 = Mock(id=1, display_name="RB1", is_alive=True, is_npc=False)
+        p_rb1.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_rb2 = Mock(id=2, display_name="RB2", is_alive=True, is_npc=False)
+        p_rb2.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        self.game.players = {1: p_rb1, 2: p_rb2}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "block", "target_id": 1, "night_priority": 1},
+        }
+
+        await process_night_actions(self.game)
+
+        self.assertIn(1, self.game.blocked_players_this_night)
+        self.assertIn(2, self.game.blocked_players_this_night)
+
+    async def test_roleblock_three_blocker_chain(self):
+        """A blocks B, B blocks C, C blocks Doctor D."""
+        from game.engine.night import process_night_actions
+
+        p1 = Mock(id=1, display_name="RB1", is_alive=True, is_npc=False)
+        p1.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1)
+
+        p2 = Mock(id=2, display_name="RB2", is_alive=True, is_npc=False)
+        p2.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1)
+
+        p3 = Mock(id=3, display_name="RB3", is_alive=True, is_npc=False)
+        p3.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1)
+
+        p4 = Mock(id=4, display_name="Doctor", is_alive=True, is_npc=False)
+        p4.role = Mock(name="Doctor", abilities=["heal"], night_priority=2)
+
+        self.game.players = {1: p1, 2: p2, 3: p3, 4: p4}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "block", "target_id": 3, "night_priority": 1},
+            3: {"type": "block", "target_id": 4, "night_priority": 1},
+            4: {"type": "heal", "target_id": 1, "night_priority": 2},
+        }
+
+        await process_night_actions(self.game)
+
+        # RB2 blocked by RB1
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # RB3 was targeted by RB2, but RB2 was blocked! So RB3 is NOT blocked!
+        self.assertNotEqual(self.game.blocked_players_this_night.get(3), 2)
+        # RB3 successfully blocked Doctor (4)!
+        self.assertEqual(self.game.blocked_players_this_night.get(4), 3)
+
+    def test_day_phase_skip_visibility_indicators(self):
+        """Day phase skip is clearly visible in header, dynamic rules, and status message."""
+        from game.data.getrules import create_header, get_dynamic_rules
+        from game.engine.status import get_status_message
+
+        self.game.game_settings["game_type"] = "battle_royale"
+        self.game.game_settings["br_skip_day"] = True
+        self.game.game_settings["game_id"] = "TEST-BR-01"
+
+        header = create_header(None, self.game.game_settings)
+        self.assertIn("DAY PHASE SKIPPED", header)
+
+        rules = get_dynamic_rules(None, self.game.game_settings)
+        self.assertIn("Skipped", rules)
+
+        status = get_status_message(self.game)
+        self.assertIn("Day Phase Skipped", status)
+
+    async def test_roleblock_on_plain_townie_emits_no_story_event(self):
+        """If Roleblocker targets a Plain Townie, no story event is emitted."""
+        from game.engine.night import process_night_actions
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_town = Mock(id=2, display_name="PlainTownie", is_alive=True, is_npc=False)
+        p_town.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        self.game.players = {1: p_rb, 2: p_town}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1}
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Target is tracked internally
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # But NO narration event was emitted
+        self.assertEqual(len(self.game.narration_manager.events), 0)
+
+    async def test_roleblock_on_idle_night_action_player_emits_no_story_event(self):
+        """If Roleblocker targets an idle player with abilities, no story event is emitted."""
+        from game.engine.night import process_night_actions
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=3, display_name="DoctorBob", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        self.game.players = {1: p_rb, 3: p_doc}
+        # Doctor submitted NO action
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 3, "night_priority": 1}
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Target is tracked internally
+        self.assertEqual(self.game.blocked_players_this_night.get(3), 1)
+        # But NO narration event was emitted
+        self.assertEqual(len(self.game.narration_manager.events), 0)
+
+    async def test_roleblock_on_active_kill_emits_thwarted_murder_action_story(self):
+        """If Roleblocker targets a killer performing a kill, story describes blocked murder, not the person."""
+        from game.engine.night import process_night_actions
+        from game.narration_static import _generate_static_story_part
+        from game.narration_ai import _generate_mechanical_summary
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_gf = Mock(id=2, display_name="DonCorleone", is_alive=True, is_npc=False)
+        p_gf.role = Mock(name="Godfather", abilities=["kill"], night_priority=3, is_night_immune=True)
+
+        p_victim = Mock(id=3, display_name="InnocentCiv", is_alive=True, is_npc=False)
+        p_victim.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        self.game.players = {1: p_rb, 2: p_gf, 3: p_victim}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "kill", "target_id": 3, "night_priority": 3},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Target is tracked internally
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # Exactly one block event emitted
+        self.assertEqual(len(self.game.narration_manager.events), 1)
+        event = self.game.narration_manager.events[0]
+        self.assertEqual(event['type'], 'block')
+        self.assertEqual(event['action_type'], 'kill')
+        self.assertEqual(event['action_target'], p_victim)
+
+        # Static narration describes thwarted murder without naming DonCorleone or Godfather
+        static_story = _generate_static_story_part(event, story_type="Classic Mafia")
+        self.assertIn("thwarted an attempted murder", static_story)
+        self.assertNotIn("DonCorleone", static_story)
+        self.assertNotIn("Godfather", static_story)
+
+        # Mechanical summary describes thwarted murder without naming DonCorleone or Godfather
+        mech_summary = _generate_mechanical_summary([event])
+        self.assertIn("An attempted murder in the night was thwarted by a shadowy figure!", mech_summary)
+        self.assertNotIn("DonCorleone", mech_summary)
+        self.assertNotIn("Godfather", mech_summary)
+
+    async def test_roleblock_on_investigation_emits_no_story_event(self):
+        """If Roleblocker blocks Cop investigating someone, no story event is emitted."""
+        from game.engine.night import process_night_actions
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_cop = Mock(id=2, display_name="SheriffJoe", is_alive=True, is_npc=False)
+        p_cop.role = Mock(name="Town Cop", abilities=["investigate"], night_priority=4, is_night_immune=False)
+
+        p_target = Mock(id=3, display_name="CitizenJane", is_alive=True, is_npc=False)
+        p_target.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        self.game.players = {1: p_rb, 2: p_cop, 3: p_target}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "investigate", "target_id": 3, "night_priority": 4},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Cop is blocked internally
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # But NO story event is emitted
+        self.assertEqual(len(self.game.narration_manager.events), 0)
+
+    async def test_roleblock_on_heal_when_patient_not_attacked_emits_no_story_event(self):
+        """If Doctor is blocked but patient was not attacked, heal would not stop a kill -> NO story event."""
+        from game.engine.night import process_night_actions
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=2, display_name="DocBrown", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        p_patient = Mock(id=3, display_name="CitizenJane", is_alive=True, is_npc=False)
+        p_patient.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        # Doctor heals patient, but NO ONE attacks patient
+        self.game.players = {1: p_rb, 2: p_doc, 3: p_patient}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "heal", "target_id": 3, "night_priority": 2},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Doctor is blocked internally
+        self.assertEqual(self.game.blocked_players_this_night.get(2), 1)
+        # Because patient was not attacked, NO story event is emitted
+        self.assertEqual(len(self.game.narration_manager.events), 0)
+
+    async def test_roleblock_on_heal_when_killer_also_blocked_emits_no_blocked_heal_event(self):
+        """If Doctor is blocked AND Killer is blocked, patient was not attacked -> NO blocked heal event."""
+        from game.engine.night import process_night_actions
+
+        p_rb1 = Mock(id=1, display_name="RB1", is_alive=True, is_npc=False)
+        p_rb1.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_rb2 = Mock(id=2, display_name="RB2", is_alive=True, is_npc=False)
+        p_rb2.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=3, display_name="DocBrown", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        p_killer = Mock(id=4, display_name="Killer", is_alive=True, is_npc=False)
+        p_killer.role = Mock(name="Godfather", abilities=["kill"], night_priority=3, is_night_immune=True)
+
+        p_patient = Mock(id=5, display_name="CitizenJane", is_alive=True, is_npc=False)
+        p_patient.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        # RB1 blocks Doc (3); RB2 blocks Killer (4); Doc heals Jane (5); Killer attacks Jane (5)
+        self.game.players = {1: p_rb1, 2: p_rb2, 3: p_doc, 4: p_killer, 5: p_patient}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 3, "night_priority": 1},
+            2: {"type": "block", "target_id": 4, "night_priority": 1},
+            3: {"type": "heal", "target_id": 5, "night_priority": 2},
+            4: {"type": "kill", "target_id": 5, "night_priority": 3},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # Killer was blocked, so Blocked Kill event is emitted
+        # BUT Doc's heal did NOT stop any kill, so NO Blocked Heal event is emitted!
+        events = self.game.narration_manager.events
+        self.assertEqual(len(events), 1)
+        self.assertEqual(events[0]['action_type'], 'kill')
+
+    async def test_roleblock_on_heal_when_patient_is_attacked_emits_blocked_heal_event(self):
+        """If Doctor is blocked AND patient is attacked by an unblocked kill, heal would have stopped kill -> EMIT."""
+        from game.engine.night import process_night_actions
+        from game.narration_ai import _generate_mechanical_summary
+
+        p_rb = Mock(id=1, display_name="RB", is_alive=True, is_npc=False)
+        p_rb.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=2, display_name="DocBrown", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        p_killer = Mock(id=3, display_name="Killer", is_alive=True, is_npc=False)
+        p_killer.role = Mock(name="Godfather", abilities=["kill"], night_priority=3, is_night_immune=True)
+
+        p_patient = Mock(id=4, display_name="CitizenJane", is_alive=True, is_npc=False, death_info={})
+        p_patient.role = Mock(name="Townie", abilities=[], night_priority=99, is_night_immune=False)
+
+        # RB blocks Doc; Killer attacks Jane; Doc was healing Jane!
+        self.game.players = {1: p_rb, 2: p_doc, 3: p_killer, 4: p_patient}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "heal", "target_id": 4, "night_priority": 2},
+            3: {"type": "kill", "target_id": 4, "night_priority": 3},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # The heal WOULD have saved Jane from Killer's attack!
+        heal_events = [e for e in self.game.narration_manager.events if e.get('action_type') == 'heal']
+        self.assertEqual(len(heal_events), 1)
+        event = heal_events[0]
+        self.assertEqual(event['action_target'], p_patient)
+
+        summary = _generate_mechanical_summary([event])
+        self.assertIn("medical protection was intercepted and blocked", summary)
+        self.assertNotIn("DocBrown", summary)
+
+    async def test_roleblock_on_blocker_emits_blocked_block_event(self):
+        """If Roleblocker 1 blocks Roleblocker 2 who targeted Doctor, Blocked Block is emitted."""
+        from game.engine.night import process_night_actions
+        from game.narration_ai import _generate_mechanical_summary
+
+        p_rb1 = Mock(id=1, display_name="RB1", is_alive=True, is_npc=False)
+        p_rb1.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_rb2 = Mock(id=2, display_name="RB2", is_alive=True, is_npc=False)
+        p_rb2.role = Mock(name="Roleblocker", abilities=["block"], night_priority=1, is_night_immune=False)
+
+        p_doc = Mock(id=3, display_name="DocBrown", is_alive=True, is_npc=False)
+        p_doc.role = Mock(name="Doctor", abilities=["heal"], night_priority=2, is_night_immune=False)
+
+        self.game.players = {1: p_rb1, 2: p_rb2, 3: p_doc}
+        self.game.night_actions = {
+            1: {"type": "block", "target_id": 2, "night_priority": 1},
+            2: {"type": "block", "target_id": 3, "night_priority": 1},
+        }
+        self.game.narration_manager.events.clear()
+
+        await process_night_actions(self.game)
+
+        # RB2's block was blocked by RB1!
+        block_events = [e for e in self.game.narration_manager.events if e.get('action_type') == 'block']
+        self.assertEqual(len(block_events), 1)
+
+        summary = _generate_mechanical_summary(block_events)
+        self.assertIn("attempt to interfere with another citizen was thwarted", summary)
+        self.assertNotIn("RB2", summary)
 
 
 if __name__ == "__main__":

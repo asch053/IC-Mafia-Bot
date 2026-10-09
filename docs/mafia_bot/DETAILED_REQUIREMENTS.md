@@ -140,9 +140,23 @@ All components throughout the bot must access the active game state via `bot.gam
 #### D1. Role Block Action
 * **File Path**: `game/actions/block.py`
 * **Signature**: `def handle_block(game, blocker_id: int, target_id: int, night_outcomes: dict) -> None`
-* **Specification**: Adds `target_id` to `game.blocked_players_this_night`. Target's queued actions are marked blocked in `night_outcomes`.
+* **Specification**:
+  * Records `game.blocked_players_this_night[target_id] = blocker_id`.
+  * If target has an active action, marks `night_outcomes[target_id]['status'] = 'blocked'`.
+  * **Dependency Ordering & Mutual Blocks**: Evaluated at Priority 1 in `game/engine/night.py`. Blockers with 0 active blockers resolve first; blocked blockers cannot block their targets; mutual block cycles resolve so all participants are blocked.
+  * **Selective Narration Matrix**:
+    * `investigate`: NEVER emitted or shown in public narration/summaries.
+    * `kill`: ALWAYS emitted; narrates thwarted assassination anonymously.
+    * `block`: ALWAYS emitted; narrates thwarted interference anonymously.
+    * `heal`: Queued in `game.pending_blocked_heals`. Evaluated after Priority 3 (Kills). ONLY emitted if the patient was targeted by an active unblocked kill attempt.
+    * `idle` / `plain townie`: No event emitted.
 * **Acceptance Criteria**:
   * `TEST-ACT-01` (`tests/test_2_action.py`): Target added to `game.blocked_players_this_night`. Subsequent actions by target are cancelled.
+  * `TEST-INV-RB-01` (`tests/test_8_invariants.py:test_roleblocker_a_blocks_roleblocker_b_preventing_b_from_blocking_doctor`): Blocked blocker cannot block downstream target.
+  * `TEST-INV-RB-02` (`tests/test_8_invariants.py:test_roleblocker_mutual_block`): Mutual block cycles correctly block both participants.
+  * `TEST-INV-RB-03` (`tests/test_8_invariants.py:test_roleblock_on_investigation_emits_no_story_event`): Investigation blocks remain completely silent.
+  * `TEST-INV-RB-04` (`tests/test_8_invariants.py:test_roleblock_on_heal_when_patient_not_attacked_emits_no_story_event`): Blocked heals with no kill on patient emit no story event.
+  * `TEST-INV-RB-05` (`tests/test_8_invariants.py:test_roleblock_on_heal_when_patient_is_attacked_emits_blocked_heal_event`): Blocked heals with active kill on patient emit blocked heal narration.
 
 #### D2. Heal / Protection Action
 * **File Path**: `game/actions/heal.py`
@@ -249,17 +263,24 @@ All components throughout the bot must access the active game state via `bot.gam
   * `async def record_night_action(game, interaction, action_type: str, target_name: str) -> str`
   * `async def process_npc_night_actions(game) -> None`
   * `async def process_night_actions(game) -> None`
+  * `def _resolve_block_actions(game, blocker_pids: list, night_outcomes: dict) -> None`
   * `async def _resolve_night_deaths(game) -> None`
   * `def _handle_promotions(game, dead_player: Player) -> None`
 * **Specification**:
   * `process_npc_night_actions`: Automatically queues valid night abilities for living NPCs (Godfather/SK kills random target; Doctor heals random player without consecutive repeats; Blocker blocks; Cop investigates).
   * Collects night actions in `game.night_actions`.
-  * Evaluates actions in priority order: Block -> Heal -> Kill -> Investigate.
+  * Evaluates actions in strict priority bins:
+    1. **Priority 1 (Block)**: Resolved via `_resolve_block_actions()`. Handles dependency ordering (blockers with 0 incoming unblocked blockers act first; blocked blockers cannot act; mutual block cycles block all participants). Queues blocked heals into `game.pending_blocked_heals`.
+    2. **Priority 2 (Heal)**: Records successful protections on targets.
+    3. **Priority 3 (Kill)**: Resolves lethal attacks, populates `game.kill_attempts_on`.
+    4. **Priority 4 (Investigate)**: Generates private result DMs for unblocked investigators.
+  * **Pending Blocked Heals Resolution**: Evaluated immediately after Priority 3 (Kills). If and only if the Doctor's patient was targeted by an active (unblocked) kill attempt, the blocked heal event is emitted to narration. If the patient was not attacked, zero events are emitted.
   * If Godfather dies and living Mob Goons exist, promotes the first Mob Goon to Godfather.
 * **Acceptance Criteria**:
   * `TEST-ENG-07`: `process_night_actions` correctly cancels blocked actions and saves healed players.
   * `TEST-ENG-07B` (`tests/test_1_engine.py:test_npc_night_actions_auto_queue`): Living NPC power roles automatically queue valid night actions against eligible targets.
   * `TEST-ENG-08`: `_handle_promotions` promotes Mob Goon to Godfather upon Godfather death.
+  * `TEST-INV-RB-06` (`tests/test_8_invariants.py`): Full night resolution verifies that blocked heals emit only when a kill targets the patient.
 
 #### F5. Win Condition Evaluator Chunk
 * **File Path**: `game/engine/win.py`

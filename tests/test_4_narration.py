@@ -115,3 +115,51 @@ class TestNarrationManager(unittest.IsolatedAsyncioTestCase):
         except Exception as e:
             logger.exception(f"[ERROR] Test failed in {self._testMethodName}: {e}")
             raise
+
+    def test_mechanical_summary_block_and_block_missed(self):
+        """Verifies that block events describe blocked actions and block_missed emits nothing."""
+        from game.narration_ai import _generate_mechanical_summary
+        
+        target = MagicMock()
+        target.role.name = "Godfather"
+        target.role.abilities = ["kill"]
+        target.display_name = "TargetBob"
+        blocker = MagicMock()
+        blocker.display_name = "BlockerAlice"
+        
+        # Test block_missed in classic (emits no lines)
+        events = [{'type': 'block_missed', 'blocker': blocker, 'target': target}]
+        summary = _generate_mechanical_summary(events)
+        self.assertEqual(summary, "")
+
+        # Test block on kill in classic: describes thwarted murder, hides identities
+        events_kill = [{'type': 'block', 'blocker': blocker, 'target': target, 'action_type': 'kill'}]
+        summary_kill = _generate_mechanical_summary(events_kill)
+        self.assertIn("An attempted murder in the night was thwarted", summary_kill)
+        self.assertNotIn("TargetBob", summary_kill)
+        self.assertNotIn("Godfather", summary_kill)
+        self.assertNotIn("BlockerAlice", summary_kill)
+
+        # Test block on heal in classic
+        events_heal = [{'type': 'block', 'blocker': blocker, 'target': target, 'action_type': 'heal'}]
+        summary_heal = _generate_mechanical_summary(events_heal)
+        self.assertIn("medical protection was intercepted", summary_heal)
+        self.assertNotIn("TargetBob", summary_heal)
+
+        # Test block on block in classic
+        events_block = [{'type': 'block', 'blocker': blocker, 'target': target, 'action_type': 'block'}]
+        summary_block = _generate_mechanical_summary(events_block)
+        self.assertIn("attempt to interfere with another citizen was thwarted", summary_block)
+        self.assertNotIn("TargetBob", summary_block)
+
+        # Test block on investigate in classic: NEVER shown
+        events_investigate = [{'type': 'block', 'blocker': blocker, 'target': target, 'action_type': 'investigate'}]
+        summary_investigate = _generate_mechanical_summary(events_investigate)
+        self.assertEqual(summary_investigate, "")
+
+        # Test block in battle royale: identifies blocker and target
+        events_br = [{'type': 'block_battle_royale', 'blocker': blocker, 'target': target, 'action_type': 'kill'}]
+        summary_br = _generate_mechanical_summary(events_br)
+        self.assertIn("BlockerAlice", summary_br)
+        self.assertIn("TargetBob", summary_br)
+        self.assertIn("attack", summary_br)

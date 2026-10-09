@@ -29,14 +29,23 @@ This codebase is organized with dedicated architectural overviews and bidirectio
 
 ## ✨ Key Features
 
-  * **Automated Game Management**: Handles the full game lifecycle, including sign-ups, day/night cycles, and phase timers.
+  * **Automated Game Management**: Handles the full game lifecycle, including sign-ups, day/night cycles, phase timers, and clear **Day Phase Skip** indicators across rules, headers, and status embeds.
   * **Complex Role Support**: Supports a wide variety of roles with unique night abilities (Doctors, Cops, Role Blockers, Jester, etc.) defined in flexible JSON configurations.
+  * **Roleblock Dependency Resolution & Selective Narration**:
+    * Priority-1 dependency resolution with cycle handling for mutual roleblocks.
+    * **Action-focused narration**: Thwarted actions are described anonymously without exposing living players' hidden roles.
+    * **Selective visibility**: Investigation blocks are never shown publicly; blocked heals are only shown if the heal would have prevented an unblocked kill attempt on that patient; blocked kills and blocked blocks are always narrated; blocks on idle players or plain townies remain silent.
   * **9 Narrative Themes & Dynamic Role Reskinning**: Play across 9 rich narrative themes (Classic Mafia, Horror, Explicit Kinky NSFW [R18], Rom Com [SFW Non-Death], Office Restructuring [SFW Non-Death], High Fantasy, Cyberpunk, Comedy, and Lovecraftian Horror). Every canonical role receives a thematic title, DM description, and public skin while keeping underlying mechanics 100% stable.
   * **SFW Non-Death Modes**: Rom Com (dumped, ghosted, wingman saves) and Office Restructuring (laid off, terminated, HR contract protections) completely replace violent death and corpse themes with lighthearted, non-lethal stakes.
   * **Dynamic Role Assignment**: Automatically assigns roles from `mafia_setups.json` based on the number of players who sign up.
   * **Automated Voting**: Manages day-phase lynch votes and inactivity-based voting.
-  * **Dynamic Narration**: Generates narrative stories for all game events (kills, blocks, lynches) at the end of each phase using Google Gemini AI or reliable static fallback narration.
-  * **Extensive Unit Testing**: A robust test suite (90 passing tests) ensures code stability, invariant enforcement, and parameter validation.
+  * **Dynamic Narration**: Generates narrative stories for all game events at the end of each phase using Google Gemini AI or reliable static fallback narration.
+  * **Historical Web Analytics Portal**: Multi-era analytics dashboard spanning 202 games across 4 historical eras (Forum, Discourse, Discord Manual, Discord Bot) with an automated build pipeline and production deployment guide (`Website/PRODUCTION_SETUP_GUIDE.md`).
+  * **Extensive Unit Testing**: A robust test suite (**117 passing tests**) ensures code stability, invariant enforcement, and parameter validation.
+
+## 🌐 Production Website & Deployment
+To deploy the historical web analytics portal on an Oracle Cloud Free Tier VM or via Google Cloud / GitHub Pages, follow the step-by-step instructions in:
+* **[Production Setup Guide](Website/PRODUCTION_SETUP_GUIDE.md)**: Rebuilding databases, Nginx/Caddy HTTPS configuration, systemd services, and automated Git pull webhooks.
 
 ## 🚀 Setup & Installation
 

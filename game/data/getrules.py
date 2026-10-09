@@ -41,6 +41,9 @@ def create_header(self, game_settings):
         f"📖 **Story Theme:** {story_type}\n"
         f"⏳ **Start Time:** {formatted_start}\n"
     )
+    if game_settings.get('br_skip_day', False):
+        header += "⚡ **SPECIAL RULE: DAY PHASE SKIPPED!** (Consecutive Night Action Phases Only)\n"
+
     logger.info("Header created successfully.")
     return header
 
@@ -85,10 +88,15 @@ def get_dynamic_rules(self, game_settings):
 
     if game_type == "battle_royale":
         skip_day = game_settings.get('br_skip_day', False)
+        day_rule_desc = (
+            "🚨 **Skipped — Consecutive night action phases only! (No daytime discussion or lynches)**"
+            if skip_day
+            else "Enabled (standard day/night cycle)"
+        )
         dynamic_setup = (
             f"> ⏱️ **Phase Length:** {phase_length} Hours\n"
             f"> ⚔️ **Mode Rules:** Free-for-all survival; no factions.\n"
-            f"> 🌙 **Day Phase:** {'Skipped (consecutive night action phases only)' if skip_day else 'Enabled (standard day/night cycle)'}"
+            f"> 🌙 **Day Phase:** {day_rule_desc}"
         )
     else:
         dynamic_setup = (

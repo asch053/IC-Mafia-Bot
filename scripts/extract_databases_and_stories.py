@@ -16,9 +16,10 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(ROOT_DIR, "data")
-DB_DIR = os.path.join(DATA_DIR, "database")
-STORIES_DIR = os.path.join(DATA_DIR, "stories")
-WEBSITE_DATA_DIR = os.path.join(ROOT_DIR, "Website", "data")
+WEBSITE_DIR = os.path.join(ROOT_DIR, "Website")
+DB_DIR = os.path.join(WEBSITE_DIR, "database")
+STORIES_DIR = os.path.join(WEBSITE_DIR, "stories")
+WEBSITE_DATA_DIR = os.path.join(WEBSITE_DIR, "data")
 
 def run_extraction():
     os.makedirs(DB_DIR, exist_ok=True)

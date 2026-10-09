@@ -107,18 +107,27 @@ async def save_data_summary(game, game_data, final_summary):
 
 async def update_modular_database(game, game_data, final_summary, winner):
     """
-    Updates data/database/discord_bot.json with the completed game,
-    saves the markdown summary and story to data/stories/,
+    Updates Website/database/discord_bot.json with the completed game,
+    saves the markdown summary and story to Website/stories/,
     and re-runs build_unified_stats() so the website reflects the new game immediately.
     """
     logger.info("Updating modular Discord Bot database and markdown stories...")
     try:
         game_id = str(game_data.get('game_id', 'unknown'))
         root_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-        db_path = os.path.join(root_dir, "data", "database", "discord_bot.json")
-        stories_dir = os.path.join(root_dir, "data", "stories")
+        website_dir = os.path.join(root_dir, "Website")
+        db_dir = os.path.join(website_dir, "database")
+        stories_dir = os.path.join(website_dir, "stories")
+
+        # Fallback to root data/ if Website folders do not exist
+        if not os.path.exists(db_dir) and os.path.exists(os.path.join(root_dir, "data", "database")):
+            db_dir = os.path.join(root_dir, "data", "database")
+        if not os.path.exists(stories_dir) and os.path.exists(os.path.join(root_dir, "data", "stories")):
+            stories_dir = os.path.join(root_dir, "data", "stories")
+
+        db_path = os.path.join(db_dir, "discord_bot.json")
         os.makedirs(stories_dir, exist_ok=True)
-        os.makedirs(os.path.dirname(db_path), exist_ok=True)
+        os.makedirs(db_dir, exist_ok=True)
 
         # 1. Narrative Overview
         winning_players_str = ", ".join(game_data.get("winning_players", [])) if game_data.get("winning_players") else "None"
@@ -138,8 +147,20 @@ async def update_modular_database(game, game_data, final_summary, winner):
 
         # 2. Story as Written
         story_as_written = ""
-        if hasattr(game, 'narration_manager') and game.narration_manager:
+        game_type_dir = game.game_settings.get('game_type', 'classic').replace('_', ' ').title()
+        story_stats_path = os.path.join(config.data_save_path, game_type_dir, game_id, f"game_{game_id}_story.md")
+        if os.path.exists(story_stats_path):
+            try:
+                with open(story_stats_path, "r", encoding="utf-8") as st_f:
+                    story_as_written = st_f.read().strip()
+                if "\n## Chat Transcript" in story_as_written:
+                    story_as_written = story_as_written.split("\n## Chat Transcript")[0].strip()
+            except Exception:
+                pass
+        if not story_as_written and hasattr(game, 'narration_manager') and game.narration_manager:
             story_as_written = game.narration_manager.get_full_story_log() or ""
+            if "\n## Chat Transcript" in story_as_written:
+                story_as_written = story_as_written.split("\n## Chat Transcript")[0].strip()
         if not story_as_written:
             story_as_written = f"Automated game {game_id} run on Discord."
 
@@ -223,10 +244,21 @@ async def update_modular_database(game, game_data, final_summary, winner):
                 "votes_cast": len(ph_votes)
             })
 
+        start_date = ""
+        if game_data.get("start_date_utc"):
+            m_iso = re.search(r'(\d{4}-\d{2}-\d{2})', str(game_data["start_date_utc"]))
+            if m_iso:
+                start_date = m_iso.group(1)
+        if not start_date:
+            m_id = re.match(r'^(\d{4})(\d{2})(\d{2})', game_id)
+            if m_id:
+                start_date = f"{m_id.group(1)}-{m_id.group(2)}-{m_id.group(3)}"
+
         game_entry = {
             "thread_id": game_id,
             "era": "Discord",
             "title": f"Discord Game - {game_id}",
+            "start_date": start_date,
             "moderator": "IC Mafia Bot",
             "game_type": game_data.get("game_type", "classic"),
             "total_posts": len(game.chat_log) if hasattr(game, 'chat_log') and game.chat_log else 0,
@@ -247,7 +279,7 @@ async def update_modular_database(game, game_data, final_summary, winner):
             "lynch_vote_history": final_summary.get("lynch_vote_history", [])
         }
 
-        # 4. Update data/database/discord_bot.json
+        # 4. Update Website/database/discord_bot.json
         bot_games = []
         if os.path.exists(db_path):
             try:

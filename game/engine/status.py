@@ -80,6 +80,8 @@ def get_status_message(game) -> str:
     status_message = f"**Game Status: {game.game_settings['game_id']}**\n"
     status_message += f"**Theme:** {story_type}\n"
     status_message += f"**Phase:** {current_phase.capitalize()} {game.game_settings['phase_number']}\n"
+    if game.game_settings.get("br_skip_day"):
+        status_message += "⚡ **Mode Rule:** Day Phase Skipped (Consecutive Nights Only)\n"
 
     # 4. Append remaining time countdown for active phases
     if game.game_settings['current_phase'] in ['day', 'night', 'signup']:

@@ -214,8 +214,9 @@ async def game_loop_iteration(game):
                     game.night_actions = {}
                     game.lynch_votes = {}
                     announcement = (
-                        f"## 🌙 Night {game.game_settings['phase_number']} has begun (Day Phase Skipped). "
-                        f"You have {format_time_remaining(game.game_settings['phase_end_time'])} to use your night actions."
+                        f"## ⚡ 🌙 Night {game.game_settings['phase_number']} has begun!\n"
+                        f"> ⚠️ **DAY PHASE SKIPPED:** Consecutive Night Mode is active — no voting or daytime discussion.\n"
+                        f"> ⏱️ You have **{format_time_remaining(game.game_settings['phase_end_time'])}** to submit your night actions via bot DM!"
                     )
                     logger.info(f"Battle Royale (Skip Day): Transitioning directly to Night {game.game_settings['phase_number']}.")
                 else:
