@@ -1,0 +1,11 @@
+### Chapter 1: The Darkest Hour
+The return of Imperial Conflict Mafia was heralded by a chilling town meeting. Mayor of the township gathered his subjects, intent on addressing the rising tide of fear—until the lights died. When the backup generator hummed to life, the Mayor was gone. He was found chained in a dank cellar, his teenage daughter, Lauren, broken and branded with the family crest. The mob had arrived, and with the Mayor’s spirit shattered, the Corrupt Mayor became their puppet.
+
+### Chapter 2: The Red Harvest
+The town fell into chaos. While the police officers, Alchoran and Nightwish, scrambled to investigate, the Serial Killer—the mysterious Zarf—began his gruesome collection. Amok was the first to suffer, his organs harvested in a horrific display of madness. Meanwhile, the Mafia, led by the ruthless Godfather Iluvatar, methodically culled the town’s defenders. The Doctor, Elrohir, attempted to rehabilitate the Copycat Killer, Torqez, successfully turning the local threat into a desperate ally of the light.
+
+### Chapter 3: Web of Deceit
+Suspicion tore the town apart. Players like Nolio were targeted by paranoia, while the town struggled to parse the intentions of the secretive "Secret Roles." Gwynedd, mourning the loss of his wife, Wendy—who had been unmasked as a mobster—was silenced forever when he discovered a cryptic note in her grave, only to be buried alive for his curiosity. 
+
+### Chapter 4: The Final Stand
+The endgame unfolded in a rain of gunfire at the local tavern. The Godfather and his last mobster, glue, cornered the Town Drunk, Arnor, executing him in cold blood. But the police were closing in. Alchoran and Nightwish stormed the bar, engaging in a desperate firefight. As the smoke cleared, the Serial Killer, Zarf, emerged to finish the final mobster, only to be cut down by the police. The town was battered, bruised, and forever scarred, but as the remaining citizens stepped out into the morning light, the tyranny of the Mafia and the madness of the Serial Killer had finally been extinguished.

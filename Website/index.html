@@ -141,7 +141,18 @@
             <div class="stat-box" style="border-color: var(--red);"><div class="sb-title">Mafia Wins</div><div class="sb-val" id="c-mafia">0</div><div class="sb-sub" id="c-mafia-pct">0%</div></div>
             <div class="stat-box" style="border-color: var(--grey);"><div class="sb-title">Draws/Other</div><div class="sb-val" id="c-draw">0</div><div class="sb-sub" id="c-draw-pct">0%</div></div>
         </div>
-        <div class="card"><h2>📈 Meta History</h2><div style="height: 300px;"><canvas id="trendChart"></canvas></div></div>
+        <div class="card">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom:8px;">
+                <h2 style="margin:0;">📈 Meta History (All 202 Classic Games)</h2>
+                <div style="font-size:12px; color:#aaa; display:flex; gap:12px; align-items:center;">
+                    <span><span style="color:#ffb74d;">■</span> Forum Era (1-84)</span>
+                    <span><span style="color:#64b5f6;">■</span> Discourse (85-119)</span>
+                    <span><span style="color:#81c784;">■</span> Discord Manual (120-148)</span>
+                    <span><span style="color:#ba68c8;">■</span> Discord Bot (149-202)</span>
+                </div>
+            </div>
+            <div style="height: 320px;"><canvas id="trendChart"></canvas></div>
+        </div>
         <div class="split-grid">
             <div class="card"><h2>🧠 Skill Leaderboard</h2><div class="table-wrap"><table id="skillTable"><thead><tr><th onclick="sort('skillTable',0)">#</th><th onclick="sort('skillTable',1)">Player</th><th onclick="sort('skillTable',2)">Skill</th><th>Breakdown</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('skillTable',1)"></th><th><input class="filter-input" onkeyup="filter('skillTable',2)"></th><th></th></tr></thead><tbody id="skillBody"></tbody></table></div></div>
             <div class="card"><h2>⚔️ Stats Leaderboard</h2><div class="table-wrap"><table id="statsTable"><thead><tr><th onclick="sort('statsTable',0)">#</th><th onclick="sort('statsTable',1)">Player</th><th onclick="sort('statsTable',2)">Games</th><th onclick="sort('statsTable',3)">Win%</th><th onclick="sort('statsTable',4)">Surv%</th><th>N1</th><th>D1</th></tr><tr><th></th><th><input class="filter-input" onkeyup="filter('statsTable',1)"></th><th><input class="filter-input" onkeyup="filter('statsTable',2)"></th><th><input class="filter-input" onkeyup="filter('statsTable',3)"></th><th><input class="filter-input" onkeyup="filter('statsTable',4)"></th><th></th><th></th></tr></thead><tbody id="statsBody"></tbody></table></div></div>
@@ -165,20 +176,21 @@
             <!-- Quick Filter Pills -->
             <div style="display: flex; gap: 10px; margin: 15px 0 20px 0; flex-wrap: wrap; align-items: center;">
                 <span style="color: var(--muted); font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Filter Era:</span>
-                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (141)</button>
+                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (202)</button>
                 <button id="pill-discourse" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--orange); border-radius: 20px; background: rgba(255, 152, 0, 0.15); color: var(--orange);" onclick="setArchiveEra('Discourse')">📜 Discourse Era (35)</button>
                 <button id="pill-forum" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--blue); border-radius: 20px; background: rgba(56, 138, 207, 0.15); color: var(--blue);" onclick="setArchiveEra('Forum')">🏛️ Forum Era (84)</button>
-                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Era (22)</button>
+                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Era (83)</button>
             </div>
 
             <div class="table-wrap">
                 <table id="archivesTable">
                     <thead>
                         <tr>
-                            <th>Thread ID</th>
-                            <th>Era</th>
-                            <th>Game Title</th>
-                            <th>Winner</th>
+                            <th onclick="sort('archivesTable',0)" style="cursor:pointer">Thread ID ↕</th>
+                            <th onclick="sort('archivesTable',1)" style="cursor:pointer">Era ↕</th>
+                            <th onclick="sort('archivesTable',2)" style="cursor:pointer">Start Date ↕</th>
+                            <th onclick="sort('archivesTable',3)" style="cursor:pointer">Game Title ↕</th>
+                            <th onclick="sort('archivesTable',4)" style="cursor:pointer">Winner ↕</th>
                             <th style="min-width: 170px;">Story & Summary</th>
                         </tr>
                         <tr>
@@ -186,13 +198,14 @@
                             <th>
                                 <select id="eraSelector" class="filter-input" onchange="setArchiveEra(this.value)">
                                     <option value="">All Eras</option>
-                                    <option value="Discourse">Discourse (35)</option>
-                                    <option value="Forum">Forum (84)</option>
-                                    <option value="Discord">Discord / Bot (22)</option>
+                                    <option value="Discourse">Discourse</option>
+                                    <option value="Forum">Forum</option>
+                                    <option value="Discord">Discord / Bot</option>
                                 </select>
                             </th>
-                            <th><input class="filter-input" onkeyup="filter('archivesTable',2)" placeholder="Title..."></th>
-                            <th><input class="filter-input" onkeyup="filter('archivesTable',3)" placeholder="Faction..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',2)" placeholder="Date..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',3)" placeholder="Title..."></th>
+                            <th><input class="filter-input" onkeyup="filter('archivesTable',4)" placeholder="Faction..."></th>
                             <th></th>
                         </tr>
                     </thead>
@@ -203,7 +216,7 @@
     </div>
 
     <!-- NARRATIVE STORY, GAME SUMMARY & PHASE PLAY-BY-PLAY MODAL -->
-    <div id="story-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;">
+    <div id="story-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1100; overflow-y: auto;">
         <div style="background: var(--bg); max-width: 950px; margin: 30px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.9);">
             <button onclick="document.getElementById('story-modal').classList.add('hidden')" style="position: absolute; top: 15px; right: 20px; background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
             <h2 id="story-title" style="margin-top: 0; font-size: 1.8em; margin-bottom: 5px;"></h2>
@@ -241,9 +254,10 @@
 
     <!-- PLAYER DOSSIER MODAL -->
     <div id="dossier-modal" class="hidden" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 1000; overflow-y: auto;">
-        <div style="background: var(--bg); max-width: 800px; margin: 40px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
+        <div style="background: var(--bg); max-width: 950px; margin: 30px auto; padding: 30px; border-radius: 8px; border: 1px solid #444; position: relative; box-shadow: 0 0 25px rgba(0,0,0,0.9);">
             <button onclick="document.getElementById('dossier-modal').classList.add('hidden')" style="position: absolute; top: 15px; right: 20px; background: var(--red); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; font-weight: bold;">Close</button>
-            <h2 id="dossier-name" style="margin-top: 0; font-size: 2em; border-bottom: 2px solid var(--gold); padding-bottom: 10px;">Player Name</h2>
+            <h2 id="dossier-name" style="margin-top: 0; font-size: 2em; border-bottom: 2px solid var(--gold); padding-bottom: 8px; margin-bottom: 0;">Player Name</h2>
+            <div id="dossier-aliases-container" style="margin-top: 8px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap;"></div>
             
             <div class="split-grid" style="margin-top: 20px;">
                 <div class="card" style="background: #2a2a2a;">
@@ -259,10 +273,40 @@
             </div>
 
             <h3 style="margin-top: 20px;">Tragedy & Death Analysis</h3>
-            <div id="dossier-death-stats" style="display: flex; gap: 15px; margin-bottom: 30px; flex-wrap: wrap;"></div>
+            <div id="dossier-death-stats" style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;"></div>
 
             <h3 style="margin-top: 20px;">🎖️ Accolades & Badges</h3>
-            <div id="dossier-badges" style="display: flex; gap: 10px; flex-wrap: wrap;"></div>
+            <div id="dossier-badges" style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 25px;"></div>
+
+            <!-- MATCH HISTORY & GAME CHRONICLES SECTION -->
+            <div style="margin-top: 25px; border-top: 1px solid #3a3a44; padding-top: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                    <div>
+                        <h3 id="dossier-games-header" style="margin: 0; color: var(--gold); font-size: 1.25em;">🎮 Match History</h3>
+                        <div style="color: #aaa; font-size: 0.85em; margin-top: 3px;">Full chronological archive of every game played across all eras.</div>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input id="dossier-game-search" type="text" placeholder="Search match / role..." onkeyup="filterDossierGames()" style="background: #202028; border: 1px solid #555; color: white; padding: 6px 12px; border-radius: 4px; font-size: 0.85em; outline: none; width: 180px;">
+                        <button id="dossier-filter-chronicle-btn" style="background: rgba(56,138,207,0.15); color: var(--blue); border: 1px solid var(--blue); padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 0.85em; font-weight: bold; transition: 0.2s;" title="Jump to main Games Chronicle filtered by this player">🔍 View in Chronicle</button>
+                    </div>
+                </div>
+                <div style="max-height: 380px; overflow-y: auto; border: 1px solid #333; border-radius: 6px; background: #1a1a20;">
+                    <table style="width: 100%; border-collapse: collapse; font-size: 0.9em; text-align: left;">
+                        <thead style="position: sticky; top: 0; background: #23232c; z-index: 2; border-bottom: 2px solid #444;">
+                            <tr>
+                                <th style="padding: 10px 12px; color: var(--gold);">#</th>
+                                <th style="padding: 10px 12px; color: var(--gold);">Era</th>
+                                <th style="padding: 10px 12px; color: var(--gold);">Game Title</th>
+                                <th style="padding: 10px 12px; color: var(--gold);">Role & Faction</th>
+                                <th style="padding: 10px 12px; color: var(--gold);">Outcome</th>
+                                <th style="padding: 10px 12px; color: var(--gold);">Result</th>
+                                <th style="padding: 10px 12px; color: var(--gold); text-align: center;">Chronicle</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dossier-games-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -477,8 +521,96 @@
             document.getElementById('c-draw-pct').innerText = s.Total?(((s.Draw+s.Neutral)/s.Total)*100).toFixed(1)+"%":"0%";
 
             if(trendChart) trendChart.destroy();
+
+            const eraDividersPlugin = {
+                id: 'eraDividers',
+                afterDraw(chart) {
+                    const {ctx, chartArea: {top, bottom, left, right}, scales: {x}} = chart;
+                    const trendData = data.trend;
+                    if (!trendData || !trendData.length) return;
+
+                    const eras = [];
+                    let currentEra = null;
+                    trendData.forEach((d, idx) => {
+                        const eraName = d.eraLabel || d.era || 'Unknown';
+                        if (eraName !== currentEra) {
+                            eras.push({ era: eraName, startIndex: idx });
+                            currentEra = eraName;
+                        }
+                    });
+
+                    ctx.save();
+                    eras.forEach((item, i) => {
+                        const xPos = x.getPixelForValue(item.startIndex);
+                        // Vertical divider dashed line (except before the very first game)
+                        if (i > 0 && xPos >= left && xPos <= right) {
+                            ctx.beginPath();
+                            ctx.setLineDash([5, 5]);
+                            ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+                            ctx.lineWidth = 1.5;
+                            ctx.moveTo(xPos, top);
+                            ctx.lineTo(xPos, bottom);
+                            ctx.stroke();
+                        }
+                        // Era label text badge above each era region
+                        const nextXPos = (i < eras.length - 1) ? x.getPixelForValue(eras[i+1].startIndex) : right;
+                        const midX = (xPos + nextXPos) / 2;
+                        if (midX >= left && midX <= right) {
+                            ctx.fillStyle = '#ffb74d';
+                            ctx.font = 'bold 11px sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(item.era.toUpperCase(), midX, top + 15);
+                        }
+                    });
+                    ctx.restore();
+                }
+            };
+
             trendChart = new Chart(document.getElementById('trendChart'), {
-                type:'line', data:{labels:data.trend.map(d=>d.date),datasets:[{label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true},{label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true},{label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true},{label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{stacked:true,max:100},x:{display:false}}}
+                type:'line',
+                plugins: [eraDividersPlugin],
+                data:{
+                    labels: data.trend.map(d=>`Game ${d.gameNum}`),
+                    datasets:[
+                        {label:'Town',data:data.trend.map(d=>d.townPct),borderColor:'#388acf',backgroundColor:'rgba(56,138,207,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
+                        {label:'Mafia',data:data.trend.map(d=>d.mafiaPct),borderColor:'#cf3838',backgroundColor:'rgba(207,56,56,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
+                        {label:'Neutral',data:data.trend.map(d=>d.neutralPct),borderColor:'#ff9800',backgroundColor:'rgba(255,152,0,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5},
+                        {label:'Draw',data:data.trend.map(d=>d.drawPct),borderColor:'#607d8b',backgroundColor:'rgba(96,125,139,0.5)',fill:true,pointRadius:1.5,pointHoverRadius:5}
+                    ]
+                },
+                options:{
+                    responsive:true,
+                    maintainAspectRatio:false,
+                    interaction:{mode:'index',intersect:false},
+                    scales:{
+                        y:{stacked:true,max:100,ticks:{callback:v=>v+'%',color:'#888'},grid:{color:'rgba(255,255,255,0.05)'}},
+                        x:{
+                            display:true,
+                            ticks:{
+                                maxTicksLimit:15,
+                                color:'#888',
+                                callback: function(val, index) {
+                                    const pt = data.trend[index];
+                                    return pt ? `G${pt.gameNum} (${pt.date})` : '';
+                                }
+                            },
+                            grid:{color:'rgba(255,255,255,0.05)'}
+                        }
+                    },
+                    plugins:{
+                        tooltip:{
+                            callbacks:{
+                                title:items=>{
+                                    if(!items.length)return'';
+                                    const idx=items[0].dataIndex;
+                                    const pt=data.trend[idx];
+                                    return pt ? (pt.label || `Game ${pt.gameNum} (${pt.date})`) : items[0].label;
+                                },
+                                label:item=>` ${item.dataset.label}: ${item.raw}%`
+                            }
+                        }
+                    }
+                }
             });
 
             const sb = document.getElementById('skillBody'); sb.innerHTML='';
@@ -587,7 +719,7 @@
         const totalCount = data.length;
         const discourseCount = data.filter(g => (g.era || '').toLowerCase() === 'discourse').length;
         const forumCount = data.filter(g => (g.era || '').toLowerCase() === 'forum').length;
-        const discordCount = data.filter(g => (g.era || '').toLowerCase() === 'discord').length;
+        const discordCount = data.filter(g => (g.era || '').toLowerCase().includes('discord')).length;
 
         const pAll = document.getElementById('pill-all');
         if (pAll) pAll.innerText = `🌟 All Eras (${totalCount})`;
@@ -616,12 +748,13 @@
 
             let eraBadgeColor = 'var(--blue)';
             if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
-            else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
+            else if (era === 'Discord' || era === 'Discord_Manual') eraBadgeColor = 'var(--purp)';
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${linkHtml}</td>
                 <td><span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 2px 8px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">${era}</span></td>
+                <td style="color: var(--muted); font-size: 0.9em; white-space: nowrap;">${game.start_date || '—'}</td>
                 <td style="font-weight: bold; color: white;">${game.title}</td>
                 <td><span style="background: rgba(255,255,255,0.1); color: ${winColor}; padding: 2px 6px; border-radius: 4px; font-weight: bold;">${winFaction}</span></td>
                 <td>
@@ -670,16 +803,17 @@
         let era = game.era || "Forum";
         let eraBadgeColor = 'var(--blue)';
         if (era === 'Discourse') eraBadgeColor = 'var(--orange)';
-        else if (era === 'Discord') eraBadgeColor = 'var(--purp)';
+        else if (era === 'Discord' || era === 'Discord_Manual') eraBadgeColor = 'var(--purp)';
 
         let eraBadge = `<span style="background: rgba(255,255,255,0.08); color: ${eraBadgeColor}; border: 1px solid ${eraBadgeColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">Era: ${era}</span>`;
+        let dateBadge = game.start_date ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">📅 Started: <strong>${game.start_date}</strong></span>` : '';
         let winnerBadge = `<span style="background: rgba(255,255,255,0.1); color: ${winColor}; border: 1px solid ${winColor}; padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">🏆 Winner: ${winFaction}</span>`;
         let modBadge = game.moderator ? `<span style="background: rgba(255,255,255,0.06); color: #ccc; border: 1px solid #444; padding: 4px 10px; border-radius: 4px; font-size: 0.85em;">Game Host: <strong>${game.moderator}</strong></span>` : '';
         let mvpBadge = '';
         if (game.box_score && game.box_score.mvp && game.box_score.mvp.player) {
             mvpBadge = `<span style="background: rgba(255,215,0,0.15); color: var(--gold); border: 1px solid var(--gold); padding: 4px 10px; border-radius: 4px; font-size: 0.85em; font-weight: bold;">⭐ MVP: ${game.box_score.mvp.player}</span>`;
         }
-        badgesContainer.innerHTML = `${eraBadge} ${winnerBadge} ${modBadge} ${mvpBadge}`;
+        badgesContainer.innerHTML = `${eraBadge} ${dateBadge} ${winnerBadge} ${modBadge} ${mvpBadge}`;
 
         // Tab 1: Game Summary (Chronicle + Strategic Overview)
         const summaryContainer = document.getElementById('story-summary-content');
@@ -690,7 +824,10 @@
                         <strong style="color: var(--blue); font-size: 1.05em;">📋 Match Chronicle & Executive Summary</strong>
                         <div style="color: #bbb; font-size: 0.9em; margin-top: 3px;">Comprehensive strategic narrative and analytical breakdown synthesized across all game phases.</div>
                     </div>
-                    ${game.total_posts ? `<span style="font-size: 0.85em; color: var(--muted); background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 4px;">💬 ${game.total_posts} Thread Posts</span>` : ''}
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        ${game.total_posts ? `<span style="font-size: 0.85em; color: var(--muted); background: rgba(255,255,255,0.05); padding: 3px 8px; border-radius: 4px;">💬 ${game.total_posts} Thread Posts</span>` : ''}
+                        <a href="./stories/${game.thread_id}_summary.md" target="_blank" style="color: var(--blue); font-size: 0.85em; text-decoration: none; border: 1px solid var(--blue); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="View or edit raw markdown file in Website/stories/">📄 View Markdown</a>
+                    </div>
                 </div>
             </div>
         `;
@@ -724,9 +861,12 @@
         const writtenContainer = document.getElementById('story-written-content');
         let writtenHtml = `
             <div style="background: rgba(255,152,0,0.08); border-left: 4px solid var(--orange); padding: 12px 16px; border-radius: 4px; margin-bottom: 20px;">
-                <div>
-                    <strong style="color: var(--orange); font-size: 1.05em;">📖 Stories as Written (Original Host & Thread Posts)</strong>
-                    <div style="color: #bbb; font-size: 0.9em; margin-top: 3px;">Verbatim narrative lore, opening briefings, phase transition scenes, and endgame epilogues recorded directly from the game thread.</div>
+                <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;">
+                    <div>
+                        <strong style="color: var(--orange); font-size: 1.05em;">📖 Stories as Written (Original Host & Thread Posts)</strong>
+                        <div style="color: #bbb; font-size: 0.9em; margin-top: 3px;">Verbatim narrative lore, opening briefings, phase transition scenes, and endgame epilogues recorded directly from the game thread.</div>
+                    </div>
+                    <a href="./stories/${game.thread_id}_story.md" target="_blank" style="color: var(--orange); font-size: 0.85em; text-decoration: none; border: 1px solid var(--orange); padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;" title="View or edit raw markdown file in Website/stories/">📄 View Markdown</a>
                 </div>
             </div>
         `;
@@ -1029,6 +1169,7 @@
         document.getElementById('story-modal').classList.remove('hidden');
     }
     let dossierChart = null;
+    let currentDossierGames = [];
 
     async function openPlayerDossier(playerName) {
         // Ensure leaderboard data is loaded
@@ -1043,6 +1184,20 @@
         }
 
         document.getElementById('dossier-name').innerText = player["Player Name"];
+
+        // 1. Aliases Badges
+        const aliasesContainer = document.getElementById('dossier-aliases-container');
+        const aliases = player["Aliases"] || [];
+        if (aliases && aliases.length > 0) {
+            aliasesContainer.innerHTML = `
+                <span style="font-size: 0.85em; color: var(--gold); font-weight: bold; text-transform: uppercase;">🏷️ Known Aliases:</span>
+                ${aliases.map(a => `<span style="background: rgba(255,215,0,0.12); color: #ffe680; border: 1px solid rgba(255,215,0,0.35); padding: 2px 8px; border-radius: 12px; font-size: 0.82em; font-weight: 500;">${a}</span>`).join('')}
+            `;
+        } else {
+            aliasesContainer.innerHTML = `
+                <span style="font-size: 0.85em; color: var(--muted);">🏷️ Known Aliases: <span style="font-style: italic;">None (Canonical handle)</span></span>
+            `;
+        }
         
         const winRate = player["Games Played"] > 0 ? (player["Wins"] / player["Games Played"] * 100).toFixed(1) : 0;
         const survRate = player["Survival %"].toFixed(1);
@@ -1101,7 +1256,115 @@
             options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'right', labels: {color: 'white'} } } }
         });
 
+        // 2. Render Match History Table
+        const games = player["Games"] || [];
+        document.getElementById('dossier-games-header').innerText = `🎮 Match History (${games.length} Games)`;
+        currentDossierGames = games;
+        const searchInput = document.getElementById('dossier-game-search');
+        if (searchInput) searchInput.value = '';
+        renderDossierGamesList(games);
+
+        document.getElementById('dossier-filter-chronicle-btn').onclick = () => {
+            filterChronicleByPlayer(player["Player Name"]);
+        };
+
         document.getElementById('dossier-modal').classList.remove('hidden');
+    }
+
+    function renderDossierGamesList(gamesList) {
+        const tbody = document.getElementById('dossier-games-body');
+        if (!gamesList || gamesList.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; padding: 25px; color: var(--muted);">No matching game records found.</td></tr>`;
+            return;
+        }
+        tbody.innerHTML = gamesList.map((g, idx) => {
+            let eraColor = 'var(--muted)';
+            if (g.era === 'Forum') eraColor = 'var(--blue)';
+            else if (g.era === 'Discourse') eraColor = 'var(--orange)';
+            else if (g.era === 'Discord') eraColor = 'var(--purp)';
+
+            let alignColor = 'white';
+            const al = (g.alignment || '').toLowerCase();
+            if (al.includes('town')) alignColor = 'var(--blue)';
+            else if (al.includes('mafia')) alignColor = 'var(--red)';
+            else if (al.includes('neutral') || al.includes('sk')) alignColor = 'var(--gold)';
+
+            const isWin = g.result === 'Win';
+            const resultBadge = isWin
+                ? `<span style="background: rgba(76,175,80,0.18); color: var(--green); border: 1px solid var(--green); padding: 2px 7px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">🏆 Win</span>`
+                : `<span style="background: rgba(207,56,56,0.18); color: var(--red); border: 1px solid var(--red); padding: 2px 7px; border-radius: 4px; font-weight: bold; font-size: 0.85em;">💀 Loss</span>`;
+
+            let outcomeBadge = `<span style="color: #bbb;">${g.death_phase || 'Dead'}</span>`;
+            if (g.survived) {
+                outcomeBadge = `<span style="color: var(--green); font-weight: bold;">🛡️ Survived</span>`;
+            }
+
+            return `
+                <tr style="border-bottom: 1px solid #282832; transition: 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.03)'" onmouseout="this.style.background='transparent'">
+                    <td style="padding: 10px 12px; color: #666; font-size: 0.85em;">${idx + 1}</td>
+                    <td style="padding: 10px 12px;"><span style="background: rgba(255,255,255,0.06); color: ${eraColor}; border: 1px solid ${eraColor}; padding: 2px 6px; border-radius: 4px; font-size: 0.8em; font-weight: bold;">${g.era}</span></td>
+                    <td style="padding: 10px 12px; font-weight: bold; color: white;">
+                        ${g.title}
+                        <div style="font-size: 0.78em; color: var(--muted); font-weight: normal;">ID: ${g.thread_id}</div>
+                    </td>
+                    <td style="padding: 10px 12px;">
+                        <span style="color: ${alignColor}; font-weight: 500;">${g.role}</span>
+                        <div style="font-size: 0.8em; color: ${alignColor}; opacity: 0.8;">${g.alignment}</div>
+                    </td>
+                    <td style="padding: 10px 12px;">${outcomeBadge}</td>
+                    <td style="padding: 10px 12px;">${resultBadge}</td>
+                    <td style="padding: 10px 12px; text-align: center;">
+                        <div style="display: inline-flex; gap: 4px;">
+                            <button onclick="openStoryModal('${g.thread_id}', 'summary')" title="View Game Summary" style="background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid var(--gold); padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em; font-weight: bold;">📋 Summary</button>
+                            <button onclick="openStoryModal('${g.thread_id}', 'story')" title="View Narrative Story" style="background: #2d2d38; color: white; border: 1px solid #555; padding: 3px 8px; border-radius: 4px; cursor: pointer; font-size: 0.8em;">📖 Story</button>
+                        </div>
+                    </td>
+                </tr>
+            `;
+        }).join('');
+    }
+
+    function filterDossierGames() {
+        const q = (document.getElementById('dossier-game-search').value || '').toLowerCase().trim();
+        if (!q) {
+            renderDossierGamesList(currentDossierGames);
+            return;
+        }
+        const filtered = currentDossierGames.filter(g => 
+            (g.title || '').toLowerCase().includes(q) ||
+            (g.era || '').toLowerCase().includes(q) ||
+            (g.role || '').toLowerCase().includes(q) ||
+            (g.alignment || '').toLowerCase().includes(q) ||
+            (g.thread_id || '').toLowerCase().includes(q) ||
+            (g.result || '').toLowerCase().includes(q)
+        );
+        renderDossierGamesList(filtered);
+    }
+
+    function filterChronicleByPlayer(playerName) {
+        document.getElementById('dossier-modal').classList.add('hidden');
+        setTab('archives');
+        const eraSel = document.getElementById('eraSelector');
+        if (eraSel) {
+            eraSel.value = '';
+            setArchiveEra('');
+        }
+        const pLower = playerName.toLowerCase();
+        const tbody = document.getElementById('archivesBody');
+        const trs = tbody.getElementsByTagName('tr');
+        for (let i = 0; i < trs.length; i++) {
+            const tid = trs[i].cells[0] ? trs[i].cells[0].innerText.trim() : '';
+            const game = historyData.find(g => String(g.thread_id) === tid);
+            let playerInGame = false;
+            if (game && game.box_score && game.box_score.roster) {
+                playerInGame = game.box_score.roster.some(r => {
+                    const rName = (r.player || r.player_name || '').toLowerCase();
+                    return rName === pLower || rName.includes(pLower);
+                });
+            }
+            trs[i].style.display = playerInGame ? '' : 'none';
+        }
+        window.scrollTo({ top: 300, behavior: 'smooth' });
     }
 </script>
 </body>

@@ -1,0 +1,8 @@
+### Chapter 1: The Call to Arms
+The forums of Imperial Conflict were silent, echoing with the ghosts of past betrayals and long-forgotten investigations. The community, hungry for the psychological warfare that defines the *IC Mafia*, began to stir. It started with a single, desperate petition—a beacon lit in the darkness by Twisted Metal. Like an old general calling his veterans out of retirement, he demanded the return of the game, setting the stage for a new generation of paranoia.
+
+### Chapter 2: The Gathering of Souls
+The thread became a muster roll for the damned. One by one, names were etched onto the ledger: Zarf, Arby3, the enigmatic RisingDown, and the fatalistic Gwynedd, who prophesied her own untimely demise before the game had even begun. The list swelled with hopefuls and skeptics alike—Poley, Undeath, Einstein, and the hesitant Wild Flower Soul. As the roster grew, the air in the forum grew thick with anticipation and the sharp sting of future distrust.
+
+### Chapter 3: The Ghost Game
+The chronicles record a peculiar phenomenon: the game was never played. In the annals of Imperial Conflict history, Thread 169654 remains a "Ghost Archive." It was a campaign of pure intent, where the weapons were not night kills or lynches, but administrative petitions and forum banter. The "Mafia" was never unleashed, and the "Town" never had to fear the shadows. It stands as a monument to the *desire* for conflict rather than the conflict itself—a rare moment of diplomatic peace in a community built for total war.

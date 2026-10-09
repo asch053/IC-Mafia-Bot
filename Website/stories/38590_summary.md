@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+In the shadowed confines of Quantum Forest, a sorcerous lineage was fractured by violence. As the cabin walls crumbled under the assault of a mysterious, cloaked shadow, the triplets—born of magical blood—were scattered to the winds. The King’s castle became the final sanctuary, but the encroaching darkness followed. From the shadows, the Traitors—led by the Sorcerer of Illusions, Arocalex—infiltrated the kingdom, while the Sorcerer of Death, Eltara, stalked the halls with his own lethal agenda. The air in the castle grew thick with suspicion; the King’s subjects, blind to the true identities of their neighbors, began to turn upon one another.
+
+### Chapter 2: First Blood
+The castle gates were no shield against the encroaching dread. In the night, the Sorcerer of Light, Amok, fell victim to a coordinated Traitor strike, his wisdom lost to the void. Gladiator, a loyal subject, found no safety in his innocence, falling instead to the blade of the Sorcerer of Death. As the sun rose on the first day, the paranoia reached a fever pitch. In the chaotic debates of the courtyard, accusations flew like arrows. Humidity, a vocal subject, was dragged to the gallows by a suspicious mob, yet the blood on their hands proved to be that of an innocent.
+
+### Chapter 3: Web of Deceit
+The traitors thrived in the confusion. Jets, the elusive Abductor, spirited away the Prince, You_Fool, silencing a key piece of the resistance before he could reveal the true hierarchy of the court. The Knights, RockOn and Suicidal Sushi, attempted to pierce the veil of deception, but the Sorcerer of Illusions cast his spell of falsehood, twisting their findings and leading them down a path of ruin. Another innocent soul, Lynns, was sacrificed to the lynch mob's frenzy, further depleting the ranks of the King’s loyalists.
+
+### Chapter 4: The Final Stand
+As the Traitors moved to finish their conquest, the castle became a tomb. With the King’s advisor dead, the Prince abducted, and the Knights misled, the remaining subjects were hopelessly outmaneuvered. The Sorcerer of Illusions and his cabal executed their final maneuvers with clinical precision, silencing the remaining voices of dissent. The reign of light was extinguished, and the dark sorcery of the forest claimed the throne.

@@ -8,8 +8,44 @@ from collections import Counter, defaultdict
 WEBSITE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(WEBSITE_DIR, "data")
 ROOT_DIR = os.path.dirname(WEBSITE_DIR)
-DB_DIR = os.path.join(ROOT_DIR, "data", "database")
-STORIES_DIR = os.path.join(ROOT_DIR, "data", "stories")
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
+DB_DIR = os.path.join(WEBSITE_DIR, "database")
+if not os.path.exists(DB_DIR):
+    alt_db = os.path.join(ROOT_DIR, "data", "database")
+    if os.path.exists(alt_db): DB_DIR = alt_db
+
+STORIES_DIR = os.path.join(WEBSITE_DIR, "stories")
+if not os.path.exists(STORIES_DIR):
+    alt_stories = os.path.join(ROOT_DIR, "data", "stories")
+    if os.path.exists(alt_stories): STORIES_DIR = alt_stories
+
+CANONICAL_NAMES = {
+    "225405842235719680": "You_Fool",
+    "139146807472160768": "Jets",
+    "294464443570454528": "Jets",
+    "479362336264683520": "MrBlonde",
+    "479197632074612736": "The_Unknown",
+    "98260473664790528": "Walking Corpse",
+    "211933902225408010": "KT",
+    "566633524585824266": "Player1",
+    "220666545544626177": "Arby3",
+    "336188557561430017": "Melvin85",
+    "750562540282445884": "Tishxo",
+    "549657242170032154": "Goddess",
+    "386804810617323531": "melsfreefallin",
+    "220142891027136512": "Panda",
+    "undeath": "Undeath",
+    "risingdown": "RisingDown",
+    "wildflowersoul": "WildFlowerSoul",
+    "a10": "A10",
+    "einstein": "Einstein",
+    "HydroP": "Hydro"
+}
+
+ID_ALIASES = {
+    "294464443570454528": "139146807472160768"
+}
 
 def load_json(path, default=None):
     if not os.path.exists(path):
@@ -42,11 +78,39 @@ def get_game_total_phases(game):
             max_p = max(max_p, phase_str_to_int(tp))
     return max(2, max_p)
 
+def resolve_player_identity(raw_name, raw_pid, user_map):
+    # 1. Resolve raw_pid if known
+    if raw_pid:
+        pid_str = str(raw_pid).strip()
+        if pid_str in ID_ALIASES:
+            pid_str = ID_ALIASES[pid_str]
+        if pid_str in CANONICAL_NAMES:
+            return pid_str, CANONICAL_NAMES[pid_str]
+        if pid_str in user_map and len(user_map[pid_str]) > 0:
+            cid = str(user_map[pid_str][0])
+            cid = ID_ALIASES.get(cid, cid)
+            return cid, CANONICAL_NAMES.get(cid, raw_name)
+            
+    # 2. Resolve raw_name with multiple normalization forms
+    clean_lower = str(raw_name).lower().strip()
+    candidates = [
+        clean_lower,
+        clean_lower.replace(" ", "_"),
+        clean_lower.replace("_", " "),
+        clean_lower.replace(" ", "").replace("_", "")
+    ]
+    for c in candidates:
+        if c in user_map and len(user_map[c]) > 0:
+            cid = str(user_map[c][0])
+            cid = ID_ALIASES.get(cid, cid)
+            cname = CANONICAL_NAMES.get(cid, raw_name)
+            return cid, cname
+
+    cid = f"historic_{clean_lower.replace(' ', '_')}"
+    cname = CANONICAL_NAMES.get(cid, raw_name)
+    return cid, cname
+
 def sync_new_production_games():
-    """
-    Checks stats/Production for any newly ended bot games not yet registered in discord_bot.json,
-    extracts their markdown stories into data/stories/, and appends them to discord_bot.json.
-    """
     stats_dir = os.path.join(ROOT_DIR, "stats", "Production")
     bot_db_path = os.path.join(DB_DIR, "discord_bot.json")
     bot_games = load_json(bot_db_path, [])
@@ -82,13 +146,14 @@ def sync_new_production_games():
                 existing_ids.add(str(game_id))
                 added += 1
                 
-                # Extract scenes and story text
                 story_scenes = {}
                 narrative_chapters = []
                 full_raw_story = ""
                 if os.path.exists(story_path):
                     with open(story_path, 'r', encoding='utf-8') as f:
                         story_content = f.read()
+                    if "\n## Chat Transcript" in story_content:
+                        story_content = story_content.split("\n## Chat Transcript")[0].strip()
                     full_raw_story = story_content
                     parts = story_content.split('========================================')
                     if len(parts) >= 3:
@@ -100,7 +165,7 @@ def sync_new_production_games():
                             story_scenes[ph_name] = ph_text
                             narrative_chapters.append(f"### {ph_name}\n\n{ph_text}")
                 
-                story_as_written = "\n\n".join(narrative_chapters) if narrative_chapters else (full_raw_story or f"Automated game {game_id} run on Discord.")
+                story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else f"Automated game {game_id} run on Discord.")
                 winning_faction = summary.get("winning_faction", "Unknown")
                 winning_players_str = ", ".join(summary.get("winning_players", [])) if summary.get("winning_players") else "None"
                 narrative_summary = (
@@ -116,14 +181,12 @@ def sync_new_production_games():
                     f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winning_faction}** victory."
                 )
 
-                # Save markdown files into data/stories/
                 os.makedirs(STORIES_DIR, exist_ok=True)
                 with open(os.path.join(STORIES_DIR, f"{game_id}_summary.md"), "w", encoding="utf-8") as sf:
                     sf.write(narrative_summary)
                 with open(os.path.join(STORIES_DIR, f"{game_id}_story.md"), "w", encoding="utf-8") as stf:
                     stf.write(story_as_written)
 
-                # Build chronological timeline
                 all_phases = []
                 for p in player_data:
                     dp = p.get("death_phase")
@@ -241,15 +304,18 @@ def sync_new_production_games():
     return bot_games
 
 def load_markdown_file(rel_or_abs_path):
-    """Loads a markdown file from disk, checking STORIES_DIR if relative."""
     if not rel_or_abs_path:
         return ""
     if os.path.isabs(rel_or_abs_path):
         target = rel_or_abs_path
     else:
-        # e.g. "stories/203868_summary.md" -> strip leading stories/ if needed
-        clean_name = os.path.basename(rel_or_abs_path)
-        target = os.path.join(STORIES_DIR, clean_name)
+        target = os.path.join(WEBSITE_DIR, rel_or_abs_path)
+        if not os.path.exists(target):
+            clean_name = os.path.basename(rel_or_abs_path)
+            target = os.path.join(STORIES_DIR, clean_name)
+        if not os.path.exists(target):
+            clean_name = os.path.basename(rel_or_abs_path)
+            target = os.path.join(STORIES_DIR, "ineligible games", clean_name)
         
     if os.path.exists(target):
         try:
@@ -265,10 +331,8 @@ def build_unified_stats(sync_sheets=False):
     os.makedirs(DB_DIR, exist_ok=True)
     os.makedirs(STORIES_DIR, exist_ok=True)
 
-    # 1. Sync any new games from stats/Production into discord_bot.json
     sync_new_production_games()
 
-    # 2. Load the 4 Modular Databases
     forum_games = load_json(os.path.join(DB_DIR, "historic_forum.json"), [])
     discourse_games = load_json(os.path.join(DB_DIR, "historic_discourse.json"), [])
     discord_bot_games = load_json(os.path.join(DB_DIR, "discord_bot.json"), [])
@@ -276,15 +340,15 @@ def build_unified_stats(sync_sheets=False):
 
     print(f"Loaded: {len(forum_games)} Forum, {len(discourse_games)} Discourse, {len(discord_bot_games)} Discord Bot, {len(discord_manual_games)} Discord Manual games.")
 
-    # 3. Compile Master History Archive for the Website
     all_source_games = forum_games + discourse_games + discord_bot_games + discord_manual_games
     history_archive = []
     
     for g in all_source_games:
+        if g.get("eligible") is False:
+            continue
         tid = str(g.get("thread_id", "unknown"))
         era = g.get("era", "Forum")
         
-        # Load stories directly from .md files in data/stories/
         summary_file = g.get("summary_file") or f"stories/{tid}_summary.md"
         story_file = g.get("story_file") or f"stories/{tid}_story.md"
         
@@ -292,7 +356,6 @@ def build_unified_stats(sync_sheets=False):
         story_as_written = load_markdown_file(story_file)
         
         box = g.get("box_score") or {}
-        # Synthesize fallback timeline if missing
         if not box.get("timeline"):
             roster = box.get("roster", [])
             syn_timeline = []
@@ -320,6 +383,7 @@ def build_unified_stats(sync_sheets=False):
             "thread_id": tid,
             "era": era,
             "title": g.get("title", f"{era} Game {tid}"),
+            "start_date": g.get("start_date", ""),
             "moderator": g.get("moderator", "Game Host"),
             "game_type": g.get("game_type", "classic"),
             "total_posts": g.get("total_posts"),
@@ -332,13 +396,11 @@ def build_unified_stats(sync_sheets=False):
         }
         history_archive.append(game_entry)
 
-    # Save compiled history_archive.json for lightning-fast website rendering
     out_history = os.path.join(DATA_DIR, "history_archive.json")
     with open(out_history, 'w', encoding='utf-8') as f:
         json.dump(history_archive, f, indent=4, ensure_ascii=False)
     print(f"Saved {len(history_archive)} games to {out_history}.")
 
-    # 4. Calculate Unified Player Statistics & PEU Scores
     user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
     player_stats = {}
 
@@ -374,7 +436,9 @@ def build_unified_stats(sync_sheets=False):
                 "_u_faction_games": defaultdict(int),
                 "_u_faction_wins": defaultdict(int),
                 "_accurate_votes": 0,
-                "_total_end_phase_votes": 0
+                "_total_end_phase_votes": 0,
+                "_aliases": set(),
+                "_games": []
             }
         return player_stats[p_id]
 
@@ -398,20 +462,18 @@ def build_unified_stats(sync_sheets=False):
         
         for p in roster:
             raw_name = p.get("player", "Unknown")
+            raw_pid = p.get("player_id")
             role = p.get("role", "Unknown")
             alignment = p.get("alignment", "Unknown")
             survived = bool(p.get("survived", False))
             death_phase = p.get("death_phase", "") or ""
             death_cause = (p.get("death_cause") or "").lower()
             
-            canonical_id = f"historic_{raw_name.lower().replace(' ', '_')}"
-            canonical_name = raw_name
+            canonical_id, canonical_name = resolve_player_identity(raw_name, raw_pid, user_map)
             
-            mapped_ids = user_map.get(raw_name.lower())
-            if mapped_ids and len(mapped_ids) > 0:
-                canonical_id = str(mapped_ids[0])
-                
             ps = get_player(canonical_id, canonical_name)
+            if canonical_id in CANONICAL_NAMES:
+                ps["Player Name"] = CANONICAL_NAMES[canonical_id]
             
             ps["Games Played"] += 1
             if survived:
@@ -426,6 +488,18 @@ def build_unified_stats(sync_sheets=False):
                 ps["Games Won"] += 1
             else:
                 ps["Losses"] += 1
+
+            ps["_aliases"].add(raw_name)
+            ps["_games"].append({
+                "thread_id": str(game.get("thread_id", "")),
+                "era": game.get("era", "Unknown"),
+                "title": game.get("title", "Mafia Game"),
+                "role": role,
+                "alignment": alignment,
+                "result": "Win" if is_winner else "Loss",
+                "survived": survived,
+                "death_phase": death_phase if death_phase else ("Survived" if survived else "Dead")
+            })
                 
             align_lower = alignment.lower() if isinstance(alignment, str) else "unknown"
             if "town" in align_lower:
@@ -478,7 +552,8 @@ def build_unified_stats(sync_sheets=False):
                 my_votes = [
                     v for v in vote_history 
                     if str(v.get("voter_name", "")).lower() == raw_name.lower() or 
-                       (p_id_str and str(v.get("voter_id", "")) == p_id_str)
+                       (p_id_str and str(v.get("voter_id", "")) == p_id_str) or
+                       (str(v.get("voter_id", "")) == canonical_id)
                 ]
                 
             if my_votes:
@@ -530,7 +605,6 @@ def build_unified_stats(sync_sheets=False):
                 else:
                     ps["_p_scores"].append(4.8 if is_winner else 2.5)
 
-    # Finalize derived stats
     leaderboard = []
     for pid, ps in player_stats.items():
         if ps["Games Played"] > 0:
@@ -554,11 +628,9 @@ def build_unified_stats(sync_sheets=False):
             else:
                 ps["p_score"] = 0.0
                 
-            # Overall Skill Score (PEU)
             final_skill = (ps["p_score"] + ps["e_score"] + ps["u_score"]) / 3.0
             ps["Skill Score"] = round(min(5.0, max(0.0, final_skill)), 2)
             
-            # Vote Accuracy %
             if ps["_total_end_phase_votes"] > 0:
                 ps["Vote Accuracy %"] = round((ps["_accurate_votes"] / ps["_total_end_phase_votes"]) * 100, 1)
             else:
@@ -566,8 +638,24 @@ def build_unified_stats(sync_sheets=False):
                 d1_ratio = ps["D1 Lynches"] / ps["Games Played"]
                 est_acc = min(100.0, max(0.0, 40.0 + (35.0 * win_ratio) - (15.0 * d1_ratio)))
                 ps["Vote Accuracy %"] = round(est_acc, 1)
-
         clean_ps = {k: v for k, v in ps.items() if not k.startswith("_")}
+
+        # Enrich aliases from master_user_map.json
+        user_map_aliases = set(ps["_aliases"])
+        for k, v in user_map.items():
+            if not k.isdigit() and str(pid) in [str(x) for x in v]:
+                user_map_aliases.add(k)
+
+        seen_aliases = {}
+        for a in user_map_aliases:
+            a_str = str(a).strip()
+            if not a_str or a_str.isdigit(): continue
+            low = a_str.lower()
+            if low not in seen_aliases or (a_str != low and seen_aliases[low] == low):
+                seen_aliases[low] = a_str
+
+        clean_ps["Aliases"] = sorted(list(seen_aliases.values()), key=lambda x: (x.lower(), x))
+        clean_ps["Games"] = ps["_games"]
         leaderboard.append(clean_ps)
         
     out_leaderboard = os.path.join(DATA_DIR, "leaderboard.json")
@@ -595,6 +683,46 @@ def build_unified_stats(sync_sheets=False):
         })
     classic_leaderboard.sort(key=lambda x: (x["skillScore"], x["games"]), reverse=True)
     classic_data["leaderboard"] = classic_leaderboard
+    
+    # Calculate Meta History Trend across all games chronologically
+    sorted_games = sorted(history_archive, key=lambda g: g.get("start_date") or "1970-01-01")
+    cum_town = 0
+    cum_mafia = 0
+    cum_neutral = 0
+    cum_draw = 0
+    trend = []
+
+    for i, g in enumerate(sorted_games, 1):
+        box = g.get("box_score", {}) or {}
+        wf = box.get("winning_faction", "Unknown")
+        wf_lower = wf.lower() if isinstance(wf, str) else "unknown"
+        if "town" in wf_lower:
+            cum_town += 1
+        elif "mafia" in wf_lower or "mob" in wf_lower:
+            cum_mafia += 1
+        elif "draw" in wf_lower or wf_lower in ["n/a", "unknown"]:
+            cum_draw += 1
+        else:
+            cum_neutral += 1
+
+        t_pct = round((cum_town / i) * 100, 1)
+        m_pct = round((cum_mafia / i) * 100, 1)
+        n_pct = round((cum_neutral / i) * 100, 1)
+        d_pct = round(max(0.0, 100.0 - t_pct - m_pct - n_pct), 1)
+
+        sd = g.get("start_date") or "Unknown"
+        title = g.get("title") or f"Game {i}"
+        trend.append({
+            "gameNum": i,
+            "date": sd,
+            "label": f"Game {i}: {title} ({sd})",
+            "townPct": t_pct,
+            "mafiaPct": m_pct,
+            "neutralPct": n_pct,
+            "drawPct": d_pct
+        })
+
+    classic_data["trend"] = trend
     
     with open(classic_path, 'w', encoding='utf-8') as f:
         json.dump(classic_data, f, indent=4, ensure_ascii=False)

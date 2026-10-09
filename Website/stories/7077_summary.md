@@ -1,0 +1,11 @@
+### Chapter 1: The Void of Silence
+In the annals of Imperial Conflict, "Mafia for Basic Bitches" stands as a stark anomaly. The moderators, Goddess and Zarfy, stripped away the artifice of lore. There was no city to save, no grand conspiracy to unravel—only a brutal, sterile battlefield. The rules were cold, the atmosphere suffocatingly quiet. In this theater of paranoia, information was the only currency, and the players were left to find their own meaning in the silence.
+
+### Chapter 2: The First Blood
+The game began with a tremor of uncertainty. With anonymous voting and high-stakes deadlines, the participants moved with agonizing hesitation. The first strike against the shadow-dwellers came when the collective finger of suspicion pointed toward Tishxo. A member of the mob, Tishxo was cast out from the gathering, their influence severed. The town breathed a momentary sigh of relief, but the night brought the inevitable counter-stroke: the cop Torqez was silenced, dispatched to the depths by a cold hand in the darkness.
+
+### Chapter 3: The Plank and the Abyss
+Tension escalated as the game bled into the late stages. ZoZ and TheBigOne, town stalwarts, were forced to "walk the plank"—an brutal elimination dictated by the unforgiving rhythm of the moderators' schedule. As the ranks thinned, the true nature of the enemy began to surface. The Godfather, Genesis, paralyzed by the weight of the encroaching end, retreated into total inaction, effectively sealing their own fate through abstention.
+
+### Chapter 4: The Final Stand
+With the Godfather refusing to contest the march of time and Mrblonde exposed as the next imminent casualty of the town’s scrutiny, the moderators decided to end the experiment. The town had navigated the dark, kept their connections, and successfully weeded out the parasitic elements. The game concluded not with a final dramatic clash, but with the quiet exhaustion of those left standing. The town prevailed, a victory born of persistence in a world where the story was never written for them.

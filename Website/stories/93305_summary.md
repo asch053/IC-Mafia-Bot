@@ -1,0 +1,13 @@
+### Chapter 1: The Gathering
+May 1944. The air in the Fort du Roule was thick with the scent of ozone, fear, and the lingering acridity of burnt documents. As Allied forces hammered the coast of Cherbourg, the German high command found itself fractured not just by external artillery, but by internal rot. Whispers circulated through the mess hall; some among them were not loyalists, but clandestine American saboteurs tasked with ensuring the fort's intelligence would never reach Berlin.
+
+### Chapter 2: First Blood
+Suspicion turned to paranoia as the soldiers looked over their shoulders, dreading the knife in the dark. The primary target of the mob's ire was Deci. Despite his frantic pleas—insisting on his loyalty to the Reich and his disdain for the Allied cause—the court turned a deaf ear. As the lugers clicked into place, Deci bolted toward the emergency exit, shouting his innocence to the wind. A single shot rang out. He fell, a martyr to his own perceived guilt, only for a thorough search of his quarters to reveal the truth: Deci was innocent. The Town had shed the blood of one of its own.
+
+### Chapter 3: Web of Deceit
+The nights grew long and lethal. While the fortress walls held against the P-47s, the silence within was punctuated by the sound of muffled gunfire and sliding bodies. Melvin, Iluvatar, and Dispo became the central architects of the endgame. The struggle shifted from the battlefield to the very heart of the command structure. Allegiances were brittle, and the "Oberst"—the leader of the defense—found that command was a heavy, and often deadly, crown.
+
+### Chapter 4: The Final Stand
+As the Allies neared the gates, the betrayal reached its crescendo. Melvin, revealed as an Allied infiltrator, attempted a desperate gambit to seize the tactical notes. He burst into the mess hall, iron blazing, but his aim was betrayed by his nerves. In the ensuing chaos, he managed to strike Iluvatar, but the resistance was fierce. 
+
+The corridors of the fort became a graveyard. Petrostone, an American operative, was gunned down by his own brother-in-arms, Melvin, in a tragic case of mistaken identity and panic. Finally, Dispo delivered the killing blow to the American saboteur, Melvin, only to face the cold steel of TU. But the final twist belonged to the remaining loyalists; Iluvatar and Dispo, scarred and bloodied, stood amidst the ruins of the intelligence files. With the American threat neutralized and the secrets consigned to the furnace, they awaited the inevitable end, having held their ground until the very last.

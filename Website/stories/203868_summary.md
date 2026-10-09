@@ -1,0 +1,13 @@
+### Chapter 1: The Descent into Chaos
+The *USS Ziusudra* was a vessel of broken dreams, a generation ship adrift in the cold vacuum of space, carrying the hopes of a humanity that had long since forgotten the scent of rain. As the mission stalled, tensions flared between those who clung to the original directive and the dissenters who demanded a return to Earth. The rot began not with a formal mutiny, but with a visceral display of carnage in the recycling station. Primo and Zarf were found slaughtered, their blood used to scrawl a message of despair: "NO HOPE." When the Captain was discovered dangling from the bridge balcony, the order of the ship disintegrated entirely.
+
+### Chapter 2: The Purge
+Paranoia gripped the corridors. The crew, led by the pragmatic XO, turned their suspicions inward. Day 1 saw the unfortunate Melvin—an absent-minded passenger lost in his own world—jettisoned into the abyss for his silence. In the shadows, the "Revolutionaries," led by the radical Arthurius Sanza, tightened their grip, though they were constantly outmaneuvered by the cold, calculating efficiency of an unidentified Serial Killer who stalked the ship’s bowels.
+
+### Chapter 3: Web of Deceit
+The ship became a labyrinth of blood. Antoinette Sanza, attempting to cement her husband’s coup, met a gruesome end at the hands of the very force she hoped to command. The investigators, trained from birth for this exact scenario, struggled to identify the monsters hiding in plain sight. Martine Abercrombie was sent to the stars after a failed mutiny, leaving her lover Josephine to descend into a cycle of vengeful, sadistic violence against the crew. One by one, the luminaries of the ship—BigTexas, I Like Pie, and the red-headed investigator TheBigOne—were silenced by industrial accidents, blades, and cold-blooded execution.
+
+### Chapter 4: The Final Stand
+As the numbers dwindled to a handful, Arthurius Sanza himself was torn apart by his own crew, his "Revolution" ending in a horrific display of mechanical torture. The Impressionable, corrupted by the Serial Killer’s influence, leapt to his death in a final, deranged act of fanatical devotion. 
+
+With only *You_fool*, *Undeath*, and *Bud777* remaining, the *Ziusudra* became a tomb. Faced with an impossible choice and the creeping realization that the mission was doomed regardless of who walked free, *You_fool* made the ultimate command decision. From the bridge, he vented the ship’s atmosphere, suffocating his final rivals. In the end, as the last of the crew spasmed and died, *You_fool* realized the futility of their struggle. He triggered the airlock, stepping out into the uncaring starlight as the *USS Ziusudra* drifted toward Occisor, a ship of ghosts.

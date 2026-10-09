@@ -1,0 +1,11 @@
+### Chapter 1: The Ascent to Sinai
+The rains had begun to swell the rivers, and the mood in the valley of the Five Kings grew heavy with suspicion. The townspeople gathered in the Council of Many, fearful of the Unbelievers lurking among them. As was the custom, they looked to elect a Speaker—one to ascend the path of Gobal Sinai and plead with the Creator, Adonai, to stay the deluge. But the selection process was chaotic; the Jailer, zealous in her duties, had locked away those who sought to act, leaving the assembly struggling to find a voice. In the confusion, Ordos was thrust forward, a man transformed into a pious vessel by the unseen hand of the Breaker, and sent to the summit.
+
+### Chapter 2: A Web of False Piety
+The following days brought only increased tension. Votes were cast, only for the Naysayer to silence dissent and the Taunter to sow discord in the ranks, ensuring that only the most malleable or mysterious figures ascended the hill. Even as the High Priest attempted to maintain order in the vestments, the presence of the Assassin—the dreaded Tenme—loomed. Tenme, cold and efficient, had been orchestrating bloodletting under the cover of night, his path paved by the chaotic selection of speakers.
+
+### Chapter 3: The Angel’s Shadow
+The descent of the true messengers—Oldie and Rizzy—brought a divine, if terrifying, intervention. As they communed with the old man atop the peak, the reality of their plight crystallized. Rizzy, having been claimed by the forces of Muri’el to serve as an Agent of Death, attempted to strike in the darkness of the Western Square. His undoing was swift and pathetic: fleeing from a vigilant Sentry, he slipped on the debris of a street-sweeper’s toil. The Sentry’s spear found its mark, and the Agent of Death was returned to the underworld.
+
+### Chapter 4: The Final Stand
+With the veil of secrecy torn, the shadow of the Assassin was finally cast into the light. Tenme, the architect of so much silent slaughter, found his luck had run dry. As Muri’el ferried the souls of the fallen—including the weary Jailer, Tishxo, whose health had succumbed to the pressures of her office—the divine judgment of the Creator was laid bare. Oldie remained at the summit, the final witness to a prophecy of ruin, as the storms of Adonai began to wash the pride of the Sons of Adam from the earth.

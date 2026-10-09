@@ -1,0 +1,8 @@
+### Chapter 1: The Sorting
+The Great Hall of IC hummed with a volatile magic. Whispers of horcruxes and dark arts filled the air as twenty-five hopefuls—including Gwynedd, Torqez, and the ever-irreverent Walking_Corpse—gathered under the watchful, if somewhat abrasive, gaze of the Moderators, Genesis and Arby. The air was thick with skepticism; Poley famously questioned the very nature of Harry Potter itself, while others jockeyed for position in a game where trust was the most dangerous currency of all. 
+
+### Chapter 2: The Forbidden Forest
+As the Sorting Hat fell silent and the roles were distributed in the shadows, the initial bravado of the participants began to fray. Accusations were flung with the speed of a Bludger. The IRC channels became a labyrinth of misdirection. While the mods cracked their whips, forcing the lethargic to move, the players danced around one another. The social veneer of the Hogwarts students cracked; TheBigOne earned a rare, begrudging praise for a "useful" action, only to be promptly met with the standard volatility of the community.
+
+### Chapter 3: The Order of the Buckbeak
+The climax of the mystery arrived with sudden, jarring finality. The records of the battle vanish into the ether of the archives, save for a single, cryptic name left as a epitaph by the moderators: *Buckbeak*. Whether this signaled the triumph of a secret protector, a misunderstood beast, or a final, ironic twist of fate remains a historical enigma. The game concluded not with a grand speech, but with the name of the Hippogriff, leaving the legacy of the Harry Potter Mafia shrouded in the very mist from which it was summoned.

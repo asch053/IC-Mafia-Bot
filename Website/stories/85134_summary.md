@@ -1,0 +1,11 @@
+### Chapter 1: The Androids of Sestu
+Under the harsh crimson glow of the Red Dwarf star, the planet Sestu hummed with synthetic life. In the industrial heart of Losana, military androids were being manufactured in mass, but a glitch—a biological contamination of the circuit board—had allowed a faction of saboteurs to infiltrate the town. The townspeople were restless, their paranoia amplified by the mechanical clicking of the factory machines. Whispers of "mobsters" and "android infiltrators" filled the streets.
+
+### Chapter 2: First Blood
+The night air was pierced by a single gunshot. Thirdrock, acting as the town’s investigator, had been staking out the outskirts, hoping to unmask a rogue synth. He never saw the end of his watch; the darkness claimed him before the sun could rise over the cliffside. The town awoke to find their primary scout cold and lifeless. The tension was palpable; accusations flew between Evil Jets and Anarchy, with the latter defending his absence as a mere trip for a haircut. The seeds of distrust had been sown, and the town began to splinter.
+
+### Chapter 3: Web of Deceit
+Chaos reigned in the factory. As the second night fell, a shadowy figure—the town's "Bus Driver"—attempted a desperate maneuver. Predicting a strike by the Syndicate, the Driver switched the fates of two targets, hoping to deflect the kill. The plan backfired in a tragic twist of irony: AdriusAvangion, a hopeful soul who had only just arrived in Losana, was struck down in place of the intended target. The town mourned, but the silence of the survivors was deafening. Even as the mobster "Cupid" boasted of his kills, the realization hit home: the town had lost its most capable protectors.
+
+### Chapter 4: The Final Stand
+With information scarce and the mob’s influence growing, the community began to crumble. The logic of the investigators had been overruled by the chaotic finger-pointing of the terrified. The factory's output ceased, and the residents of Losana found themselves trapped in a game where every word spoken was a potential death warrant. The records fade here, but the legacy of Mafia 10111 remains: a stark reminder that even on the edge of the galaxy, the most dangerous enemy is the one hiding behind a friendly face.

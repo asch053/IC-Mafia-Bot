@@ -1,0 +1,5 @@
+### Chapter 1: The Gathering of Shadows
+The archive shutters rattle in the cold digital wind of the Imperial Conflict archives. Thread #37954, marked with the auspicious "IC Mafia 15!!" designation, arrived with the promise of blood and intellect. Moderator Torqez set the stage, a blank canvas upon which the community was meant to paint a masterpiece of deception. 
+
+### Chapter 2: The Silent Void
+However, history is often written in the ink of silence. As the thread opened, the players approached the dais with eager intentions—"signing up" for a fate yet to be decided. But the gears of the machine seized. The threads of destiny remained unspun; no daggers were drawn in the night, no accusations were leveled in the light of day. The game, before it could even begin, faded into the static of the archive. It remains a ghost story, a chronicle of a conflict that was whispered but never screamed.

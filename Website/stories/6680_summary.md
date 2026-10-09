@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at the Precipice
+The academic halls of Michigan were replaced by the dust of Ethiopia, as researchers and seekers of truth gathered to hear Doctors Tish and Nai unveil the *Testament of the Watchers*. Yet, beneath the veneer of 1961 geopolitical tensions and archaeological prestige, a far more ancient conflict simmered. The "Watchers"—guardians of the divine mandate—sought to preserve Noah’s family until the Deluge, while "The Divided" sought to extinguish the bloodline, believing that if no righteous souls remained, the Flood would never come.
+
+### Chapter 2: The Shadow of Anak
+As the Ark's construction began, the night air grew thick with dread. The giant Anak, a figure of terror, haunted the outskirts of the camp. While the Watchers labored to drag timber and apply pitch, their ranks were infiltrated by those with ill intent. The atmosphere turned poisonous; screams echoed through the city streets as "The Divided" struck from the shadows, their goal clear: leave no one to board the vessel.
+
+### Chapter 3: The Parable of the Peach
+Tension reached its zenith on the fifth day. Methuselah, ever the mystic, attempted a risky gambit: he sought to redeem the monstrous Anak through allegory and fruit. By forcing Anak to cup his hands to receive a peach, he hoped to teach the giant the virtue of receiving grace rather than taking by force. While Anak remained a gluttonous threat, the distraction allowed the Watchers to gather intelligence. Azli’el, the sentinel, moved through the camp with purpose, identifying the traitors who labored among them by day while plotting murder by night.
+
+### Chapter 4: The Final Stand
+As the skies darkened and the rains began to fall—the first harbingers of the approaching Deluge—the Watchers closed their ranks. Abbra’el, the celestial eye, realized the gravity of the betrayal. With the identification of the infiltrators amidst the workers dragging timber, the final confrontation became inevitable. Whether the Ark would be completed in time or the Divided would succeed in their nihilistic quest remained balanced on a knife's edge as the waters began to rise.

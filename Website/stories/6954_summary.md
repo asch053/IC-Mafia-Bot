@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering
+In the cold, unforgiving heights of the Institute, the scions of The Society gathered. Forged in the fires of genetic hierarchy, the students of House Mars, House Pluto, and the defiant alliance of Darrow’s cohort stood upon the precipice of war. The air was thick with the scent of ozone and impending betrayal. Beneath the veneer of aristocratic discipline, the knives were already being sharpened. Darrow, the Red carved into Gold, watched his peers with eyes that held the secrets of the mines—a singular goal of systemic destruction burning behind his stoic facade.
+
+### Chapter 2: The Thief’s Folly
+Tension turned to tragedy not by blade, but by hunger. Pollux of House Mars, desperate to alleviate the rations-starved existence of his House, attempted a foolish infiltration of House Ceres. Clinging to the frozen stone walls, he miscalculated—a heavy pack of stolen bread becoming his undoing. As the med-bots descended upon his broken form, the Institute took note: weakness would not be tolerated. The first blood of the game was spilled by gravity and greed, leaving House Mars shaken and exposed.
+
+### Chapter 3: The Web of Deceit
+Whispers echoed through the halls. Missy, cloaked in an aura of calculated incompetence, danced through the political minefield, laughing at the naivety of her peers. Meanwhile, the Jackal—pure of malice and sharp of intellect—maneuvered behind the scenes, his eyes set on total dominion. Darrow’s alliance moved with cold efficiency, scavenging resources and consolidating power while the other houses squabbled over scraps. The "Game of Golds" had begun in earnest, and few would survive the fallout.
+
+### Chapter 4: The Final Stand
+The inevitable conclusion arrived as a tidal wave. Darrow, empowered by his alliance, struck with the force of a falling moon. House Pluto, caught in their own web of arrogance, crumbled in a mere ten minutes. The gates of House Mars were shattered, and with them, the spirit of their fighters. Cassius au Bellona, the last bastion of his House, sat amidst the ruin of his legacy. A final, chilling bloodfeud was sworn between him and the Reaper, a promise of death to be settled in another life. Darrow stood victorious, Primus of the Institute, his path to the heart of the Society finally laid bare.

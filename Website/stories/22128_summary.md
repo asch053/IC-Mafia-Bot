@@ -1,0 +1,8 @@
+### Chapter 1: The Gathering
+In the shadowed annals of the Imperial Conflict community, the game designated only as "Mafia :(" remains a cryptic fragment of our shared history. It was a time of disjointed whispers and casual bravado. As the moderator Gratitude opened the gates, the call went out: "We ride together... We die together..." Yet, the atmosphere was thick with the lethargy of an impending holiday. Players like Nolio, Iluvatar, and The Yell gathered not as seasoned killers, but as old companions reminiscing about past legends and the failures of technology.
+
+### Chapter 2: The Silence of the Spheres
+The archives reveal a tragic lack of formal documentation. In a game characterized more by meta-discussion about past exploits and the philosophy of Douglas Adams than by rigorous deduction, the tension never truly ignited. BC Cougar attempted to rally the community for future glory, suggesting a coalition of Imperial Conflict veterans, but the wheels of the game were already grinding to a halt.
+
+### Chapter 3: The Final Stand (That Never Was)
+The game ended not with a bang, but with a whisper of holiday obligations. No final lynch was cast, and no secret mafia strike was recorded in the logs. The "keening whine" of the townspeople, briefly mentioned in the fragmented lore provided by The Yell, serves as a metaphorical epitaph for a match that dissolved into the ether, leaving the roles—and the fate of the town—shrouded in the mystery of an unfinished narrative.

@@ -1,0 +1,11 @@
+### Chapter 1: The Gathering at Sweetwater
+The sun beat down relentlessly on the dusty streets of Sweetwater, Texas. Fourteen souls arrived, each clutching their secrets under the shade of wide-brimmed hats. Among them, a Sheriff and his Deputy stood watch, while in the shadows, the Outlaw gang plotted, led by a mastermind who commanded death from the darkness. Unknown to all, a madman—*El Bandito Loco*—stalked the outskirts, carving his own bloody path through the town.
+
+### Chapter 2: The First Blood
+The silence of the night was shattered by the sound of gunfire. When the townsfolk emerged, they found their numbers thinned. The Outlaws had struck early, picking off the innocent. The Sheriff, Damon, and his deputy, thirdrock, desperately scrambled to identify the wolves in sheep’s clothing. Paranoia gripped the town square; accusations flew like tumbleweeds in a gale, and players like Nolio and RisingDown became the center of a heated debate over who truly held the reins of power.
+
+### Chapter 3: Web of Deceit
+The town’s scrutiny turned toward the veteran presence. Arnor, suspected by many as a master manipulator, found himself cornered. In a desperate bid to shift the spotlight, the town turned on their own, eventually deciding that the threat of the serial killer was too great to ignore. Arnor was lynched, and while the town cheered, the true Outlaws—SLS and Torqez—remained hidden, waiting to strike again. The Doctor, Nolio, worked tirelessly, but even his medical skills couldn't stop the relentless tide of murder.
+
+### Chapter 4: The Final Stand
+The endgame came with a brutal twist. The Outlaws, specifically the elusive Texas Jack (RisingDown), were finally cornered by the law. Sheriff Damon, having navigated the treacherous waters of the game, led the final charge. With the major threats eliminated, the Sheriff took justice into his own hands, abandoning the noose in favor of a lonely, poetic execution: leaving the traitor bound to a tree in the unforgiving desert to be reclaimed by the elements. As the Sheriff rode away, a mysterious explosion echoed over the horizon, marking the end of the chaos in Sweetwater. The Town stood victorious, though at a heavy cost.
