@@ -60,3 +60,4 @@ htmlcov/
 2026-10-03.md
 *.base
 *.canvas
+/.obsidian
