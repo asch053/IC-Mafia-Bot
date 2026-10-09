@@ -197,6 +197,12 @@ async def process_night_actions(game):
     # 1. Automate living NPCs first
     await process_npc_night_actions(game)
 
+    # Purge actions from players who died or were eliminated before resolution
+    game.night_actions = {
+        pid: act for pid, act in game.night_actions.items()
+        if game.players.get(pid) and game.players[pid].is_alive
+    }
+
     if not game.night_actions:
         if hasattr(game, 'narration_manager') and game.narration_manager:
             game.narration_manager.add_event('no_actions')
@@ -354,6 +360,7 @@ async def _resolve_night_deaths(game):
     """
     logger.info("Resolving final night deaths...")
     phase_str = f"Night {game.game_settings.get('phase_number')}"
+    alive_at_resolution_start = {p_id: p for p_id, p in game.players.items() if p.is_alive}
 
     for victim_id, killer_ids in list(game.kill_attempts_on.items()):
         victim_obj = game.players.get(victim_id)
@@ -373,8 +380,8 @@ async def _resolve_night_deaths(game):
         # Case 2: Identify all eligible living killers who made the strike
         living_killers = []
         for k_id in killer_ids:
-            potential_killer = game.players.get(k_id)
-            if potential_killer and potential_killer.is_alive:
+            potential_killer = alive_at_resolution_start.get(k_id)
+            if potential_killer:
                 living_killers.append(potential_killer)
 
         if living_killers:

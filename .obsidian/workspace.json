@@ -190,6 +190,7 @@
   },
   "active": "0330e70a8c4f47d1",
   "lastOpenFiles": [
+    "game/engine/__pycache__/persistence.cpython-313.pyc.2730804698944",
     "game/engine/__pycache__/night.cpython-313.pyc.2053788493936",
     "game/engine/__pycache__/night.cpython-313.pyc.2685976630800",
     "tests/logs/2026-10-10_testoutput_error.log",
@@ -225,7 +226,6 @@
     "scripts/sweep_archive_fixes.py",
     "scripts/audit_archive_games.py",
     "scripts/__pycache__/__init__.cpython-313.pyc",
-    "scripts/__pycache__/sync_google_sheets.cpython-314.pyc",
     "Untitled.canvas"
   ]
 }

@@ -57,12 +57,19 @@ async def game_loop_iteration(game):
         logger.critical("Could not find the living role in the guild. Check the discord_roles.json configuration.")
         return
 
+    if getattr(game, 'is_transitioning', None) is True:
+        logger.debug("Phase transition already in progress; skipping tick.")
+        return
+
     try:
         # =====================================================================
         # Phase Deadline Expired: Advance the Game State
         # =====================================================================
         if datetime.now(timezone.utc) >= game.game_settings["phase_end_time"]:
+            game.is_transitioning = True
             current_end_time = game.game_settings["phase_end_time"]
+            # Temporarily advance deadline to prevent tight-loop re-execution if an error occurs
+            game.game_settings["phase_end_time"] = datetime.now(timezone.utc) + timedelta(minutes=2)
             logger.info(f"Phase {game.game_settings['current_phase']} {game.game_settings['phase_number']} ended at {current_end_time}.")
             winner = None
 
@@ -189,7 +196,7 @@ async def game_loop_iteration(game):
             try:
                 rules_chan = game.bot.get_channel(config.RULES_AND_ROLES_CHANNEL_ID)
                 if rules_chan:
-                    await rules_chan.send(status_message)
+                    await send_chunked_message(game, rules_chan, status_message)
             except Exception as e:
                 logger.error(f"Error sending status message: {e}")
 
@@ -274,6 +281,8 @@ async def game_loop_iteration(game):
             f"Game loop iteration failed: Phase '{curr_phase}' #{phase_num} failed to advance or encountered fatal error: {e}",
             exc_info=True
         )
+    finally:
+        game.is_transitioning = False
 
 
 async def before_game_loop(game):

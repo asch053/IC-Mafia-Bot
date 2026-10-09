@@ -60,7 +60,8 @@ def check_win_conditions(game):
                 logger.info("Pre-night with equal numbers: Town has protective roles, continuing to night phase.")
                 return None
 
-        if mafia_count >= town_count and neutral_killer_count == 0:
+        non_mafia_count = len(living_players) - mafia_count
+        if mafia_count >= non_mafia_count and neutral_killer_count == 0:
             if mafia_count > 0:
                 logger.info("Win Condition Met: Mafia wins.")
                 return "Mafia"
