@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1011 Summary
+# Discord Mafia 1011: Arby's Gambit Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Arby3  

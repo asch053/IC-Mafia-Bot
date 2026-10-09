@@ -107,7 +107,9 @@ Je m’appelle Paul Bocuse. I am here to admit I am famous by accident. I feel t
 
 Julia Child: no abilities
 
-Hi, my name is Julia, Julia Child, and I would like to show you some more on French cooking. It isn’t as easy as it looks like, which is why I would like to recommend my 1505 page cookbook, available now at… What’s that dear? No promotion? Oh. What a disappointment.Really not? No? Pity, but, I surrender. It doesn’t mean I will be unable to tell you all about all the best ways to really enjoy snails, garlic, pungent smelling cheese, frogs, foie gras, aubergines and the best fleur de sel! I also love to cook with wine. Ha, sometimes I even put it in the food.
+Hi, my name is Julia, Julia Child, and I would like to show you some more on French cooking. It isn’t as easy as it looks like, which is why I would like to recommend my 1505 page cookbook, available now at… What’s that dear? No promotion? Oh. What a disappointment.
+
+Really not? No? Pity, but, I surrender. It doesn’t mean I will be unable to tell you all about all the best ways to really enjoy snails, garlic, pungent smelling cheese, frogs, foie gras, aubergines and the best fleur de sel! I also love to cook with wine. Ha, sometimes I even put it in the food.
 
 ### SERIAL KILLER
 

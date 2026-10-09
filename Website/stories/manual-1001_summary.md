@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1001 Summary
+# Discord Mafia 1001: Goddess of War Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Goddess  

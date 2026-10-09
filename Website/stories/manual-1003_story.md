@@ -1,100 +1,56 @@
-# Discord Mafia 1003: Arby's Crossfire
+# The Chronicle of Discord Mafia 1003: Arby's Crossfire
 
-*Recorded & Moderated by Game Master **Arby3***
-
-- **Era:** Discord Historic Manual
-- **Start Date:** 2019-09-01
-- **Winning Faction:** **Draw**
-- **Total Players:** 18
+*Recorded by Game Master Arby3*
 
 ---
 
-## 📢 Moderator Phase Announcements & Vote Directives
+### Prologue: The Assembly
+In the historic manual era of the Discord Mafia community, **18** players entered the fray for Game 1003. Factions formed in the shadows, alliances were forged in whisper channels, and the town prepared for what would become an intense tactical conflict.
 
-- **[2019-09-07 18:08:45] Deleted User:** <@&603943459841114112> The Phase will still end at the alloted time, the story will be delayed... bear that in mind.
+### The Conflict
+#### Night 1
+The tension reached a breaking point as **Schniepel**, who stood as **Town Special** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **sCriv**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
----
+#### Day 1
+The tension reached a breaking point as **Oz**, who stood as **Town Cop** for the **Town**, fell (inactive).
+The tension reached a breaking point as **PunyPenguin**, who stood as **SK** for the **SK**, fell (Lynced).
 
-## ⚔️ Tactical Phase-by-Phase Timeline
+#### Night 2
+The tension reached a breaking point as **MrBlonde**, who stood as **Town Doc** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **Ordos**, who stood as **Mob RB** for the **Mafia**, fell (by SK).
 
-### Night 1
+#### Day 2
+The tension reached a breaking point as **Cxris**, who stood as **Plain Town** for the **Town**, fell (Inactive).
+The tension reached a breaking point as **Gamzee**, who stood as **Plain Town** for the **Town**, fell (Lynched).
 
-- **Elimination:** **Schniepel** (Town Special - Town) — *Schniepel (Town Special) died (by Mob)*
-- **Elimination:** **sCriv** (Plain Town - Town) — *sCriv (Plain Town) died (by SK)*
+#### Night 3
+The tension reached a breaking point as **Goddess**, who stood as **PlainTown** for the **Town**, fell (by Mob).
 
-### Day 1
+#### Day 3
+The tension reached a breaking point as **Steel Beans**, who stood as **Plain Town** for the **Town**, fell (Lynched).
 
-- **Elimination:** **Oz** (Town Cop - Town) — *Oz (Town Cop) died (inactive)*
-- **Elimination:** **PunyPenguin** (SK - SK) — *PunyPenguin (SK) died (Lynced)*
+#### Night 4
+The tension reached a breaking point as **Nolio**, who stood as **Plain Town** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **TBO**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
-### Night 2
+#### Day 4
+The tension reached a breaking point as **You_Fool**, who stood as **Mob GF** for the **Mafia**, fell (Lynched).
 
-- **Elimination:** **MrBlonde** (Town Doc - Town) — *MrBlonde (Town Doc) died (by Mob)*
-- **Elimination:** **Ordos** (Mob RB - Mafia) — *Ordos (Mob RB) died (by SK)*
+#### Night 5
+The tension reached a breaking point as **Sextans**, who stood as **Town RB** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **The_Unknown**, who stood as **Plain Town** for the **Town**, fell (by SK).
 
-### Day 2
-
-- **Elimination:** **Cxris** (Plain Town - Town) — *Cxris (Plain Town) died (Inactive)*
-- **Elimination:** **Gamzee** (Plain Town - Town) — *Gamzee (Plain Town) died (Lynched)*
-
-### Night 3
-
-- **Elimination:** **Goddess** (PlainTown - Town) — *Goddess (PlainTown) died (by Mob)*
-
-### Day 3
-
-- **Elimination:** **Steel Beans** (Plain Town - Town) — *Steel Beans (Plain Town) died (Lynched)*
-
-### Night 4
-
-- **Elimination:** **Nolio** (Plain Town - Town) — *Nolio (Plain Town) died (by Mob)*
-- **Elimination:** **TBO** (Plain Town - Town) — *TBO (Plain Town) died (by SK)*
-
-### Day 4
-
-- **Elimination:** **You_Fool** (Mob GF - Mafia) — *You_Fool (Mob GF) died (Lynched)*
-
-### Night 5
-
-- **Elimination:** **Sextans** (Town RB - Town) — *Sextans (Town RB) died (by Mob)*
-- **Elimination:** **The_Unknown** (Plain Town - Town) — *The_Unknown (Plain Town) died (by SK)*
-
-### Night 6
-
-- **Elimination:** **Jets** (SK - SK) — *Jets (SK) died (Tie)*
-- **Elimination:** **Tish** (Mob Cop - Mafia) — *Tish (Mob Cop) died (Avoided Lynch)*
-- **Elimination:** **gnaphalta** (Plain Town - Town) — *gnaphalta (Plain Town) died (by Mob)*
-
----
-
-## 👥 Roster & Final Standings
-
-| Player | Role | Alignment | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Cxris** | Plain Town | Town | Dead (Day 2 - Inactive) |
-| **Gamzee** | Plain Town | Town | Dead (Day 2 - Lynched) |
-| **Goddess** | PlainTown | Town | Dead (Night 3 - by Mob) |
-| **Jets** | SK | SK | Dead (Night 6 - Tie) |
-| **MrBlonde** | Town Doc | Town | Dead (Night 2 - by Mob) |
-| **Nolio** | Plain Town | Town | Dead (Night 4 - by Mob) |
-| **Ordos** | Mob RB | Mafia | Dead (Night 2 - by SK) |
-| **Oz** | Town Cop | Town | Dead (Day 1 - inactive) |
-| **PunyPenguin** | SK | SK | Dead (Day 1 - Lynced) |
-| **Schniepel** | Town Special | Town | Dead (Night 1 - by Mob) |
-| **Sextans** | Town RB | Town | Dead (Night 5 - by Mob) |
-| **Steel Beans** | Plain Town | Town | Dead (Day 3 - Lynched) |
-| **TBO** | Plain Town | Town | Dead (Night 4 - by SK) |
-| **The_Unknown** | Plain Town | Town | Dead (Night 5 - by SK) |
-| **Tish** | Mob Cop | Mafia | Dead (Night 6 - Avoided Lynch) |
-| **You_Fool** | Mob GF | Mafia | Dead (Day 4 - Lynched) |
-| **gnaphalta** | Plain Town | Town | Dead (Night 6 - by Mob) |
-| **sCriv** | Plain Town | Town | Dead (Night 1 - by SK) |
-
----
-
-### 🏆 Epilogue: Final Resolution
-
-When the conflict concluded, **Draw** secured the victory!
+#### Night 6
+The tension reached a breaking point as **Jets**, who stood as **SK** for the **SK**, fell (Tie).
+The tension reached a breaking point as **Tish**, who stood as **Mob Cop** for the **Mafia**, fell (Avoided Lynch).
+The tension reached a breaking point as **gnaphalta**, who stood as **Plain Town** for the **Town**, fell (by Mob).
 
 
-No players survived the conflict.
+### Epilogue: Final Resolution
+When the dust cleared, **Draw** stood triumphant! 
+
+Among the brave who lived to tell the tale:
+- No survivors remained.
+
+The record of Discord Mafia 1003: Arby's Crossfire is thus etched into the permanent chronicle.

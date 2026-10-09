@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1017 Summary
+# Discord Mafia 1017: Nolio's Shadows Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Nolio  

@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1013 Summary
+# Discord Mafia 1013: Schniepel's Return Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Schniepel  

@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1024 Summary
+# Discord Mafia 1024: Genesis's Reckoning Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Genesis  

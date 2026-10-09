@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1027 Summary
+# Discord Mafia 1027: Hydro's Last Call Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** HydroP  

@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1022 Summary
+# Discord Mafia 1022: TBO's Stand Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** TBO  

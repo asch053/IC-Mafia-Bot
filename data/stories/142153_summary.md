@@ -1,3 +1,38 @@
+### 📋 Match Overview
+- **Game ID:** `27` (Thread `142153`)
+- **Era:** Forum
+- **Game Type:** Classic
+- **Winning Faction:** **Mafia (Usurpers)**
+- **Victors:** Ben, Destroyyoutoo, Elrohir, KT, Ps, Arandur, Arby3, Neptunes
+- **Total Players:** 24 (Town: 15, Mafia: 8, Neutral: 1)
+- **Hosts / Moderators:** [TI] Primo, Alchoran, Eltara
+
+### 📋 Final Player List & Rankings
+1. **Arandur** - Usurper - *Lynched (Day 2)*
+2. **Arby3** - Usurper - *Killed by Foreign Assassin (Night 1)*
+3. **Arnor** - Knight - *Killed by Usurpers (Night 1)*
+4. **Ben** - Usurper - **Survived (Victor - Mafia)**
+5. **Destroyyoutoo** - Queen - **Survived (Victor - Mafia)**
+6. **Elrohir** - Usurper - **Survived (Victor - Mafia)**
+7. **fette** - Knight - *Killed by Foreign Assassin (Night 1)*
+8. **GeneralSkulls** - Knight - *Survived*
+9. **Genesis** - Doctor - *Killed by Usurpers (Night 2)*
+10. **Gwynedd** - Knight - *Survived*
+11. **HappyJedi** - King - *Killed by Foreign Assassin (Night 1)*
+12. **KT** - Usurper - **Survived (Victor - Mafia)**
+13. **Lexuzis** - Knight - *Killed by Usurpers (Night 2)*
+14. **Melvin** - Knight - *Lynched (Day 3)*
+15. **Neptunes** - Usurper - *Killed by Foreign Assassin (Night 2)*
+16. **Nolio** - Knight - *Lynched (Day 1)*
+17. **Oxygen** - King's Bodyguard - *Killed by Usurpers (Night 2)*
+18. **Ps** - Usurper - **Survived (Victor - Match MVP)**
+19. **RisingDown** - Knight - *Survived*
+20. **The Yell** - Knight - *Lynched (Day 4)*
+21. **Walking_Corpse** - Foreign Assassin - *Survived*
+22. **Wendy** - Knight - *Killed by Foreign Assassin (Night 2)*
+23. **You_Fool** - Knight - *Survived*
+24. **Zarf BeebleBrix** - Knight - *Killed by Usurpers (Night 2)*
+
 ### Chapter 1: The Gathering at Anzio
 The Kingdom of Anzio, a land of golden fields and whispered secrets, found itself teetering on the edge of a precipice. The crown, held by the King, sought stability, but in the shadows of the court, the Usurpers gathered. Led by their enigmatic Queen, they plotted to dismantle the monarchy. As the gates closed and the nights grew long, the citizens of Anzio realized that trust was a luxury they could no longer afford. Amidst the tension, the Foreign Assassin stalked the perimeter, a lone blade seeking purpose in the impending chaos.
 

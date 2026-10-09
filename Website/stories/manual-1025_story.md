@@ -1,103 +1,54 @@
-# Discord Mafia 1025: Gwynedd's Revival
+# The Chronicle of Discord Mafia 1025: Gwynedd's Revival
 
-*Recorded & Moderated by Game Master **Gwynedd***
-
-- **Era:** Discord Historic Manual
-- **Start Date:** 2020-02-02
-- **Winning Faction:** **Town**
-- **Total Players:** 16
+*Recorded by Game Master Gwynedd*
 
 ---
 
-## 📢 Moderator Phase Announcements & Vote Directives
+### Prologue: The Assembly
+In the historic manual era of the Discord Mafia community, **16** players entered the fray for Game 1025. Factions formed in the shadows, alliances were forged in whisper channels, and the town prepared for what would become an intense tactical conflict.
 
-- **[2020-02-02 11:07:48] Mrblonde:** Day phase over
-- **[2020-02-03 09:54:04] Mrblonde:** Official count:
+### The Conflict
+#### Night 1
+The tension reached a breaking point as **Genesis**, who stood as **Plain Townie** for the **Town**, fell (by Mob).
 
-Goddess (2) - TBO, Schniepel
-You_Fool (5) - Goddess, Oldie, You_Fool, Arby3, Young Wolf
-Schniepel (2) - Sunstorm, Spanky
-- **[2020-02-03 11:33:03] Mrblonde:** <@&603943459841114112> votes are final. Night phase starts now. Get your actions in before 2200GMT.
+#### Day 1
+The tension reached a breaking point as **Aries1986**, who stood as **Plain Town** for the **Town**, fell (Mod Killed).
+The tension reached a breaking point as **You_Fool**, who stood as **Mob GF** for the **Mafia**, fell (Lynched).
 
----
+#### Night 2
+The tension reached a breaking point as **LisaMVP**, who stood as **town doc** for the **Town**, fell (by mo).
 
-## ⚔️ Tactical Phase-by-Phase Timeline
+#### Day 2
+The tension reached a breaking point as **Arby3**, who stood as **Mob RB** for the **Mafia**, fell (lynched).
 
-### Night 1
+#### Night 3
+The tension reached a breaking point as **Goddess**, who stood as **Town Cop** for the **Town**, fell (by Mob).
+The tension reached a breaking point as **Soul**, who stood as **Plain Town** for the **Town**, fell (By SK).
 
-- **Elimination:** **Genesis** (Plain Townie - Town) — *Genesis (Plain Townie) died (by Mob)*
+#### Day 3
+The tension reached a breaking point as **The_Unknown**, who stood as **Plain Town** for the **Town**, fell (Lynched).
+The tension reached a breaking point as **Tish**, who stood as **Plain Town** for the **Town**, fell (Mod Killed).
 
-### Day 1
+#### Night 4
+The tension reached a breaking point as **MrBlonde**, who stood as **Plain Mob** for the **Mafia**, fell (by SK).
+The tension reached a breaking point as **Sven**, who stood as **Plain Town** for the **Town**, fell (by Mob).
 
-- **Elimination:** **Aries1986** (Plain Town - Town) — *Aries1986 (Plain Town) died (Mod Killed)*
-- **Elimination:** **You_Fool** (Mob GF - Mafia) — *You_Fool (Mob GF) died (Lynched)*
+#### Day 4
+The tension reached a breaking point as **Schniepel**, who stood as **SK** for the **SK**, fell (Lynched).
 
-### Night 2
+#### Night 5
+The tension reached a breaking point as **Jealous**, who stood as **Plain Mob** for the **Mafia**, fell (Suicider).
 
-- **Elimination:** **LisaMVP** (town doc - Town) — *LisaMVP (town doc) died (by mo)*
-
-### Day 2
-
-- **Elimination:** **Arby3** (Mob RB - Mafia) — *Arby3 (Mob RB) died (lynched)*
-
-### Night 3
-
-- **Elimination:** **Goddess** (Town Cop - Town) — *Goddess (Town Cop) died (by Mob)*
-- **Elimination:** **Soul** (Plain Town - Town) — *Soul (Plain Town) died (By SK)*
-
-### Day 3
-
-- **Elimination:** **The_Unknown** (Plain Town - Town) — *The_Unknown (Plain Town) died (Lynched)*
-- **Elimination:** **Tish** (Plain Town - Town) — *Tish (Plain Town) died (Mod Killed)*
-
-### Night 4
-
-- **Elimination:** **MrBlonde** (Plain Mob - Mafia) — *MrBlonde (Plain Mob) died (by SK)*
-- **Elimination:** **Sven** (Plain Town - Town) — *Sven (Plain Town) died (by Mob)*
-
-### Day 4
-
-- **Elimination:** **Schniepel** (SK - SK) — *Schniepel (SK) died (Lynched)*
-
-### Night 5
-
-- **Elimination:** **Jealous** (Plain Mob - Mafia) — *Jealous (Plain Mob) died (Suicider)*
-
-### Day 5
-
-- **Elimination:** **TBO** (Town Suicider - Town) — *TBO (Town Suicider) died (Eliminated)*
-
----
-
-## 👥 Roster & Final Standings
-
-| Player | Role | Alignment | Outcome |
-| :--- | :--- | :--- | :--- |
-| **Alavsiel** | Plain Town | Town | Survived (Winner) |
-| **Ordos** | Town RB | Town | Survived (Winner) |
-| **TBO** | Town Suicider | Town | Survived (Winner) |
-| **Arby3** | Mob RB | Mafia | Dead (Day 2 - lynched) |
-| **Aries1986** | Plain Town | Town | Dead (Day 1 - Mod Killed) |
-| **Genesis** | Plain Townie | Town | Dead (Night 1 - by Mob) |
-| **Goddess** | Town Cop | Town | Dead (Night 3 - by Mob) |
-| **Jealous** | Plain Mob | Mafia | Dead (Night 5 - Suicider) |
-| **LisaMVP** | town doc | Town | Dead (Night 2 - by mo) |
-| **MrBlonde** | Plain Mob | Mafia | Dead (Night 4 - by SK) |
-| **Schniepel** | SK | SK | Dead (Day 4 - Lynched) |
-| **Soul** | Plain Town | Town | Dead (Night 3 - By SK) |
-| **Sven** | Plain Town | Town | Dead (Night 4 - by Mob) |
-| **The_Unknown** | Plain Town | Town | Dead (Day 3 - Lynched) |
-| **Tish** | Plain Town | Town | Dead (Day 3 - Mod Killed) |
-| **You_Fool** | Mob GF | Mafia | Dead (Day 1 - Lynched) |
-
----
-
-### 🏆 Epilogue: Final Resolution
-
-When the conflict concluded, **Town** secured the victory!
+#### Day 5
+The tension reached a breaking point as **TBO**, who stood as **Town Suicider** for the **Town**, fell (Eliminated).
 
 
-Surviving combatants:
+### Epilogue: Final Resolution
+When the dust cleared, **Town** stood triumphant! 
+
+Among the brave who lived to tell the tale:
 - **Alavsiel**
 - **Ordos**
 - **TBO**
+
+The record of Discord Mafia 1025: Gwynedd's Revival is thus etched into the permanent chronicle.

@@ -73,7 +73,8 @@ Lead Government Researcher (Cop) – Each DAY phase, the researcher can send som
 
 Undercover Government Research assistant (Doctor) – Each NIGHT phase, the undercover research assistant will choose someone’s room to monitor for signs of the virus. They will administer the prototype cure if the subject is ill and prevent anyone else from going into the room and having contact with them.
 
-United Nations Ambassador - The UN Ambassador was brought in to assist with the situation. They don’t have the very specific expertise to handle the delicate aspects of the research project, but they will fill in wherever they can. They can perform the roles of both the Lead Researcher and the Undercover Assistant ONCE in the game at any time. They can also, ONCE per game, invoke their diplomatic skills to either A. prevent themselves from being lynched OR B. Prevent someone from leaving their room one night.
+United Nations Ambassador
+- The UN Ambassador was brought in to assist with the situation. They don’t have the very specific expertise to handle the delicate aspects of the research project, but they will fill in wherever they can. They can perform the roles of both the Lead Researcher and the Undercover Assistant ONCE in the game at any time. They can also, ONCE per game, invoke their diplomatic skills to either A. prevent themselves from being lynched OR B. Prevent someone from leaving their room one night.
 
 Infected Civilians – These individuals have been exposed to the corona virus and don’t know it yet. They are a small group of people who are a threat to all if not cured/terminated. They currently don’t show any signs, but when they outnumber the remaining living people, they will transform into hideous creatures of the night and kill everyone. Out of the 18 people living in the house, no one knows just how many are infected. Beware.
 

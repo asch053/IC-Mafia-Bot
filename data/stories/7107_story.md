@@ -11,7 +11,8 @@ Watchmen (1) - Names a name, and at night, any action taken by that name is know
 
 Priestess (1) - Can stop a name from being made a speaker 1x per game. Can replace that name with their own for the night phase.
 
-Jailer (1) - Any one not casting a vote, or voting for themselves at any time can be jailed. The following day, may vote twice, denying their prisoner of their vote. The Prisoner will not be allowed a vote the next day. This action can be performed only during the day, the name voting for themselves can change it at any time to prevent themselves from being jailed. The jailer must catch them in the act.
+Jailer (1)
+- Any one not casting a vote, or voting for themselves at any time can be jailed. The following day, may vote twice, denying their prisoner of their vote. The Prisoner will not be allowed a vote the next day. This action can be performed only during the day, the name voting for themselves can change it at any time to prevent themselves from being jailed. The jailer must catch them in the act.
 
 *** Town Investigations happen based on the “Joe and the Volcano” sort of effect of the speaker ***
 
@@ -27,9 +28,11 @@ Nay Sayer (1) - Each day, can silence a name from speaking. The vote for that na
 
 Fanatic (1) - During the day phase will make a suicidal attack to kill a name, The Fanatic is just crazy enough that he has 25% chance to survive the attack.
 
-Taunter (1) - At night, will name a name. If that name chosen to be the speaker, will instead cause one of the voters, to be chosen randomly, to be elected instead, may not target themselves. One time during the game, may cause the name the speaker utters to kill the target, not matter the target names disposition.
+Taunter (1)
+- At night, will name a name. If that name chosen to be the speaker, will instead cause one of the voters, to be chosen randomly, to be elected instead, may not target themselves. One time during the game, may cause the name the speaker utters to kill the target, not matter the target names disposition.
 
-DocFather (1) - Starts with a private council. Each day and night may investigate a name. If the name is an unbeliever, will invite them to the private council. (Only way to get into mob chat as a mob). One time each game, the DocFather is immune to the Speaker’s action. Begins game with Assassin in chat.(edited)
+DocFather (1)
+- Starts with a private council. Each day and night may investigate a name. If the name is an unbeliever, will invite them to the private council. (Only way to get into mob chat as a mob). One time each game, the DocFather is immune to the Speaker’s action. Begins game with Assassin in chat.(edited)
 
 ** Plain Mob (1) - For balancing purposes, 1 plain mob exists. Starts in the chat with the DocFather.
 
@@ -37,7 +40,8 @@ Agents of Abbadon - The Angel of Death
 
  
 
-Muri’el (1) - Once per night, will seize a name and ferry it to the underworld for his master Abbadon, additionally each night, will mark a living name. If this name were to have died this night by any means, will instead abscond with the name, and they will join him as an Agent of Death. Muri’el cannot kill his marked name during the night, nor may he kill any targets of the Agents of Death.
+Muri’el (1)
+- Once per night, will seize a name and ferry it to the underworld for his master Abbadon, additionally each night, will mark a living name. If this name were to have died this night by any means, will instead abscond with the name, and they will join him as an Agent of Death. Muri’el cannot kill his marked name during the night, nor may he kill any targets of the Agents of Death.
 
 Agent of Death (0-??) - If a name is named by Muri’el, a name will be come an agent of death. Meant to ferry souls between the Earth and Sheol. Each night will kill a name, names taken in this manner cannot be marked by Muri’el
 
@@ -159,7 +163,8 @@ Watchmen (1) - Names a name, and at night, any action taken by that name is know
 
 Priestess (1) - Can stop a name from being made a speaker 1x per game. Can replace that name with their own for the night phase.
 
-Jailer (1) - Any one not casting a vote, or voting for themselves at any time can be jailed. The following day, may vote twice, denying their prisoner of their vote. The Prisoner will not be allowed a vote the next day. This action can be performed only during the day, the name voting for themselves can change it at any time to prevent themselves from being jailed. The jailer must catch them in the act.
+Jailer (1)
+- Any one not casting a vote, or voting for themselves at any time can be jailed. The following day, may vote twice, denying their prisoner of their vote. The Prisoner will not be allowed a vote the next day. This action can be performed only during the day, the name voting for themselves can change it at any time to prevent themselves from being jailed. The jailer must catch them in the act.
 
 *** Town Investigations happen based on the “Joe and the Volcano” sort of effect of the speaker ***
 
@@ -175,9 +180,11 @@ Nay Sayer (1) - Each day, can silence a name from speaking. The vote for that na
 
 Fanatic (1) - During the day phase will make a suicidal attack to kill a name, The Fanatic is just crazy enough that he has 25% chance to survive the attack.
 
-Taunter (1) - At night, will name a name. If that name chosen to be the speaker, will instead cause one of the voters, to be chosen randomly, to be elected instead, may not target themselves. One time during the game, may cause the name the speaker utters to kill the target, not matter the target names disposition.
+Taunter (1)
+- At night, will name a name. If that name chosen to be the speaker, will instead cause one of the voters, to be chosen randomly, to be elected instead, may not target themselves. One time during the game, may cause the name the speaker utters to kill the target, not matter the target names disposition.
 
-DocFather (1) - Starts with a private council. Each day and night may investigate a name. If the name is an unbeliever, will invite them to the private council. (Only way to get into mob chat as a mob). One time each game, the DocFather is immune to the Speaker’s action. Begins game with Assassin in chat.(edited)
+DocFather (1)
+- Starts with a private council. Each day and night may investigate a name. If the name is an unbeliever, will invite them to the private council. (Only way to get into mob chat as a mob). One time each game, the DocFather is immune to the Speaker’s action. Begins game with Assassin in chat.(edited)
 
 ** Plain Mob (1) - For balancing purposes, 1 plain mob exists. Starts in the chat with the DocFather.
 
@@ -185,7 +192,8 @@ Agents of Abbadon - The Angel of Death
 
  
 
-Muri’el (1) - Once per night, will seize a name and ferry it to the underworld for his master Abbadon, additionally each night, will mark a living name. If this name were to have died this night by any means, will instead abscond with the name, and they will join him as an Agent of Death. Muri’el cannot kill his marked name during the night, nor may he kill any targets of the Agents of Death.
+Muri’el (1)
+- Once per night, will seize a name and ferry it to the underworld for his master Abbadon, additionally each night, will mark a living name. If this name were to have died this night by any means, will instead abscond with the name, and they will join him as an Agent of Death. Muri’el cannot kill his marked name during the night, nor may he kill any targets of the Agents of Death.
 
 Agent of Death (0-??) - If a name is named by Muri’el, a name will be come an agent of death. Meant to ferry souls between the Earth and Sheol. Each night will kill a name, names taken in this manner cannot be marked by Muri’el
 

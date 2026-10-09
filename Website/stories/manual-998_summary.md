@@ -1,4 +1,4 @@
-# Discord Manual Mafia 998 Summary
+# Discord Mafia 998: Street Fighter Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Nolio  

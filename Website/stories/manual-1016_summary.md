@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1016 Summary
+# Discord Mafia 1016: Nolio's Vendetta Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Nolio  

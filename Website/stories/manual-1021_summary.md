@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1021 Summary
+# Discord Mafia 1021: Arby's Finale Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Arby3  

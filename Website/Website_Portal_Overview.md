@@ -27,13 +27,13 @@ The `/Website` directory contains the modern web dashboard interface for players
 
 ## 🏛️ Multi-Era Historical Database Architecture
 
-The website aggregates **172 eligible started games** and **321 players** across 4 distinct community eras:
-- **Classic Forum Era** (`Website/database/historic_forum.json`): 58 games (2007–2012).
-- **Discourse Era** (`Website/database/historic_discourse.json`): 31 games (2014–2018).
-- **Discord Manual Era** (`Website/database/discord_manual.json`): 29 games (2018–2024).
+The website aggregates **159 eligible started games** and **294 players** across 4 distinct community eras:
+- **Classic Forum Era** (`Website/database/historic_forum.json`): 45 games (2008–2017).
+- **Discourse Era** (`Website/database/historic_discourse.json`): 31 games (2019–2020).
+- **Discord Manual Era** (`Website/database/discord_manual.json`): 29 games (2022–2026).
 - **Discord Bot Era** (`Website/database/discord_bot.json`): 54 games (2024–Present).
 
-Additionally, **30 unstarted / ineligible games** (ghost threads, unstarted sign-ups, discussion topics) are excluded from competitive ratings and archived in `Website/database/ineligible_games.json`, with their narratives safely preserved in `Website/stories/ineligible games/`.
+Additionally, **43 unstarted / ineligible games** (ghost threads, unstarted sign-ups, discussion topics) are excluded from competitive ratings and archived in `Website/database/ineligible_games.json`, with their narratives safely preserved in `Website/stories/ineligible games/`.
 
 Stories and phase-by-phase updates are preserved in markdown under `/Website/stories/`.
 
@@ -44,16 +44,16 @@ Stories and phase-by-phase updates are preserved in markdown under `/Website/sto
 ```mermaid
 flowchart LR
     subgraph Databases["Website/database/"]
-        Forum["historic_forum.json (58)"]
+        Forum["historic_forum.json (45)"]
         Discourse["historic_discourse.json (31)"]
         Manual["discord_manual.json (29)"]
         Bot["discord_bot.json (54)"]
-        Ineligible["ineligible_games.json (30 - Archived)"]
+        Ineligible["ineligible_games.json (43 - Archived)"]
     end
 
     Build["build_unified_leaderboard.py"]
-    ArchiveJSON["Website/data/history_archive.json (172 Games)"]
-    LeaderboardJSON["Website/data/leaderboard.json (321 Players)"]
+    ArchiveJSON["Website/data/history_archive.json (159 Games)"]
+    LeaderboardJSON["Website/data/leaderboard.json (294 Players)"]
     JS["MafiaAPICode.js"]
 
     Databases --> Build

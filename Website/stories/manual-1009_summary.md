@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1009 Summary
+# Discord Mafia 1009: sCriv's Underworld Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** sCriv  

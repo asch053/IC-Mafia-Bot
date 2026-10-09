@@ -63,11 +63,14 @@ THE CROWN
 
 (Town)
 
-King Karron Blackmyre - Despite his best efforts to unite his kingdom, things have not turned out as he had wished. He must now see that might triumphs where diplomacy failed. Every night phase, King Karron will choose one player to answer before him him at Court, rendering that player’s night time abilities useless. He cannot choose the same player two nights in a row. He will appear to be a simple citizen if investigated by the Mafia.
+King Karron Blackmyre
+- Despite his best efforts to unite his kingdom, things have not turned out as he had wished. He must now see that might triumphs where diplomacy failed. Every night phase, King Karron will choose one player to answer before him him at Court, rendering that player’s night time abilities useless. He cannot choose the same player two nights in a row. He will appear to be a simple citizen if investigated by the Mafia.
 
-Lord Jorrel Coldwater - Lord Chancellor to King Karron, who entrusted him with the governance of the realm. Given the current situation, Lord Jorrel’s priority has changed to putting an end to the rebellion. Every OTHER night phase, he will order investigations on a player, after which their allegiance will be revealed to him.
+Lord Jorrel Coldwater
+- Lord Chancellor to King Karron, who entrusted him with the governance of the realm. Given the current situation, Lord Jorrel’s priority has changed to putting an end to the rebellion. Every OTHER night phase, he will order investigations on a player, after which their allegiance will be revealed to him.
 
-Lord Broden Perry - King Karron’s oldest adviser, Lord Perry is First Knight of the infamous Crimson Legion. The King’s last line of defense, they will act without regard for themselves or others to protect the Crown. Every night phase, he will order investigations on a player, after which their allegiance will be revealed to him.
+Lord Broden Perry
+- King Karron’s oldest adviser, Lord Perry is First Knight of the infamous Crimson Legion. The King’s last line of defense, they will act without regard for themselves or others to protect the Crown. Every night phase, he will order investigations on a player, after which their allegiance will be revealed to him.
 
 Ser Lucas Fowler - Second Knight of the Crimson Legion, he will receive the reports of all previous investigations conducted by both Lords Coldwater and Perry, should they both die. His identity is not known to either of them, nor does he know theirs.
 
@@ -85,7 +88,8 @@ THE REBELS
 
 (Mafia)
 
-Nithan Rhysling, Lord Paramount - Having been excluded from the King’s circle, Lord Rhysling assembled his captains and decided to raise his forces in open rebellion aginst the Crown. Every night phase, Lord Rhysling will choose a player to kill. If investigated, he will appear to be a normal citizen. He cannot die during night phase.
+Nithan Rhysling, Lord Paramount
+- Having been excluded from the King’s circle, Lord Rhysling assembled his captains and decided to raise his forces in open rebellion aginst the Crown. Every night phase, Lord Rhysling will choose a player to kill. If investigated, he will appear to be a normal citizen. He cannot die during night phase.
 
 Lady Amyra Rhysling - King Karron’s aunt, she still holds considerable influence at court. As such, every night phase she will order her chronies to investigate a player of her choosing, making their role known to her.
 
@@ -107,7 +111,8 @@ Ser Robart Foral - nicknamed “Lord Ice” due to his cruel demeanour and lack 
 
 Maro Vhassinar - a stranger from a distant land, where the cult of the dead oftentimes surpassed concern for the living, Maro has transported his ancient rituals with himself to this new land. His people are rumored to be wielders of ancient magic, yet no foreigner could claim to have witnessed it firsthand. Every night phase he will choose a player to kill. If investigated, he will appear to be a normal citizen. He is immune to being killed at night until and during night 3.
 
-Saloman Spyre - Saloman was once a famed warrior, trained in the Falcon Haven of Wintervale, home to the deadliest killers in the land. However, a drunken quarrel had caused the death of his beloved wife, and the mindless killing he engaged in from then on has not been able to bring him peace. Should either Ser Robart or Maro die after night phase 3, he will take their place in killing one player every night phase. Should they be lynched at any stage in the round, he will also take their place. If investigated, he will appear to be a normal citizen. He is immune to being killed at night until and during night 5.
+Saloman Spyre
+- Saloman was once a famed warrior, trained in the Falcon Haven of Wintervale, home to the deadliest killers in the land. However, a drunken quarrel had caused the death of his beloved wife, and the mindless killing he engaged in from then on has not been able to bring him peace. Should either Ser Robart or Maro die after night phase 3, he will take their place in killing one player every night phase. Should they be lynched at any stage in the round, he will also take their place. If investigated, he will appear to be a normal citizen. He is immune to being killed at night until and during night 5.
 
 PLUS 2 HIDDEN ROLES!! INCLUDING FROM THE PLAYERS THEMSELVES
 
@@ -341,7 +346,8 @@ Friendly reminder that if you miss two votes in a row, you will be auto-killed!
 
 The second Hidden Role has been activated!
 
-Codin Farwynd - this role would only be activated upon the deaths of either both cops, both doctors, or both bodyguards (with him replacing the role which disappeared first) - Codin, a Praetor in the Crimson Legion, has now taken on the mantle of command and will be allowed 1 investigation every night phase. He will have a ONE TIME night kill available, and will be immune to night kills himself, but only ONCE.
+Codin Farwynd - this role would only be activated upon the deaths of either both cops, both doctors, or both bodyguards (with him replacing the role which disappeared first)
+- Codin, a Praetor in the Crimson Legion, has now taken on the mantle of command and will be allowed 1 investigation every night phase. He will have a ONE TIME night kill available, and will be immune to night kills himself, but only ONCE.
 
 For clarification, the hidden role is now a Cop.
 

@@ -203,7 +203,9 @@ A-10 never knew he loved plumbing so much till he fixed the bar’s Urinal a new
 
 It is now 12:45 and they were to busy to hear Truck Johnson come in and see him standing at the door. Truck didn’t say a word ,but at the same moment he heard a window break downstairs. Someone was breaking into his house. He ran to check out what was going on walking down the stairs and into the kitchen. He notices the broken glass all over the ground ,but he doesn’t see anyone either. Truck starts to walk towards the stairs and at that moment he gets hit over the back of the head and is out cold. Truck wasn’t the target he watched A-10 walk into the house less than a hour ago. This other gentleman explored the house looking for him ,but followed the noise, the moans, the screams, the heavy breathing.
 
-Player1 picks up the pipewrench and goes to hit A-10 over the head with it. The wife screams and A-10 moves out of the way, but causes the wife to get hit and also her death. A-10 jumps up completely bare ass and has an american pie moment all over player 1. Player 1 swings ,but being momentary blind in 1 eye caused him to miss.
+Player1 picks up the pipewrench and goes to hit A-10 over the head with it. The wife screams and A-10 moves out of the way, but causes the wife to get hit and also her death. A-10 jumps up completely bare ass and has an american pie moment all over player 
+
+1. Player 1 swings ,but being momentary blind in 1 eye caused him to miss.
 
 Truck wakes up from his state of darkness and starts to make his way upstairs this time with his gun drawn. Player 1 with the wrench raised once again gets shot twice in the stomach and once in the back of the head.
 

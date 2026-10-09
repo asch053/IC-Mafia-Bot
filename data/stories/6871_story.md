@@ -1398,5 +1398,3 @@ Congratulations to the Munchers
 YouFool (Lizzy) Deleted
 
 Melvin (Zarf) Deleted
-
-See Jets for more information about IC Mafia 65

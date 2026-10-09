@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1006 Summary
+# Discord Mafia 1006: Schnipel's Slasher Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Schnipel  

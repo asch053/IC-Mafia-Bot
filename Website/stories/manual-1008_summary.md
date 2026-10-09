@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1008 Summary
+# Discord Mafia 1008: Goddess's Domain Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Goddess  

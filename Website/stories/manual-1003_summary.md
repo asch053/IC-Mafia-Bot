@@ -1,4 +1,4 @@
-# Discord Manual Mafia 1003 Summary
+# Discord Mafia 1003: Arby's Crossfire Summary
 
 **Era:** Discord Manual  
 **Host / Game Master:** Arby3  
