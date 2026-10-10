@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mafia Battle Royale</title>
+    <script src="../js/MafiaAPICode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575; --red: #cf3838; --gold: #ffd700; --input-bg: #2d2d2d; }
@@ -70,12 +71,14 @@
 </div>
 
 <script>
-    window.onload = function() {
+    window.onload = async function() {
         console.log("Requesting Battle Royale Data...");
-        google.script.run
-            .withSuccessHandler(render)
-            .withFailureHandler(showError)
-            .getDashboardData('battle_royale');
+        try {
+            const data = await fetchPortalData('battle_royale');
+            render(data);
+        } catch (err) {
+            showError(err);
+        }
     };
 
     function showError(error) {

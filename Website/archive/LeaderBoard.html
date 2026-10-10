@@ -2,6 +2,9 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
+  <title>Mafia Hall of Records</title>
+  <script src="../js/MafiaAPICode.js"></script>
   <style>
     body { font-family: Arial, sans-serif; color: #333; background-color: #f4f7f6; }
     .leaderboard-container { max-width: 650px; margin: 0 auto; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
@@ -98,17 +101,20 @@
     "n1_deaths": { header: "N1 Deaths", sortDesc: true, format: "int", label: "Deaths" }
   };
 
-  window.onload = function() {
-    // If testing locally without Apps Script, mock data can be loaded here.
-    // Otherwise, this calls your Code.gs function.
-    google.script.run
-      .withSuccessHandler(function(data) {
-        // Global Filter: Only rank players with > 5 total games played 
-        // to prevent 1-game wonders from dominating the leaderboards.
-        allPlayers = data.filter(p => parseInt(p["Games Played"]) > 5);
-        renderLeaderboard();
-      })
-      .getLeaderboardData();
+  window.onload = async function() {
+    try {
+      const data = await fetchPortalData('leaderboard');
+      // Global Filter: Only rank players with > 5 total games played 
+      // to prevent 1-game wonders from dominating the leaderboards.
+      allPlayers = (data || []).filter(p => parseInt(p["Games Played"]) > 5);
+      renderLeaderboard();
+    } catch (err) {
+      console.error("Failed to load leaderboard data:", err);
+      const tbody = document.getElementById("leaderboardBody");
+      if (tbody) {
+        tbody.innerHTML = `<tr><td colspan="3" style="text-align:center; color: #cf3838; padding: 20px;">⚠️ Failed to load leaderboard data: ${err.message}</td></tr>`;
+      }
+    }
   };
 
   function renderLeaderboard() {

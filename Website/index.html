@@ -5,8 +5,8 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <title>Mafia Analytics</title>
-    <script src="js/api.js?v=2"></script>
+    <script src="js/MafiaAPICode.js?v=3"></script>
+    <script src="js/api.js?v=3"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.8/dist/purify.min.js"></script>
@@ -1109,7 +1109,7 @@
     }
 
     function updateRanks(tid) {
-        if (tid === 'skillTable' || tid === 'statsTable' || tid === 'recordsTable') {
+        if (tid === 'skillTable' || tid === 'statsTable' || tid === 'recordsTable' || tid === 'brTable') {
             const tb = document.getElementById(tid)?.tBodies[0];
             if (!tb) return;
             let rank = 1;
@@ -1121,20 +1121,61 @@
         }
     }
 
-    function filter(tid,cidx){
-        const trs=document.getElementById(tid).tBodies[0].rows;
-        const val=document.getElementById(tid).tHead.rows[1].cells[cidx].querySelector('input').value.toUpperCase();
-        for(let tr of trs){
-            let txt=(tr.cells[cidx].textContent||"").replace(/[^\w\d\.]/g,'');
-            let show=true;
-            if(val.startsWith('>')){
-                if(parseFloat(txt)<=parseFloat(val.substring(1)))show=false;
-            }else if(val.startsWith('<')){
-                if(parseFloat(txt)>=parseFloat(val.substring(1)))show=false;
-            }else{
-                if((tr.cells[cidx].textContent||"").toUpperCase().indexOf(val)===-1)show=false;
+    function filter(tid, cidx) {
+        const table = document.getElementById(tid);
+        if (!table || !table.tHead || table.tHead.rows.length < 2 || !table.tBodies[0]) return;
+
+        // Gather all active filter inputs and selects in the second header row
+        const filterCells = table.tHead.rows[1].cells;
+        const activeFilters = [];
+        for (let col = 0; col < filterCells.length; col++) {
+            const inp = filterCells[col].querySelector('input');
+            const sel = filterCells[col].querySelector('select');
+            if (inp && inp.value.trim() !== '') {
+                activeFilters.push({
+                    colIndex: col,
+                    type: 'input',
+                    val: inp.value.trim().toUpperCase()
+                });
+            } else if (sel && sel.value.trim() !== '') {
+                activeFilters.push({
+                    colIndex: col,
+                    type: 'select',
+                    val: sel.value.trim().toUpperCase()
+                });
             }
-            tr.style.display=show?'':'none';
+        }
+
+        const trs = table.tBodies[0].rows;
+        for (let tr of trs) {
+            let show = true;
+            for (let f of activeFilters) {
+                const cell = tr.cells[f.colIndex];
+                if (!cell) continue;
+                const fullText = (cell.textContent || "").toUpperCase().trim();
+                const cleanNumText = (cell.textContent || "").replace(/[^\w\d\.]/g, '');
+
+                if (f.type === 'select') {
+                    if (f.val === 'DISCORD') {
+                        if (fullText !== 'DISCORD') { show = false; break; }
+                    } else if (f.val === 'DISCORD_MANUAL') {
+                        if (fullText !== 'DISCORD_MANUAL') { show = false; break; }
+                    } else {
+                        if (!fullText.includes(f.val)) { show = false; break; }
+                    }
+                } else if (f.val.startsWith('>')) {
+                    const threshold = parseFloat(f.val.substring(1));
+                    const num = parseFloat(cleanNumText);
+                    if (isNaN(num) || num <= threshold) { show = false; break; }
+                } else if (f.val.startsWith('<')) {
+                    const threshold = parseFloat(f.val.substring(1));
+                    const num = parseFloat(cleanNumText);
+                    if (isNaN(num) || num >= threshold) { show = false; break; }
+                } else {
+                    if (!fullText.includes(f.val)) { show = false; break; }
+                }
+            }
+            tr.style.display = show ? '' : 'none';
         }
         updateRanks(tid);
     }
@@ -1196,7 +1237,7 @@
     function setArchiveEra(era) {
         const select = document.getElementById('eraSelector');
         if (select) select.value = era;
-        filterExact('archivesTable', 1, era);
+        filter('archivesTable');
 
         ['all', 'forum', 'discourse', 'manual', 'discord'].forEach(p => {
             const btn = document.getElementById('pill-' + p);
@@ -1755,7 +1796,13 @@
         if (!playerName) return;
         // Ensure leaderboard data is loaded
         if (recordsData.length === 0) {
-            recordsData = await fetchPortalData('leaderboard');
+            try {
+                recordsData = await fetchPortalData('leaderboard');
+            } catch (err) {
+                console.error("Failed to load player dossier data:", err);
+                alert("Could not load player data: " + err.message);
+                return;
+            }
         }
         
         const target = (playerName || "").toString().toLowerCase().trim();
@@ -1932,20 +1979,25 @@
         renderDossierGamesList(filtered);
     }
 
-    function filterChronicleByPlayer(playerName) {
+    async function filterChronicleByPlayer(playerName) {
         document.getElementById('dossier-modal').classList.add('hidden');
-        setTab('archives');
+        await switchMode('archives');
         const eraSel = document.getElementById('eraSelector');
         if (eraSel) {
             eraSel.value = '';
             setArchiveEra('');
         }
-        const pLower = playerName.toLowerCase();
+        if (!historyData || historyData.length === 0) {
+            historyData = await fetchPortalData('history');
+            renderArchives(historyData);
+        }
+        const pLower = (playerName || '').toLowerCase();
         const tbody = document.getElementById('archivesBody');
+        if (!tbody) return;
         const trs = tbody.getElementsByTagName('tr');
         for (let i = 0; i < trs.length; i++) {
-            const tid = trs[i].cells[0] ? trs[i].cells[0].innerText.trim() : '';
-            const game = historyData.find(g => String(g.thread_id) === tid);
+            const tid = trs[i].cells[0] ? trs[i].cells[0].innerText.replace('↗', '').trim() : '';
+            const game = historyData.find(g => String(g.game_id) === tid || String(g.thread_id) === tid);
             let playerInGame = false;
             if (game && game.box_score && game.box_score.roster) {
                 playerInGame = game.box_score.roster.some(r => {
@@ -1957,6 +2009,24 @@
         }
         window.scrollTo({ top: 300, behavior: 'smooth' });
     }
+
+    // Modal dismiss UX: close modals on Escape key or backdrop click
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            document.getElementById('story-modal')?.classList.add('hidden');
+            document.getElementById('dossier-modal')?.classList.add('hidden');
+        }
+    });
+    ['story-modal', 'dossier-modal'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('click', function(e) {
+                if (e.target === el) {
+                    el.classList.add('hidden');
+                }
+            });
+        }
+    });
 </script>
 </body>
 </html>

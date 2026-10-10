@@ -22,24 +22,48 @@ if not os.path.exists(DB_DIR):
 WEBSITE_DATA_DIR = os.path.join(WEBSITE_DIR, "data")
 
 try:
-    from oauth2client.service_account import ServiceAccountCredentials
+    from google.oauth2.service_account import Credentials as ServiceAccountCredentials
     import gspread
 except ImportError:
-    logger.error("Required packages (gspread, oauth2client) not found. Run in the virtual environment (.venv).")
-    gspread = None
+    try:
+        from oauth2client.service_account import ServiceAccountCredentials
+        import gspread
+    except ImportError:
+        logger.error("Required packages (gspread, google-auth or oauth2client) not found.")
+        ServiceAccountCredentials = None
+        gspread = None
 
-DEFAULT_CREDS_FILE = os.getenv("GOOGLE_CREDENTIALS_FILE") or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
-DEFAULT_SHEET_ID = os.getenv("GOOGLE_SHEET_ID") or "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
+try:
+    import config
+    CONFIG_SHEET_ID = getattr(config, "GOOGLE_SHEET_ID", None)
+    CONFIG_CREDS_FILE = getattr(config, "GOOGLE_CREDENTIALS_FILE", None)
+except Exception:
+    CONFIG_SHEET_ID = None
+    CONFIG_CREDS_FILE = None
+
+DEFAULT_CREDS_FILE = CONFIG_CREDS_FILE or os.getenv("GOOGLE_CREDENTIALS_FILE") or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
+if DEFAULT_CREDS_FILE and not os.path.isabs(DEFAULT_CREDS_FILE):
+    DEFAULT_CREDS_FILE = os.path.join(ROOT_DIR, DEFAULT_CREDS_FILE)
+
+DEFAULT_SHEET_ID = CONFIG_SHEET_ID or os.getenv("GOOGLE_SHEET_ID") or "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
 
 def get_sheets_client(creds_path=DEFAULT_CREDS_FILE):
+    if gspread is None:
+        raise RuntimeError("gspread is not installed. Please install gspread and google-auth.")
     if not os.path.exists(creds_path):
         raise FileNotFoundError(f"Credentials file not found at {creds_path}")
     scope = [
         'https://www.googleapis.com/auth/spreadsheets',
         'https://www.googleapis.com/auth/drive'
     ]
-    creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
-    client = gspread.authorize(creds)
+    if ServiceAccountCredentials and hasattr(ServiceAccountCredentials, 'from_service_account_file'):
+        creds = ServiceAccountCredentials.from_service_account_file(creds_path, scopes=scope)
+        client = gspread.authorize(creds)
+    elif ServiceAccountCredentials and hasattr(ServiceAccountCredentials, 'from_json_keyfile_name'):
+        creds = ServiceAccountCredentials.from_json_keyfile_name(creds_path, scope)
+        client = gspread.authorize(creds)
+    else:
+        client = gspread.service_account(filename=creds_path)
     return client
 
 def load_json(path, default=None):

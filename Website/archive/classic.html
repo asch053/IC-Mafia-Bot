@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Mafia Classic</title>
+    <script src="../js/MafiaAPICode.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         :root { --bg: #121212; --card: #1e1e1e; --text: #e0e0e0; --muted: #757575; --red: #cf3838; --blue: #388acf; --gold: #ffd700; --green: #4caf50; --orange: #ff9800; --grey: #607d8b; --purp: #9c27b0; --input-bg: #2d2d2d; }
@@ -105,8 +106,17 @@
 </div>
 
 <script>
-    window.onload = function() {
-        google.script.run.withSuccessHandler(render).getDashboardData('classic');
+    window.onload = async function() {
+        try {
+            const data = await fetchPortalData('classic');
+            render(data);
+        } catch (err) {
+            console.error("Failed to load classic data:", err);
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.innerHTML = `<p style="color: #cf3838; font-weight: bold;">❌ Failed to load Classic Mafia data: ${err.message}</p>`;
+            }
+        }
     };
 
     const eraDividersPlugin = {
