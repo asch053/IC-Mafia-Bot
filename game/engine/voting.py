@@ -266,10 +266,11 @@ async def tally_votes(game):
         game.narration_manager.add_event('lynch', victims=lynched_players, details=lynch_details)
 
     # 6. Special Jester Win Condition: wins if eliminated via daytime lynch
-    if len(lynched_players) == 1 and lynched_players[0].role and lynched_players[0].role.name == "Jester":
-        if hasattr(game, 'narration_manager') and game.narration_manager:
-            game.narration_manager.add_event('jester_win', victim=lynched_players[0])
-        game.game_settings['winning_team'] = "Jester"
-        return "Jester"
+    for victim in lynched_players:
+        if victim.role and victim.role.name == "Jester":
+            if hasattr(game, 'narration_manager') and game.narration_manager:
+                game.narration_manager.add_event('jester_win', victim=victim)
+            game.game_settings['winning_team'] = "Jester"
+            return "Jester"
 
     return None

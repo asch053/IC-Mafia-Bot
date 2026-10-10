@@ -136,3 +136,85 @@ class TestGameEngine(unittest.IsolatedAsyncioTestCase):
         self.assertIn(npc.action_target, [1, 2])
         self.assertIn(-2, self.game.lynch_votes[npc.action_target])
         print(f"[OUTCOME] Success! NPC voted for target ID {npc.action_target}.")
+
+    def test_status_message_draw_game_over(self):
+        """Verifies status message displays Draw outcome cleanly without Living Players: (0)."""
+        self._add_test_players(2)
+        # Both players eliminated
+        for p in self.game.players.values():
+            p.kill("Night 1", "Night Kill")
+        
+        self.game.game_settings['is_epilogue'] = True
+        self.game.game_settings['winner'] = "Draw"
+        self.game.game_settings['current_phase'] = "conclusion"
+
+        status_msg = self.game.get_status_message()
+        self.assertIn("Game Outcome:** DRAW", status_msg)
+        self.assertNotIn("Living Players:** (0)", status_msg)
+
+    async def test_remove_player_boolean_returns(self):
+        """Verifies remove_player returns True when removed, and False when player absent or outside signup."""
+        self.game.game_settings['current_phase'] = 'signup'
+        mock_user = AsyncMock()
+        mock_user.id = 999
+        mock_user.name = "Leaver"
+        mock_user.display_name = "Leaver"
+
+        with patch('game.engine.update_player_discord_roles', new_callable=AsyncMock):
+            # Not in game yet
+            self.assertFalse(await self.game.remove_player(mock_user, self.mock_channel))
+
+            # Add player then remove
+            await self.game.add_player(mock_user, "Leaver", self.mock_channel)
+            self.assertIn(999, self.game.players)
+            self.assertTrue(await self.game.remove_player(mock_user, self.mock_channel))
+            self.assertNotIn(999, self.game.players)
+
+            # Outside signup phase
+            self.game.game_settings['current_phase'] = 'day'
+            self.assertFalse(await self.game.remove_player(mock_user, self.mock_channel))
+
+    async def test_jester_win_on_tie_lynch(self):
+        """Verifies that if a Jester is lynched in a tie multi-lynch, Jester win is awarded."""
+        self.game.game_settings["current_phase"] = "day"
+        self.game.game_settings["phase_number"] = 1
+        self._add_test_players(4)
+
+        # Player 1 is Townie, Player 2 is Jester, Player 3 and 4 vote
+        self.game.players[1].assign_role(game.roles.get_role_instance("Plain Townie"))
+        self.game.players[2].assign_role(game.roles.get_role_instance("Jester"))
+
+        # Create a tie: Player 1 has 1 vote, Player 2 has 1 vote
+        self.game.lynch_votes = {
+            1: [3],
+            2: [4]
+        }
+
+        winner = await self.game.tally_votes()
+        self.assertEqual(winner, "Jester")
+        self.assertEqual(self.game.game_settings.get("winning_team"), "Jester")
+
+    async def test_persistence_date_regex_and_db_update(self):
+        """Verifies persistence.update_modular_database extracts dates via re without NameError."""
+        from game.engine.persistence import update_modular_database
+        
+        game_data = {
+            "game_id": "20261010-120000",
+            "game_type": "classic",
+            "number_of_players": 5,
+            "player_counts": {"town": 3, "mafia": 2, "neutral": 0},
+            "winning_players": ["Alice"],
+            "total_days": 3,
+            "start_date_utc": "2026-10-10T12:00:00+00:00"
+        }
+        final_summary = {
+            "player_data": [],
+            "lynch_vote_history": []
+        }
+
+        with patch('Website.build_unified_leaderboard.build_unified_stats', return_value={}):
+            with patch('builtins.open', unittest.mock.mock_open(read_data="[]")):
+                with patch('os.replace'):
+                    with patch('os.makedirs'):
+                        # This should execute cleanly without raising NameError on 're'
+                        await update_modular_database(self.game, game_data, final_summary, "Town")

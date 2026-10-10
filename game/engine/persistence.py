@@ -1,5 +1,6 @@
 # game/engine/persistence.py
 import os
+import re
 import json
 import logging
 from collections import Counter
@@ -68,7 +69,7 @@ async def save_story_log(game, alignments, end_time):
             f"Player counts: Town={alignments.get('Town', 0)}, Mafia={alignments.get('Mafia', 0)}, Neutral={alignments.get('Neutral', 0)}\n"
             f"Total days: {game.game_settings.get('phase_number')}\n"
             f"Phase hours: {game.game_settings.get('phase_hours')}\n"
-            f"**Winning Team:** {game.game_settings.get('winning_team', 'Unknown')}\n\n"
+            f"**Winning Team / Outcome:** {game.game_settings.get('winner') or game.game_settings.get('winning_team', 'Unknown')}\n\n"
             f"**Winning Players:** {sorted([p.display_name for p in game.players.values() if p.is_winner])}\n\n"
             f"{manifest_section}\n"
             f"{full_story}"
@@ -132,17 +133,24 @@ async def update_modular_database(game, game_data, final_summary, winner):
         # 1. Narrative Overview
         winning_players_str = ", ".join(game_data.get("winning_players", [])) if game_data.get("winning_players") else "None"
         player_counts = game_data.get("player_counts", {})
+        if str(winner).strip().lower() == "draw":
+            tactical_summary = "Automated match hosted on Discord. The game proceeded across strategic phases, concluding with all sides eliminated in a hard-fought **Draw**."
+            winning_faction_label = "**Draw** (No winning faction)"
+        else:
+            tactical_summary = f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winner}** victory."
+            winning_faction_label = f"**{winner}**"
+
         narrative_summary = (
             f"### 📋 Match Overview\n"
             f"- **Game ID:** `{game_id}`\n"
             f"- **Era:** Discord Modern Bot\n"
             f"- **Game Type:** {game_data.get('game_type', 'Classic')}\n"
-            f"- **Winning Faction:** **{winner}**\n"
+            f"- **Winning Faction:** {winning_faction_label}\n"
             f"- **Victors:** {winning_players_str}\n"
             f"- **Total Players:** {game_data.get('number_of_players', 0)} (Town: {player_counts.get('town', 0)}, Mafia: {player_counts.get('mafia', 0)}, Neutral: {player_counts.get('neutral', 0)})\n"
             f"- **Total Duration:** {game_data.get('total_days', 0)} phases\n\n"
             f"### ⚔️ Tactical Summary\n"
-            f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winner}** victory."
+            f"{tactical_summary}"
         )
 
         # 2. Story as Written

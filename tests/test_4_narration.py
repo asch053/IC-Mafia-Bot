@@ -163,3 +163,52 @@ class TestNarrationManager(unittest.IsolatedAsyncioTestCase):
         self.assertIn("BlockerAlice", summary_br)
         self.assertIn("TargetBob", summary_br)
         self.assertIn("attack", summary_br)
+
+    def test_static_game_over_draw_and_winners(self):
+        """Verifies static narration properly declares Draw and specific winners."""
+        from game.narration_static import _generate_static_story_part
+
+        draw_event = {'type': 'game_over', 'winner': 'Draw'}
+        draw_text = _generate_static_story_part(draw_event, 'Classic Mafia')
+        self.assertIn("DRAW", draw_text)
+        self.assertIn("No one wins", draw_text)
+
+        draw_event_lower = {'type': 'game_over', 'winner': 'draw'}
+        draw_text_lower = _generate_static_story_part(draw_event_lower, 'Classic Mafia')
+        self.assertIn("DRAW", draw_text_lower)
+
+        town_event = {'type': 'game_over', 'winner': 'Town'}
+        town_text = _generate_static_story_part(town_event, 'Classic Mafia')
+        self.assertIn("The Town has WON the game", town_text)
+
+        mafia_event = {'type': 'game_over', 'winner': 'Mafia'}
+        mafia_text = _generate_static_story_part(mafia_event, 'Classic Mafia')
+        self.assertIn("The Mafia has WON the game", mafia_text)
+
+    def test_ai_game_over_directives(self):
+        """Verifies that _construct_ai_prompt injects mandatory win-condition directives."""
+        from game.narration_ai import _construct_ai_prompt
+
+        draw_state = {
+            'phase': 'Conclusion',
+            'number': None,
+            'story_type': 'Classic Mafia',
+            'game_type': 'classic',
+            'is_game_over': True,
+            'winner': 'Draw',
+            'living_players': []
+        }
+        draw_prompt = _construct_ai_prompt(draw_state, [], [])
+        self.assertIn("CRITICAL: The conclusion narrative MUST explicitly declare that the conflict ended in a DRAW", draw_prompt)
+
+        town_state = {
+            'phase': 'Conclusion',
+            'number': None,
+            'story_type': 'Classic Mafia',
+            'game_type': 'classic',
+            'is_game_over': True,
+            'winner': 'Town',
+            'living_players': []
+        }
+        town_prompt = _construct_ai_prompt(town_state, [], [])
+        self.assertIn("CRITICAL: The conclusion narrative MUST explicitly announce that the TOWN has WON the game", town_prompt)

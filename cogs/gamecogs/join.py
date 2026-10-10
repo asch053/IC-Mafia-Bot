@@ -15,6 +15,9 @@ async def join_game_command(self, interaction: discord.Interaction):
         return
 
     await interaction.response.defer(ephemeral=True)
-    await game.add_player(interaction.user, interaction.user.display_name, interaction.channel)
-    await interaction.followup.send("You've joined the game!", ephemeral=True)
+    res = await game.add_player(interaction.user, interaction.user.display_name, interaction.channel)
+    if res:
+        await interaction.followup.send(res, ephemeral=True)
+    else:
+        await interaction.followup.send("Could not join the game (already joined or game is full).", ephemeral=True)
 

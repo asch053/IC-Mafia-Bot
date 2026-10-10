@@ -92,6 +92,8 @@ def get_status_message(game) -> str:
     all_players = list(game.players.values())
     winning_players = sorted([p for p in all_players if p.is_winner], key=lambda p: p.display_name)
     dead_players = sorted([p for p in all_players if not p.is_alive], key=lambda p: p.display_name)
+    is_game_over = game.game_settings.get('is_epilogue', False) or game.game_settings.get('winner') is not None
+    winner = game.game_settings.get('winner')
 
     if winning_players:
         # --- GAME OVER: Display triumphant winners and their full identities ---
@@ -132,6 +134,12 @@ def get_status_message(game) -> str:
                 )
                 role_alignment = player_obj.role.alignment if player_obj.role else "Unknown Alignment"
                 status_message += f"- {player_obj.display_name} ({role_alignment}: {role_disp})\n"
+    elif is_game_over:
+        # --- GAME OVER (DRAW or no winning players): Display outcome ---
+        if str(winner).lower() == "draw":
+            status_message += "\n**⚖️ Game Outcome:** DRAW (No winners — all participants eliminated)\n"
+        else:
+            status_message += f"\n**⚖️ Game Outcome:** {winner} (Game Over)\n"
     else:
         # --- GAME ONGOING: Display living players with roles hidden to preserve secrecy ---
         living_players = sorted([p for p in all_players if p.is_alive], key=lambda p: p.display_name)

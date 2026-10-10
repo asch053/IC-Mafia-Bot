@@ -122,20 +122,28 @@ async def announce_winner(game, winner):
             player_obj.kill(recorded_phase, "Game Over - Losing Player")
             logger.info(f"Marked losing player {player_obj.display_name} as dead.")
 
-    await game._save_game_summary(winner)
-
     if winner in ["Town", "Mafia"]:
         winner_display_name = f"The {winner}"
+        win_announcement = f"🏆 **Game Over — The {winner} has WON the game!**"
     elif winner == "Draw":
-        winner_display_name = "game has ended in a draw! No one"
+        winner_display_name = "Draw (No one wins)"
+        win_announcement = "⚖️ **Game Over — The game has ended in a DRAW! No one wins!**"
+    elif winner == "Serial Killer":
+        winner_display_name = "The Serial Killer"
+        win_announcement = "🏆 **Game Over — The Serial Killer has WON the game!**"
     elif winning_players:
-        winner_display_name = f"**{winning_players[0].display_name}**"
+        winners_str = ", ".join(f"**{p.display_name}**" for p in winning_players)
+        winner_display_name = winners_str
+        win_announcement = f"🏆 **Game Over — {winners_str} has WON the game!**"
     else:
         winner_display_name = winner
+        win_announcement = f"🏆 **Game Over — {winner} has WON the game!**"
 
     game.game_settings['is_epilogue'] = True
+    game.game_settings['winner'] = winner
+    game.game_settings['winning_team'] = winner
     if hasattr(game, 'narration_manager') and game.narration_manager:
-        game.narration_manager.add_event('game_over', winner=f"{winner_display_name}")
+        game.narration_manager.add_event('game_over', winner=winner)
 
     game_state = {
         "game_id": game.game_settings.get('game_id'),
@@ -148,17 +156,23 @@ async def announce_winner(game, winner):
         "is_introduction": False,
         "is_epilogue": True,
         "winner": winner if winner else "No Winner",
-        "is_game_over": False
+        "is_game_over": True
     }
 
     story = ""
     if hasattr(game, 'narration_manager') and game.narration_manager:
         story = await game.narration_manager.construct_story(game_state=game_state) or ""
 
+    await game._save_game_summary(winner)
+
     try:
         channel = game.bot.get_channel(getattr(config, 'STORIES_CHANNEL_ID', 0))
         if channel:
-            full_message = f"**Game Over!**\n{story}"
+            if story:
+                full_message = f"**Game Over!**\n{win_announcement}\n\n{story}"
+            else:
+                full_message = f"**Game Over!**\n{win_announcement}"
+
             if len(full_message) <= 2000:
                 await channel.send(full_message)
             else:

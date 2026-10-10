@@ -46,3 +46,27 @@ class TestUtilities(unittest.TestCase):
         
         outcome_msg = f"[OUTCOME] Success! Bot correctly recognized as higher hierarchy."
         print(outcome_msg); logger.info(outcome_msg)
+
+
+class TestChunkedMessage(unittest.IsolatedAsyncioTestCase):
+    async def test_send_chunked_message_splits_on_newline(self):
+        from utils.sendchunkedmessage import send_chunked_message
+        from unittest.mock import AsyncMock
+
+        mock_bot = MagicMock()
+        mock_channel = AsyncMock()
+
+        # Build a message with paragraphs
+        line1 = "Paragraph 1: " + ("A" * 80)
+        line2 = "Paragraph 2: " + ("B" * 80)
+        full_text = f"{line1}\n{line2}"
+
+        # Chunk size is smaller than the combined text but larger than line1
+        chunk_size = 100
+        await send_chunked_message(mock_bot, mock_channel, full_text, chunk_size=chunk_size)
+
+        # Should split across 2 channel.send calls cleanly without cutting across words
+        self.assertEqual(mock_channel.send.call_count, 2)
+        sent_chunks = [call.args[0] for call in mock_channel.send.call_args_list]
+        self.assertEqual(sent_chunks[0], line1)
+        self.assertEqual(sent_chunks[1], line2)

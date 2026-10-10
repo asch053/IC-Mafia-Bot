@@ -329,8 +329,8 @@ def _generate_static_story_part(event: dict, story_type: str = "Classic Mafia") 
         )
 
     # Event: Cop investigation (kept completely private in player DMs, no public story text)
-    if event_type == 'investigate':
-        logger.info("Generating investigate event story part.")
+    if event_type in ['investigate', 'investigate_royale']:
+        logger.info(f"Generating {event_type} event story part (private DM only).")
         return None
 
     # Event: Mafia member promoted to Godfather status upon leader death
@@ -443,17 +443,19 @@ def _generate_static_story_part(event: dict, story_type: str = "Classic Mafia") 
     if event_type == 'game_over':
         winner = event.get('winner')
         if not winner: return None
-        if winner == 'draw':
+        winner_str = str(winner).strip().lower()
+        if winner_str == 'draw':
             if story_type == "Rom Com":
-                return "\n**The game is over! Everyone ended up single and heartbroken! No one wins!**"
+                return "\n**The game is over! Everyone ended up single and heartbroken! The game has ended in a DRAW — No one wins!**"
             elif story_type == "Office Restructuring":
-                return "\n**The game is over! The entire office has been liquidated and downsized! No one wins!**"
-            return "\n**The game is over! The game has ended in a draw! No one wins!**"
+                return "\n**The game is over! The entire office has been liquidated and downsized! The game has ended in a DRAW — No one wins!**"
+            return "\n**The game is over! The game has ended in a DRAW — No one wins!**"
         else:
+            win_target = winner if str(winner).startswith("The ") else f"The {winner}"
             if story_type == "Rom Com":
-                return f"\n**The game is over! The {winner} has triumphed in love!**"
+                return f"\n**The game is over! {win_target} has triumphed in love!**"
             elif story_type == "Office Restructuring":
-                return f"\n**The game is over! The {winner} has taken complete control of the company!**"
-            return f"\n**The game is over! The {winner} has won!**"
+                return f"\n**The game is over! {win_target} has taken complete control of the company!**"
+            return f"\n**The game is over! {win_target} has WON the game!**"
 
     return None

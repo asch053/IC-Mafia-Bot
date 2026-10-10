@@ -57,7 +57,12 @@ async def handle_leaderboard(self, interaction: discord.Interaction, metric: str
         else:
             value = 0
 
-        member = interaction.guild.get_member(pid) if interaction.guild else None
+        member = None
+        if interaction.guild:
+            try:
+                member = interaction.guild.get_member(int(pid))
+            except (ValueError, TypeError):
+                member = None
         name = member.display_name if member else stats["name"]
         leaderboard_data.append({"name": name, "value": value})
 

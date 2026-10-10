@@ -158,7 +158,7 @@ async def remove_player(game, user, channel):
             if channel:
                 await channel.send("You can only leave the game during the sign-up phase.")
             logger.error(f"{user.name} tried to leave the game outside of the sign-up phase.")
-            return
+            return False
 
         if user.id in game.players:
             player_name = game.players[user.id].display_name
@@ -167,10 +167,12 @@ async def remove_player(game, user, channel):
                 await channel.send(f"**{player_name}** has left the game.")
             logger.info(f"{user.name} ({player_name}) has left the game.")
             await _get_update_roles_fn()(game.bot, game.guild, game.players)
+            return True
         else:
             if channel:
                 await channel.send("You are not currently in the game.")
             logger.warning(f"{user.name} tried to leave the game but was not a participant.")
+            return False
 
 
 def add_npc(game):

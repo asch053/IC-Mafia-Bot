@@ -550,7 +550,7 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
                         role_name = victim.role.name if victim.role else "Unknown"
                         event_lines.append(f"SECRET EVENT: An assailant ambushed **{role_name}** in the dark, but their target was unfazed. The attack had no effect!.")    
             # Investigation event (Classic and Battle Royale) - This is a secret event that gives the AI context but is not revealed to players, so we can be more descriptive to help the AI generate better stories without worrying about meta-gaming or players using the narration as a source of information about investigations.
-            elif etype == 'investigate':
+            elif etype in ['investigate', 'investigate_royale']:
                 #event_lines.append("SECRET EVENT: A lone figure was seen snooping around someone's house, trying to uncover secrets.")   
                 pass  
             # Promotion event (Classic and Battle Royale)
@@ -598,29 +598,33 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     elif is_introduction or phase_name.lower() == "preparation":
         narrative_directives += f"- Write this as the opening chapter of the story, introducing the main characters {living_players} and setting the scene for the conflict. This should be a gripping introduction that hooks the reader, providing just enough context to understand the stakes without revealing any outcomes yet. This should not include any specific events, but can reference the general situation and the relationships between characters. Do not mention players roles or specific actions, but you can use their names and hint at their personalities and motivations based on the theme."
     elif is_game_over:
-        if winner == "Draw":
+        winner_clean = str(winner).strip()
+        winner_lower = winner_clean.lower()
+        if winner_lower == "draw":
             if story_type == "Rom Com":
-                narrative_directives += "- Write this as a comedic or bittersweet conclusion where nobody found love and everyone ended up single and heartbroken. Reflect on the chaotic dates, bad breakups, and missed romantic connections."
+                narrative_directives += "- Write this as a comedic or bittersweet conclusion where nobody found love and everyone ended up single and heartbroken. Reflect on the chaotic dates, bad breakups, and missed romantic connections. CRITICAL: The conclusion narrative MUST explicitly declare that the game/match ended in a DRAW with no winners!"
             elif story_type == "Office Restructuring":
-                narrative_directives += "- Write this as a conclusion where corporate downsizing went too far and the entire office closed down. Everyone was laid off and the building is empty."
+                narrative_directives += "- Write this as a conclusion where corporate downsizing went too far and the entire office closed down. Everyone was laid off and the building is empty. CRITICAL: The conclusion narrative MUST explicitly declare that the game/conflict ended in a DRAW with no winners left standing!"
             else:
-                narrative_directives += "- Write this as a tragic conclusion to the story based on the Draw result. In a Draw, all players are dead, so the story should reflect on the senseless loss and the futility of the conflict. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
-        elif winner == "Mafia":
+                narrative_directives += "- Write this as a tragic conclusion to the story based on the Draw result. In a Draw, all players are dead, so the story should reflect on the senseless loss and the futility of the conflict. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game. CRITICAL: The conclusion narrative MUST explicitly declare that the conflict ended in a DRAW with all participants eliminated and no one left to claim victory!"
+        elif winner_lower == "mafia":
             if story_type == "Rom Com":
-                narrative_directives += f"- Write this as a conclusion where the Heartbreakers / Toxic Daters have taken over the dating scene, leaving broken hearts everywhere. Name all surviving players ({living_players}) and their fates."
+                narrative_directives += f"- Write this as a conclusion where the Heartbreakers / Toxic Daters have taken over the dating scene, leaving broken hearts everywhere. Name all surviving players ({living_players}) and their fates. CRITICAL: The conclusion narrative MUST explicitly announce that the Heartbreakers (Mafia) have WON the game!"
             elif story_type == "Office Restructuring":
-                narrative_directives += f"- Write this as a conclusion where Corporate Downsizing successfully purged the office. Name all surviving players ({living_players}) and their corporate fates."
+                narrative_directives += f"- Write this as a conclusion where Corporate Downsizing successfully purged the office. Name all surviving players ({living_players}) and their corporate fates. CRITICAL: The conclusion narrative MUST explicitly announce that Corporate Downsizing (Mafia) has WON the game!"
             else:
-                narrative_directives += f"- Write this as a tragic conclusion to the story based on the Mafia win result. Mafia win is always tragic, so the story should reflect on the darkness and corruption that has taken over, and the loss of innocent lives. Name all surviving players ({living_players}) and their fates, emphasizing the grim consequences of the Mafia's victory. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
-        elif winner == "Town":
+                narrative_directives += f"- Write this as a tragic conclusion to the story based on the Mafia win result. Mafia win is always tragic, so the story should reflect on the darkness and corruption that has taken over, and the loss of innocent lives. Name all surviving players ({living_players}) and their fates, emphasizing the grim consequences of the Mafia's victory. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game. CRITICAL: The conclusion narrative MUST explicitly announce that the MAFIA has WON the game!"
+        elif winner_lower == "town":
             if story_type == "Rom Com":
-                narrative_directives += f"- Write this as a triumphant, feel-good romantic comedy conclusion where the Hopeless Romantics defeated toxicity and found genuine love. Name all surviving players ({living_players}) and celebrate their romance."
+                narrative_directives += f"- Write this as a triumphant, feel-good romantic comedy conclusion where the Hopeless Romantics defeated toxicity and found genuine love. Name all surviving players ({living_players}) and celebrate their romance. CRITICAL: The conclusion narrative MUST explicitly announce that the Hopeless Romantics (Town) have WON the game!"
             elif story_type == "Office Restructuring":
-                narrative_directives += f"- Write this as a triumphant conclusion where the Honest Staff successfully banded together to protect their jobs and company culture. Name all surviving players ({living_players}) and their career triumphs."
+                narrative_directives += f"- Write this as a triumphant conclusion where the Honest Staff successfully banded together to protect their jobs and company culture. Name all surviving players ({living_players}) and their career triumphs. CRITICAL: The conclusion narrative MUST explicitly announce that the Honest Staff (Town) has WON the game!"
             else:
-                narrative_directives += f"- Write this as a triumphant conclusion to the story based on the Town win result. Town win is always triumphant, so the story should reflect on the heroism and resilience of the town, and the defeat of the Mafia. Name all surviving players ({living_players}) and their fates, emphasizing the positive outcomes of their efforts. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game."
-        else: # battle royale winner or unknown winner
-             narrative_directives += f"- Write this as a conclusion to the story based on the {winner} result. Focus on the fate of the winner {living_players} and the overall narrative arc, referencing key events and moments from the game."
+                narrative_directives += f"- Write this as a triumphant conclusion to the story based on the Town win result. Town win is always triumphant, so the story should reflect on the heroism and resilience of the town, and the defeat of the Mafia. Name all surviving players ({living_players}) and their fates, emphasizing the positive outcomes of their efforts. This should conclude the story and reflect on the overall narrative arc, referencing key events and moments from the game. CRITICAL: The conclusion narrative MUST explicitly announce that the TOWN has WON the game!"
+        elif winner_lower == "serial killer":
+            narrative_directives += f"- Write this as a dark and chilling conclusion where the Serial Killer has outlasted and eliminated all opposition. Name the surviving player ({living_players}). CRITICAL: The conclusion narrative MUST explicitly announce that the SERIAL KILLER has WON the game!"
+        else: # battle royale winner or individual player winner
+            narrative_directives += f"- Write this as a conclusion to the story based on the {winner} result. Focus on the fate of the winner {living_players} and the overall narrative arc, referencing key events and moments from the game. CRITICAL: The conclusion narrative MUST explicitly announce that {winner} has WON the game!"
     elif is_epilogue:
         narrative_directives += "- Write this as an epilogue chapter reflecting on the aftermath of the conflict. This should provide closure to the story, reflecting on the fates of the surviving players (if any) and the consequences of the conflict. This can be more reflective and less action-oriented, providing a sense of resolution to the narrative arc. This shold difinitely finish the story, providing a sense of closure and finality to the game."
     # After: Explicit "Fog of War" instructions

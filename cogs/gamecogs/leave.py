@@ -15,6 +15,9 @@ async def leave_game_command(self, interaction: discord.Interaction):
         return
 
     await interaction.response.defer(ephemeral=True)
-    await game.remove_player(interaction.user, interaction.channel)
-    await interaction.followup.send("You've left the game.", ephemeral=True)
+    removed = await game.remove_player(interaction.user, interaction.channel)
+    if removed:
+        await interaction.followup.send("You've left the game.", ephemeral=True)
+    else:
+        await interaction.followup.send("You are not currently in the game or sign-ups are closed.", ephemeral=True)
 
