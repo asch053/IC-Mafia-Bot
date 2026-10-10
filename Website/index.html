@@ -1021,15 +1021,20 @@
         if (!currentClassicData || !currentClassicData.leaderboard) return;
         const sb = document.getElementById('skillBody');
         if (!sb) return;
-        sb.innerHTML = '';
         const minG = currentSkillMinGames || 0;
         const filtered = currentClassicData.leaderboard
             .filter(p => (parseInt(p.games) || 0) >= minG)
             .sort((a,b) => parseFloat(b.skillScore) - parseFloat(a.skillScore) || b.games - a.games);
 
+        if (filtered.length === 0) {
+            sb.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted); font-style:italic;">No players match the minimum ${minG} games requirement.</td></tr>`;
+            return;
+        }
+
+        let html = '';
         filtered.forEach((p, i) => {
             let c = parseFloat(p.skillScore) >= 4 ? 'var(--gold)' : (parseFloat(p.skillScore) >= 2.5 ? 'var(--green)' : 'var(--muted)');
-            sb.innerHTML += `<tr>
+            html += `<tr>
                 <td style="color:#666">${i+1}</td>
                 <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a> <br><small style="color:var(--muted);">${p.games} games</small></td>
                 <td><span class="skill-total" style="color:${c}">${p.skillScore}</span></td>
@@ -1040,10 +1045,7 @@
                 </td>
             </tr>`;
         });
-
-        if (filtered.length === 0) {
-            sb.innerHTML = `<tr><td colspan="4" style="text-align:center; padding:20px; color:var(--muted); font-style:italic;">No players match the minimum ${minG} games requirement.</td></tr>`;
-        }
+        sb.innerHTML = html;
     }
 
     // Handles Classic & Battle Royale Views
@@ -1077,11 +1079,12 @@
             renderClassicChart(currentClassicEra || 'all');
             renderSkillTable();
 
-            const stb = document.getElementById('statsBody'); stb.innerHTML='';
+            const stb = document.getElementById('statsBody');
+            let statsHtml = '';
             [...data.leaderboard].sort((a,b)=>b.games-a.games).forEach((p,i)=>{
                 let n1 = (p.n1Deaths !== undefined && p.n1Deaths !== null) ? p.n1Deaths : 0;
                 let d1 = (p.d1Lynches !== undefined && p.d1Lynches !== null) ? p.d1Lynches : 0;
-                stb.innerHTML+=`<tr>
+                statsHtml += `<tr>
                     <td style="color:#666">${i+1}</td>
                     <td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td>
                     <td>${p.games}</td>
@@ -1091,6 +1094,7 @@
                     <td>${d1}</td>
                 </tr>`;
             });
+            stb.innerHTML = statsHtml;
         } else {
             document.getElementById('view-br').classList.remove('hidden');
             document.getElementById('br-total').innerText = data.totalGames;
@@ -1100,11 +1104,13 @@
                     type:'bar', data:{labels:data.chart.labels,datasets:[{label:'Wins',data:data.chart.values,backgroundColor:data.chart.labels.map(l=>l==='Draw'?'#607d8b':'#cf3838')}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',scales:{x:{grid:{color:'#333'}},y:{ticks:{color:'#e0e0e0'}}},plugins:{legend:{display:false}}}
                 });
             }
-            const bb = document.getElementById('brBody'); bb.innerHTML='';
+            const bb = document.getElementById('brBody');
+            let brHtml = '';
             data.leaderboard.forEach((p,i)=>{
                 let w=p.wins>0?`<span class="win-badge">🏆 ${p.wins}</span>`:'-';
-                bb.innerHTML+=`<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
+                brHtml += `<tr><td style="color:#666">${i+1}</td><td><a href="javascript:void(0)" onclick="openPlayerDossier(decodeURIComponent('${escStr(p.name)}'))" style="font-weight:bold;color:white;text-decoration:none;border-bottom:1px dotted #ccc;">${p.name}</a></td><td>${w}</td><td>${p.games}</td><td>${p.winRate}%</td><td>${p.survRate}%</td><td>${p.n1Deaths}</td></tr>`;
             });
+            bb.innerHTML = brHtml;
         }
     }
 
@@ -1114,7 +1120,7 @@
             if (!tb) return;
             let rank = 1;
             for (let r of tb.rows) {
-                if (r.style.display !== 'none' && r.cells.length > 0) {
+                if (r.style.display !== 'none' && r.cells.length > 0 && r.cells[0].colSpan === 1) {
                     r.cells[0].textContent = rank++;
                 }
             }
@@ -1157,9 +1163,9 @@
 
                 if (f.type === 'select') {
                     if (f.val === 'DISCORD') {
-                        if (fullText !== 'DISCORD') { show = false; break; }
+                        if (fullText !== 'DISCORD' && fullText !== 'BOT') { show = false; break; }
                     } else if (f.val === 'DISCORD_MANUAL') {
-                        if (fullText !== 'DISCORD_MANUAL') { show = false; break; }
+                        if (fullText !== 'DISCORD_MANUAL' && fullText !== 'MANUAL') { show = false; break; }
                     } else {
                         if (!fullText.includes(f.val)) { show = false; break; }
                     }
@@ -1222,10 +1228,10 @@
             let show = false;
             if (searchVal === "") {
                 show = true;
-            } else if (searchVal === "DISCORD") {
-                show = (txt === "DISCORD");
             } else if (searchVal === "DISCORD_MANUAL") {
-                show = (txt === "DISCORD_MANUAL");
+                show = (txt === "DISCORD_MANUAL" || txt === "MANUAL");
+            } else if (searchVal === "DISCORD") {
+                show = (txt === "DISCORD" || txt === "BOT");
             } else {
                 show = txt.includes(searchVal);
             }
@@ -1402,8 +1408,17 @@
         if (modal) modal.scrollTop = 0;
     }
 
-    function openStoryModal(tid, defaultTab = 'summary') {
-        const game = historyData.find(g => g.thread_id === tid);
+    async function openStoryModal(tid, defaultTab = 'summary') {
+        if (!historyData || historyData.length === 0) {
+            try {
+                historyData = await fetchPortalData('history');
+            } catch (err) {
+                console.error("Failed to load match history:", err);
+                return;
+            }
+        }
+        const cleanTid = String(tid || '').trim();
+        const game = historyData.find(g => String(g.thread_id) === cleanTid || String(g.game_id) === cleanTid);
         if (!game) return;
 
         document.getElementById('story-title').innerText = game.title;

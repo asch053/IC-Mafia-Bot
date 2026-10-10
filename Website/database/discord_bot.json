@@ -34272,5 +34272,121 @@
       }
     ],
     "start_date": "2026-09-26"
+  },
+  {
+    "thread_id": "TEST-002",
+    "era": "Discord",
+    "title": "Discord Game - TEST-002",
+    "start_date": "",
+    "moderator": "IC Mafia Bot",
+    "game_type": "classic",
+    "total_posts": 0,
+    "winning_faction": "Town",
+    "summary_file": "stories/TEST-002_summary.md",
+    "story_file": "stories/TEST-002_story.md",
+    "box_score": {
+      "winning_faction": "Town",
+      "game_type": "classic",
+      "mvp": {
+        "player": "Alpha",
+        "rationale": "Secured the victory for Town."
+      },
+      "roster": [
+        {
+          "player": "Alpha",
+          "player_id": 1,
+          "role": "Plain Townie",
+          "alignment": "Town",
+          "survived": false,
+          "is_winner": true,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched by the town"
+        },
+        {
+          "player": "Beta",
+          "player_id": 2,
+          "role": "Plain Townie",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        },
+        {
+          "player": "Delta",
+          "player_id": 4,
+          "role": "Godfather",
+          "alignment": "Mafia",
+          "survived": false,
+          "is_winner": false,
+          "death_phase": "Day 1",
+          "death_cause": "Lynched by the town"
+        },
+        {
+          "player": "Gamma",
+          "player_id": 3,
+          "role": "Plain Townie",
+          "alignment": "Town",
+          "survived": true,
+          "is_winner": true,
+          "death_phase": null,
+          "death_cause": null
+        }
+      ],
+      "timeline": [
+        {
+          "phase": "Day 1",
+          "type": "day",
+          "scene": "",
+          "events": [
+            {
+              "phase": "Day 1",
+              "event": "Lynch",
+              "target": "Alpha",
+              "role": "Plain Townie",
+              "alignment": "Town",
+              "details": "Lynched by the town"
+            },
+            {
+              "phase": "Day 1",
+              "event": "Lynch",
+              "target": "Delta",
+              "role": "Godfather",
+              "alignment": "Mafia",
+              "details": "Lynched by the town"
+            }
+          ],
+          "eliminated": [
+            {
+              "player": "Alpha",
+              "role": "Plain Townie",
+              "alignment": "Town",
+              "cause": "Lynched by the town",
+              "lynched_by": [
+                "Gamma",
+                "Delta"
+              ]
+            },
+            {
+              "player": "Delta",
+              "role": "Godfather",
+              "alignment": "Mafia",
+              "cause": "Lynched by the town",
+              "lynched_by": [
+                "Alpha",
+                "Beta"
+              ]
+            }
+          ],
+          "vote_tally": {},
+          "votes_cast": 0
+        }
+      ],
+      "notable_moments": [
+        "Game completed in 1 phases.",
+        "Winning faction: Town."
+      ]
+    },
+    "lynch_vote_history": []
   }
 ]

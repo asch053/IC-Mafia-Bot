@@ -465,6 +465,18 @@ def build_phase_by_phase_dataset():
     return headers, all_combined_rows
 
 def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE):
+    # 0. Always rebuild unified datasets and archives so master tabs capture all latest games
+    try:
+        from Website.build_unified_leaderboard import build_unified_stats, get_canonical_game_id
+        logger.info("Rebuilding unified stats, archives, and leaderboards prior to Google Sheets sync...")
+        build_unified_stats(sync_sheets=False)
+    except Exception as e:
+        logger.warning(f"Could not pre-build unified stats: {e}")
+        try:
+            from Website.build_unified_leaderboard import get_canonical_game_id
+        except Exception:
+            def get_canonical_game_id(era, tid, title=""): return str(tid)
+
     client = get_sheets_client(creds_path)
     sheet = client.open_by_key(sheet_id)
     logger.info(f"Connected to Google Spreadsheet: '{sheet.title}' (ID: {sheet_id})")
@@ -487,8 +499,9 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
             box = g.get("box_score") or {}
             mvp = box.get("mvp") or {}
             roster = box.get("roster") or []
+            gid = str(g.get("game_id") or get_canonical_game_id(g.get("era", default_era), g.get("thread_id", ""), g.get("title", "")) or g.get("thread_id", ""))
             rows.append([
-                str(g.get("thread_id", "")),
+                gid,
                 str(g.get("era", default_era)),
                 str(g.get("title", "")),
                 str(g.get("start_date", "")),
@@ -529,7 +542,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         box = g.get("box_score") or {}
         mvp = box.get("mvp") or {}
         roster = box.get("roster") or []
-        gid = str(g.get("game_id", "") or g.get("thread_id", ""))
+        gid = str(g.get("game_id") or get_canonical_game_id(g.get("era", "Unknown"), g.get("thread_id", ""), g.get("title", "")) or g.get("thread_id", ""))
         master_game_rows.append([
             gid,
             str(g.get("era", "Unknown")),
@@ -552,13 +565,19 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         "Is_Winner", "Survived", "Death_Phase", "Death_Cause"
     ]
     master_player_rows = []
-    user_map = load_json(os.path.join(WEBSITE_DATA_DIR, "master_user_map.json"), {})
+    user_map_path = os.path.join(WEBSITE_DATA_DIR, "master_user_map.json")
+    if not os.path.exists(user_map_path):
+        alt_path = os.path.join(DATA_DIR, "master_user_map.json")
+        if os.path.exists(alt_path): user_map_path = alt_path
+    user_map = load_json(user_map_path, {})
     
     try:
-        from Website.build_unified_leaderboard import resolve_player_identity, CANONICAL_NAMES
+        from Website.build_unified_leaderboard import resolve_player_identity, CANONICAL_NAMES, build_id_to_canonical
+        id_to_canonical = build_id_to_canonical(user_map)
     except ImportError:
         CANONICAL_NAMES = {"216918396539764737": "Ordos"}
-        def resolve_player_identity(name, pid, umap):
+        id_to_canonical = None
+        def resolve_player_identity(name, pid, umap, id_to_c=None):
             return str(pid or f"historic_{name.lower().replace(' ', '_')}"), name
 
     for g in history_archive:
@@ -576,7 +595,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
             if is_win is None:
                 is_win = (align.lower() == wf) if wf else False
             
-            canonical_id, canonical_name = resolve_player_identity(raw_name, p.get("player_id"), user_map)
+            canonical_id, canonical_name = resolve_player_identity(raw_name, p.get("player_id"), user_map, id_to_canonical)
             if canonical_id in CANONICAL_NAMES:
                 canonical_name = CANONICAL_NAMES[canonical_id]
                 
@@ -605,8 +624,8 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         for v in g.get("lynch_vote_history", []):
             v_name = str(v.get("voter_name", ""))
             t_name = str(v.get("target_name", ""))
-            v_id, v_cname = resolve_player_identity(v_name, v.get("voter_id"), user_map)
-            t_id, t_cname = resolve_player_identity(t_name, v.get("target_id"), user_map)
+            v_id, v_cname = resolve_player_identity(v_name, v.get("voter_id"), user_map, id_to_canonical)
+            t_id, t_cname = resolve_player_identity(t_name, v.get("target_id"), user_map, id_to_canonical)
             if v_id in CANONICAL_NAMES: v_cname = CANONICAL_NAMES[v_id]
             if t_id in CANONICAL_NAMES: t_cname = CANONICAL_NAMES[t_id]
             master_vote_rows.append([

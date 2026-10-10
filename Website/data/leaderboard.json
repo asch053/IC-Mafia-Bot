@@ -1,5 +1,269 @@
 [
     {
+        "Player Name": "Alpha",
+        "Games Played": 1,
+        "Wins": 1,
+        "Losses": 0,
+        "Games Won": 1,
+        "Survival %": 0.0,
+        "Skill Score": 2.4,
+        "p_score": 0.5,
+        "e_score": 1.7,
+        "u_score": 5.0,
+        "Vote Accuracy %": 60.0,
+        "Town Games": 1,
+        "Mafia Games": 0,
+        "Neutral/SK Games": 0,
+        "Plain Town Games": 1,
+        "Town Wins": 1,
+        "Mafia Wins": 0,
+        "Neutral/SK Wins": 0,
+        "Times Lynched": 1,
+        "D1 Lynches": 1,
+        "Total Night Deaths": 0,
+        "N1 Deaths": 0,
+        "Aliases": [
+            "Alpha"
+        ],
+        "Games": [
+            {
+                "thread_id": "TEST-002",
+                "game_id": "TEST-002",
+                "era": "Discord",
+                "title": "Discord Game - TEST-002",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 1"
+            }
+        ],
+        "era_stats": {
+            "Discord": {
+                "Player Name": "Alpha",
+                "Games Played": 1,
+                "Wins": 1,
+                "Losses": 0,
+                "Games Won": 1,
+                "Survival %": 0.0,
+                "Skill Score": 2.4,
+                "p_score": 0.5,
+                "e_score": 1.7,
+                "u_score": 5.0,
+                "Vote Accuracy %": 60.0,
+                "Town Games": 1,
+                "Mafia Games": 0,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 1,
+                "Town Wins": 1,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 1,
+                "D1 Lynches": 1,
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
+            }
+        }
+    },
+    {
+        "Player Name": "Beta",
+        "Games Played": 1,
+        "Wins": 1,
+        "Losses": 0,
+        "Games Won": 1,
+        "Survival %": 100.0,
+        "Skill Score": 4.93,
+        "p_score": 4.8,
+        "e_score": 5.0,
+        "u_score": 5.0,
+        "Vote Accuracy %": 75.0,
+        "Town Games": 1,
+        "Mafia Games": 0,
+        "Neutral/SK Games": 0,
+        "Plain Town Games": 1,
+        "Town Wins": 1,
+        "Mafia Wins": 0,
+        "Neutral/SK Wins": 0,
+        "Times Lynched": 0,
+        "D1 Lynches": 0,
+        "Total Night Deaths": 0,
+        "N1 Deaths": 0,
+        "Aliases": [
+            "Beta"
+        ],
+        "Games": [
+            {
+                "thread_id": "TEST-002",
+                "game_id": "TEST-002",
+                "era": "Discord",
+                "title": "Discord Game - TEST-002",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            }
+        ],
+        "era_stats": {
+            "Discord": {
+                "Player Name": "Beta",
+                "Games Played": 1,
+                "Wins": 1,
+                "Losses": 0,
+                "Games Won": 1,
+                "Survival %": 100.0,
+                "Skill Score": 4.93,
+                "p_score": 4.8,
+                "e_score": 5.0,
+                "u_score": 5.0,
+                "Vote Accuracy %": 75.0,
+                "Town Games": 1,
+                "Mafia Games": 0,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 1,
+                "Town Wins": 1,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 0,
+                "D1 Lynches": 0,
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
+            }
+        }
+    },
+    {
+        "Player Name": "Delta",
+        "Games Played": 1,
+        "Wins": 0,
+        "Losses": 1,
+        "Games Won": 0,
+        "Survival %": 0.0,
+        "Skill Score": 0.73,
+        "p_score": 0.5,
+        "e_score": 1.7,
+        "u_score": 0.0,
+        "Vote Accuracy %": 25.0,
+        "Town Games": 0,
+        "Mafia Games": 1,
+        "Neutral/SK Games": 0,
+        "Plain Town Games": 0,
+        "Town Wins": 0,
+        "Mafia Wins": 0,
+        "Neutral/SK Wins": 0,
+        "Times Lynched": 1,
+        "D1 Lynches": 1,
+        "Total Night Deaths": 0,
+        "N1 Deaths": 0,
+        "Aliases": [
+            "Delta"
+        ],
+        "Games": [
+            {
+                "thread_id": "TEST-002",
+                "game_id": "TEST-002",
+                "era": "Discord",
+                "title": "Discord Game - TEST-002",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 1"
+            }
+        ],
+        "era_stats": {
+            "Discord": {
+                "Player Name": "Delta",
+                "Games Played": 1,
+                "Wins": 0,
+                "Losses": 1,
+                "Games Won": 0,
+                "Survival %": 0.0,
+                "Skill Score": 0.73,
+                "p_score": 0.5,
+                "e_score": 1.7,
+                "u_score": 0.0,
+                "Vote Accuracy %": 25.0,
+                "Town Games": 0,
+                "Mafia Games": 1,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 0,
+                "Town Wins": 0,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 1,
+                "D1 Lynches": 1,
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
+            }
+        }
+    },
+    {
+        "Player Name": "Gamma",
+        "Games Played": 1,
+        "Wins": 1,
+        "Losses": 0,
+        "Games Won": 1,
+        "Survival %": 100.0,
+        "Skill Score": 4.93,
+        "p_score": 4.8,
+        "e_score": 5.0,
+        "u_score": 5.0,
+        "Vote Accuracy %": 75.0,
+        "Town Games": 1,
+        "Mafia Games": 0,
+        "Neutral/SK Games": 0,
+        "Plain Town Games": 1,
+        "Town Wins": 1,
+        "Mafia Wins": 0,
+        "Neutral/SK Wins": 0,
+        "Times Lynched": 0,
+        "D1 Lynches": 0,
+        "Total Night Deaths": 0,
+        "N1 Deaths": 0,
+        "Aliases": [
+            "Gamma"
+        ],
+        "Games": [
+            {
+                "thread_id": "TEST-002",
+                "game_id": "TEST-002",
+                "era": "Discord",
+                "title": "Discord Game - TEST-002",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            }
+        ],
+        "era_stats": {
+            "Discord": {
+                "Player Name": "Gamma",
+                "Games Played": 1,
+                "Wins": 1,
+                "Losses": 0,
+                "Games Won": 1,
+                "Survival %": 100.0,
+                "Skill Score": 4.93,
+                "p_score": 4.8,
+                "e_score": 5.0,
+                "u_score": 5.0,
+                "Vote Accuracy %": 75.0,
+                "Town Games": 1,
+                "Mafia Games": 0,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 1,
+                "Town Wins": 1,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 0,
+                "D1 Lynches": 0,
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
+            }
+        }
+    },
+    {
         "Player Name": "ZichtOpZee",
         "Games Played": 5,
         "Wins": 2,
@@ -377,7 +641,9 @@
         "Total Night Deaths": 15,
         "N1 Deaths": 2,
         "Aliases": [
-            "KT",
+            "[pw9]~kt~",
+            "Kt",
+            "pw9~kt~",
             "~kt~"
         ],
         "Games": [
@@ -1238,6 +1504,7 @@
         "Total Night Deaths": 6,
         "N1 Deaths": 1,
         "Aliases": [
+            "[ti] wendy",
             "Wendy"
         ],
         "Games": [
@@ -1823,6 +2090,7 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
+            "[rpa] arocalex",
             "Arocalex"
         ],
         "Games": [
@@ -5499,7 +5767,7 @@
         "Aliases": [
             "[risingdown]",
             "Rising Down",
-            "Risingdown"
+            "RisingDown"
         ],
         "Games": [
             {
@@ -5775,6 +6043,7 @@
         "N1 Deaths": 9,
         "Aliases": [
             "[ti]  the_unknown",
+            "[ti] the_unknown",
             "The Unknown",
             "The_Unknown",
             "TheUnknown"
@@ -12615,7 +12884,7 @@
         "Total Night Deaths": 9,
         "N1 Deaths": 3,
         "Aliases": [
-            "Thirdrock"
+            "ThirdRock"
         ],
         "Games": [
             {
@@ -12931,7 +13200,7 @@
                 "N1 Deaths": 1
             },
             "Discourse": {
-                "Player Name": "Thirdrock",
+                "Player Name": "thirdrock",
                 "Games Played": 15,
                 "Wins": 8,
                 "Losses": 7,
@@ -12955,7 +13224,7 @@
                 "N1 Deaths": 2
             },
             "Discord_Manual": {
-                "Player Name": "Thirdrock",
+                "Player Name": "thirdrock",
                 "Games Played": 5,
                 "Wins": 0,
                 "Losses": 5,
@@ -13636,6 +13905,7 @@
             "Melvin",
             "melvin85",
             "MelvinX_X",
+            "prince charming",
             "prince charming / melvin"
         ],
         "Games": [
@@ -14948,8 +15218,10 @@
         "Total Night Deaths": 32,
         "N1 Deaths": 14,
         "Aliases": [
+            "[ti] arsbury",
             "Arby",
-            "Arby3"
+            "Arby3",
+            "arsbury"
         ],
         "Games": [
             {
@@ -16065,7 +16337,7 @@
         }
     },
     {
-        "Player Name": "The Yell",
+        "Player Name": "TheYell",
         "Games Played": 1,
         "Wins": 0,
         "Losses": 1,
@@ -16089,6 +16361,7 @@
         "N1 Deaths": 0,
         "Aliases": [
             "The Yell",
+            "the_yell",
             "theyell"
         ],
         "Games": [
@@ -16106,7 +16379,7 @@
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "The Yell",
+                "Player Name": "TheYell",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -16155,7 +16428,7 @@
         "Total Night Deaths": 5,
         "N1 Deaths": 0,
         "Aliases": [
-            "Walking Corpse",
+            "Walking corpse",
             "Walking_Corpse",
             "walkingcorpse"
         ],
@@ -17692,7 +17965,7 @@
         "Total Night Deaths": 5,
         "N1 Deaths": 0,
         "Aliases": [
-            "I like Pie",
+            "I Like Pie",
             "I_Like_Pie"
         ],
         "Games": [
@@ -18083,7 +18356,7 @@
         }
     },
     {
-        "Player Name": "EvilRunt",
+        "Player Name": "evilrunt",
         "Games Played": 17,
         "Wins": 9,
         "Losses": 8,
@@ -18107,6 +18380,7 @@
         "N1 Deaths": 0,
         "Aliases": [
             "Evilrunt",
+            "sexyevilrunt",
             "{sexy}evilrunt"
         ],
         "Games": [
@@ -18300,7 +18574,7 @@
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "EvilRunt",
+                "Player Name": "evilrunt",
                 "Games Played": 16,
                 "Wins": 9,
                 "Losses": 7,
@@ -18324,7 +18598,7 @@
                 "N1 Deaths": 0
             },
             "Discourse": {
-                "Player Name": "EvilRunt",
+                "Player Name": "evilrunt",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -19370,7 +19644,7 @@
         "N1 Deaths": 3,
         "Aliases": [
             "Hydro",
-            "Hydrop"
+            "HydroP"
         ],
         "Games": [
             {
@@ -20078,31 +20352,33 @@
         }
     },
     {
-        "Player Name": "James|Sunstorm",
-        "Games Played": 2,
-        "Wins": 1,
-        "Losses": 1,
-        "Games Won": 1,
-        "Survival %": 50.0,
-        "Skill Score": 3.23,
-        "p_score": 3.4,
-        "e_score": 1.3,
-        "u_score": 5.0,
-        "Vote Accuracy %": 57.5,
-        "Town Games": 1,
+        "Player Name": "James(n00bpenguin)",
+        "Games Played": 11,
+        "Wins": 6,
+        "Losses": 5,
+        "Games Won": 6,
+        "Survival %": 36.4,
+        "Skill Score": 2.33,
+        "p_score": 2.2,
+        "e_score": 2.7,
+        "u_score": 2.1,
+        "Vote Accuracy %": 37.5,
+        "Town Games": 9,
         "Mafia Games": 1,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 1,
-        "Town Wins": 0,
+        "Neutral/SK Games": 1,
+        "Plain Town Games": 6,
+        "Town Wins": 5,
         "Mafia Wins": 1,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 0,
+        "Times Lynched": 4,
         "D1 Lynches": 0,
-        "Total Night Deaths": 1,
+        "Total Night Deaths": 3,
         "N1 Deaths": 1,
         "Aliases": [
             "james(n00bpenguin)",
-            "James|Sunstorm"
+            "James|n00bpenguin",
+            "James|Sunstorm",
+            "n00bpenguin"
         ],
         "Games": [
             {
@@ -20126,11 +20402,110 @@
                 "result": "Win",
                 "survived": true,
                 "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1006",
+                "game_id": "1006",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1006: Schnipel's Slasher",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 3"
+            },
+            {
+                "thread_id": "manual-1007",
+                "game_id": "1007",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1007: Schnipel's Mystery",
+                "role": "Town RB",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1008",
+                "game_id": "1008",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1008: Goddess's Domain",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 5"
+            },
+            {
+                "thread_id": "manual-1012",
+                "game_id": "1012",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1012: Jets' Jetstream",
+                "role": "Town RB",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1016",
+                "game_id": "1016",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1016: Nolio's Vendetta",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1017",
+                "game_id": "1017",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1017: Nolio's Shadows",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 7"
+            },
+            {
+                "thread_id": "manual-1018",
+                "game_id": "1018",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1018: Schneipel's Trap",
+                "role": "Town RB",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 6"
+            },
+            {
+                "thread_id": "manual-1021",
+                "game_id": "1021",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1021: Arby's Finale",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1022",
+                "game_id": "1022",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1022: TBO's Stand",
+                "role": "SK",
+                "alignment": "SK",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 4"
             }
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "James|Sunstorm",
+                "Player Name": "James(n00bpenguin)",
                 "Games Played": 2,
                 "Wins": 1,
                 "Losses": 1,
@@ -20152,6 +20527,30 @@
                 "D1 Lynches": 0,
                 "Total Night Deaths": 1,
                 "N1 Deaths": 1
+            },
+            "Discord_Manual": {
+                "Player Name": "James(n00bpenguin)",
+                "Games Played": 9,
+                "Wins": 5,
+                "Losses": 4,
+                "Games Won": 5,
+                "Survival %": 33.3,
+                "Skill Score": 1.83,
+                "p_score": 2.0,
+                "e_score": 3.0,
+                "u_score": 0.5,
+                "Vote Accuracy %": 37.5,
+                "Town Games": 8,
+                "Mafia Games": 0,
+                "Neutral/SK Games": 1,
+                "Plain Town Games": 5,
+                "Town Wins": 5,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 4,
+                "D1 Lynches": 0,
+                "Total Night Deaths": 2,
+                "N1 Deaths": 0
             }
         }
     },
@@ -21270,7 +21669,7 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 1,
         "Aliases": [
-            "WiWi"
+            "Wiwi"
         ],
         "Games": [
             {
@@ -22655,7 +23054,7 @@
         }
     },
     {
-        "Player Name": "Lee",
+        "Player Name": "Lee0160",
         "Games Played": 6,
         "Wins": 2,
         "Losses": 4,
@@ -22678,7 +23077,8 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
-            "Lee"
+            "Lee",
+            "lee0160"
         ],
         "Games": [
             {
@@ -22750,7 +23150,7 @@
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "Lee",
+                "Player Name": "Lee0160",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -22774,7 +23174,7 @@
                 "N1 Deaths": 0
             },
             "Discourse": {
-                "Player Name": "Lee",
+                "Player Name": "Lee0160",
                 "Games Played": 2,
                 "Wins": 1,
                 "Losses": 1,
@@ -22798,7 +23198,7 @@
                 "N1 Deaths": 0
             },
             "Discord_Manual": {
-                "Player Name": "Lee",
+                "Player Name": "Lee0160",
                 "Games Played": 3,
                 "Wins": 1,
                 "Losses": 2,
@@ -22824,7 +23224,7 @@
         }
     },
     {
-        "Player Name": "Luster",
+        "Player Name": "LuStEr",
         "Games Played": 2,
         "Wins": 1,
         "Losses": 1,
@@ -22875,7 +23275,7 @@
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "Luster",
+                "Player Name": "LuStEr",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -22899,7 +23299,7 @@
                 "N1 Deaths": 0
             },
             "Discourse": {
-                "Player Name": "Luster",
+                "Player Name": "LuStEr",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -23255,7 +23655,7 @@
         }
     },
     {
-        "Player Name": "Bud7777",
+        "Player Name": "BUD777",
         "Games Played": 1,
         "Wins": 1,
         "Losses": 0,
@@ -23296,7 +23696,7 @@
         ],
         "era_stats": {
             "Forum": {
-                "Player Name": "Bud7777",
+                "Player Name": "BUD777",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -25478,7 +25878,7 @@
         }
     },
     {
-        "Player Name": "Rizzy",
+        "Player Name": "rizzy",
         "Games Played": 7,
         "Wins": 1,
         "Losses": 6,
@@ -25584,7 +25984,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Rizzy",
+                "Player Name": "rizzy",
                 "Games Played": 7,
                 "Wins": 1,
                 "Losses": 6,
@@ -25610,7 +26010,7 @@
         }
     },
     {
-        "Player Name": "Suicidal Sushi",
+        "Player Name": "panniknloozit",
         "Games Played": 3,
         "Wins": 1,
         "Losses": 2,
@@ -25673,7 +26073,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Suicidal Sushi",
+                "Player Name": "panniknloozit",
                 "Games Played": 3,
                 "Wins": 1,
                 "Losses": 2,
@@ -25765,7 +26165,7 @@
         }
     },
     {
-        "Player Name": "Xenon",
+        "Player Name": "xenon",
         "Games Played": 5,
         "Wins": 4,
         "Losses": 1,
@@ -25849,7 +26249,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Xenon",
+                "Player Name": "xenon",
                 "Games Played": 5,
                 "Wins": 4,
                 "Losses": 1,
@@ -26046,6 +26446,7 @@
             "Morblnde",
             "morblonde",
             "mr blonde",
+            "mr_blonde",
             "Mrblonde"
         ],
         "Games": [
@@ -27028,7 +27429,7 @@
         }
     },
     {
-        "Player Name": "Darrk",
+        "Player Name": "™Darrk",
         "Games Played": 1,
         "Wins": 1,
         "Losses": 0,
@@ -27069,7 +27470,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Darrk",
+                "Player Name": "™Darrk",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -27436,7 +27837,7 @@
         }
     },
     {
-        "Player Name": "Sextans",
+        "Player Name": "SEXTANS",
         "Games Played": 8,
         "Wins": 3,
         "Losses": 5,
@@ -27459,6 +27860,7 @@
         "Total Night Deaths": 4,
         "N1 Deaths": 2,
         "Aliases": [
+            "-sextans-",
             "SEXTANS"
         ],
         "Games": [
@@ -27553,7 +27955,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Sextans",
+                "Player Name": "SEXTANS",
                 "Games Played": 3,
                 "Wins": 2,
                 "Losses": 1,
@@ -27577,7 +27979,7 @@
                 "N1 Deaths": 1
             },
             "Discord_Manual": {
-                "Player Name": "Sextans",
+                "Player Name": "SEXTANS",
                 "Games Played": 4,
                 "Wins": 1,
                 "Losses": 3,
@@ -30050,22 +30452,22 @@
         }
     },
     {
-        "Player Name": "Rand0",
-        "Games Played": 4,
-        "Wins": 2,
+        "Player Name": "RandO",
+        "Games Played": 5,
+        "Wins": 3,
         "Losses": 2,
-        "Games Won": 2,
-        "Survival %": 0.0,
-        "Skill Score": 1.6,
-        "p_score": 1.8,
-        "e_score": 2.5,
+        "Games Won": 3,
+        "Survival %": 20.0,
+        "Skill Score": 1.83,
+        "p_score": 2.4,
+        "e_score": 2.6,
         "u_score": 0.5,
         "Vote Accuracy %": 0.0,
-        "Town Games": 2,
+        "Town Games": 3,
         "Mafia Games": 1,
         "Neutral/SK Games": 1,
         "Plain Town Games": 0,
-        "Town Wins": 2,
+        "Town Wins": 3,
         "Mafia Wins": 0,
         "Neutral/SK Wins": 0,
         "Times Lynched": 3,
@@ -30073,7 +30475,9 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
-            "Rand0"
+            "Rand0",
+            "RandO",
+            "random(tpf)(kt)"
         ],
         "Games": [
             {
@@ -30110,6 +30514,17 @@
                 "death_phase": "Night 4"
             },
             {
+                "thread_id": "7107",
+                "game_id": "71",
+                "era": "Discourse",
+                "title": "Testament of the Watchers Part 2 - Mafia 71",
+                "role": "Speaker",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
                 "thread_id": "manual-1015",
                 "game_id": "1015",
                 "era": "Discord_Manual",
@@ -30123,22 +30538,22 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Rand0",
-                "Games Played": 3,
-                "Wins": 2,
+                "Player Name": "RandO",
+                "Games Played": 4,
+                "Wins": 3,
                 "Losses": 1,
-                "Games Won": 2,
-                "Survival %": 0.0,
-                "Skill Score": 1.8,
-                "p_score": 2.3,
-                "e_score": 2.0,
+                "Games Won": 3,
+                "Survival %": 25.0,
+                "Skill Score": 2.1,
+                "p_score": 3.0,
+                "e_score": 2.2,
                 "u_score": 1.1,
-                "Vote Accuracy %": 58.3,
-                "Town Games": 2,
+                "Vote Accuracy %": 62.5,
+                "Town Games": 3,
                 "Mafia Games": 1,
                 "Neutral/SK Games": 0,
                 "Plain Town Games": 0,
-                "Town Wins": 2,
+                "Town Wins": 3,
                 "Mafia Wins": 0,
                 "Neutral/SK Wins": 0,
                 "Times Lynched": 2,
@@ -30147,7 +30562,7 @@
                 "N1 Deaths": 0
             },
             "Discord_Manual": {
-                "Player Name": "Rand0",
+                "Player Name": "RandO",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -31454,73 +31869,6 @@
         }
     },
     {
-        "Player Name": "RandO",
-        "Games Played": 1,
-        "Wins": 1,
-        "Losses": 0,
-        "Games Won": 1,
-        "Survival %": 100.0,
-        "Skill Score": 4.93,
-        "p_score": 4.8,
-        "e_score": 5.0,
-        "u_score": 5.0,
-        "Vote Accuracy %": 75.0,
-        "Town Games": 1,
-        "Mafia Games": 0,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 0,
-        "Town Wins": 1,
-        "Mafia Wins": 0,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 0,
-        "D1 Lynches": 0,
-        "Total Night Deaths": 0,
-        "N1 Deaths": 0,
-        "Aliases": [
-            "RandO",
-            "random(tpf)(kt)"
-        ],
-        "Games": [
-            {
-                "thread_id": "7107",
-                "game_id": "71",
-                "era": "Discourse",
-                "title": "Testament of the Watchers Part 2 - Mafia 71",
-                "role": "Speaker",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            }
-        ],
-        "era_stats": {
-            "Discourse": {
-                "Player Name": "RandO",
-                "Games Played": 1,
-                "Wins": 1,
-                "Losses": 0,
-                "Games Won": 1,
-                "Survival %": 100.0,
-                "Skill Score": 4.93,
-                "p_score": 4.8,
-                "e_score": 5.0,
-                "u_score": 5.0,
-                "Vote Accuracy %": 75.0,
-                "Town Games": 1,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 0,
-                "Town Wins": 1,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 0,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 0,
-                "N1 Deaths": 0
-            }
-        }
-    },
-    {
         "Player Name": "Harry Vino",
         "Games Played": 1,
         "Wins": 0,
@@ -31917,7 +32265,7 @@
         }
     },
     {
-        "Player Name": "Cxris",
+        "Player Name": "! Cxris",
         "Games Played": 10,
         "Wins": 4,
         "Losses": 6,
@@ -31940,6 +32288,7 @@
         "Total Night Deaths": 2,
         "N1 Deaths": 1,
         "Aliases": [
+            "! cxris",
             "Cxris"
         ],
         "Games": [
@@ -32056,7 +32405,7 @@
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Cxris",
+                "Player Name": "! Cxris",
                 "Games Played": 4,
                 "Wins": 1,
                 "Losses": 3,
@@ -32080,7 +32429,7 @@
                 "N1 Deaths": 1
             },
             "Discord_Manual": {
-                "Player Name": "Cxris",
+                "Player Name": "! Cxris",
                 "Games Played": 6,
                 "Wins": 3,
                 "Losses": 3,
@@ -32832,30 +33181,31 @@
         }
     },
     {
-        "Player Name": "Wild Wolf",
-        "Games Played": 1,
-        "Wins": 1,
-        "Losses": 0,
-        "Games Won": 1,
+        "Player Name": "WiLd Wolf",
+        "Games Played": 7,
+        "Wins": 2,
+        "Losses": 5,
+        "Games Won": 2,
         "Survival %": 0.0,
-        "Skill Score": 3.0,
-        "p_score": 4.0,
-        "e_score": 0.0,
-        "u_score": 5.0,
-        "Vote Accuracy %": 75.0,
-        "Town Games": 1,
-        "Mafia Games": 0,
+        "Skill Score": 1.37,
+        "p_score": 2.6,
+        "e_score": 0.4,
+        "u_score": 1.1,
+        "Vote Accuracy %": 0.0,
+        "Town Games": 5,
+        "Mafia Games": 2,
         "Neutral/SK Games": 0,
-        "Plain Town Games": 1,
-        "Town Wins": 1,
+        "Plain Town Games": 5,
+        "Town Wins": 2,
         "Mafia Wins": 0,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 0,
-        "D1 Lynches": 0,
-        "Total Night Deaths": 1,
-        "N1 Deaths": 1,
+        "Times Lynched": 4,
+        "D1 Lynches": 1,
+        "Total Night Deaths": 3,
+        "N1 Deaths": 2,
         "Aliases": [
-            "Wild Wolf"
+            "Wild Wolf",
+            "WildWolf"
         ],
         "Games": [
             {
@@ -32868,11 +33218,77 @@
                 "result": "Win",
                 "survived": false,
                 "death_phase": "Night 1"
+            },
+            {
+                "thread_id": "manual-1009",
+                "game_id": "1009",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1009: sCriv's Underworld",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1010",
+                "game_id": "1010",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1010: Gamzee's Chaos",
+                "role": "Mob Cop",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 3"
+            },
+            {
+                "thread_id": "manual-1012",
+                "game_id": "1012",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1012: Jets' Jetstream",
+                "role": "Mob Special",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 4"
+            },
+            {
+                "thread_id": "manual-1013",
+                "game_id": "1013",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1013: Schniepel's Return",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1014",
+                "game_id": "1014",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1014: Puny Penguin's Arctic",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 1"
+            },
+            {
+                "thread_id": "manual-1015",
+                "game_id": "1015",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1015: Nolio's Court",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 1"
             }
         ],
         "era_stats": {
             "Discourse": {
-                "Player Name": "Wild Wolf",
+                "Player Name": "WiLd Wolf",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -32893,6 +33309,30 @@
                 "Times Lynched": 0,
                 "D1 Lynches": 0,
                 "Total Night Deaths": 1,
+                "N1 Deaths": 1
+            },
+            "Discord_Manual": {
+                "Player Name": "WiLd Wolf",
+                "Games Played": 6,
+                "Wins": 1,
+                "Losses": 5,
+                "Games Won": 1,
+                "Survival %": 0.0,
+                "Skill Score": 1.33,
+                "p_score": 2.4,
+                "e_score": 0.5,
+                "u_score": 1.1,
+                "Vote Accuracy %": 0.0,
+                "Town Games": 4,
+                "Mafia Games": 2,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 4,
+                "Town Wins": 1,
+                "Mafia Wins": 0,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 4,
+                "D1 Lynches": 1,
+                "Total Night Deaths": 2,
                 "N1 Deaths": 1
             }
         }
@@ -35200,29 +35640,30 @@
     },
     {
         "Player Name": "Aries",
-        "Games Played": 3,
-        "Wins": 2,
-        "Losses": 1,
-        "Games Won": 2,
-        "Survival %": 33.3,
-        "Skill Score": 2.67,
-        "p_score": 2.0,
-        "e_score": 3.8,
-        "u_score": 2.2,
+        "Games Played": 6,
+        "Wins": 3,
+        "Losses": 3,
+        "Games Won": 3,
+        "Survival %": 16.7,
+        "Skill Score": 2.13,
+        "p_score": 2.5,
+        "e_score": 1.8,
+        "u_score": 2.1,
         "Vote Accuracy %": 25.0,
-        "Town Games": 1,
-        "Mafia Games": 1,
+        "Town Games": 3,
+        "Mafia Games": 2,
         "Neutral/SK Games": 1,
-        "Plain Town Games": 0,
-        "Town Wins": 1,
+        "Plain Town Games": 2,
+        "Town Wins": 2,
         "Mafia Wins": 1,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 1,
-        "D1 Lynches": 0,
+        "Times Lynched": 4,
+        "D1 Lynches": 1,
         "Total Night Deaths": 1,
         "N1 Deaths": 1,
         "Aliases": [
-            "Aries"
+            "Aries",
+            "Aries1986"
         ],
         "Games": [
             {
@@ -35257,60 +35698,120 @@
                 "result": "Loss",
                 "survived": false,
                 "death_phase": "Day 5"
+            },
+            {
+                "thread_id": "20251007-220000",
+                "game_id": "Classic #08",
+                "era": "Discord",
+                "title": "Classic #08: Council Stalemate",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1024",
+                "game_id": "1024",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1024: Genesis's Reckoning",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 3"
+            },
+            {
+                "thread_id": "manual-1025",
+                "game_id": "1025",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1025: Gwynedd's Revival",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 1"
             }
         ],
         "era_stats": {
             "Discord_Manual": {
                 "Player Name": "Aries",
-                "Games Played": 3,
-                "Wins": 2,
-                "Losses": 1,
-                "Games Won": 2,
-                "Survival %": 33.3,
-                "Skill Score": 2.67,
-                "p_score": 2.0,
-                "e_score": 3.8,
-                "u_score": 2.2,
-                "Vote Accuracy %": 25.0,
-                "Town Games": 1,
+                "Games Played": 5,
+                "Wins": 3,
+                "Losses": 2,
+                "Games Won": 3,
+                "Survival %": 20.0,
+                "Skill Score": 2.5,
+                "p_score": 3.0,
+                "e_score": 2.4,
+                "u_score": 2.1,
+                "Vote Accuracy %": 20.0,
+                "Town Games": 3,
                 "Mafia Games": 1,
                 "Neutral/SK Games": 1,
-                "Plain Town Games": 0,
-                "Town Wins": 1,
+                "Plain Town Games": 2,
+                "Town Wins": 2,
                 "Mafia Wins": 1,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 3,
+                "D1 Lynches": 1,
+                "Total Night Deaths": 1,
+                "N1 Deaths": 1
+            },
+            "Discord": {
+                "Player Name": "Aries",
+                "Games Played": 1,
+                "Wins": 0,
+                "Losses": 1,
+                "Games Won": 0,
+                "Survival %": 0.0,
+                "Skill Score": 0.1,
+                "p_score": 0.0,
+                "e_score": 0.3,
+                "u_score": 0.0,
+                "Vote Accuracy %": 50.0,
+                "Town Games": 0,
+                "Mafia Games": 1,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 0,
+                "Town Wins": 0,
+                "Mafia Wins": 0,
                 "Neutral/SK Wins": 0,
                 "Times Lynched": 1,
                 "D1 Lynches": 0,
-                "Total Night Deaths": 1,
-                "N1 Deaths": 1
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
             }
         }
     },
     {
         "Player Name": "AzrielUlysses",
-        "Games Played": 1,
-        "Wins": 1,
-        "Losses": 0,
-        "Games Won": 1,
-        "Survival %": 0.0,
-        "Skill Score": 3.07,
-        "p_score": 4.0,
-        "e_score": 0.2,
-        "u_score": 5.0,
-        "Vote Accuracy %": 60.0,
-        "Town Games": 1,
-        "Mafia Games": 0,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 1,
-        "Town Wins": 1,
-        "Mafia Wins": 0,
+        "Games Played": 18,
+        "Wins": 8,
+        "Losses": 10,
+        "Games Won": 8,
+        "Survival %": 16.7,
+        "Skill Score": 1.67,
+        "p_score": 2.2,
+        "e_score": 1.6,
+        "u_score": 1.2,
+        "Vote Accuracy %": 34.4,
+        "Town Games": 15,
+        "Mafia Games": 2,
+        "Neutral/SK Games": 1,
+        "Plain Town Games": 12,
+        "Town Wins": 7,
+        "Mafia Wins": 1,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 1,
-        "D1 Lynches": 1,
-        "Total Night Deaths": 0,
-        "N1 Deaths": 0,
+        "Times Lynched": 10,
+        "D1 Lynches": 3,
+        "Total Night Deaths": 6,
+        "N1 Deaths": 1,
         "Aliases": [
-            "AzrielUlysses"
+            "AzrielUlysses",
+            "Emperor Ulysses",
+            "emperor_ulysses",
+            "ulysses"
         ],
         "Games": [
             {
@@ -35323,32 +35824,219 @@
                 "result": "Win",
                 "survived": false,
                 "death_phase": "Day 1"
+            },
+            {
+                "thread_id": "manual-1005",
+                "game_id": "1005",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1005: TBO's Reckoning",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Night 7"
+            },
+            {
+                "thread_id": "manual-1006",
+                "game_id": "1006",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1006: Schnipel's Slasher",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 5"
+            },
+            {
+                "thread_id": "manual-1007",
+                "game_id": "1007",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1007: Schnipel's Mystery",
+                "role": "Town Backup Cop",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1008",
+                "game_id": "1008",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1008: Goddess's Domain",
+                "role": "Mob RB",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 4"
+            },
+            {
+                "thread_id": "manual-1009",
+                "game_id": "1009",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1009: sCriv's Underworld",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 1"
+            },
+            {
+                "thread_id": "manual-1010",
+                "game_id": "1010",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1010: Gamzee's Chaos",
+                "role": "Plain Mob",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 2"
+            },
+            {
+                "thread_id": "manual-1011",
+                "game_id": "1011",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1011: Arby's Gambit",
+                "role": "Red Devels RB",
+                "alignment": "",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1012",
+                "game_id": "1012",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1012: Jets' Jetstream",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1014",
+                "game_id": "1014",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1014: Puny Penguin's Arctic",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1015",
+                "game_id": "1015",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1015: Nolio's Court",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 3"
+            },
+            {
+                "thread_id": "manual-1016",
+                "game_id": "1016",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1016: Nolio's Vendetta",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1017",
+                "game_id": "1017",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1017: Nolio's Shadows",
+                "role": "Town Backup Cop",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 5"
+            },
+            {
+                "thread_id": "manual-1018",
+                "game_id": "1018",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1018: Schneipel's Trap",
+                "role": "Town Special",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 5"
+            },
+            {
+                "thread_id": "manual-1019",
+                "game_id": "1019",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1019: Genesis's Creation",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 1"
+            },
+            {
+                "thread_id": "manual-1020",
+                "game_id": "1020",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1020: Goddess's Wrath",
+                "role": "Plain Mob",
+                "alignment": "Mafia",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 3"
+            },
+            {
+                "thread_id": "manual-1021",
+                "game_id": "1021",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1021: Arby's Finale",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1022",
+                "game_id": "1022",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1022: TBO's Stand",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 1"
             }
         ],
         "era_stats": {
             "Discord_Manual": {
                 "Player Name": "AzrielUlysses",
-                "Games Played": 1,
-                "Wins": 1,
-                "Losses": 0,
-                "Games Won": 1,
-                "Survival %": 0.0,
-                "Skill Score": 3.07,
-                "p_score": 4.0,
-                "e_score": 0.2,
-                "u_score": 5.0,
-                "Vote Accuracy %": 60.0,
-                "Town Games": 1,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 1,
-                "Town Wins": 1,
-                "Mafia Wins": 0,
+                "Games Played": 18,
+                "Wins": 8,
+                "Losses": 10,
+                "Games Won": 8,
+                "Survival %": 16.7,
+                "Skill Score": 1.67,
+                "p_score": 2.2,
+                "e_score": 1.6,
+                "u_score": 1.2,
+                "Vote Accuracy %": 34.4,
+                "Town Games": 15,
+                "Mafia Games": 2,
+                "Neutral/SK Games": 1,
+                "Plain Town Games": 12,
+                "Town Wins": 7,
+                "Mafia Wins": 1,
                 "Neutral/SK Wins": 0,
-                "Times Lynched": 1,
-                "D1 Lynches": 1,
-                "Total Night Deaths": 0,
-                "N1 Deaths": 0
+                "Times Lynched": 10,
+                "D1 Lynches": 3,
+                "Total Night Deaths": 6,
+                "N1 Deaths": 1
             }
         }
     },
@@ -36299,7 +36987,7 @@
         }
     },
     {
-        "Player Name": "PunyPenguin",
+        "Player Name": "~APunyPenguin~",
         "Games Played": 15,
         "Wins": 5,
         "Losses": 10,
@@ -36322,7 +37010,10 @@
         "Total Night Deaths": 0,
         "N1 Deaths": 0,
         "Aliases": [
-            "PunyPenguin"
+            "apunypenguin",
+            "puny penguin",
+            "PunyPenguin",
+            "~apunypenguin~"
         ],
         "Games": [
             {
@@ -36493,7 +37184,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "PunyPenguin",
+                "Player Name": "~APunyPenguin~",
                 "Games Played": 15,
                 "Wins": 5,
                 "Losses": 10,
@@ -36519,7 +37210,7 @@
         }
     },
     {
-        "Player Name": "Alex b",
+        "Player Name": "Alex",
         "Games Played": 18,
         "Wins": 5,
         "Losses": 13,
@@ -36542,7 +37233,9 @@
         "Total Night Deaths": 5,
         "N1 Deaths": 1,
         "Aliases": [
-            "Alex b"
+            "alex",
+            "Alex b",
+            "alex_b"
         ],
         "Games": [
             {
@@ -36746,7 +37439,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Alex b",
+                "Player Name": "Alex",
                 "Games Played": 18,
                 "Wins": 5,
                 "Losses": 13,
@@ -36871,30 +37564,31 @@
         }
     },
     {
-        "Player Name": "Dragon",
-        "Games Played": 2,
-        "Wins": 1,
+        "Player Name": "Dragon383",
+        "Games Played": 3,
+        "Wins": 2,
         "Losses": 1,
-        "Games Won": 1,
-        "Survival %": 50.0,
-        "Skill Score": 1.8,
-        "p_score": 3.2,
-        "e_score": 1.1,
+        "Games Won": 2,
+        "Survival %": 33.3,
+        "Skill Score": 2.03,
+        "p_score": 3.5,
+        "e_score": 1.5,
         "u_score": 1.1,
-        "Vote Accuracy %": 0.0,
-        "Town Games": 1,
+        "Vote Accuracy %": 16.7,
+        "Town Games": 2,
         "Mafia Games": 1,
         "Neutral/SK Games": 0,
-        "Plain Town Games": 1,
-        "Town Wins": 1,
+        "Plain Town Games": 2,
+        "Town Wins": 2,
         "Mafia Wins": 0,
         "Neutral/SK Wins": 0,
         "Times Lynched": 1,
         "D1 Lynches": 0,
-        "Total Night Deaths": 0,
+        "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
-            "Dragon"
+            "Dragon",
+            "Dragon383"
         ],
         "Games": [
             {
@@ -36918,279 +37612,48 @@
                 "result": "Win",
                 "survived": true,
                 "death_phase": "Survived"
+            },
+            {
+                "thread_id": "manual-1023",
+                "game_id": "1023",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1023: Goddess's Triumph",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Night 4"
             }
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Dragon",
-                "Games Played": 2,
-                "Wins": 1,
+                "Player Name": "Dragon383",
+                "Games Played": 3,
+                "Wins": 2,
                 "Losses": 1,
-                "Games Won": 1,
-                "Survival %": 50.0,
-                "Skill Score": 1.8,
-                "p_score": 3.2,
-                "e_score": 1.1,
+                "Games Won": 2,
+                "Survival %": 33.3,
+                "Skill Score": 2.03,
+                "p_score": 3.5,
+                "e_score": 1.5,
                 "u_score": 1.1,
-                "Vote Accuracy %": 0.0,
-                "Town Games": 1,
+                "Vote Accuracy %": 16.7,
+                "Town Games": 2,
                 "Mafia Games": 1,
                 "Neutral/SK Games": 0,
-                "Plain Town Games": 1,
-                "Town Wins": 1,
+                "Plain Town Games": 2,
+                "Town Wins": 2,
                 "Mafia Wins": 0,
                 "Neutral/SK Wins": 0,
                 "Times Lynched": 1,
                 "D1 Lynches": 0,
-                "Total Night Deaths": 0,
+                "Total Night Deaths": 1,
                 "N1 Deaths": 0
             }
         }
     },
     {
-        "Player Name": "Emperor Ulysses",
-        "Games Played": 17,
-        "Wins": 7,
-        "Losses": 10,
-        "Games Won": 7,
-        "Survival %": 17.6,
-        "Skill Score": 1.57,
-        "p_score": 2.0,
-        "e_score": 1.6,
-        "u_score": 1.1,
-        "Vote Accuracy %": 34.4,
-        "Town Games": 14,
-        "Mafia Games": 2,
-        "Neutral/SK Games": 1,
-        "Plain Town Games": 11,
-        "Town Wins": 6,
-        "Mafia Wins": 1,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 9,
-        "D1 Lynches": 2,
-        "Total Night Deaths": 6,
-        "N1 Deaths": 1,
-        "Aliases": [
-            "Emperor Ulysses"
-        ],
-        "Games": [
-            {
-                "thread_id": "manual-1005",
-                "game_id": "1005",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1005: TBO's Reckoning",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Night 7"
-            },
-            {
-                "thread_id": "manual-1006",
-                "game_id": "1006",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1006: Schnipel's Slasher",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 5"
-            },
-            {
-                "thread_id": "manual-1007",
-                "game_id": "1007",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1007: Schnipel's Mystery",
-                "role": "Town Backup Cop",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1008",
-                "game_id": "1008",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1008: Goddess's Domain",
-                "role": "Mob RB",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 4"
-            },
-            {
-                "thread_id": "manual-1009",
-                "game_id": "1009",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1009: sCriv's Underworld",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 1"
-            },
-            {
-                "thread_id": "manual-1010",
-                "game_id": "1010",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1010: Gamzee's Chaos",
-                "role": "Plain Mob",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 2"
-            },
-            {
-                "thread_id": "manual-1011",
-                "game_id": "1011",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1011: Arby's Gambit",
-                "role": "Red Devels RB",
-                "alignment": "",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1012",
-                "game_id": "1012",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1012: Jets' Jetstream",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1014",
-                "game_id": "1014",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1014: Puny Penguin's Arctic",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1015",
-                "game_id": "1015",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1015: Nolio's Court",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 3"
-            },
-            {
-                "thread_id": "manual-1016",
-                "game_id": "1016",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1016: Nolio's Vendetta",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1017",
-                "game_id": "1017",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1017: Nolio's Shadows",
-                "role": "Town Backup Cop",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 5"
-            },
-            {
-                "thread_id": "manual-1018",
-                "game_id": "1018",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1018: Schneipel's Trap",
-                "role": "Town Special",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 5"
-            },
-            {
-                "thread_id": "manual-1019",
-                "game_id": "1019",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1019: Genesis's Creation",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 1"
-            },
-            {
-                "thread_id": "manual-1020",
-                "game_id": "1020",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1020: Goddess's Wrath",
-                "role": "Plain Mob",
-                "alignment": "Mafia",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 3"
-            },
-            {
-                "thread_id": "manual-1021",
-                "game_id": "1021",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1021: Arby's Finale",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1022",
-                "game_id": "1022",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1022: TBO's Stand",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 1"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "Emperor Ulysses",
-                "Games Played": 17,
-                "Wins": 7,
-                "Losses": 10,
-                "Games Won": 7,
-                "Survival %": 17.6,
-                "Skill Score": 1.57,
-                "p_score": 2.0,
-                "e_score": 1.6,
-                "u_score": 1.1,
-                "Vote Accuracy %": 34.4,
-                "Town Games": 14,
-                "Mafia Games": 2,
-                "Neutral/SK Games": 1,
-                "Plain Town Games": 11,
-                "Town Wins": 6,
-                "Mafia Wins": 1,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 9,
-                "D1 Lynches": 2,
-                "Total Night Deaths": 6,
-                "N1 Deaths": 1
-            }
-        }
-    },
-    {
-        "Player Name": "Ultimate Bob 2.0",
+        "Player Name": "Ultimate Bob",
         "Games Played": 1,
         "Wins": 1,
         "Losses": 0,
@@ -37213,6 +37676,8 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
+            "ultimate bob",
+            "ultimate bob 2",
             "Ultimate Bob 2.0"
         ],
         "Games": [
@@ -37230,7 +37695,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Ultimate Bob 2.0",
+                "Player Name": "Ultimate Bob",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -37251,160 +37716,6 @@
                 "Times Lynched": 0,
                 "D1 Lynches": 0,
                 "Total Night Deaths": 1,
-                "N1 Deaths": 0
-            }
-        }
-    },
-    {
-        "Player Name": "James|n00bpenguin",
-        "Games Played": 9,
-        "Wins": 5,
-        "Losses": 4,
-        "Games Won": 5,
-        "Survival %": 33.3,
-        "Skill Score": 1.83,
-        "p_score": 2.0,
-        "e_score": 3.0,
-        "u_score": 0.5,
-        "Vote Accuracy %": 37.5,
-        "Town Games": 8,
-        "Mafia Games": 0,
-        "Neutral/SK Games": 1,
-        "Plain Town Games": 5,
-        "Town Wins": 5,
-        "Mafia Wins": 0,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 4,
-        "D1 Lynches": 0,
-        "Total Night Deaths": 2,
-        "N1 Deaths": 0,
-        "Aliases": [
-            "James|n00bpenguin"
-        ],
-        "Games": [
-            {
-                "thread_id": "manual-1006",
-                "game_id": "1006",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1006: Schnipel's Slasher",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 3"
-            },
-            {
-                "thread_id": "manual-1007",
-                "game_id": "1007",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1007: Schnipel's Mystery",
-                "role": "Town RB",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1008",
-                "game_id": "1008",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1008: Goddess's Domain",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 5"
-            },
-            {
-                "thread_id": "manual-1012",
-                "game_id": "1012",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1012: Jets' Jetstream",
-                "role": "Town RB",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1016",
-                "game_id": "1016",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1016: Nolio's Vendetta",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1017",
-                "game_id": "1017",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1017: Nolio's Shadows",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 7"
-            },
-            {
-                "thread_id": "manual-1018",
-                "game_id": "1018",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1018: Schneipel's Trap",
-                "role": "Town RB",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 6"
-            },
-            {
-                "thread_id": "manual-1021",
-                "game_id": "1021",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1021: Arby's Finale",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "manual-1022",
-                "game_id": "1022",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1022: TBO's Stand",
-                "role": "SK",
-                "alignment": "SK",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 4"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "James|n00bpenguin",
-                "Games Played": 9,
-                "Wins": 5,
-                "Losses": 4,
-                "Games Won": 5,
-                "Survival %": 33.3,
-                "Skill Score": 1.83,
-                "p_score": 2.0,
-                "e_score": 3.0,
-                "u_score": 0.5,
-                "Vote Accuracy %": 37.5,
-                "Town Games": 8,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 1,
-                "Plain Town Games": 5,
-                "Town Wins": 5,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 4,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 2,
                 "N1 Deaths": 0
             }
         }
@@ -37531,7 +37842,7 @@
         }
     },
     {
-        "Player Name": "Herb",
+        "Player Name": "Herb🍁",
         "Games Played": 5,
         "Wins": 1,
         "Losses": 4,
@@ -37554,7 +37865,8 @@
         "Total Night Deaths": 1,
         "N1 Deaths": 0,
         "Aliases": [
-            "Herb"
+            "Herb",
+            "herb🍁"
         ],
         "Games": [
             {
@@ -37615,7 +37927,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Herb",
+                "Player Name": "Herb🍁",
                 "Games Played": 5,
                 "Wins": 1,
                 "Losses": 4,
@@ -37894,128 +38206,7 @@
         }
     },
     {
-        "Player Name": "WildWolf",
-        "Games Played": 6,
-        "Wins": 1,
-        "Losses": 5,
-        "Games Won": 1,
-        "Survival %": 0.0,
-        "Skill Score": 1.33,
-        "p_score": 2.4,
-        "e_score": 0.5,
-        "u_score": 1.1,
-        "Vote Accuracy %": 0.0,
-        "Town Games": 4,
-        "Mafia Games": 2,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 4,
-        "Town Wins": 1,
-        "Mafia Wins": 0,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 4,
-        "D1 Lynches": 1,
-        "Total Night Deaths": 2,
-        "N1 Deaths": 1,
-        "Aliases": [
-            "WildWolf"
-        ],
-        "Games": [
-            {
-                "thread_id": "manual-1009",
-                "game_id": "1009",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1009: sCriv's Underworld",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1010",
-                "game_id": "1010",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1010: Gamzee's Chaos",
-                "role": "Mob Cop",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 3"
-            },
-            {
-                "thread_id": "manual-1012",
-                "game_id": "1012",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1012: Jets' Jetstream",
-                "role": "Mob Special",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 4"
-            },
-            {
-                "thread_id": "manual-1013",
-                "game_id": "1013",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1013: Schniepel's Return",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1014",
-                "game_id": "1014",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1014: Puny Penguin's Arctic",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 1"
-            },
-            {
-                "thread_id": "manual-1015",
-                "game_id": "1015",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1015: Nolio's Court",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 1"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "WildWolf",
-                "Games Played": 6,
-                "Wins": 1,
-                "Losses": 5,
-                "Games Won": 1,
-                "Survival %": 0.0,
-                "Skill Score": 1.33,
-                "p_score": 2.4,
-                "e_score": 0.5,
-                "u_score": 1.1,
-                "Vote Accuracy %": 0.0,
-                "Town Games": 4,
-                "Mafia Games": 2,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 4,
-                "Town Wins": 1,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 4,
-                "D1 Lynches": 1,
-                "Total Night Deaths": 2,
-                "N1 Deaths": 1
-            }
-        }
-    },
-    {
-        "Player Name": "Lil Brat",
+        "Player Name": "lil brat",
         "Games Played": 1,
         "Wins": 0,
         "Losses": 1,
@@ -38055,7 +38246,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Lil Brat",
+                "Player Name": "lil brat",
                 "Games Played": 1,
                 "Wins": 0,
                 "Losses": 1,
@@ -38191,7 +38382,7 @@
         }
     },
     {
-        "Player Name": "Ass Muncher",
+        "Player Name": "ASS MUNCHER",
         "Games Played": 2,
         "Wins": 1,
         "Losses": 1,
@@ -38242,7 +38433,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Ass Muncher",
+                "Player Name": "ASS MUNCHER",
                 "Games Played": 2,
                 "Wins": 1,
                 "Losses": 1,
@@ -38499,7 +38690,7 @@
         }
     },
     {
-        "Player Name": "Slifty",
+        "Player Name": "slifty",
         "Games Played": 5,
         "Wins": 2,
         "Losses": 3,
@@ -38583,7 +38774,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Slifty",
+                "Player Name": "slifty",
                 "Games Played": 5,
                 "Wins": 2,
                 "Losses": 3,
@@ -38609,7 +38800,7 @@
         }
     },
     {
-        "Player Name": "Bar.at",
+        "Player Name": "Bar.@",
         "Games Played": 1,
         "Wins": 1,
         "Losses": 0,
@@ -38632,7 +38823,9 @@
         "Total Night Deaths": 0,
         "N1 Deaths": 0,
         "Aliases": [
-            "Bar.at"
+            "bar.@",
+            "Bar.at",
+            "barat"
         ],
         "Games": [
             {
@@ -38649,7 +38842,7 @@
         ],
         "era_stats": {
             "Discord_Manual": {
-                "Player Name": "Bar.at",
+                "Player Name": "Bar.@",
                 "Games Played": 1,
                 "Wins": 1,
                 "Losses": 0,
@@ -39157,72 +39350,6 @@
                 "D1 Lynches": 2,
                 "Total Night Deaths": 15,
                 "N1 Deaths": 3
-            }
-        }
-    },
-    {
-        "Player Name": "Dragon383",
-        "Games Played": 1,
-        "Wins": 1,
-        "Losses": 0,
-        "Games Won": 1,
-        "Survival %": 0.0,
-        "Skill Score": 4.03,
-        "p_score": 4.2,
-        "e_score": 2.9,
-        "u_score": 5.0,
-        "Vote Accuracy %": 33.3,
-        "Town Games": 1,
-        "Mafia Games": 0,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 1,
-        "Town Wins": 1,
-        "Mafia Wins": 0,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 0,
-        "D1 Lynches": 0,
-        "Total Night Deaths": 1,
-        "N1 Deaths": 0,
-        "Aliases": [
-            "Dragon383"
-        ],
-        "Games": [
-            {
-                "thread_id": "manual-1023",
-                "game_id": "1023",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1023: Goddess's Triumph",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Night 4"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "Dragon383",
-                "Games Played": 1,
-                "Wins": 1,
-                "Losses": 0,
-                "Games Won": 1,
-                "Survival %": 0.0,
-                "Skill Score": 4.03,
-                "p_score": 4.2,
-                "e_score": 2.9,
-                "u_score": 5.0,
-                "Vote Accuracy %": 33.3,
-                "Town Games": 1,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 1,
-                "Town Wins": 1,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 0,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 1,
-                "N1 Deaths": 0
             }
         }
     },
@@ -39747,29 +39874,30 @@
     },
     {
         "Player Name": "period_vampyr",
-        "Games Played": 12,
-        "Wins": 6,
-        "Losses": 6,
-        "Games Won": 6,
-        "Survival %": 16.7,
-        "Skill Score": 2.07,
-        "p_score": 2.0,
-        "e_score": 2.2,
+        "Games Played": 15,
+        "Wins": 8,
+        "Losses": 7,
+        "Games Won": 8,
+        "Survival %": 20.0,
+        "Skill Score": 2.1,
+        "p_score": 1.9,
+        "e_score": 2.4,
         "u_score": 2.0,
-        "Vote Accuracy %": 11.1,
-        "Town Games": 8,
-        "Mafia Games": 2,
+        "Vote Accuracy %": 8.1,
+        "Town Games": 10,
+        "Mafia Games": 3,
         "Neutral/SK Games": 2,
-        "Plain Town Games": 6,
-        "Town Wins": 4,
-        "Mafia Wins": 2,
+        "Plain Town Games": 8,
+        "Town Wins": 5,
+        "Mafia Wins": 3,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 7,
+        "Times Lynched": 9,
         "D1 Lynches": 1,
         "Total Night Deaths": 3,
         "N1 Deaths": 1,
         "Aliases": [
-            "period_vampyr"
+            "period_vampyr",
+            "Vamp"
         ],
         "Games": [
             {
@@ -39903,29 +40031,86 @@
                 "result": "Loss",
                 "survived": false,
                 "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1026",
+                "game_id": "1026",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1026: Genesis's End",
+                "role": "Plain Town",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "manual-1027",
+                "game_id": "1027",
+                "era": "Discord_Manual",
+                "title": "Discord Mafia 1027: Hydro's Last Call",
+                "role": "Mob Power",
+                "alignment": "Mafia",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "20260926-220000",
+                "game_id": "Classic #35",
+                "era": "Discord",
+                "title": "Classic #35: Autumn Doctor Heist",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 3"
             }
         ],
         "era_stats": {
+            "Discord_Manual": {
+                "Player Name": "period_vampyr",
+                "Games Played": 2,
+                "Wins": 2,
+                "Losses": 0,
+                "Games Won": 2,
+                "Survival %": 50.0,
+                "Skill Score": 3.0,
+                "p_score": 1.0,
+                "e_score": 3.0,
+                "u_score": 5.0,
+                "Vote Accuracy %": 0.0,
+                "Town Games": 1,
+                "Mafia Games": 1,
+                "Neutral/SK Games": 0,
+                "Plain Town Games": 1,
+                "Town Wins": 1,
+                "Mafia Wins": 1,
+                "Neutral/SK Wins": 0,
+                "Times Lynched": 1,
+                "D1 Lynches": 0,
+                "Total Night Deaths": 0,
+                "N1 Deaths": 0
+            },
             "Discord": {
                 "Player Name": "period_vampyr",
-                "Games Played": 12,
+                "Games Played": 13,
                 "Wins": 6,
-                "Losses": 6,
+                "Losses": 7,
                 "Games Won": 6,
-                "Survival %": 16.7,
-                "Skill Score": 2.07,
+                "Survival %": 15.4,
+                "Skill Score": 2.1,
                 "p_score": 2.0,
-                "e_score": 2.2,
+                "e_score": 2.3,
                 "u_score": 2.0,
-                "Vote Accuracy %": 11.1,
-                "Town Games": 8,
+                "Vote Accuracy %": 10.0,
+                "Town Games": 9,
                 "Mafia Games": 2,
                 "Neutral/SK Games": 2,
-                "Plain Town Games": 6,
+                "Plain Town Games": 7,
                 "Town Wins": 4,
                 "Mafia Wins": 2,
                 "Neutral/SK Wins": 0,
-                "Times Lynched": 7,
+                "Times Lynched": 8,
                 "D1 Lynches": 1,
                 "Total Night Deaths": 3,
                 "N1 Deaths": 1
@@ -39934,29 +40119,32 @@
     },
     {
         "Player Name": "Alavsiel",
-        "Games Played": 8,
-        "Wins": 4,
-        "Losses": 4,
-        "Games Won": 4,
-        "Survival %": 25.0,
-        "Skill Score": 2.23,
-        "p_score": 2.1,
+        "Games Played": 19,
+        "Wins": 6,
+        "Losses": 13,
+        "Games Won": 6,
+        "Survival %": 15.8,
+        "Skill Score": 2.07,
+        "p_score": 2.2,
         "e_score": 2.0,
-        "u_score": 2.6,
-        "Vote Accuracy %": 22.7,
-        "Town Games": 5,
-        "Mafia Games": 3,
+        "u_score": 2.0,
+        "Vote Accuracy %": 16.7,
+        "Town Games": 13,
+        "Mafia Games": 6,
         "Neutral/SK Games": 0,
-        "Plain Town Games": 5,
-        "Town Wins": 3,
-        "Mafia Wins": 1,
+        "Plain Town Games": 10,
+        "Town Wins": 4,
+        "Mafia Wins": 2,
         "Neutral/SK Wins": 0,
-        "Times Lynched": 3,
-        "D1 Lynches": 1,
-        "Total Night Deaths": 3,
-        "N1 Deaths": 1,
+        "Times Lynched": 9,
+        "D1 Lynches": 2,
+        "Total Night Deaths": 7,
+        "N1 Deaths": 2,
         "Aliases": [
-            "Alavsiel"
+            "Alavsiel",
+            "polar express",
+            "polar_express",
+            "PolarExpress"
         ],
         "Games": [
             {
@@ -40046,6 +40234,127 @@
                 "result": "Win",
                 "survived": false,
                 "death_phase": "Day 3"
+            },
+            {
+                "thread_id": "20251218-220000",
+                "game_id": "Classic #14",
+                "era": "Discord",
+                "title": "Classic #14: Winter Solstice Purge",
+                "role": "Godfather",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "20251224-220000",
+                "game_id": "Classic #15",
+                "era": "Discord",
+                "title": "Classic #15: Christmas Eve Heist",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "result": "Win",
+                "survived": true,
+                "death_phase": "Survived"
+            },
+            {
+                "thread_id": "20260102-220000",
+                "game_id": "Classic #16",
+                "era": "Discord",
+                "title": "Classic #16: New Year Infiltration",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "20260112-220000",
+                "game_id": "Classic #17",
+                "era": "Discord",
+                "title": "Classic #17: Cop & Doctor Stand",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Win",
+                "survived": false,
+                "death_phase": "Day 2"
+            },
+            {
+                "thread_id": "20260125-220000",
+                "game_id": "Classic #18",
+                "era": "Discord",
+                "title": "Classic #18: Winter Truce",
+                "role": "Town Doctor",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 1"
+            },
+            {
+                "thread_id": "20260201-220000",
+                "game_id": "Classic #19",
+                "era": "Discord",
+                "title": "Classic #19: Mob Territory War",
+                "role": "Town Cop",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 4"
+            },
+            {
+                "thread_id": "20260211-220000",
+                "game_id": "Classic #20",
+                "era": "Discord",
+                "title": "Classic #20: Valentine's Syndicate",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 3"
+            },
+            {
+                "thread_id": "20260222-215900",
+                "game_id": "Classic #21",
+                "era": "Discord",
+                "title": "Classic #21: Serial Killer's Hunt",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 1"
+            },
+            {
+                "thread_id": "20260304-220000",
+                "game_id": "Classic #22",
+                "era": "Discord",
+                "title": "Classic #22: March Deadlock",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 4"
+            },
+            {
+                "thread_id": "20260315-220000",
+                "game_id": "Classic #23",
+                "era": "Discord",
+                "title": "Classic #23: Medic's Dilemma",
+                "role": "Mob Goon",
+                "alignment": "Mafia",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Night 2"
+            },
+            {
+                "thread_id": "20260323-220000",
+                "game_id": "Classic #24",
+                "era": "Discord",
+                "title": "Classic #24: Spring Mob Takeover",
+                "role": "Plain Townie",
+                "alignment": "Town",
+                "result": "Loss",
+                "survived": false,
+                "death_phase": "Day 2"
             }
         ],
         "era_stats": {
@@ -40075,144 +40384,32 @@
             },
             "Discord": {
                 "Player Name": "Alavsiel",
-                "Games Played": 6,
-                "Wins": 3,
-                "Losses": 3,
-                "Games Won": 3,
-                "Survival %": 16.7,
-                "Skill Score": 1.83,
-                "p_score": 1.2,
-                "e_score": 1.8,
-                "u_score": 2.5,
-                "Vote Accuracy %": 23.5,
-                "Town Games": 4,
-                "Mafia Games": 2,
+                "Games Played": 17,
+                "Wins": 5,
+                "Losses": 12,
+                "Games Won": 5,
+                "Survival %": 11.8,
+                "Skill Score": 1.9,
+                "p_score": 1.9,
+                "e_score": 1.9,
+                "u_score": 1.9,
+                "Vote Accuracy %": 16.2,
+                "Town Games": 12,
+                "Mafia Games": 5,
                 "Neutral/SK Games": 0,
-                "Plain Town Games": 4,
-                "Town Wins": 2,
-                "Mafia Wins": 1,
+                "Plain Town Games": 9,
+                "Town Wins": 3,
+                "Mafia Wins": 2,
                 "Neutral/SK Wins": 0,
-                "Times Lynched": 3,
-                "D1 Lynches": 1,
-                "Total Night Deaths": 2,
-                "N1 Deaths": 0
+                "Times Lynched": 9,
+                "D1 Lynches": 2,
+                "Total Night Deaths": 6,
+                "N1 Deaths": 1
             }
         }
     },
     {
-        "Player Name": "Aries1986",
-        "Games Played": 3,
-        "Wins": 1,
-        "Losses": 2,
-        "Games Won": 1,
-        "Survival %": 0.0,
-        "Skill Score": 2.0,
-        "p_score": 3.0,
-        "e_score": 0.5,
-        "u_score": 2.5,
-        "Vote Accuracy %": 25.0,
-        "Town Games": 2,
-        "Mafia Games": 1,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 2,
-        "Town Wins": 1,
-        "Mafia Wins": 0,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 3,
-        "D1 Lynches": 1,
-        "Total Night Deaths": 0,
-        "N1 Deaths": 0,
-        "Aliases": [
-            "Aries1986"
-        ],
-        "Games": [
-            {
-                "thread_id": "20251007-220000",
-                "game_id": "Classic #08",
-                "era": "Discord",
-                "title": "Classic #08: Council Stalemate",
-                "role": "Mob Goon",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1024",
-                "game_id": "1024",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1024: Genesis's Reckoning",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 3"
-            },
-            {
-                "thread_id": "manual-1025",
-                "game_id": "1025",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1025: Gwynedd's Revival",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 1"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "Aries1986",
-                "Games Played": 2,
-                "Wins": 1,
-                "Losses": 1,
-                "Games Won": 1,
-                "Survival %": 0.0,
-                "Skill Score": 2.57,
-                "p_score": 4.5,
-                "e_score": 0.7,
-                "u_score": 2.5,
-                "Vote Accuracy %": 0.0,
-                "Town Games": 2,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 2,
-                "Town Wins": 1,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 2,
-                "D1 Lynches": 1,
-                "Total Night Deaths": 0,
-                "N1 Deaths": 0
-            },
-            "Discord": {
-                "Player Name": "Aries1986",
-                "Games Played": 1,
-                "Wins": 0,
-                "Losses": 1,
-                "Games Won": 0,
-                "Survival %": 0.0,
-                "Skill Score": 0.1,
-                "p_score": 0.0,
-                "e_score": 0.3,
-                "u_score": 0.0,
-                "Vote Accuracy %": 50.0,
-                "Town Games": 0,
-                "Mafia Games": 1,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 0,
-                "Town Wins": 0,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 1,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 0,
-                "N1 Deaths": 0
-            }
-        }
-    },
-    {
-        "Player Name": "Boo xo",
+        "Player Name": "Boo Xo",
         "Games Played": 3,
         "Wins": 0,
         "Losses": 3,
@@ -40274,7 +40471,7 @@
         ],
         "era_stats": {
             "Discord": {
-                "Player Name": "Boo xo",
+                "Player Name": "Boo Xo",
                 "Games Played": 3,
                 "Wins": 0,
                 "Losses": 3,
@@ -40654,182 +40851,6 @@
         }
     },
     {
-        "Player Name": "PolarExpress",
-        "Games Played": 11,
-        "Wins": 2,
-        "Losses": 9,
-        "Games Won": 2,
-        "Survival %": 9.1,
-        "Skill Score": 1.9,
-        "p_score": 2.2,
-        "e_score": 2.0,
-        "u_score": 1.5,
-        "Vote Accuracy %": 10.0,
-        "Town Games": 8,
-        "Mafia Games": 3,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 5,
-        "Town Wins": 1,
-        "Mafia Wins": 1,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 6,
-        "D1 Lynches": 1,
-        "Total Night Deaths": 4,
-        "N1 Deaths": 1,
-        "Aliases": [
-            "PolarExpress"
-        ],
-        "Games": [
-            {
-                "thread_id": "20251218-220000",
-                "game_id": "Classic #14",
-                "era": "Discord",
-                "title": "Classic #14: Winter Solstice Purge",
-                "role": "Godfather",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "20251224-220000",
-                "game_id": "Classic #15",
-                "era": "Discord",
-                "title": "Classic #15: Christmas Eve Heist",
-                "role": "Mob Goon",
-                "alignment": "Mafia",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "20260102-220000",
-                "game_id": "Classic #16",
-                "era": "Discord",
-                "title": "Classic #16: New Year Infiltration",
-                "role": "Town Cop",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "20260112-220000",
-                "game_id": "Classic #17",
-                "era": "Discord",
-                "title": "Classic #17: Cop & Doctor Stand",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "20260125-220000",
-                "game_id": "Classic #18",
-                "era": "Discord",
-                "title": "Classic #18: Winter Truce",
-                "role": "Town Doctor",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 1"
-            },
-            {
-                "thread_id": "20260201-220000",
-                "game_id": "Classic #19",
-                "era": "Discord",
-                "title": "Classic #19: Mob Territory War",
-                "role": "Town Cop",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 4"
-            },
-            {
-                "thread_id": "20260211-220000",
-                "game_id": "Classic #20",
-                "era": "Discord",
-                "title": "Classic #20: Valentine's Syndicate",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 3"
-            },
-            {
-                "thread_id": "20260222-215900",
-                "game_id": "Classic #21",
-                "era": "Discord",
-                "title": "Classic #21: Serial Killer's Hunt",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 1"
-            },
-            {
-                "thread_id": "20260304-220000",
-                "game_id": "Classic #22",
-                "era": "Discord",
-                "title": "Classic #22: March Deadlock",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 4"
-            },
-            {
-                "thread_id": "20260315-220000",
-                "game_id": "Classic #23",
-                "era": "Discord",
-                "title": "Classic #23: Medic's Dilemma",
-                "role": "Mob Goon",
-                "alignment": "Mafia",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Night 2"
-            },
-            {
-                "thread_id": "20260323-220000",
-                "game_id": "Classic #24",
-                "era": "Discord",
-                "title": "Classic #24: Spring Mob Takeover",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 2"
-            }
-        ],
-        "era_stats": {
-            "Discord": {
-                "Player Name": "PolarExpress",
-                "Games Played": 11,
-                "Wins": 2,
-                "Losses": 9,
-                "Games Won": 2,
-                "Survival %": 9.1,
-                "Skill Score": 1.9,
-                "p_score": 2.2,
-                "e_score": 2.0,
-                "u_score": 1.5,
-                "Vote Accuracy %": 10.0,
-                "Town Games": 8,
-                "Mafia Games": 3,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 5,
-                "Town Wins": 1,
-                "Mafia Wins": 1,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 6,
-                "D1 Lynches": 1,
-                "Total Night Deaths": 4,
-                "N1 Deaths": 1
-            }
-        }
-    },
-    {
         "Player Name": "GymOfTheJungle",
         "Games Played": 3,
         "Wins": 0,
@@ -40990,118 +41011,6 @@
                 "Times Lynched": 1,
                 "D1 Lynches": 1,
                 "Total Night Deaths": 1,
-                "N1 Deaths": 0
-            }
-        }
-    },
-    {
-        "Player Name": "Vamp",
-        "Games Played": 3,
-        "Wins": 2,
-        "Losses": 1,
-        "Games Won": 2,
-        "Survival %": 33.3,
-        "Skill Score": 3.0,
-        "p_score": 1.5,
-        "e_score": 3.1,
-        "u_score": 4.4,
-        "Vote Accuracy %": 0.0,
-        "Town Games": 2,
-        "Mafia Games": 1,
-        "Neutral/SK Games": 0,
-        "Plain Town Games": 2,
-        "Town Wins": 1,
-        "Mafia Wins": 1,
-        "Neutral/SK Wins": 0,
-        "Times Lynched": 2,
-        "D1 Lynches": 0,
-        "Total Night Deaths": 0,
-        "N1 Deaths": 0,
-        "Aliases": [
-            "Vamp"
-        ],
-        "Games": [
-            {
-                "thread_id": "manual-1026",
-                "game_id": "1026",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1026: Genesis's End",
-                "role": "Plain Town",
-                "alignment": "Town",
-                "result": "Win",
-                "survived": false,
-                "death_phase": "Day 2"
-            },
-            {
-                "thread_id": "manual-1027",
-                "game_id": "1027",
-                "era": "Discord_Manual",
-                "title": "Discord Mafia 1027: Hydro's Last Call",
-                "role": "Mob Power",
-                "alignment": "Mafia",
-                "result": "Win",
-                "survived": true,
-                "death_phase": "Survived"
-            },
-            {
-                "thread_id": "20260926-220000",
-                "game_id": "Classic #35",
-                "era": "Discord",
-                "title": "Classic #35: Autumn Doctor Heist",
-                "role": "Plain Townie",
-                "alignment": "Town",
-                "result": "Loss",
-                "survived": false,
-                "death_phase": "Day 3"
-            }
-        ],
-        "era_stats": {
-            "Discord_Manual": {
-                "Player Name": "Vamp",
-                "Games Played": 2,
-                "Wins": 2,
-                "Losses": 0,
-                "Games Won": 2,
-                "Survival %": 50.0,
-                "Skill Score": 3.0,
-                "p_score": 1.0,
-                "e_score": 3.0,
-                "u_score": 5.0,
-                "Vote Accuracy %": 0.0,
-                "Town Games": 1,
-                "Mafia Games": 1,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 1,
-                "Town Wins": 1,
-                "Mafia Wins": 1,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 1,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 0,
-                "N1 Deaths": 0
-            },
-            "Discord": {
-                "Player Name": "Vamp",
-                "Games Played": 1,
-                "Wins": 0,
-                "Losses": 1,
-                "Games Won": 0,
-                "Survival %": 0.0,
-                "Skill Score": 2.03,
-                "p_score": 2.5,
-                "e_score": 3.6,
-                "u_score": 0.0,
-                "Vote Accuracy %": 0.0,
-                "Town Games": 1,
-                "Mafia Games": 0,
-                "Neutral/SK Games": 0,
-                "Plain Town Games": 1,
-                "Town Wins": 0,
-                "Mafia Wins": 0,
-                "Neutral/SK Wins": 0,
-                "Times Lynched": 1,
-                "D1 Lynches": 0,
-                "Total Night Deaths": 0,
                 "N1 Deaths": 0
             }
         }

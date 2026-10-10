@@ -68,3 +68,8 @@ htmlcov/
 *.canvas
 /.obsidian
 .obsidian/workspace.json
+
+
+# --- Website & Master User Data ---
+!Website/data/master_user_map.json
+!data/master_user_map.json

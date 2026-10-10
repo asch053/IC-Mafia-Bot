@@ -10,6 +10,10 @@ DATA_DIR = os.path.join(WEBSITE_DIR, "data")
 ROOT_DIR = os.path.dirname(WEBSITE_DIR)
 if ROOT_DIR not in sys.path:
     sys.path.insert(0, ROOT_DIR)
+if not os.path.exists(DATA_DIR):
+    alt_data = os.path.join(ROOT_DIR, "data")
+    if os.path.exists(alt_data): DATA_DIR = alt_data
+
 DB_DIR = os.path.join(WEBSITE_DIR, "database")
 if not os.path.exists(DB_DIR):
     alt_db = os.path.join(ROOT_DIR, "data", "database")
@@ -28,6 +32,7 @@ CANONICAL_NAMES = {
     "479197632074612736": "The_Unknown",
     "98260473664790528": "Walking Corpse",
     "211933902225408010": "KT",
+    "406342456896913410": "KT",
     "566633524585824266": "Player1",
     "220666545544626177": "Arby3",
     "336188557561430017": "Melvin85",
@@ -36,6 +41,162 @@ CANONICAL_NAMES = {
     "386804810617323531": "melsfreefallin",
     "220142891027136512": "Panda",
     "216918396539764737": "Ordos",
+    "317468579433938944": "SEXTANS",
+    "803323849441542224": "SEXTANS",
+    "654489282987163670": "SEXTANS",
+    "829552473970180116": "Alavsiel",
+    "760212300463603752": "period_vampyr",
+    "614030091768561674": "RandO",
+    "219134698708926464": "RandO",
+    "327424261180620801": "Logger",
+    "704408995196174397": "Logger",
+    "824806242027044912": "Playboy",
+    "1047978267480707143": "Playboy",
+    "572957043665666062": "evilrunt",
+    "279328512220069889": "evilrunt",
+    "502496057192742932": "~APunyPenguin~",
+    "547528374818570243": "! Cxris",
+    "420439464352022528": "Herb🍁",
+    "459857373440245770": "James(n00bpenguin)",
+    "562745184375275535": "Lee0160",
+    "295040267973820416": "Bar.@",
+    "981652887199444993": "Ultimate Bob",
+    "215531191774740490": "WiLd Wolf",
+    "215178132431306752": "HydroP",
+    "456226577798135808": "Deleted User",
+    "213099890111152129": "TBO",
+    "216218329960939521": "Nolio",
+    "479727224312954881": "ZoZferatu",
+    "212714551081304064": "thirdrock",
+    "213337264162340864": "Genesis",
+    "304645907150929921": "MrStemo",
+    "469571706898350080": "Soul",
+    "530928652053905409": "rizzy",
+    "273060101252710402": "luker8969",
+    "331831967723159566": "Schniepel",
+    "1057856572899999744": "TheBigOne",
+    "746540828432007225": "LisaMVP",
+    "188520252387229696": "FoohonPie",
+    "214524354258534401": "Torqez",
+    "185076008448294912": "InsertOriginalUsernameHere",
+    "1362723554923118763": "IC_MafiaBot",
+    "519180970163830816": "chachacheckpoint",
+    "211585628695953409": "panniknloozit",
+    "191375094218620929": "Neek",
+    "1039345137928646688": "sCriv",
+    "268817441881194496": "Dukey",
+    "278942054887849984": "MagicMellor",
+    "406767123822805003": "ikbengehackt",
+    "516030832364879903": "Goose",
+    "693507757965443072": "summerseason",
+    "977445715905236992": "NightSky",
+    "191389994915594240": "Gimmix",
+    "238660976822583297": "PL4N3ZW4LK3R",
+    "738538054347784313": "Alex",
+    "318155764332101632": "Evulution",
+    "515471372365856770": "Dragon383",
+    "299568534001025026": "MeisterWhiff",
+    "222929021057499138": "xenon",
+    "481665812441071626": "Tortoise",
+    "130281442012823552": "Miqdad",
+    "468490497623719949": "Tenma",
+    "284530880863666177": "Nephthys",
+    "571177775596175391": "Twitch Badger",
+    "391795978518396928": "shanenami",
+    "1072558067536891976": "Leeeeeeeee",
+    "518455304858501139": "Vicious",
+    "477547900662972418": "Rivan",
+    "300762711942496268": "Spartan Legion",
+    "150014432183844865": "slifty",
+    "373364111032975371": "__tif__",
+    "239624975605039105": "Diandrin",
+    "217258940315074571": "Naganted",
+    "258319551073091584": "Life",
+    "292241540687069186": "Jealous",
+    "467135324703686672": "MTG_Dad",
+    "166087201564786690": "Skyroshroud",
+    "159630471255425024": "Amok",
+    "291293257810575360": "BUD777",
+    "668325325482229781": "swtluv",
+    "1037206613255278602": "Bussa Cap",
+    "712732733507633266": "autumnn",
+    "331386442116759552": "Apoc",
+    "321356666266189824": "Primo",
+    "201513825437089792": "Remo",
+    "110925985800536064": "™Darrk",
+    "959903829762113546": "R0S3",
+    "474860560144400384": "Warsie",
+    "803345494650781697": "DecDecAttack",
+    "220055144291762177": "Igoire",
+    "212974715138998272": "Scorp-Raptor",
+    "977964212905214022": "Tish",
+    "257967903020810250": "Oz",
+    "400443721067266049": "Jugerz",
+    "609408867205513305": "Nayamek",
+    "586544831887835156": "Sunnypig",
+    "450237854329602048": "WhoFlungDung",
+    "201551636080885760": "LuStEr",
+    "207289563054342144": "Sunstorm",
+    "308368363074355200": "Audit",
+    "215579283303694347": "Cloudy Skies",
+    "211917181540106240": "ewok_pride",
+    "285913617331912716": "Caranthir",
+    "377879725894533121": "Squatch",
+    "692089945250070540": "Buff",
+    "627851261835870220": "Crow",
+    "145690362252492800": "Airbase",
+    "301537273344688129": "dRaGoN^sUP",
+    "220622189462814724": "Suvarius",
+    "998350641854431262": "ASS MUNCHER",
+    "67489851204702208": "Kaedan",
+    "416757703516356628": "Melancholic",
+    "89921624328900608": "Julie",
+    "276286822504595456": "Goepy",
+    "271395268543381515": "jeffers",
+    "746761073771937902": "WhiteSavage",
+    "394581286007734282": "Masse",
+    "550874919106248722": "Seb.",
+    "233689718582149122": "Rd1 civvy",
+    "232933670590087168": "domi06",
+    "677366881992048683": "hippiechicken",
+    "183266665184624640": "EternalCalm33",
+    "609456184105369640": "Ordosmic",
+    "280456290549891073": "lil brat",
+    "363976051325665280": "Admetus",
+    "155149108183695360": "Dyno",
+    "435236297888628748": "Collector HQ",
+    "257391313496834048": "frosty_mint",
+    "240150689114882048": "Cells",
+    "572945537205272606": "Know)Cxris(Body",
+    "210493251835133953": "aciroter",
+    "189155078572212225": "Skylin",
+    "91442932111921152": "Izzy",
+    "286519276112838666": "Cal",
+    "191371254253617152": "TheYell",
+    "634707098101350411": "PartaPax",
+    "358225537522597898": "Ved",
+    "311474174428184577": "nerde",
+    "303407694604271626": "Gunner",
+    "223883961103810563": "Doctor Drae 🏀",
+    "174260216697716736": "BurritoKing",
+    "217742695144095745": "WickaWicka",
+    "488701312842858496": "jynxisdeadaf",
+    "748729833416032268": "Evilqueen2011",
+    "387583392759283713": "EqsyLootz",
+    "355083550279860224": "MissEviler",
+    "382856366290763776": "CanDance",
+    "417475967473287168": "MONS",
+    "581231650202189835": "MzTempleBlondie",
+    "385248925961027594": "777arc",
+    "741458678594666577": "feelsgoodman",
+    "403344811572199424": "Mistery909",
+    "422989594821263361": "Vianne",
+    "128199288407851010": "Scanneh",
+    "301510683785297921": "Izan",
+    "290618761638313985": "afaafaflmpou",
+    "1246463634456969325": "colorado",
+    "492393802124886026": "halisho",
+    "1387941742916927508": "Tadpole55449",
     "undeath": "Undeath",
     "risingdown": "RisingDown",
     "wildflowersoul": "WildFlowerSoul",
@@ -45,8 +206,30 @@ CANONICAL_NAMES = {
 }
 
 ID_ALIASES = {
-    "294464443570454528": "139146807472160768"
+    "294464443570454528": "139146807472160768",  # Jets
+    "406342456896913410": "211933902225408010",  # KT
+    "803323849441542224": "317468579433938944",  # SEXTANS
+    "654489282987163670": "317468579433938944",  # SEXTANS
+    "219134698708926464": "614030091768561674",  # RandO
+    "704408995196174397": "327424261180620801",  # Logger
+    "1047978267480707143": "824806242027044912", # Playboy
+    "279328512220069889": "572957043665666062",  # evilrunt
 }
+
+def build_id_to_canonical(user_map):
+    rev = {}
+    for alias, dids in user_map.items():
+        if alias.isdigit() or len(dids) == 0:
+            continue
+        for did in dids:
+            d_str = str(did).strip()
+            canon_id = ID_ALIASES.get(d_str, d_str)
+            if canon_id not in rev:
+                cname = CANONICAL_NAMES.get(canon_id)
+                if not cname:
+                    cname = alias.title()
+                rev[canon_id] = (canon_id, cname)
+    return rev
 
 def load_json(path, default=None):
     if not os.path.exists(path):
@@ -79,28 +262,53 @@ def get_game_total_phases(game):
             max_p = max(max_p, phase_str_to_int(tp))
     return max(2, max_p)
 
-def resolve_player_identity(raw_name, raw_pid, user_map):
-    # 1. Resolve raw_pid if known
-    if raw_pid:
+def resolve_player_identity(raw_name, raw_pid, user_map, id_to_canonical=None):
+    clean_lower = str(raw_name).lower().strip()
+    
+    # 1. Handle special AI simulation bot dummy players
+    if clean_lower in ["alpha", "beta", "gamma", "delta"] and (not raw_pid or str(raw_pid) in ["1", "2", "3", "4"]):
+        return f"sim_{clean_lower}", raw_name
+
+    # 2. Resolve raw_pid if known
+    if raw_pid is not None and str(raw_pid).strip() not in ["", "None", "-1", "-2", "-3", "-4", "-5"]:
         pid_str = str(raw_pid).strip()
-        if pid_str in ID_ALIASES:
-            pid_str = ID_ALIASES[pid_str]
+        pid_str = ID_ALIASES.get(pid_str, pid_str)
         if pid_str in CANONICAL_NAMES:
             return pid_str, CANONICAL_NAMES[pid_str]
+        if id_to_canonical and pid_str in id_to_canonical:
+            return id_to_canonical[pid_str]
         if pid_str in user_map and len(user_map[pid_str]) > 0:
             cid = str(user_map[pid_str][0])
             cid = ID_ALIASES.get(cid, cid)
             return cid, CANONICAL_NAMES.get(cid, raw_name)
-            
-    # 2. Resolve raw_name with multiple normalization forms
-    clean_lower = str(raw_name).lower().strip()
-    candidates = [
-        clean_lower,
-        clean_lower.replace(" ", "_"),
-        clean_lower.replace("_", " "),
-        clean_lower.replace(" ", "").replace("_", "")
-    ]
+        if pid_str.isdigit() and len(pid_str) >= 15:
+            # Valid Discord snowflake ID!
+            cname = CANONICAL_NAMES.get(pid_str, raw_name)
+            return pid_str, cname
+
+    # 3. Resolve raw_name with normalization forms
+    no_tag = re.sub(r'\[.*?\]', '', clean_lower).strip()
+    stripped = re.sub(r'^[^a-z0-9]+|[^a-z0-9]+$', '', clean_lower).strip()
+    no_tag_stripped = re.sub(r'^[^a-z0-9]+|[^a-z0-9]+$', '', no_tag).strip() if no_tag else ""
+
+    candidates = [clean_lower]
+    for cand in [no_tag, stripped, no_tag_stripped]:
+        if cand and cand not in candidates:
+            candidates.append(cand)
+
+    expanded = []
     for c in candidates:
+        expanded.append(c.replace(" ", "_"))
+        expanded.append(c.replace("_", " "))
+        expanded.append(c.replace(" ", "").replace("_", ""))
+        expanded.append(re.sub(r'[^\w\s]', '', c).strip())
+
+    seen = []
+    for c in candidates + expanded:
+        if c and c not in seen:
+            seen.append(c)
+
+    for c in seen:
         if c in user_map and len(user_map[c]) > 0:
             cid = str(user_map[c][0])
             cid = ID_ALIASES.get(cid, cid)
@@ -169,17 +377,24 @@ def sync_new_production_games():
                 story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else f"Automated game {game_id} run on Discord.")
                 winning_faction = summary.get("winning_faction", "Unknown")
                 winning_players_str = ", ".join(summary.get("winning_players", [])) if summary.get("winning_players") else "None"
+                if str(winning_faction).strip().lower() == "draw":
+                    tactical_summary = "Automated match hosted on Discord. The game proceeded across strategic phases, concluding with all sides eliminated in a hard-fought **Draw**."
+                    winning_faction_label = "**Draw** (No winning faction)"
+                else:
+                    tactical_summary = f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winning_faction}** victory."
+                    winning_faction_label = f"**{winning_faction}**"
+
                 narrative_summary = (
                     f"### 📋 Match Overview\n"
                     f"- **Game ID:** `{game_id}`\n"
                     f"- **Era:** Discord Modern Bot\n"
                     f"- **Game Type:** {summary.get('game_type', 'Classic')}\n"
-                    f"- **Winning Faction:** **{winning_faction}**\n"
+                    f"- **Winning Faction:** {winning_faction_label}\n"
                     f"- **Victors:** {winning_players_str}\n"
                     f"- **Total Players:** {len(player_data)} (Town: {summary.get('player_counts', {}).get('town', 0)}, Mafia: {summary.get('player_counts', {}).get('mafia', 0)}, Neutral: {summary.get('player_counts', {}).get('neutral', 0)})\n"
                     f"- **Total Duration:** {summary.get('total_days', 0)} phases\n\n"
                     f"### ⚔️ Tactical Summary\n"
-                    f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winning_faction}** victory."
+                    f"{tactical_summary}"
                 )
 
                 os.makedirs(STORIES_DIR, exist_ok=True)
@@ -267,7 +482,7 @@ def sync_new_production_games():
                 
                 winning_players = summary.get("winning_players", [])
                 mvp = None
-                if winning_players:
+                if winning_players and str(winning_faction).strip().lower() != "draw":
                     mvp = {
                         "player": winning_players[0],
                         "rationale": f"Secured the victory for {winning_faction}."
@@ -328,6 +543,7 @@ def load_markdown_file(rel_or_abs_path):
 
 def compute_player_leaderboard(games_list, user_map):
     player_stats = {}
+    id_to_canonical = build_id_to_canonical(user_map)
     def get_player(p_id, p_name):
         if p_id not in player_stats:
             player_stats[p_id] = {
@@ -385,7 +601,7 @@ def compute_player_leaderboard(games_list, user_map):
             death_phase = p.get("death_phase", "") or ""
             death_cause = (p.get("death_cause") or "").lower()
             
-            canonical_id, canonical_name = resolve_player_identity(raw_name, raw_pid, user_map)
+            canonical_id, canonical_name = resolve_player_identity(raw_name, raw_pid, user_map, id_to_canonical)
             ps = get_player(canonical_id, canonical_name)
             if canonical_id in CANONICAL_NAMES:
                 ps["Player Name"] = CANONICAL_NAMES[canonical_id]
@@ -558,8 +774,10 @@ def compute_player_leaderboard(games_list, user_map):
         # Enrich aliases from master_user_map.json
         user_map_aliases = set(ps["_aliases"])
         for k, v in user_map.items():
-            if not k.isdigit() and str(pid) in [str(x) for x in v]:
-                user_map_aliases.add(k)
+            if not k.isdigit():
+                clean_v = [ID_ALIASES.get(str(x), str(x)) for x in v]
+                if str(pid) in clean_v:
+                    user_map_aliases.add(k)
 
         seen_aliases = {}
         for a in user_map_aliases:
@@ -760,7 +978,11 @@ def build_unified_stats(sync_sheets=False):
         json.dump(history_archive, f, indent=4, ensure_ascii=False)
     print(f"Saved {len(history_archive)} games to {out_history}.")
 
-    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
+    user_map_path = os.path.join(DATA_DIR, "master_user_map.json")
+    if not os.path.exists(user_map_path):
+        alt_path = os.path.join(ROOT_DIR, "data", "master_user_map.json")
+        if os.path.exists(alt_path): user_map_path = alt_path
+    user_map = load_json(user_map_path, {})
     
     # Separate Classic Games (excluding Battle Royale) for Mafia Classic stats and leaderboard
     classic_games = [g for g in history_archive if g.get("game_type", "classic").lower() != "battle_royale"]
@@ -916,7 +1138,12 @@ def build_battle_royale_stats():
     if not os.path.exists(prod_dir):
         return
         
-    user_map = load_json(os.path.join(DATA_DIR, "master_user_map.json"), {})
+    user_map_path = os.path.join(DATA_DIR, "master_user_map.json")
+    if not os.path.exists(user_map_path):
+        alt_path = os.path.join(ROOT_DIR, "data", "master_user_map.json")
+        if os.path.exists(alt_path): user_map_path = alt_path
+    user_map = load_json(user_map_path, {})
+    id_to_canonical = build_id_to_canonical(user_map)
     br_games = 0
     combatant_stats = {}
     seen_gids = set()
@@ -945,12 +1172,12 @@ def build_battle_royale_stats():
                 seen_gids.add(gid)
                 
                 br_games += 1
-                winning_players = [resolve_player_identity(p, None, user_map)[1].lower() for p in summary.get("winning_players", [])]
-                _, winner_name = resolve_player_identity(summary.get("winning_faction", "Draw"), None, user_map)
+                winning_players = [resolve_player_identity(p, None, user_map, id_to_canonical)[1].lower() for p in summary.get("winning_players", [])]
+                _, winner_name = resolve_player_identity(summary.get("winning_faction", "Draw"), None, user_map, id_to_canonical)
                 
                 for p in player_data:
                     raw_name = p.get("player_name", "Unknown")
-                    _, pname = resolve_player_identity(raw_name, p.get("player_id"), user_map)
+                    _, pname = resolve_player_identity(raw_name, p.get("player_id"), user_map, id_to_canonical)
                     is_win = (pname.lower() in winning_players) or (p.get("is_winner") is True) or (pname.lower() == winner_name.lower())
                     is_survived = (p.get("status", "").lower() == "alive")
                     death_phase = p.get("death_phase") or ""
