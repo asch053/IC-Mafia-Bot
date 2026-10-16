@@ -143,6 +143,7 @@ class TestHandleActions(unittest.IsolatedAsyncioTestCase):
             
             # STRICTLY check internal state recording, ignoring narration
             self.assertIsNone(night_outcomes[303]['status'])
+            self.assertNotIn(303, self.mock_game.kill_attempts_on)
             
             outcome_msg = "[OUTCOME] Success! Target survived and state was preserved."
             print(outcome_msg); logger.info(outcome_msg)
@@ -150,3 +151,17 @@ class TestHandleActions(unittest.IsolatedAsyncioTestCase):
         except Exception as e:
             logger.exception(f"[ERROR] Test failed in {self._testMethodName}: {e}")
             raise
+
+    def test_handle_kill_when_killer_blocked(self):
+        """Verifies that a blocked killer cannot record a kill attempt on the victim."""
+        night_outcomes = {101: {'status': 'blocked'}, 202: {'status': None}}
+        self.mock_game.blocked_players_this_night[101] = 202
+        handle_kill(self.mock_game, 101, 202, night_outcomes)
+        self.assertNotIn(202, self.mock_game.kill_attempts_on)
+
+    def test_handle_heal_when_healer_blocked(self):
+        """Verifies that a blocked doctor cannot record a heal on the target."""
+        night_outcomes = {202: {'status': 'blocked'}, 101: {'status': None}}
+        self.mock_game.blocked_players_this_night[202] = 101
+        handle_heal(self.mock_game, 202, 101, night_outcomes)
+        self.assertNotIn(101, self.mock_game.heals_on_players)

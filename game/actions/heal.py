@@ -7,7 +7,15 @@ logger = logging.getLogger('discord')
 def handle_heal(game, healer_id: int, target_id: int, night_outcomes: dict):
     """Records a heal attempt on a target."""
     healer_action = night_outcomes.get(healer_id)
+    is_blocked = False
     if healer_action and healer_action.get('status') == 'blocked':
+        is_blocked = True
+    if healer_id in getattr(game, 'blocked_players_this_night', {}):
+        is_blocked = True
+    if str(healer_id) in [str(k) for k in getattr(game, 'blocked_players_this_night', {}).keys()]:
+        is_blocked = True
+
+    if is_blocked:
         logger.info(f"Heal attempt by {healer_id} failed because they were blocked.")
         return
 

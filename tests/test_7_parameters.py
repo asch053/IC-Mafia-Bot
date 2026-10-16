@@ -138,16 +138,28 @@ class TestGameLogic(unittest.IsolatedAsyncioTestCase):
             }
             self.log_step(t_name, 1, "Mocking quirk logic data for Alice (101) and Bob (102).")
 
-            # Step 2: Test 'involved quirks' logic
-            # This logic filters quirks based on who is relevant this phase
-            events = [{'type': 'kill', 'victim': self.player2, 'killer': self.player1}]
-            quirks_output = _get_involved_quirks(self.game_state, events)
+            # Step 2: Test 'involved quirks' logic in Battle Royale (where killers are public)
+            br_game_state = dict(self.game_state, game_type="battle_royale")
+            events_br = [{'type': 'kill_battle_royale', 'victim': self.player2, 'killer': self.player1}]
+            quirks_output = _get_involved_quirks(br_game_state, events_br)
             
             self.log_step(t_name, 2, f"MAJOR OUTPUT (Quirks Context Block):\n{quirks_output}")
 
             # Verify that the logic successfully retrieved Alice's quirk
             self.assertIn("Alice", quirks_output, "Alice not found in quirk block")
             self.assertIn("synthwave", quirks_output, "Quirk content missing")
+            
+            # In Classic mode, secret killers are NOT deterministically included just because they are killers.
+            # Inclusion is random among living players so no information can be gleamed.
+            player3 = Player(103, "Charlie#0003", "Charlie")
+            classic_state = dict(self.game_state, living_players=[self.player1, self.player2, player3])
+            mock_quirks.return_value["103"] = "Bakes sourdough bread."
+            events_classic = [{'type': 'kill', 'victim': self.player2, 'killer': self.player1}]
+            with patch('random.sample', return_value=[player3]):
+                quirks_classic = _get_involved_quirks(classic_state, events_classic)
+                self.assertNotIn("Alice", quirks_classic, "Secret killer Alice must not be deterministically included in Classic")
+                self.assertIn("Bob", quirks_classic, "Victim Bob should be in quirk block")
+                self.assertIn("Charlie", quirks_classic, "Random living bystander Charlie should be in quirk block")
             
             self.log_result(t_name, True)
         except Exception as e:

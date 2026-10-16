@@ -245,10 +245,10 @@ def _generate_static_story_part(event: dict, story_type: str = "Classic Mafia") 
         if not victim or not getattr(victim, 'role', None): return None
         role_label = getattr(victim.role, 'display_name', None) or victim.role.name
         if story_type == "Rom Com":
-            return f"An admirer tried to break **{victim.display_name}**'s ({role_label}) heart in the dark, but they were completely emotionally unavailable. The rejection had no effect!"
+            return f"An admirer tried to break the **{role_label}**'s heart in the dark, but they were completely emotionally unavailable. The rejection had no effect!"
         elif story_type == "Office Restructuring":
-            return f"Management attempted to lay off **{victim.display_name}** ({role_label}) in the dark, but their ironclad executive severance protected them. The termination had no effect!"
-        return f"An assailant ambushed **{victim.display_name}** ({role_label}) in the dark, but their target was unfazed. The attack had no effect!"
+            return f"Management attempted to lay off the **{role_label}** in the dark, but their ironclad executive severance protected them. The termination had no effect!"
+        return f"An assailant ambushed the **{role_label}** in the dark, but their target was unfazed. The attack had no effect!"
 
     # Event: Successful night kill in Classic mode (killer anonymous)
     if event_type == 'kill':

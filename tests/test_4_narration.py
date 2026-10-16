@@ -212,3 +212,79 @@ class TestNarrationManager(unittest.IsolatedAsyncioTestCase):
         }
         town_prompt = _construct_ai_prompt(town_state, [], [])
         self.assertIn("CRITICAL: The conclusion narrative MUST explicitly announce that the TOWN has WON the game", town_prompt)
+
+    def test_kill_immune_anonymity_in_mechanical_summary_and_static(self):
+        """Verifies that in Classic Mafia, immune targets are named by role and not player name."""
+        from game.narration_ai import _generate_mechanical_summary
+        from game.narration_static import _generate_static_story_part
+
+        victim = MagicMock()
+        victim.display_name = "PandaPlayer"
+        victim.role.name = "Serial Killer"
+        victim.role.display_name = "Serial Killer"
+
+        event = {'type': 'kill_immune', 'victim': victim}
+
+        # Classic mode: names the role, never the player name
+        classic_summary = _generate_mechanical_summary([event], {'game_type': 'classic'})
+        self.assertIn("Serial Killer", classic_summary)
+        self.assertNotIn("PandaPlayer", classic_summary)
+        self.assertIn("- 🛡️", classic_summary)
+
+        # Battle Royale mode: names the player
+        br_summary = _generate_mechanical_summary([event], {'game_type': 'battle_royale'})
+        self.assertIn("PandaPlayer", br_summary)
+        self.assertIn("- 🛡️", br_summary)
+
+        # Static fallback stories: names role, does not leak player name
+        romcom_text = _generate_static_story_part(event, 'Rom Com')
+        self.assertIn("Serial Killer", romcom_text)
+        self.assertNotIn("PandaPlayer", romcom_text)
+
+        office_text = _generate_static_story_part(event, 'Office Restructuring')
+        self.assertIn("Serial Killer", office_text)
+        self.assertNotIn("PandaPlayer", office_text)
+
+        classic_text = _generate_static_story_part(event, 'Classic Mafia')
+        self.assertIn("Serial Killer", classic_text)
+        self.assertNotIn("PandaPlayer", classic_text)
+
+    def test_rules_block_in_prompt_and_random_bystanders(self):
+        """Verifies rules_block is embedded in prompt and instructs random bystander inclusion with strict anonymity."""
+        from game.narration_ai import _construct_ai_prompt
+
+        state = {
+            'phase': 'night',
+            'number': 1,
+            'story_type': 'Classic Mafia',
+            'game_type': 'classic',
+            'living_players': ['Panda', 'You_Fool', 'Soul'],
+            'is_introduction': False,
+            'is_game_over': False,
+            'is_prologue': False
+        }
+        prompt = _construct_ai_prompt(state, [], [])
+        self.assertIn("--- IRONCLAD RULES OF ANONYMITY (CLASSIC MAFIA) ---", prompt)
+        self.assertIn("RANDOM CAMEO & BYSTANDER STORIES", prompt)
+        self.assertIn("No reader should ever be able to glean any secret information", prompt)
+
+    def test_random_living_players_in_classic_quirks(self):
+        """Verifies that in Classic Mafia, living players are randomly sampled for cameos without role bias."""
+        from game.narration_ai import _get_involved_quirks
+
+        p1 = MagicMock(id=1, display_name="Alice", is_alive=True)
+        p2 = MagicMock(id=2, display_name="Bob", is_alive=True)
+        p3 = MagicMock(id=3, display_name="Charlie", is_alive=True)
+        state = {
+            'game_type': 'classic',
+            'living_players': [p1, p2, p3],
+            'is_introduction': False,
+            'is_game_over': False,
+            'is_prologue': False
+        }
+        with patch('community.quirk_logic.get_all_approved', return_value={'1': 'Loves apples', '2': 'Hates bananas', '3': 'Collects coins'}):
+            with patch('random.sample', return_value=[p2]):
+                quirks = _get_involved_quirks(state, [])
+                self.assertIn("Bob", quirks)
+                self.assertNotIn("Alice", quirks)
+                self.assertNotIn("Charlie", quirks)

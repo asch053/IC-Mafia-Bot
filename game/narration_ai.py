@@ -5,6 +5,7 @@ import logging
 import asyncio
 import json
 import os
+import random
 from datetime import datetime
 
 from discord import Game
@@ -77,61 +78,66 @@ def _get_involved_quirks(game_state: dict, events: list) -> str:
     if is_intro:
         # For the start of the game, include all living players to set the stage
         for p in game_state.get('living_players', []):
-            involved_ids.add(str(p.id))
+            involved_ids.add(str(getattr(p, 'id', p)))
     elif is_outro:
         # For the end, focus on the survivors/winners
         for p in game_state.get('living_players', []):
-            if hasattr(p, 'is_alive') and p.is_alive:
-                involved_ids.add(str(p.id))
+            if getattr(p, 'is_alive', True):
+                involved_ids.add(str(getattr(p, 'id', p)))
     else:
         # Standard scene: Use 'Just-in-Time' context to save tokens.
-        # After: Only pull quirks for players who are public knowledge (Victims/Lynch Targets)
+        # After: Only pull quirks for players who are public knowledge (Victims/Lynch Targets/Saves)
+        is_br = str(game_state.get('game_type', '')).lower() in ('battle_royale', 'battle royale', 'br')
         for e in events:
             etype = e.get('type', '')
-            # 1. Victims and Lynch targets are always public context
-            v = e.get('victim')
-            # Safer check that only hides immune players during "kill" events
+            # 1. Victims and Lynch targets are always public context (unless immune in Classic)
             v = e.get('victim')
             if v and hasattr(v, 'id'):
-                # Determine if we should hide this victim
-                # Hide if: It's a kill event AND the victim is immune
                 is_immune = getattr(v.role, 'is_night_immune', False)
                 is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
-                # We will include victims in the involved_ids for all events except when it's a kill event and the victim is immune, because in that case we want to 
-                # avoid revealing too much about immune players through their death events. For example, if a player is killed but they are immune, we don't want the 
-                # AI to see their quirks and meta-game that information to figure out they are immune. By excluding immune victims from the involved_ids during kill events, 
-                # we can help preserve the mystery around immune players while still providing rich context for all other events and players.
-                if not (is_kill_event and is_immune):
+                # By excluding immune victims from kill events in Classic, we preserve the mystery
+                if is_br or not (is_kill_event and is_immune):
                     involved_ids.add(str(v.id))
-            # Also include lynch victims even if they are immune, because their death is public knowledge and they are relevant to the story, but we can choose to hide their 
-            # role/quirks if they are immune to preserve some mystery. For now, we will include them in the involved_ids so their quirks can be used, but we will rely on 
-            # the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal too much in the narration.
-            for lv in e.get('victims', []) : # handle lynch victims list
-                if hasattr(lv, 'id'): # Safer check to ensure we don't error out if 'victims' is not a list of player objects
+            for lv in e.get('victims', []):
+                if hasattr(lv, 'id'):
                     is_immune = getattr(lv.role, 'is_night_immune', False)
                     is_kill_event = etype in ['kill', 'kill_royale', 'kill_immune']
-                    # We will include lynch victims in the involved_ids even if they are immune, because their death is public knowledge and relevant to the story, 
-                    # but we will rely on the MECHANICAL EVENTS section of the prompt to clearly communicate the immunity to the AI so it doesn't meta-game or reveal 
-                    # too much in the narration. This allows us to use their quirks for richer storytelling while still preserving some mystery about their role if 
-                    # they were immune.
-                    if not (is_kill_event and is_immune):
+                    if is_br or not (is_kill_event and is_immune):
                         involved_ids.add(str(lv.id))
-            # 2. Actors / perpetrators in events are included so their personas can be woven into the narration
-            for key in ['killer', 'actor', 'attacker', 'healer', 'blocker']:
-                obj = e.get(key)
-                if obj and hasattr(obj, 'id'):
-                    involved_ids.add(str(obj.id))
+
+            # 2. Public saves: the healed target is public knowledge
+            if etype in ['save', 'save_battle_royale']:
+                target = e.get('victim') or e.get('target')
+                if target and hasattr(target, 'id'):
+                    involved_ids.add(str(target.id))
+
+            # 3. Actors / perpetrators in events are ONLY included in Battle Royale (in Classic they must remain strictly secret)
+            if is_br:
+                for key in ['killer', 'actor', 'attacker', 'healer', 'blocker']:
+                    obj = e.get(key)
+                    if obj and hasattr(obj, 'id'):
+                        involved_ids.add(str(obj.id))
+
+        # 4. In Classic Mafia, randomly include living players for flavor cameos so anyone can appear without leaking information
+        if not is_br and game_state.get('living_players'):
+            living = [p for p in game_state.get('living_players', []) if getattr(p, 'is_alive', True)]
+            candidates = [p for p in living if str(getattr(p, 'id', p)) not in involved_ids]
+            if candidates:
+                sample_size = min(len(candidates), 2)
+                for rp in random.sample(candidates, sample_size):
+                    involved_ids.add(str(getattr(rp, 'id', rp)))
     # Format the personas into a readable block for the AI
     persona_lines = []
     for p in game_state.get('living_players', []):
-        uid_str = str(p.id)
+        uid_str = str(getattr(p, 'id', p))
+        p_name = getattr(p, 'display_name', str(p))
         if uid_str in involved_ids and uid_str in all_approved:
-            persona_lines.append(f"- {p.display_name}: {all_approved[uid_str]}")  
+            persona_lines.append(f"- {p_name}: {all_approved[uid_str]}")  
     if not persona_lines:
         return ""
     return "\n--- CHARACTER PERSONAS (Incorporate these traits naturally) ---\n" + "\n".join(persona_lines)
 
-def _generate_mechanical_summary(events: list) -> str:
+def _generate_mechanical_summary(events: list, game_state: dict = None) -> str:
     """
     Generates a hard-coded, factual summary of deaths and game-ending events.
     This ensures critical info is never lost in AI translation.
@@ -265,8 +271,19 @@ def _generate_mechanical_summary(events: list) -> str:
         elif etype == 'kill_immune':
             victim = event.get('victim')
             logger.info(f"Generating immune kill event story part for victim: {victim}")
-            if not victim: return None
-            lines.append(f"An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect!")
+            if not victim:
+                return None
+            role_name = getattr(victim.role, 'display_name', None) or (victim.role.name if getattr(victim, 'role', None) else "Unknown")
+            is_br = False
+            if game_state:
+                is_br = str(game_state.get('game_type', '')).lower() in ('battle_royale', 'battle royale', 'br')
+            elif event.get('is_br'):
+                is_br = True
+
+            if is_br:
+                lines.append(f"- 🛡️ An assailant ambushed **{victim.display_name}** in the dark, but their target was unfazed. The attack had no effect!")
+            else:
+                lines.append(f"- 🛡️ An assailant ambushed the **{role_name}** in the dark, but their target was unfazed. The attack had no effect!")
         elif etype == 'investigate':
             logger.info("Generating investigate event story part.")
             # lines.append("A lone figure was seen snooping around someone's house, trying to uncover secrets.")
@@ -288,7 +305,7 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
     phase_num = game_state.get('number', 0)
     story_type = game_state.get('story_type', 'Classic Mafia')
     game_mode = str(game_state.get('game_type', game_state.get('mode', 'classic'))).lower()
-    living_players = [p.display_name for p in game_state.get('living_players', [])] if game_state.get('living_players') else []
+    living_players = [getattr(p, 'display_name', str(p)) for p in game_state.get('living_players', [])] if game_state.get('living_players') else []
     is_prologue = game_state.get('is_prologue', False)
     is_introduction = game_state.get('is_introduction', False)
     is_epilogue = game_state.get('is_epilogue', False)
@@ -635,7 +652,8 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         rules_block = """--- IRONCLAD RULES OF ANONYMITY (CLASSIC MAFIA) ---
     1. DO NOT GUESS: If a perpetrator is not named in the MECHANICAL EVENTS, do NOT assign the action to a living player.
     2. FOG OF WAR: Night killers and healers are ALWAYS anonymous. Refer to them as 'the assailant' or 'a shadowy figure' or a 'helpful bystander'.
-    3. NO OUTING: Never describe a named living player as being part of an aggressive act unless explicitly told."""
+    3. NO OUTING: Never describe a named living player as being part of an aggressive act unless explicitly told.
+    4. RANDOM CAMEO & BYSTANDER STORIES: You can generate stories featuring ANY living player (whether in the CHARACTER PERSONAS or from the LIVING PLAYERS list). However, living players appearing in flavor, dialogue, or background scenes are selected purely at random for atmosphere and storytelling. Their inclusion has NO bearing on their roles, alignment, or night actions. NEVER depict named living players committing night attacks or taking secret role actions. Night attacks are strictly anonymous. No reader should ever be able to glean any secret information from a player's inclusion in the story."""
 
     # 4. Construct the Reasoning Rubric
     if story_type == "Rom Com":
@@ -680,6 +698,7 @@ CURRENT PHASE: {phase_name} {phase_num}
 --- REASONING RUBRIC (Internal Rules) ---
 {living_rubric}
 {custom_rules}
+{rules_block}
 3. CHARACTER PERSONAS: If traits are listed below, weave them into dialogue and behavior naturally. Show, don't tell. Do not label them as 'quirks'.
 {quirks_block}
 
@@ -818,7 +837,7 @@ async def generate_story(game_state: dict, events: list, history: list) -> str |
             _archive_phase_data(game_state, phase_key, prompt, thoughts, story_text.strip())
 
             # 6. Append Factual Summary
-            mechanical_summary = _generate_mechanical_summary(events)
+            mechanical_summary = _generate_mechanical_summary(events, game_state)
             final_output = f"{story_text.strip()}\n{mechanical_summary}"
             
             logger.info(f"Successfully generated and archived AI story for {phase_key}.")

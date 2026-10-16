@@ -12,7 +12,15 @@ def handle_kill(game, killer_id: int, victim_id: int, night_outcomes: dict):
         return
 
     killer_action = night_outcomes.get(killer_id)
+    is_blocked = False
     if killer_action and killer_action.get('status') == 'blocked':
+        is_blocked = True
+    if killer_id in getattr(game, 'blocked_players_this_night', {}):
+        is_blocked = True
+    if str(killer_id) in [str(k) for k in getattr(game, 'blocked_players_this_night', {}).keys()]:
+        is_blocked = True
+
+    if is_blocked:
         logger.info(f"Kill attempt by {killer.display_name} failed because they were blocked.")
         return
 

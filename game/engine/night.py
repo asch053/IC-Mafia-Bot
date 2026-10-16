@@ -213,6 +213,7 @@ async def process_night_actions(game):
         player_id: {'action': data['type'], 'target': data['target_id'], 'status': None}
         for player_id, data in game.night_actions.items()
     }
+    game.kill_attempts_on.clear()
     game.heals_on_players.clear()
     game.blocked_players_this_night.clear()
     game.pending_blocked_heals = []
@@ -369,9 +370,18 @@ async def _resolve_night_deaths(game):
 
         # Case 1: Target was healed by a Doctor
         if victim_id in game.heals_on_players:
+            living_killers = [
+                alive_at_resolution_start[k_id]
+                for k_id in killer_ids
+                if k_id in alive_at_resolution_start
+            ]
+            if not living_killers:
+                logger.info(f"Save on {victim_obj.display_name} skipped: all attackers are dead.")
+                continue
+
             healer_id = game.heals_on_players[victim_id][0]
             healer_obj = game.players.get(healer_id)
-            primary_killer = game.players.get(killer_ids[0])
+            primary_killer = living_killers[0]
             event_type = 'save_battle_royale' if game.game_settings.get('game_type') == "battle_royale" else 'save'
             if hasattr(game, 'narration_manager') and game.narration_manager:
                 game.narration_manager.add_event(event_type, healer=healer_obj, victim=victim_obj, killer=primary_killer)
