@@ -607,7 +607,8 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
         writing_style = theme_data.get("writing_style", "- Tone: Suspenseful.")
     
     # QUIRKS INTEGRATION
-    quirks_block = _get_involved_quirks(game_state, events) if not is_prologue else "" # Don't include quirks in the prologue to save tokens and focus on world-building
+    # quirks_block = _get_involved_quirks(game_state, events) if not is_prologue else "" # Don't include quirks in the prologue to save tokens and focus on world-building
+    quirks_block = "" # Don't include quirks for the moment since need to tone down - TODO: Revisit this later to see if we can reintroduce quirks without overwhelming the AI or revealing too much meta-information.
 
     narrative_directives = ""
     if is_prologue:
