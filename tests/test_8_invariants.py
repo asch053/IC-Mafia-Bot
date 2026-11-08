@@ -177,12 +177,14 @@ class TestPhaseTransitions(unittest.IsolatedAsyncioTestCase):
         p4 = Player(4, "u4", "Delta")
         p4.assign_role(_make_role("Godfather", "Mafia", {"kill": "Kill"}))
         self.game.players = {1: p1, 2: p2, 3: p3, 4: p4}
-        # All players vote, tie so game continues to night
-        self.game.lynch_votes = {1: [3, 4], 4: [1, 2]}
+        # All players vote; Player 1 (Town) is lynched so 2 Town vs 1 Mafia remain and game continues to night
+        self.game.lynch_votes = {1: [2, 3, 4], 2: [1]}
 
         with patch('game.engine.loop.update_player_discord_roles', new_callable=AsyncMock):
             await game_loop_iteration(self.game)
 
+        self.assertEqual(self.game.game_settings["current_phase"], "night",
+                         "Phase should transition from day -> pre-night -> night")
         self.assertEqual(self.game.lynch_votes, {},
                          "Lynch votes should be cleared when transitioning to night")
 

@@ -1,6 +1,21 @@
 import logging
 import os
+import sys
 from datetime import datetime
+
+# Automatically delegate to the project's .venv interpreter if invoked via global system Python
+_root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_venv_python = os.path.join(_root_dir, ".venv", "Scripts", "python.exe")
+if (
+    sys.prefix == sys.base_prefix
+    and os.path.exists(_venv_python)
+    and os.path.normcase(os.path.abspath(sys.executable)) != os.path.normcase(os.path.abspath(_venv_python))
+    and not os.environ.get("_MAFIA_VENV_REDIRECTED")
+):
+    import subprocess
+    os.environ["_MAFIA_VENV_REDIRECTED"] = "1"
+    _res = subprocess.run([_venv_python] + sys.argv)
+    sys.exit(_res.returncode)
 
 # --- CRITICAL FIX: GLOBAL MOCK ENVIRONMENT VARIABLES ---
 # By placing this at the top of the logging setup, it runs instantly 

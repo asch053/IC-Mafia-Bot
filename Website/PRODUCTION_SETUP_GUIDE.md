@@ -19,7 +19,7 @@ flowchart TD
         DB["Append Game to Website/database/discord_bot.json"]
         Build["build_unified_leaderboard.py: build_unified_stats()"]
         Artifacts["Compile Website/data/history_archive.json & leaderboard.json"]
-        
+
         End --> Stories
         End --> DB
         DB --> Build
@@ -107,13 +107,19 @@ nano .env
 ```
 Ensure your `.env` contains your production credentials:
 ```ini
-DISCORD_TOKEN=your_production_bot_token_here
-BOT_PREFIX=!
+# Bot Authentication
+BOT_TOKEN=your_production_bot_token_here
+# (DISCORD_TOKEN also accepted as an alias)
+BOT_PREFIX=/
 ENVIRONMENT=production
 DATA_SAVE_PATH=stats/Production
 RULES_AND_ROLES_CHANNEL_ID=123456789012345678
-GOOGLE_SHEET_KEY=your_google_sheet_id
-GOOGLE_SERVICE_ACCOUNT_JSON=service_account.json
+
+# Google Sheets Configuration
+GOOGLE_SHEET_ID=your_production_google_sheet_id_here
+# (GOOGLE_SHEET_KEY also accepted as an alias)
+GOOGLE_CREDENTIALS_FILE=data/service_account.json
+# (GOOGLE_SERVICE_ACCOUNT_JSON also accepted as an alias)
 ```
 
 Compile initial website data:

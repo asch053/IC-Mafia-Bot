@@ -14,12 +14,33 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger("SheetsSync")
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 WEBSITE_DIR = os.path.join(ROOT_DIR, "Website")
 DB_DIR = os.path.join(WEBSITE_DIR, "database")
 if not os.path.exists(DB_DIR):
     DB_DIR = os.path.join(DATA_DIR, "database")
 WEBSITE_DATA_DIR = os.path.join(WEBSITE_DIR, "data")
+
+# Preload .env from ROOT_DIR so standalone executions inherit credentials
+for _env_name in [".env", ".env.production", ".env.test"]:
+    _env_path = os.path.join(ROOT_DIR, _env_name)
+    if os.path.exists(_env_path):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(_env_path, override=False)
+        except Exception:
+            try:
+                with open(_env_path, "r", encoding="utf-8") as _f:
+                    for _line in _f:
+                        _line = _line.strip()
+                        if _line and not _line.startswith("#") and "=" in _line:
+                            _k, _v = _line.split("=", 1)
+                            _v = _v.strip().strip('"').strip("'")
+                            os.environ.setdefault(_k.strip(), _v)
+            except Exception:
+                pass
 
 try:
     from google.oauth2.service_account import Credentials as ServiceAccountCredentials
@@ -35,17 +56,27 @@ except ImportError:
 
 try:
     import config
-    CONFIG_SHEET_ID = getattr(config, "GOOGLE_SHEET_ID", None)
-    CONFIG_CREDS_FILE = getattr(config, "GOOGLE_CREDENTIALS_FILE", None)
+    CONFIG_SHEET_ID = getattr(config, "GOOGLE_SHEET_ID", None) or getattr(config, "GOOGLE_SHEET_KEY", None)
+    CONFIG_CREDS_FILE = getattr(config, "GOOGLE_CREDENTIALS_FILE", None) or getattr(config, "GOOGLE_SERVICE_ACCOUNT_JSON", None)
 except Exception:
     CONFIG_SHEET_ID = None
     CONFIG_CREDS_FILE = None
 
-DEFAULT_CREDS_FILE = CONFIG_CREDS_FILE or os.getenv("GOOGLE_CREDENTIALS_FILE") or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
+DEFAULT_CREDS_FILE = (
+    CONFIG_CREDS_FILE
+    or os.getenv("GOOGLE_CREDENTIALS_FILE")
+    or os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
+    or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
+)
 if DEFAULT_CREDS_FILE and not os.path.isabs(DEFAULT_CREDS_FILE):
     DEFAULT_CREDS_FILE = os.path.join(ROOT_DIR, DEFAULT_CREDS_FILE)
 
-DEFAULT_SHEET_ID = CONFIG_SHEET_ID or os.getenv("GOOGLE_SHEET_ID") or "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
+DEFAULT_SHEET_ID = (
+    CONFIG_SHEET_ID
+    or os.getenv("GOOGLE_SHEET_ID")
+    or os.getenv("GOOGLE_SHEET_KEY")
+    or "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
+)
 
 def get_sheets_client(creds_path=DEFAULT_CREDS_FILE):
     if gspread is None:
@@ -79,13 +110,13 @@ def sync_worksheet(sheet, title, headers, rows):
     except gspread.WorksheetNotFound:
         logger.info(f"Creating new worksheet '{title}'...")
         ws = sheet.add_worksheet(title=title, rows=max(100, len(rows) + 50), cols=max(15, len(headers) + 2))
-    
+
     total_needed_rows = len(rows) + 5  # Include header and safety buffer
     if ws.row_count < total_needed_rows:
         rows_to_add = total_needed_rows - ws.row_count + 50
         logger.info(f"Resizing worksheet '{title}': adding {rows_to_add} rows...")
         ws.add_rows(rows_to_add)
-        
+
     if ws.col_count < len(headers):
         cols_to_add = len(headers) - ws.col_count + 5
         logger.info(f"Resizing worksheet '{title}': adding {cols_to_add} columns...")
@@ -220,7 +251,7 @@ def get_start_date(gid):
 
 def generate_pbp_rows_for_games(games_list, headers, header_col_map):
     generated_rows = []
-    
+
     for g in games_list:
         gid = str(g.get("thread_id", ""))
         gname = str(g.get("title") or f"Mafia Game {gid}")
@@ -229,11 +260,11 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
         roster = box.get("roster", [])
         if not roster:
             continue
-            
+
         wf = str(box.get("winning_faction") or g.get("winning_faction") or "Town")
         timeline = box.get("timeline", [])
         votes = g.get("lynch_vote_history", [])
-        
+
         tl_death_map = {}
         for ev in timeline:
             tgt = ev.get("target")
@@ -242,7 +273,7 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
             det = ev.get("details", "")
             if tgt and (ev_type in ["Kill", "Lynch", "Elimination"] or "killed" in det.lower() or "lynch" in det.lower()):
                 tl_death_map[tgt.lower()] = (ph, ev_type, det)
-                
+
         max_day = 1
         for p in roster:
             dp = str(p.get("death_phase") or "").lower()
@@ -256,10 +287,10 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
             vp = str(v.get("phase") or "").lower()
             m = re.findall(r'\d+', vp)
             if m: max_day = max(max_day, int(m[0]))
-            
+
         max_day = min(11, max(1, max_day))
         total_phases = max_day * 2
-        
+
         res_row = [""] * len(headers)
         res_row[0] = gid
         res_row[1] = gname
@@ -273,7 +304,7 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
             if n_col in header_col_map: res_row[header_col_map[n_col]] = "Death"
             if d_col in header_col_map: res_row[header_col_map[d_col]] = "Death"
         generated_rows.append(res_row)
-        
+
         player_votes = {}
         for v in votes:
             voter = str(v.get("voter_name") or "")
@@ -284,24 +315,24 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                 d_num = int(m[0])
                 if voter not in player_votes: player_votes[voter] = {}
                 player_votes[voter][d_num] = target
-                
+
         eliminated_by_day = {}
         for p in roster:
             dp = str(p.get("death_phase") or "")
             if 'day' in dp.lower():
                 m = re.findall(r'\d+', dp)
                 if m: eliminated_by_day[int(m[0])] = p.get("player")
-                
+
         for p in roster:
             pname = p.get("player", "Unknown")
             survived = bool(p.get("survived", False))
             role = p.get("role") or "Townie"
             if role in ["N/A", "Unknown", None]:
                 role = "Townie" if "town" in str(p.get("alignment")).lower() else "Mob"
-                
+
             align = str(p.get("alignment") or "Town")
             align_lower = align.lower()
-            
+
             if "town" in align_lower:
                 fact = "Town"
             elif any(x in align_lower for x in ["mafia", "mob"]):
@@ -310,7 +341,7 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                 fact = "SK"
             else:
                 fact = "Neutral"
-                
+
             wf_lower = wf.lower()
             if "draw" in wf_lower:
                 fact_status = "Draw"
@@ -318,14 +349,14 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                 fact_status = "Win"
             else:
                 fact_status = "Loss"
-                
+
             dp = str(p.get("death_phase") or "")
             dc = str(p.get("death_cause") or "")
             if not dp or dp.upper() in ["N/A", "NONE"]:
                 if pname.lower() in tl_death_map:
                     dp, tl_ev, tl_det = tl_death_map[pname.lower()]
                     if not dc: dc = tl_det or tl_ev
-            
+
             if survived or dp.upper() in ["N/A", "NONE"]:
                 survived = True
                 lasted = total_phases
@@ -339,7 +370,7 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                 else:
                     lasted = max(1, d_num * 2)
                 surv_depth = round((lasted / total_phases) * 100.0, 2) if total_phases > 0 else 0.0
-                
+
                 dc_lower = dc.lower()
                 if "lynch" in dc_lower or "day" in dp.lower():
                     dtype = "Lynched"
@@ -349,14 +380,14 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                     dtype = "by Mob"
                 else:
                     dtype = "by Mob" if "night" in dp.lower() else "Lynched"
-                    
+
             p_v = player_votes.get(pname, {})
             if p_v:
                 correct_votes = sum(1 for d_idx, tgt in p_v.items() if d_idx in eliminated_by_day and eliminated_by_day[d_idx] == tgt)
                 vote_acc = f"{(correct_votes / len(p_v) * 100.0):.2f}%"
             else:
                 vote_acc = ""
-                
+
             prow = [""] * len(headers)
             prow[0] = gid
             prow[1] = gname
@@ -372,13 +403,13 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
             prow[11] = str(lasted)
             prow[12] = f"{surv_depth:.2f}%"
             prow[13] = vote_acc
-            
+
             for d_idx, tgt in p_v.items():
                 if d_idx <= 11:
                     v_col = f"{d_idx}.0 Vote"
                     if v_col in header_col_map:
                         prow[header_col_map[v_col]] = tgt
-                        
+
             if not survived and dp:
                 m = re.findall(r'\d+', dp)
                 d_num = min(11, int(m[0]) if m else 1)
@@ -389,9 +420,9 @@ def generate_pbp_rows_for_games(games_list, headers, header_col_map):
                 last_day_col = f"Day {max_day}"
                 if last_day_col in header_col_map:
                     prow[header_col_map[last_day_col]] = f"Winner - {role}" if fact_status == "Win" else f"Alive - {role}"
-                    
+
             generated_rows.append(prow)
-            
+
     return generated_rows
 
 def build_phase_by_phase_dataset():
@@ -406,10 +437,10 @@ def build_phase_by_phase_dataset():
     cache_path = os.path.join(WEBSITE_DATA_DIR, "phase_by_phase_source.json")
     if not os.path.exists(cache_path):
         cache_path = os.path.join(WEBSITE_DIR, "data", "phase_by_phase_source.json")
-        
+
     headers = []
     raw_source_rows = []
-    
+
     if os.path.exists(cache_path):
         with open(cache_path, 'r', encoding='utf-8') as f:
             src = json.load(f)
@@ -417,51 +448,51 @@ def build_phase_by_phase_dataset():
             headers = [old_headers[0], "Game Name", "Start Date"] + old_headers[1:]
             raw_rows = src.get("rows", [])
             raw_source_rows = raw_rows[1:] if len(raw_rows) > 1 else []
-            
+
     if not headers:
         logger.warning("No Phase by Phase source headers found; skipping Phase_By_Phase sync.")
         return None, None
-        
+
     header_col_map = {h: i for i, h in enumerate(headers)}
-    
+
     # 1. Forum Era Games
     forum_games = load_json(os.path.join(DB_DIR, "historic_forum.json"), [])
     forum_rows = generate_pbp_rows_for_games(forum_games, headers, header_col_map)
-    
+
     # 2. Discourse Era Games: 55-65 from sheet, 65+ generated
     disc_55_65_ids = {'55', '56', '57', '58', '59', '60', '61', '62', '63', '64', '65'}
     disc_source_rows = []
     for r in raw_source_rows:
         if r and r[0] in disc_55_65_ids:
             disc_source_rows.append([r[0], get_useful_name(r[0]), get_start_date(r[0])] + r[1:])
-    
+
     disc_games = load_json(os.path.join(DB_DIR, "historic_discourse.json"), [])
     disc_55_65_tids = {'6053', '6219', '6347', '6452', '6556', '6631', '6680', '6772', '6825', '6871', '6913'}
     disc_65_plus_games = [g for g in disc_games if str(g.get('thread_id')) not in disc_55_65_tids]
     disc_65_plus_rows = generate_pbp_rows_for_games(disc_65_plus_games, headers, header_col_map)
-    
+
     # 3. Discord Manual Games: 998-1027 from sheet
     manual_source_rows = []
     for r in raw_source_rows:
         if r and r[0] in MANUAL_THEMES:
             manual_source_rows.append([r[0], get_useful_name(r[0]), get_start_date(r[0])] + r[1:])
-    
+
     # 4. Modern Discord Bot Games
     bot_games = load_json(os.path.join(DB_DIR, "discord_bot.json"), [])
     bot_rows = generate_pbp_rows_for_games(bot_games, headers, header_col_map)
-    
+
     all_combined_rows = forum_rows + disc_source_rows + disc_65_plus_rows + manual_source_rows + bot_rows
     logger.info(
         f"Compiled Phase_By_Phase dataset: {len(all_combined_rows)} rows across all eras "
         f"({len(forum_rows)} Forum, {len(disc_source_rows)} Discourse 55-65, {len(disc_65_plus_rows)} Discourse 65+, "
         f"{len(manual_source_rows)} Discord Manual, {len(bot_rows)} Discord Bot)."
     )
-    
+
     # Save local cache
     all_cache_path = os.path.join(WEBSITE_DATA_DIR, "phase_by_phase_all.json")
     with open(all_cache_path, 'w', encoding='utf-8') as f:
         json.dump({"headers": headers, "rows": [headers] + all_combined_rows}, f, ensure_ascii=False)
-        
+
     return headers, all_combined_rows
 
 def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE):
@@ -477,6 +508,8 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         except Exception:
             def get_canonical_game_id(era, tid, title=""): return str(tid)
 
+    logger.info(f"Target Google Sheet ID: {sheet_id}")
+    logger.info(f"Target Credentials File: {creds_path}")
     client = get_sheets_client(creds_path)
     sheet = client.open_by_key(sheet_id)
     logger.info(f"Connected to Google Spreadsheet: '{sheet.title}' (ID: {sheet_id})")
@@ -489,7 +522,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
 
     # 2. Compile era-specific game rows
     era_headers = [
-        "Game_ID", "Era", "Title", "Start_Date", "Moderator", "Game_Type", "Winning_Faction", 
+        "Game_ID", "Era", "Title", "Start_Date", "Moderator", "Game_Type", "Winning_Faction",
         "Total_Players", "Total_Posts", "MVP_Player", "MVP_Rationale", "Summary_File", "Story_File"
     ]
 
@@ -532,9 +565,9 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
     history_archive = load_json(os.path.join(WEBSITE_DATA_DIR, "history_archive.json"), [])
     if not history_archive:
         history_archive = load_json(os.path.join(DATA_DIR, "history_archive.json"), [])
-        
+
     master_game_headers = [
-        "Game_ID", "Era", "Title", "Start_Date", "Moderator", "Game_Type", "Winning_Faction", 
+        "Game_ID", "Era", "Title", "Start_Date", "Moderator", "Game_Type", "Winning_Faction",
         "Total_Players", "Total_Posts", "MVP_Player", "Summary_File", "Story_File"
     ]
     master_game_rows = []
@@ -561,7 +594,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
 
     # 4. Master Players Tab
     master_player_headers = [
-        "Game_ID", "Era", "Player_ID", "Player_Name", "Role", "Alignment", 
+        "Game_ID", "Era", "Player_ID", "Player_Name", "Role", "Alignment",
         "Is_Winner", "Survived", "Death_Phase", "Death_Cause"
     ]
     master_player_rows = []
@@ -570,7 +603,7 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         alt_path = os.path.join(DATA_DIR, "master_user_map.json")
         if os.path.exists(alt_path): user_map_path = alt_path
     user_map = load_json(user_map_path, {})
-    
+
     try:
         from Website.build_unified_leaderboard import resolve_player_identity, CANONICAL_NAMES, build_id_to_canonical
         id_to_canonical = build_id_to_canonical(user_map)
@@ -594,11 +627,11 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
             is_win = p.get("is_winner")
             if is_win is None:
                 is_win = (align.lower() == wf) if wf else False
-            
+
             canonical_id, canonical_name = resolve_player_identity(raw_name, p.get("player_id"), user_map, id_to_canonical)
             if canonical_id in CANONICAL_NAMES:
                 canonical_name = CANONICAL_NAMES[canonical_id]
-                
+
             master_player_rows.append([
                 gid,
                 era,
@@ -644,8 +677,8 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
     leaderboard = load_json(os.path.join(WEBSITE_DATA_DIR, "leaderboard.json"), [])
     analytics_headers = [
         "Player Name", "Skill Score", "Persuasion (P)", "Elusiveness (E)", "Understanding (U)",
-        "Games Played", "Wins", "Losses", "Win Rate %", "Survival %", 
-        "Times Lynched", "D1 Lynches", "Total Night Deaths", "N1 Deaths", 
+        "Games Played", "Wins", "Losses", "Win Rate %", "Survival %",
+        "Times Lynched", "D1 Lynches", "Total Night Deaths", "N1 Deaths",
         "Vote Accuracy %", "Town Games", "Mafia Games", "Neutral/SK Games", "Plain Town Games",
         "Town Wins", "Mafia Wins", "Neutral/SK Wins", "Known Aliases"
     ]

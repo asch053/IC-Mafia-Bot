@@ -1,16 +1,48 @@
-"""TEMPLATE Configuration file for the IC Mafia Bot. This file contains all the constants and settings used throughout the bot's codebase. 
-It is designed to be easily editable for different environments (development, testing, production) and can be overridden by environment variables 
+"""TEMPLATE Configuration file for the IC Mafia Bot. This file contains all the constants and settings used throughout the bot's codebase.
+It is designed to be easily editable for different environments (development, testing, production) and can be overridden by environment variables
 for secure deployment."""
 
 import os
 
+# Automatically load from .env or .env.test if present and env vars are not set
+_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+for _env_file in [".env", ".env.production", ".env.test"]:
+    _env_path = os.path.join(_ROOT_DIR, _env_file)
+    if os.path.exists(_env_path):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(_env_path, override=False)
+        except Exception:
+            try:
+                with open(_env_path, "r", encoding="utf-8") as _f:
+                    for _line in _f:
+                        _line = _line.strip()
+                        if _line and not _line.startswith("#") and "=" in _line:
+                            _k, _v = _line.split("=", 1)
+                            _v = _v.strip()
+                            if not (_v.startswith('"') or _v.startswith("'")):
+                                _v = _v.split("#", 1)[0].strip()
+                            else:
+                                _q = _v[0]
+                                _eq = _v.find(_q, 1)
+                                if _eq != -1:
+                                    _v = _v[1:_eq]
+                            os.environ.setdefault(_k.strip(), _v.strip())
+            except Exception:
+                pass
+
 # --- Helper Function for Strict Loading ---
-def get_required_env(var_name: str, default: str = None) -> str:
+def get_required_env(var_name: str, default: str = None, aliases: list = None) -> str:
     """
-    Must Fix: Fetches an environment variable and fails gracefully if missing.
-    This prevents the bot from starting with missing configuration data.
+    Fetches an environment variable and fails gracefully if missing.
+    Supports fallback aliases (e.g. GOOGLE_SHEET_KEY for GOOGLE_SHEET_ID).
     """
     value = os.getenv(var_name)
+    if not value and aliases:
+        for alias in aliases:
+            value = os.getenv(alias)
+            if value:
+                break
     if not value:
         if default is not None:
             return default
@@ -21,7 +53,7 @@ def get_required_env(var_name: str, default: str = None) -> str:
     return value
 
 # --- BOT AUTHENTICATION TOKENS ---
-BOT_TOKEN = get_required_env("BOT_TOKEN")  # Put Your Testing Bot Token Here
+BOT_TOKEN = get_required_env("BOT_TOKEN", aliases=["DISCORD_TOKEN"])  # Put Your Bot Token Here
 
 # --- DISCORD SERVER AND CHANNEL IDS ---
 SERVER_ID                   =   get_required_env("SERVER_ID", 123456789012345678)                   # Replace with your server's ID
@@ -40,6 +72,8 @@ ANNOUNCEMENT_CHANNEL_ID     =   get_required_env("ANNOUNCEMENT_CHANNEL_ID", 1234
 # -- Standard Game Roles --
 LIVING_PLAYER_ROLE_ID           = int(get_required_env("LIVING_PLAYER_ROLE_ID", 123456789012345678))        # Role ID for the "Player" role
 DEAD_PLAYER_ROLE_ID             = int(get_required_env("DEAD_PLAYER_ROLE_ID", 123456789012345678))          # Role ID for the "Dead" role
+LIVING_ROLE_ID                  = int(get_required_env("LIVING_ROLE_ID", LIVING_PLAYER_ROLE_ID))            # Role ID for living players
+DEAD_ROLE_ID                    = int(get_required_env("DEAD_ROLE_ID", DEAD_PLAYER_ROLE_ID))                # Role ID for dead players
 SPECTATOR_ROLE_ID               = int(get_required_env("SPECTATOR_ROLE_ID", 123456789012345678))            # Role ID for the "Spectator" role
 MOD_ROLE_ID                     = int(get_required_env("MOD_ROLE_ID", 123456789012345678))                  # Role ID for the "Moderator" role
 # --- # Classic Award Roles
@@ -60,10 +94,11 @@ GOOGLE_AI_API_KEY = get_required_env("GOOGLE_AI_API_KEY")  # Your API key for Go
 GOOGLE_AI_TIMEOUT = 120.0  # Timeout for Google AI API calls in seconds
 AI_MAX_RETRIES = 3  # Maximum number of retries for AI story generation
 AI_RETRY_DELAY = 5  # Base delay in seconds for retries (will be multiplied by the retry count for exponential backoff)
+MODEL_NAME = "gemini-2.5-flash-lite" # Update to the latest valid model identifier as needed
 
 # --- BOT SETTINGS ---
 BOT_PREFIX = get_required_env("BOT_PREFIX", "/")  # Replace with your desired prefix
-OWNER_ID = int(get_required_env("OWNER_ID"))  # Replace with your Discord user ID 
+OWNER_ID = int(get_required_env("OWNER_ID"))  # Replace with your Discord user ID
 
 # --- GAME TIMING CONFIGURATION PARAMETERS ---
 JOIN_HOURS  = 24    # Duration of signup period in hours
@@ -89,11 +124,12 @@ signup_loop_interval_seconds = 15  # Interval for the signup loop to check playe
 MAX_MISSED_VOTES = 1 # Player is killed after missing 1 vote
 
 # --- Statistics Tracking Settings ---
-GOOGLE_SHEET_ID = get_required_env("GOOGLE_SHEET_ID")  # Replace with your Google Sheet ID
-GOOGLE_CREDENTIALS_FILE = get_required_env("GOOGLE_CREDENTIALS_FILE") # Replace with your Google API credentials file
+GOOGLE_SHEET_ID = get_required_env("GOOGLE_SHEET_ID", aliases=["GOOGLE_SHEET_KEY"])  # Replace with your Google Sheet ID
+GOOGLE_CREDENTIALS_FILE = get_required_env("GOOGLE_CREDENTIALS_FILE", aliases=["GOOGLE_SERVICE_ACCOUNT_JSON"]) # Replace with your Google API credentials file
 GOOGLE_SHEET_GAMES_TAB = "Games"
 GOOGLE_SHEET_PLAYERS_TAB = "Players"
 GOOGLE_SHEET_VOTES_TAB = "Votes"
+GOOGLE_SHEET_RULES_TAB = get_required_env("GOOGLE_SHEET_RULES_TAB", "Rules Setup")  # Tab name for dynamic rules and roles setup
 
 GOOGLE_SIMULATION_SHEET_ID = get_required_env("GOOGLE_SIMULATION_SHEET_ID")  # Replace with your Simulation Sheet ID
 

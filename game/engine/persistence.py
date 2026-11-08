@@ -99,8 +99,10 @@ async def save_data_summary(game, game_data, final_summary):
         game_log_dir = os.path.join(base_dir, game_id)
         os.makedirs(game_log_dir, exist_ok=True)
         file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
-        with open(file_path, 'w', encoding='utf-8') as f:
-            json.dump(final_summary, f, ensure_ascii=False, indent=4)
+        temp_path = f"{file_path}.tmp"
+        with open(temp_path, 'w', encoding='utf-8') as f:
+            json.dump(final_summary, f, ensure_ascii=False, indent=4, default=str)
+        os.replace(temp_path, file_path)
         logger.info(f"Game summary saved successfully to {file_path}")
     except Exception as e:
         logger.error(f"Failed to save game summary: {e}")
@@ -400,7 +402,8 @@ async def save_game_summary(game, winner):
 
     await save_data_summary(game, game_data, final_summary)
     await save_story_log(game, alignments, end_time)
-    await update_modular_database(game, game_data, final_summary, winner)
+    if not str(game_data.get('game_id', '')).upper().startswith(('TEST-', 'BR-TEST-')):
+        await update_modular_database(game, game_data, final_summary, winner)
     await export_game_stats(game)
 
 

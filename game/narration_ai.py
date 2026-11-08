@@ -8,8 +8,6 @@ import os
 import random
 from datetime import datetime
 
-from discord import Game
-
 try:
     import config
 except ImportError:
@@ -17,9 +15,6 @@ except ImportError:
 
 from utils.utilities import load_data # Fixed import path
 from community import quirk_logic
-
-from config import MODEL_NAME
-
 
 # Import the new 2026 standard Google GenAI SDK
 try:
@@ -33,7 +28,7 @@ logger = logging.getLogger('discord')
 
 # CRITICAL FIX: Update the model name to a known valid identifier
 # If gemini-latest-flash still fails, fallback to gemini-2.5-flash
-MODEL_NAME = getattr(config, 'MODEL_NAME', 'gemini-2.5-flash') if not MODEL_NAME else MODEL_NAME
+MODEL_NAME = getattr(config, 'MODEL_NAME', None) or 'gemini-2.5-flash'
 
 # Initialize the client safely depending on how your config is named
 _api_key = getattr(config, 'GEMINI_API_KEY', getattr(config, 'GOOGLE_AI_API_KEY', None))
@@ -272,7 +267,7 @@ def _generate_mechanical_summary(events: list, game_state: dict = None) -> str:
             victim = event.get('victim')
             logger.info(f"Generating immune kill event story part for victim: {victim}")
             if not victim:
-                return None
+                continue
             role_name = getattr(victim.role, 'display_name', None) or (victim.role.name if getattr(victim, 'role', None) else "Unknown")
             is_br = False
             if game_state:
@@ -473,23 +468,21 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             # Block event (Classic)
             elif etype == 'block':
                 action_type = e.get('action_type', 'action')
-                action_target = e.get('action_target')
-                action_target_name = action_target.display_name if action_target else "their target"
 
                 if action_type == 'kill':
                     if story_type == "Rom Com":
-                        event_lines.append(f"CRITICAL EVENT: An attempted BREAKUP / DUMPING in the night was INTERCEPTED and STOPPED by a mysterious figure before anyone's heart could be broken! An angry suitor was stopped before they could dump {action_target_name}. Focus the narrative on the thwarted breakup, NOT on the identity of the person who tried to dump them.")
+                        event_lines.append("CRITICAL EVENT: An attempted BREAKUP / DUMPING in the night was INTERCEPTED and STOPPED by a mysterious figure before anyone's heart could be broken! Focus the narrative on the thwarted breakup, NOT on the identity of the person who tried to dump them or who they were targeting.")
                     elif story_type == "Office Restructuring":
-                        event_lines.append(f"CRITICAL EVENT: An attempted TERMINATION / FIRING was INTERCEPTED and BLOCKED before an employee could be handed their pink slip! Management or HR was stopped before {action_target_name} could be laid off. Focus the narrative on the blocked firing, NOT on who ordered it.")
+                        event_lines.append("CRITICAL EVENT: An attempted TERMINATION / FIRING was INTERCEPTED and BLOCKED before an employee could be handed their pink slip! Focus the narrative on the blocked firing, NOT on who ordered it or who was targeted.")
                     else:
-                        event_lines.append(f"CRITICAL EVENT: An attempted MURDER / ASSASSINATION in the night was INTERCEPTED and THWARTED by a shadowy figure! An attacker was stopped in their tracks before they could eliminate {action_target_name}. Focus the narrative on the suspense of the thwarted attack and the intervention, NOT on the identity of the attacker.")
+                        event_lines.append("CRITICAL EVENT: An attempted MURDER / ASSASSINATION in the night was INTERCEPTED and THWARTED by a shadowy figure! Focus the narrative on the suspense of the thwarted attack and the intervention, NOT on the identity of the attacker or their intended victim.")
                 elif action_type == 'heal':
                     if story_type == "Rom Com":
-                        event_lines.append(f"CRITICAL EVENT: An attempt by a loyal wingman to protect {action_target_name} from a breakup was INTERCEPTED and BLOCKED by a meddling third party, leaving them completely vulnerable to heartbreak!")
+                        event_lines.append("CRITICAL EVENT: An attempt by a loyal wingman to protect someone from a breakup was INTERCEPTED and BLOCKED by a meddling third party, leaving the target vulnerable to heartbreak!")
                     elif story_type == "Office Restructuring":
-                        event_lines.append(f"CRITICAL EVENT: An attempt to provide job protection for {action_target_name} was INTERCEPTED and BLOCKED by red tape, leaving them vulnerable to termination!")
+                        event_lines.append("CRITICAL EVENT: An attempt to provide job protection for a colleague was INTERCEPTED and BLOCKED by red tape, leaving them vulnerable to termination!")
                     else:
-                        event_lines.append(f"CRITICAL EVENT: An attempt to provide medical protection to {action_target_name} was INTERCEPTED and BLOCKED by a shadowy figure before it could take effect, leaving them completely defenseless against the attack tonight!")
+                        event_lines.append("CRITICAL EVENT: An attempt to provide medical protection was INTERCEPTED and BLOCKED by a shadowy figure before it could take effect, leaving the intended patient defenseless against tonight's attack!")
                 elif action_type == 'block':
                     if story_type == "Rom Com":
                         event_lines.append("CRITICAL EVENT: An attempt to cockblock / interfere with someone was INTERCEPTED and THWARTED in the shadows!")
@@ -521,8 +514,12 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             elif etype == 'save': 
                 victim = e.get('victim')
                 if victim:
-                    role_name = victim.role.name if victim.role else "Unknown"
-                    event_lines.append(f"CRITICAL EVENT: {victim.display_name} was SAVED by a the doctor who heled them after the attack.")
+                    if story_type == "Rom Com":
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was targeted for a breakup in the night, but was SAVED by a loyal wingman / matchmaker who intervened in the nick of time!")
+                    elif story_type == "Office Restructuring":
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was targeted for termination in the night, but was SAVED by an anonymous protector who shielded their job!")
+                    else:
+                        event_lines.append(f"CRITICAL EVENT: {victim.display_name} was attacked in the night, but was SAVED by the Doctor who healed them just in time!")
             # Save (Heal) event (Battle Royale)
             elif etype == 'save_battle_royale':  
                 victim = e.get('victim')
@@ -556,16 +553,18 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             elif etype == 'kill_immune':
                 victim = e.get('victim')
                 if victim:
-                    if game_state.get('game_type', '').lower() in ['battle_royale', 'br']:
-                        # After: Masks the target of a failed kill in Classic mode
-                            v = e.get('victim')
-                            t_name = v.display_name if v else "a target"
-                            event_lines.append(f"PUBLIC EVENT: {t_name} survived an assassination attempt.")
+                    if str(game_state.get('game_type', '')).lower() in ['battle_royale', 'battle royale', 'br']:
+                        t_name = victim.display_name if victim else "a target"
+                        event_lines.append(f"PUBLIC EVENT: {t_name} survived an assassination attempt because they were immune.")
                     else:
-                        # Strictly anonymous for Classic Mafia
-                        event_lines.append("SECRET EVENT: An assassination attempt failed. The target survived anonymously.") 
-                        role_name = victim.role.name if victim.role else "Unknown"
-                        event_lines.append(f"SECRET EVENT: An assailant ambushed **{role_name}** in the dark, but their target was unfazed. The attack had no effect!.")    
+                        # Strictly anonymous for Classic Mafia (only role title, never player name)
+                        role_label = getattr(victim.role, 'display_name', None) or (victim.role.name if getattr(victim, 'role', None) else "Unknown")
+                        if story_type == "Rom Com":
+                            event_lines.append(f"CRITICAL EVENT: Someone tried to dump / break the heart of the **{role_label}** in the night, but they were completely unfazed and immune! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")
+                        elif story_type == "Office Restructuring":
+                            event_lines.append(f"CRITICAL EVENT: Someone tried to fire / lay off the **{role_label}** in the night, but they had ironclad tenure and were completely unfazed! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")
+                        else:
+                            event_lines.append(f"CRITICAL EVENT: An assailant ambushed the **{role_label}** in the dark, but the target was night-immune and completely unfazed! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")    
             # Investigation event (Classic and Battle Royale) - This is a secret event that gives the AI context but is not revealed to players, so we can be more descriptive to help the AI generate better stories without worrying about meta-gaming or players using the narration as a source of information about investigations.
             elif etype in ['investigate', 'investigate_royale']:
                 #event_lines.append("SECRET EVENT: A lone figure was seen snooping around someone's house, trying to uncover secrets.")   
