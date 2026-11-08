@@ -97,8 +97,8 @@ The bot uses a `config.py` file for secrets and server-specific IDs, which is **
 2.  **Discord Role Configuration:**
 
       * The bot needs to know the Discord Role IDs for `Living Players`, `Dead Players`, etc.
-      * Copy the file `discord_roles.json` (or a template, if you have one) into the `Data/` directory.
-      * Open `Data/discord_roles.json` and replace the placeholder IDs with your server's actual Role IDs.
+      * Copy the file `discord_roles.json` (or a template, if you have one) into the `data/` directory.
+      * Open `data/discord_roles.json` and replace the placeholder IDs with your server's actual Role IDs.
 
 ## ▶️ Running the Bot
 

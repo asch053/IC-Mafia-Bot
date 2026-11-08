@@ -733,7 +733,17 @@ def _archive_phase_data(game_state: dict, phase_key: str, prompt: str, thoughts:
     game_mode_raw = str(game_state.get('game_type', 'classic')).lower()
     folder_name = "Battle Royale" if "battle_royale" in game_mode_raw else "Classic"
     
-    archive_dir = os.path.join(str(config.data_save_path).title(), folder_name, game_id)
+    raw_save_path = getattr(config, 'data_save_path', None)
+    if not isinstance(raw_save_path, str) or not raw_save_path.strip() or raw_save_path.startswith("<"):
+        gt = getattr(config, 'game_type', 'Testing')
+        raw_save_path = f"stats/{gt if isinstance(gt, str) and not gt.startswith('<') else 'Testing'}"
+    norm_save_path = raw_save_path.replace("\\", "/").lstrip("./")
+    if norm_save_path.lower().startswith("stats/"):
+        norm_save_path = "stats/" + norm_save_path[6:]
+    elif norm_save_path.lower() == "stats":
+        norm_save_path = "stats"
+
+    archive_dir = os.path.join(norm_save_path, folder_name, str(game_id))
     os.makedirs(archive_dir, exist_ok=True)
     
     archive_path = os.path.join(archive_dir, f"{game_id}_ai_prompts.json")

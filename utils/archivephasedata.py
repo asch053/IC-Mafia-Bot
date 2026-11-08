@@ -9,9 +9,9 @@ logger.setLevel(logging.DEBUG)
 
 def archive_phase_data(phase_key: str, prompt: str, thoughts: str, result: str):
     """Stores the complete AI transaction for debugging and observability."""
-    archive_path = os.path.join("Logs", "prompts_archive.json")
+    archive_path = os.path.join("logs", "prompts_archive.json")
     logger.debug(f"Archiving phase data for phase '{phase_key}' to {archive_path}.")
-    os.makedirs("Logs", exist_ok=True)
+    os.makedirs("logs", exist_ok=True)
     archive_data = {}
     if os.path.exists(archive_path):
         try:

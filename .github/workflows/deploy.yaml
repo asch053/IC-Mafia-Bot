@@ -26,6 +26,7 @@ jobs:
       run: |
         # We create a dummy config so imports don't fail on the GitHub Runner.
         echo "BOT_TOKEN = 'mock_token'" > config.py
+        echo "SERVER_ID = 1" >> config.py
         echo "ANNOUNCEMENT_CHANNEL_ID = 1" >> config.py
         echo "SIGN_UP_HERE_CHANNEL_ID = 2" >> config.py
         echo "RULES_AND_ROLES_CHANNEL_ID = 3" >> config.py
@@ -33,11 +34,58 @@ jobs:
         echo "VOTING_CHANNEL_ID = 5" >> config.py
         echo "TALKY_TALKY_CHANNEL_ID = 6" >> config.py
         echo "MOD_CHANNEL_ID = 7" >> config.py
+        echo "DEADZOR_CHANNEL_ID = 8" >> config.py
+        echo "LIVING_ROLE_ID = 10" >> config.py
+        echo "DEAD_ROLE_ID = 11" >> config.py
+        echo "SPECTATOR_ROLE_ID = 12" >> config.py
+        echo "MOD_ROLE_ID = 13" >> config.py
+        echo "CLASSIC_TOP_SKILL_ROLE_ID = 14" >> config.py
+        echo "CLASSIC_TOP_SURVIVOR_ROLE_ID = 15" >> config.py
+        echo "CLASSIC_RED_SHIRT_ROLE_ID = 16" >> config.py
+        echo "BR_TOP_WINS_ROLE_ID = 17" >> config.py
+        echo "BR_TOP_SURVIVOR_ROLE_ID = 18" >> config.py
+        echo "BR_RED_SHIRT_ROLE_ID = 19" >> config.py
+        echo "OWNER_ID = 1" >> config.py
+        echo "BOT_PREFIX = '/'" >> config.py
+        echo "game_type = 'Testing'" >> config.py
+        echo "data_save_path = 'stats/Testing'" >> config.py
+        echo "GOOGLE_AI_API_KEY = 'mock_key'" >> config.py
+        echo "GOOGLE_AI_TIMEOUT = 120.0" >> config.py
+        echo "AI_MAX_RETRIES = 3" >> config.py
+        echo "AI_RETRY_DELAY = 5" >> config.py
+        echo "MODEL_NAME = 'gemini-2.5-flash-lite'" >> config.py
+        echo "JOIN_HOURS = 24" >> config.py
+        echo "PHASE_HOURS = 12" >> config.py
+        echo "game_settings = {}" >> config.py
         echo "min_players = 3" >> config.py
+        echo "min_cop_players = 5" >> config.py
+        echo "min_doctor_players = 5" >> config.py
+        echo "min_town_rb_players = 10" >> config.py
+        echo "min_mob_rb_mafia_count = 4" >> config.py
+        echo "min_sk_players = 8" >> config.py
+        echo "mob_ratio = 0.25" >> config.py
         echo "signup_loop_interval_seconds = 5" >> config.py
         echo "game_loop_interval_seconds = 5" >> config.py
         echo "MAX_MISSED_VOTES = 2" >> config.py
         echo "REMINDER_POINTS = {5: '5m'}" >> config.py
+        echo "GOOGLE_SHEET_ID = 'mock_sheet'" >> config.py
+        echo "GOOGLE_CREDENTIALS_FILE = 'mock.json'" >> config.py
+        echo "GOOGLE_SIMULATION_SHEET_ID = 'mock_sim'" >> config.py
+        echo "GOOGLE_SHEET_GAMES_TAB = 'Games'" >> config.py
+        echo "GOOGLE_SHEET_PLAYERS_TAB = 'Players'" >> config.py
+        echo "GOOGLE_SHEET_VOTES_TAB = 'Votes'" >> config.py
+        echo "GOOGLE_SHEET_RULES_TAB = 'Rules Setup'" >> config.py
+        echo "SKILL_WEIGHT_PERSUASION = 1" >> config.py
+        echo "SKILL_WEIGHT_ELUSIVENESS = 1" >> config.py
+        echo "SKILL_WEIGHT_UNDERSTANDING = 1" >> config.py
+        echo "SKILL_EARLY_GAME_PERCENT = 0.25" >> config.py
+        echo "SKILL_LATE_GAME_PERCENT = 0.75" >> config.py
+        echo "SKILL_WIN_WEIGHT_TOWN = 0.10" >> config.py
+        echo "SKILL_WIN_WEIGHT_MAFIA = 0.35" >> config.py
+        echo "SKILL_WIN_WEIGHT_NEUTRAL = 0.55" >> config.py
+        echo "DM_TIMEOUT = 20.0" >> config.py
+        echo "message_send_delay = 1" >> config.py
+        echo "start_message_send_delay = 1" >> config.py
         
     - name: Run Unit Tests
       run: |

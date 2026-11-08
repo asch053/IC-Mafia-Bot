@@ -87,7 +87,7 @@ BR_RED_SHIRT_ROLE_ID            = int(get_required_env("BR_RED_SHIRT_ROLE_ID", 1
 
 # --- GAME DATA PATHS AND SETTINGS ---
 game_type = get_required_env("GAME_TYPE", "Alpha Testing")  # Game type for the bot
-data_save_path = f"Stats/{game_type}"  # Path to save game data
+data_save_path = f"stats/{game_type}"  # Path to save game data
 
 # --- EXTERNAL API KEYS ---
 GOOGLE_AI_API_KEY = get_required_env("GOOGLE_AI_API_KEY")  # Your API key for Google AI services here

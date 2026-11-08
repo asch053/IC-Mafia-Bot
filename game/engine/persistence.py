@@ -11,6 +11,22 @@ logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 
+def _get_stats_base_path() -> str:
+    """Returns config.data_save_path normalized so the root stats folder is always lowercase './stats/'."""
+    raw_path = getattr(config, 'data_save_path', None)
+    if not isinstance(raw_path, str) or not raw_path.strip() or raw_path.startswith("<"):
+        game_type = getattr(config, 'game_type', 'Testing')
+        if not isinstance(game_type, str) or game_type.startswith("<"):
+            game_type = "Testing"
+        raw_path = os.path.join("stats", game_type)
+    norm = raw_path.replace("\\", "/").lstrip("./")
+    if norm.lower().startswith("stats/"):
+        norm = "stats/" + norm[6:]
+    elif norm.lower() == "stats":
+        norm = "stats"
+    return norm
+
+
 async def save_story_log(game, alignments, end_time):
     """
     Saves the full narrative history, player manifest, and chat log 
@@ -21,14 +37,15 @@ async def save_story_log(game, alignments, end_time):
     try:
         full_story = game.narration_manager.get_full_story_log()
         game_id = game.game_settings.get('game_id', 'unknown_game')
-        output_dir = f"{config.data_save_path}/{game.game_settings.get('game_type', 'classic')}/{game.game_settings.get('game_id')}".title().replace('_', ' ')
+        game_type_dir = str(game.game_settings.get('game_type', 'classic')).replace('_', ' ').title()
+        output_dir = os.path.join(_get_stats_base_path(), game_type_dir, str(game_id))
         if not os.path.exists(output_dir):
             os.makedirs(output_dir, exist_ok=True)
             logger.info(f"Created output directory: {output_dir}")
         else:
             logger.info(f"Output directory already exists: {output_dir}")
 
-        filename = f"{output_dir}/game_{game_id}_story.md"
+        filename = os.path.join(output_dir, f"game_{game_id}_story.md")
         logger.info(f"Story log will be saved to: {filename}")
 
         manifest_section = "## Cast of Characters\n\n| Player | Role | Status |\n| :--- | :--- | :--- |\n"
@@ -94,9 +111,9 @@ async def save_data_summary(game, game_data, final_summary):
             logger.error("Cannot save summary, game_id is missing.")
             return
 
-        game_type_dir = game.game_settings.get('game_type', 'classic').replace('_', ' ').title()
-        base_dir = os.path.join(config.data_save_path, game_type_dir)
-        game_log_dir = os.path.join(base_dir, game_id)
+        game_type_dir = str(game.game_settings.get('game_type', 'classic')).replace('_', ' ').title()
+        base_dir = os.path.join(_get_stats_base_path(), game_type_dir)
+        game_log_dir = os.path.join(base_dir, str(game_id))
         os.makedirs(game_log_dir, exist_ok=True)
         file_path = os.path.join(game_log_dir, f"{game_id}_summary.json")
         temp_path = f"{file_path}.tmp"
@@ -157,8 +174,8 @@ async def update_modular_database(game, game_data, final_summary, winner):
 
         # 2. Story as Written
         story_as_written = ""
-        game_type_dir = game.game_settings.get('game_type', 'classic').replace('_', ' ').title()
-        story_stats_path = os.path.join(config.data_save_path, game_type_dir, game_id, f"game_{game_id}_story.md")
+        game_type_dir = str(game.game_settings.get('game_type', 'classic')).replace('_', ' ').title()
+        story_stats_path = os.path.join(_get_stats_base_path(), game_type_dir, game_id, f"game_{game_id}_story.md")
         if os.path.exists(story_stats_path):
             try:
                 with open(story_stats_path, "r", encoding="utf-8") as st_f:
