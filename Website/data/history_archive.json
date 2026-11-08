@@ -10,7 +10,7 @@
         "game_type": "classic",
         "total_posts": 0,
         "narrative_chronicle": "### 📋 Match Overview\n- **Game ID:** `TEST-002`\n- **Era:** Discord Modern Bot\n- **Game Type:** classic\n- **Winning Faction:** **Town**\n- **Victors:** Alpha, Beta, Gamma\n- **Total Players:** 4 (Town: 3, Mafia: 1, Neutral: 0)\n- **Total Duration:** 1 phases\n\n### ⚔️ Tactical Summary\nAutomated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **Town** victory.",
-        "story_as_written": "# Game Story Log\n**Game ID:** TEST-002\n**Start date (UTC):** N/A\n**End date (UTC):** 2026-10-12T04:22:34.251912+00:00\nGame Type: classic\nNumber of players: 4\nPlayer counts: Town=3, Mafia=1, Neutral=0\nTotal days: 1\nPhase hours: 12\n**Winning Team / Outcome:** Town\n\n**Winning Players:** ['Alpha', 'Beta', 'Gamma']\n\n## Cast of Characters\n\n| Player | Role | Status |\n| :--- | :--- | :--- |\n| **Alpha** | Plain Townie | Dead (Day 1 - Lynched by the town) |\n| **Beta** | Plain Townie | Alive |\n| **Gamma** | Plain Townie | Alive |\n| **Delta** | Godfather | Dead (Day 1 - Lynched by the town) |\n\n<MagicMock name='mock.get_full_story_log()' id='2326262993248'>",
+        "story_as_written": "",
         "summary_file": "stories/TEST-002_summary.md",
         "story_file": "stories/TEST-002_story.md",
         "box_score": {
@@ -117,6 +117,1409 @@
             ]
         },
         "lynch_vote_history": []
+    },
+    {
+        "game_id": "20261003-220000",
+        "thread_id": "20261003-220000",
+        "era": "Discord",
+        "title": "Discord Game - 20261003-220000",
+        "start_date": "",
+        "moderator": "IC Mafia Bot",
+        "author": "IC Mafia Bot",
+        "game_type": "classic",
+        "total_posts": 0,
+        "narrative_chronicle": "### 📋 Match Overview\n- **Game ID:** `20261003-220000`\n- **Era:** Discord Modern Bot\n- **Game Type:** classic\n- **Winning Faction:** **Town**\n- **Victors:** Jealous, LisaMVP, Ordos, Soul, TheBigOne, WhoFlungDung, You_Fool\n- **Total Players:** 11 (Town: 7, Mafia: 3, Neutral: 0)\n- **Total Duration:** 4 phases\n\n### ⚔️ Tactical Summary\nAutomated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **Town** victory.",
+        "story_as_written": "Automated game 20261003-220000 run on Discord.",
+        "summary_file": "stories/20261003-220000_summary.md",
+        "story_file": "stories/20261003-220000_story.md",
+        "box_score": {
+            "winning_faction": "Town",
+            "game_type": "classic",
+            "mvp": {
+                "player": "Jealous",
+                "rationale": "Secured the victory for Town."
+            },
+            "roster": [
+                {
+                    "player": "Arby3",
+                    "player_id": 220666545544626177,
+                    "role": "Mob Goon",
+                    "alignment": "Mafia",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 4",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Jealous",
+                    "player_id": 292241540687069186,
+                    "role": "Plain Townie",
+                    "alignment": "Town",
+                    "survived": false,
+                    "is_winner": true,
+                    "death_phase": "Night 3",
+                    "death_cause": "Killed by Mob Goon"
+                },
+                {
+                    "player": "Jets",
+                    "player_id": 294464443570454528,
+                    "role": "Godfather",
+                    "alignment": "Mafia",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 1",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "LisaMVP",
+                    "player_id": 746540828432007225,
+                    "role": "Town Role Blocker",
+                    "alignment": "Town",
+                    "survived": false,
+                    "is_winner": true,
+                    "death_phase": "Night 4",
+                    "death_cause": "Killed by Mob Goon"
+                },
+                {
+                    "player": "Morblnde",
+                    "player_id": 479362336264683520,
+                    "role": "Serial Killer",
+                    "alignment": "Serial Killer",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 2",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Ordos",
+                    "player_id": 216918396539764737,
+                    "role": "Town Cop",
+                    "alignment": "Town",
+                    "survived": false,
+                    "is_winner": true,
+                    "death_phase": "Day 1",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Panda",
+                    "player_id": 220142891027136512,
+                    "role": "Mob Role Blocker",
+                    "alignment": "Mafia",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 3",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Soul",
+                    "player_id": 469571706898350080,
+                    "role": "Plain Townie",
+                    "alignment": "Town",
+                    "survived": false,
+                    "is_winner": true,
+                    "death_phase": "Day 4",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "TheBigOne",
+                    "player_id": 1057856572899999744,
+                    "role": "Plain Townie",
+                    "alignment": "Town",
+                    "survived": false,
+                    "is_winner": true,
+                    "death_phase": "Night 2",
+                    "death_cause": "Killed by Mob Goon"
+                },
+                {
+                    "player": "WhoFlungDung",
+                    "player_id": 450237854329602048,
+                    "role": "Town Doctor",
+                    "alignment": "Town",
+                    "survived": true,
+                    "is_winner": true,
+                    "death_phase": null,
+                    "death_cause": null
+                },
+                {
+                    "player": "You_Fool",
+                    "player_id": 225405842235719680,
+                    "role": "Plain Townie",
+                    "alignment": "Town",
+                    "survived": true,
+                    "is_winner": true,
+                    "death_phase": null,
+                    "death_cause": null
+                }
+            ],
+            "timeline": [
+                {
+                    "phase": "Day 1",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 1",
+                            "event": "Lynch",
+                            "target": "Jets",
+                            "role": "Godfather",
+                            "alignment": "Mafia",
+                            "details": "Lynched by the town"
+                        },
+                        {
+                            "phase": "Day 1",
+                            "event": "Lynch",
+                            "target": "Ordos",
+                            "role": "Town Cop",
+                            "alignment": "Town",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Jets",
+                            "role": "Godfather",
+                            "alignment": "Mafia",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "LisaMVP",
+                                "Ordos",
+                                "TheBigOne"
+                            ]
+                        },
+                        {
+                            "player": "Ordos",
+                            "role": "Town Cop",
+                            "alignment": "Town",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Morblnde",
+                                "You_Fool",
+                                "Arby3"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Ordos": 3,
+                        "Morblnde": 1,
+                        "TheBigOne": 1,
+                        "Jets": 3,
+                        "WhoFlungDung": 1,
+                        "You_Fool": 1,
+                        "Panda": 1
+                    },
+                    "votes_cast": 12
+                },
+                {
+                    "phase": "Night 2",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 2",
+                            "event": "Kill",
+                            "target": "TheBigOne",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "details": "Killed by Mob Goon"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "TheBigOne",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "cause": "Killed by Mob Goon",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 2",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 2",
+                            "event": "Lynch",
+                            "target": "Morblnde",
+                            "role": "Serial Killer",
+                            "alignment": "Serial Killer",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Morblnde",
+                            "role": "Serial Killer",
+                            "alignment": "Serial Killer",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Panda",
+                                "LisaMVP",
+                                "Soul",
+                                "Arby3"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Morblnde": 4,
+                        "Soul": 1,
+                        "You_Fool": 3
+                    },
+                    "votes_cast": 12
+                },
+                {
+                    "phase": "Night 3",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 3",
+                            "event": "Kill",
+                            "target": "Jealous",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "details": "Killed by Mob Goon"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Jealous",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "cause": "Killed by Mob Goon",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 3",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 3",
+                            "event": "Lynch",
+                            "target": "Panda",
+                            "role": "Mob Role Blocker",
+                            "alignment": "Mafia",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Panda",
+                            "role": "Mob Role Blocker",
+                            "alignment": "Mafia",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "LisaMVP",
+                                "Soul",
+                                "WhoFlungDung",
+                                "Arby3"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Soul": 2,
+                        "Panda": 4
+                    },
+                    "votes_cast": 10
+                },
+                {
+                    "phase": "Night 4",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 4",
+                            "event": "Kill",
+                            "target": "LisaMVP",
+                            "role": "Town Role Blocker",
+                            "alignment": "Town",
+                            "details": "Killed by Mob Goon"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "LisaMVP",
+                            "role": "Town Role Blocker",
+                            "alignment": "Town",
+                            "cause": "Killed by Mob Goon",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 4",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 4",
+                            "event": "Lynch",
+                            "target": "Arby3",
+                            "role": "Mob Goon",
+                            "alignment": "Mafia",
+                            "details": "Lynched by the town"
+                        },
+                        {
+                            "phase": "Day 4",
+                            "event": "Lynch",
+                            "target": "Soul",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Arby3",
+                            "role": "Mob Goon",
+                            "alignment": "Mafia",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Soul",
+                                "You_Fool"
+                            ]
+                        },
+                        {
+                            "player": "Soul",
+                            "role": "Plain Townie",
+                            "alignment": "Town",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "WhoFlungDung",
+                                "Arby3"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Arby3": 2,
+                        "Soul": 2
+                    },
+                    "votes_cast": 8
+                }
+            ],
+            "notable_moments": [
+                "Game completed in 4 phases.",
+                "Winning faction: Town."
+            ]
+        },
+        "lynch_vote_history": [
+            {
+                "voter_id": 479362336264683520,
+                "voter_name": "Morblnde",
+                "target_id": 216918396539764737,
+                "target_name": "Ordos",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T10:56:13.616659+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T11:22:30.210723+00:00"
+            },
+            {
+                "voter_id": 294464443570454528,
+                "voter_name": "Jets",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T12:20:33.203188+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 294464443570454528,
+                "target_name": "Jets",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T12:22:48.755354+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 450237854329602048,
+                "target_name": "WhoFlungDung",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T12:26:21.478107+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 225405842235719680,
+                "target_name": "You_Fool",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T12:27:42.392426+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 216918396539764737,
+                "target_name": "Ordos",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T16:59:11.713024+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T17:05:36.037482+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 216918396539764737,
+                "target_name": "Ordos",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T17:32:49.613286+00:00"
+            },
+            {
+                "voter_id": 216918396539764737,
+                "voter_name": "Ordos",
+                "target_id": 294464443570454528,
+                "target_name": "Jets",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T17:42:50.201861+00:00"
+            },
+            {
+                "voter_id": 1057856572899999744,
+                "voter_name": "TheBigOne",
+                "target_id": 292241540687069186,
+                "target_name": "Jealous",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T21:59:08.698592+00:00"
+            },
+            {
+                "voter_id": 1057856572899999744,
+                "voter_name": "TheBigOne",
+                "target_id": 294464443570454528,
+                "target_name": "Jets",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-04T21:59:38.392420+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:07:05.657352+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:07:08.158375+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:07:34.736943+00:00"
+            },
+            {
+                "voter_id": 479362336264683520,
+                "voter_name": "Morblnde",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:11:47.992112+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 746540828432007225,
+                "target_name": "LisaMVP",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:16:49.217009+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 746540828432007225,
+                "target_name": "LisaMVP",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:17:37.467197+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:20:57.301212+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T10:45:48.186502+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 479362336264683520,
+                "target_name": "Morblnde",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T14:18:50.715660+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 225405842235719680,
+                "target_name": "You_Fool",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T18:15:58.101929+00:00"
+            },
+            {
+                "voter_id": 479362336264683520,
+                "voter_name": "Morblnde",
+                "target_id": 225405842235719680,
+                "target_name": "You_Fool",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T19:57:20.826324+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 225405842235719680,
+                "target_name": "You_Fool",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-05T21:01:51.822244+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T10:21:47.566645+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 225405842235719680,
+                "target_name": "You_Fool",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T10:22:31.214280+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T10:25:48.083899+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T11:17:59.539219+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T11:34:45.045996+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T13:18:45.356853+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T17:36:36.373494+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T19:29:39.165865+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T20:52:05.206054+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-06T21:02:25.167594+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 450237854329602048,
+                "target_name": "WhoFlungDung",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T10:04:53.126383+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 450237854329602048,
+                "target_name": "WhoFlungDung",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T10:10:36.381526+00:00"
+            },
+            {
+                "voter_id": 469571706898350080,
+                "voter_name": "Soul",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T10:15:18.272423+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T10:15:22.811519+00:00"
+            },
+            {
+                "voter_id": 450237854329602048,
+                "voter_name": "WhoFlungDung",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T10:46:32.987455+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T15:07:38.380234+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 469571706898350080,
+                "target_name": "Soul",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T18:42:36.783586+00:00"
+            },
+            {
+                "voter_id": 225405842235719680,
+                "voter_name": "You_Fool",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 4",
+                "timestamp_utc": "2026-10-07T18:50:24.404403+00:00"
+            }
+        ]
+    },
+    {
+        "game_id": "20261021-220000",
+        "thread_id": "20261021-220000",
+        "era": "Discord",
+        "title": "Discord Game - 20261021-220000",
+        "start_date": "",
+        "moderator": "IC Mafia Bot",
+        "author": "IC Mafia Bot",
+        "game_type": "battle_royale",
+        "total_posts": 0,
+        "narrative_chronicle": "### 📋 Match Overview\n- **Game ID:** `20261021-220000`\n- **Era:** Discord Modern Bot\n- **Game Type:** battle_royale\n- **Winning Faction:** **Draw** (No winning faction)\n- **Victors:** None\n- **Total Players:** 13 (Town: 0, Mafia: 0, Neutral: 0)\n- **Total Duration:** 3 phases\n\n### ⚔️ Tactical Summary\nAutomated match hosted on Discord. The game proceeded across strategic phases, concluding with all sides eliminated in a hard-fought **Draw**.",
+        "story_as_written": "Automated game 20261021-220000 run on Discord.",
+        "summary_file": "stories/20261021-220000_summary.md",
+        "story_file": "stories/20261021-220000_story.md",
+        "box_score": {
+            "winning_faction": "Draw",
+            "game_type": "battle_royale",
+            "mvp": null,
+            "roster": [
+                {
+                    "player": "Arby3",
+                    "player_id": 220666545544626177,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 2",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Genesis",
+                    "player_id": 213337264162340864,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 3",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Jealous",
+                    "player_id": 292241540687069186,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 2",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "Jets",
+                    "player_id": 294464443570454528,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 2",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "LisaMVP",
+                    "player_id": 746540828432007225,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 2",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "Metrex",
+                    "player_id": 130281442012823552,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 3",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Morblnde",
+                    "player_id": 479362336264683520,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 3",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "Ordos 👑 MVP (Score: 2.39)",
+                    "player_id": 216918396539764737,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 1",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "Panda",
+                    "player_id": 220142891027136512,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 1",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "TheBigOne",
+                    "player_id": 1057856572899999744,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 1",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "Torqez",
+                    "player_id": 214524354258534401,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Day 3",
+                    "death_cause": "Lynched by the town"
+                },
+                {
+                    "player": "WhoFlungDung",
+                    "player_id": 450237854329602048,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 1",
+                    "death_cause": "Killed by Vigilante"
+                },
+                {
+                    "player": "You_Fool",
+                    "player_id": 225405842235719680,
+                    "role": "Vigilante",
+                    "alignment": "Vigilante",
+                    "survived": false,
+                    "is_winner": false,
+                    "death_phase": "Night 1",
+                    "death_cause": "Killed by Vigilante"
+                }
+            ],
+            "timeline": [
+                {
+                    "phase": "Night 1",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 1",
+                            "event": "Kill",
+                            "target": "Ordos 👑 MVP (Score: 2.39)",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        },
+                        {
+                            "phase": "Night 1",
+                            "event": "Kill",
+                            "target": "WhoFlungDung",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        },
+                        {
+                            "phase": "Night 1",
+                            "event": "Kill",
+                            "target": "You_Fool",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Ordos 👑 MVP (Score: 2.39)",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        },
+                        {
+                            "player": "WhoFlungDung",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        },
+                        {
+                            "player": "You_Fool",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 1",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 1",
+                            "event": "Lynch",
+                            "target": "Panda",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        },
+                        {
+                            "phase": "Day 1",
+                            "event": "Lynch",
+                            "target": "TheBigOne",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Panda",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Torqez",
+                                "Morblnde",
+                                "TheBigOne",
+                                "Genesis",
+                                "Arby3"
+                            ]
+                        },
+                        {
+                            "player": "TheBigOne",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Metrex",
+                                "Jets",
+                                "LisaMVP",
+                                "Jealous",
+                                "Panda"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Panda": 5,
+                        "TheBigOne": 5
+                    },
+                    "votes_cast": 16
+                },
+                {
+                    "phase": "Night 2",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 2",
+                            "event": "Kill",
+                            "target": "Jealous",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        },
+                        {
+                            "phase": "Night 2",
+                            "event": "Kill",
+                            "target": "Jets",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        },
+                        {
+                            "phase": "Night 2",
+                            "event": "Kill",
+                            "target": "LisaMVP",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Jealous",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        },
+                        {
+                            "player": "Jets",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        },
+                        {
+                            "player": "LisaMVP",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 2",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 2",
+                            "event": "Lynch",
+                            "target": "Arby3",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Arby3",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Morblnde",
+                                "Genesis",
+                                "Torqez",
+                                "Arby3",
+                                "Metrex"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Arby3": 5
+                    },
+                    "votes_cast": 8
+                },
+                {
+                    "phase": "Night 3",
+                    "type": "night",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Night 3",
+                            "event": "Kill",
+                            "target": "Morblnde",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Killed by Vigilante"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Morblnde",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Killed by Vigilante",
+                            "lynched_by": null
+                        }
+                    ],
+                    "vote_tally": {},
+                    "votes_cast": 0
+                },
+                {
+                    "phase": "Day 3",
+                    "type": "day",
+                    "scene": "",
+                    "events": [
+                        {
+                            "phase": "Day 3",
+                            "event": "Lynch",
+                            "target": "Genesis",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        },
+                        {
+                            "phase": "Day 3",
+                            "event": "Lynch",
+                            "target": "Metrex",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        },
+                        {
+                            "phase": "Day 3",
+                            "event": "Lynch",
+                            "target": "Torqez",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "details": "Lynched by the town"
+                        }
+                    ],
+                    "eliminated": [
+                        {
+                            "player": "Genesis",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Genesis"
+                            ]
+                        },
+                        {
+                            "player": "Metrex",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Metrex"
+                            ]
+                        },
+                        {
+                            "player": "Torqez",
+                            "role": "Vigilante",
+                            "alignment": "Vigilante",
+                            "cause": "Lynched by the town",
+                            "lynched_by": [
+                                "Torqez"
+                            ]
+                        }
+                    ],
+                    "vote_tally": {
+                        "Torqez": 1,
+                        "Genesis": 1,
+                        "Metrex": 1
+                    },
+                    "votes_cast": 3
+                }
+            ],
+            "notable_moments": [
+                "Game completed in 3 phases.",
+                "Winning faction: Draw."
+            ]
+        },
+        "lynch_vote_history": [
+            {
+                "voter_id": 214524354258534401,
+                "voter_name": "Torqez",
+                "target_id": 213337264162340864,
+                "target_name": "Genesis",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T10:04:52.465153+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 746540828432007225,
+                "target_name": "LisaMVP",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T10:05:59.362119+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 746540828432007225,
+                "target_name": "LisaMVP",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T10:07:24.386127+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T10:08:36.352603+00:00"
+            },
+            {
+                "voter_id": 130281442012823552,
+                "voter_name": "Metrex",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T10:09:39.760369+00:00"
+            },
+            {
+                "voter_id": 214524354258534401,
+                "voter_name": "Torqez",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T11:13:11.418259+00:00"
+            },
+            {
+                "voter_id": 479362336264683520,
+                "voter_name": "Morblnde",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T12:33:37.969905+00:00"
+            },
+            {
+                "voter_id": 1057856572899999744,
+                "voter_name": "TheBigOne",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T13:08:45.903744+00:00"
+            },
+            {
+                "voter_id": 213337264162340864,
+                "voter_name": "Genesis",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T13:33:45.028485+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T14:32:19.227226+00:00"
+            },
+            {
+                "voter_id": 294464443570454528,
+                "voter_name": "Jets",
+                "target_id": 294464443570454528,
+                "target_name": "Jets",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T14:35:53.035072+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 220142891027136512,
+                "target_name": "Panda",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T16:32:05.072464+00:00"
+            },
+            {
+                "voter_id": 294464443570454528,
+                "voter_name": "Jets",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T20:35:31.479473+00:00"
+            },
+            {
+                "voter_id": 746540828432007225,
+                "voter_name": "LisaMVP",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T20:47:02.048998+00:00"
+            },
+            {
+                "voter_id": 292241540687069186,
+                "voter_name": "Jealous",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T21:28:05.831716+00:00"
+            },
+            {
+                "voter_id": 220142891027136512,
+                "voter_name": "Panda",
+                "target_id": 1057856572899999744,
+                "target_name": "TheBigOne",
+                "phase": "Day 1",
+                "timestamp_utc": "2026-10-22T21:29:50.698110+00:00"
+            },
+            {
+                "voter_id": 479362336264683520,
+                "voter_name": "Morblnde",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T10:01:31.622720+00:00"
+            },
+            {
+                "voter_id": 213337264162340864,
+                "voter_name": "Genesis",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T10:04:25.126593+00:00"
+            },
+            {
+                "voter_id": 214524354258534401,
+                "voter_name": "Torqez",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T13:15:14.032328+00:00"
+            },
+            {
+                "voter_id": 130281442012823552,
+                "voter_name": "Metrex",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T13:15:53.104271+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 213337264162340864,
+                "target_name": "Genesis",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T13:38:27.751159+00:00"
+            },
+            {
+                "voter_id": 130281442012823552,
+                "voter_name": "Metrex",
+                "target_id": 213337264162340864,
+                "target_name": "Genesis",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T15:46:18.634962+00:00"
+            },
+            {
+                "voter_id": 220666545544626177,
+                "voter_name": "Arby3",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T15:50:31.566218+00:00"
+            },
+            {
+                "voter_id": 130281442012823552,
+                "voter_name": "Metrex",
+                "target_id": 220666545544626177,
+                "target_name": "Arby3",
+                "phase": "Day 2",
+                "timestamp_utc": "2026-10-23T16:21:34.154933+00:00"
+            },
+            {
+                "voter_id": 214524354258534401,
+                "voter_name": "Torqez",
+                "target_id": 214524354258534401,
+                "target_name": "Torqez",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-24T11:08:24.319466+00:00"
+            },
+            {
+                "voter_id": 213337264162340864,
+                "voter_name": "Genesis",
+                "target_id": 213337264162340864,
+                "target_name": "Genesis",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-24T12:23:29.821026+00:00"
+            },
+            {
+                "voter_id": 130281442012823552,
+                "voter_name": "Metrex",
+                "target_id": 130281442012823552,
+                "target_name": "Metrex",
+                "phase": "Day 3",
+                "timestamp_utc": "2026-10-24T12:27:49.844177+00:00"
+            }
+        ]
     },
     {
         "game_id": "11",
