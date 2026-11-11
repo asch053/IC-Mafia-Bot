@@ -747,31 +747,32 @@ def _archive_phase_data(game_state: dict, phase_key: str, prompt: str, thoughts:
         norm_save_path = "stats"
 
     archive_dir = os.path.join(norm_save_path, folder_name, str(game_id))
-    os.makedirs(archive_dir, exist_ok=True)
-    
     archive_path = os.path.join(archive_dir, f"{game_id}_ai_prompts.json")
-    
     logger.info(f"Archiving AI data for {phase_key} to {archive_path}...")
-    
-    archive_data = {}
-    if os.path.exists(archive_path):
-        try:
-            with open(archive_path, 'r', encoding='utf-8') as f:
-                archive_data = json.load(f)
-        except json.JSONDecodeError:
-            archive_data = {}
 
-    archive_data[phase_key] = {
-        "timestamp": datetime.now().isoformat(),
-        "prompt_sent": prompt,
-        "ai_reasoning": thoughts if thoughts else "No thoughts recorded.",
-        "final_story": result
-    }
+    try:
+        os.makedirs(archive_dir, exist_ok=True)
+        archive_data = {}
+        if os.path.exists(archive_path):
+            try:
+                with open(archive_path, 'r', encoding='utf-8') as f:
+                    archive_data = json.load(f)
+            except json.JSONDecodeError:
+                archive_data = {}
 
-    with open(archive_path, 'w', encoding='utf-8') as f:
-        json.dump(archive_data, f, indent=4)
-        
-    logger.info(f"Successfully archived AI data for {phase_key}.")
+        archive_data[phase_key] = {
+            "timestamp": datetime.now().isoformat(),
+            "prompt_sent": prompt,
+            "ai_reasoning": thoughts if thoughts else "No thoughts recorded.",
+            "final_story": result
+        }
+
+        with open(archive_path, 'w', encoding='utf-8') as f:
+            json.dump(archive_data, f, indent=4)
+
+        logger.info(f"Successfully archived AI data for {phase_key}.")
+    except OSError as e:
+        logger.warning(f"Could not write AI archive file {archive_path}: {e}")
 
 async def generate_story(game_state: dict, events: list, history: list) -> str | None:
     """

@@ -36,6 +36,45 @@ env_mocks = {
 for key, value in env_mocks.items():
     os.environ.setdefault(key, value)
 
+
+def _ensure_asyncio_self_pipe_works():
+    """Fallback for Windows sandboxed environments where loopback socketpair() is blocked."""
+    if sys.platform != "win32":
+        return
+    import socket
+    lsock = None
+    csock = None
+    ssock = None
+    try:
+        lsock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        lsock.bind(("127.0.0.1", 0))
+        lsock.listen(1)
+        csock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        csock.settimeout(0.05)
+        csock.connect(lsock.getsockname())
+        ssock, _ = lsock.accept()
+    except OSError:
+        import asyncio.proactor_events as pe
+
+        def _fallback_make_self_pipe(self):
+            self._ssock = socket.socket()
+            self._csock = socket.socket()
+            self._internal_fds += 1
+
+        pe.BaseProactorEventLoop._make_self_pipe = _fallback_make_self_pipe
+        pe.BaseProactorEventLoop._loop_self_reading = lambda self, f=None: None
+        pe.BaseProactorEventLoop._write_to_self = lambda self: None
+    finally:
+        for s in (csock, ssock, lsock):
+            if s is not None:
+                try:
+                    s.close()
+                except OSError:
+                    pass
+
+
+_ensure_asyncio_self_pipe_works()
+
 # Global flag to ensure the session start message is only logged once per test run
 _session_initialized = False
 
@@ -46,30 +85,30 @@ def setup_test_logging():
     """
     global _session_initialized
     
-    # 1. Define paths
-    log_dir = os.path.join("tests", "logs")
+    # 1. Define paths (using lowercase ./logs/ directory)
+    log_dir = "logs"
     datestamp = datetime.now().strftime("%Y-%m-%d")
     log_filename = f"{datestamp}_testoutput_error.log"
     log_path = os.path.join(log_dir, log_filename)
 
-    # 2. Ensure the directory exists
-    os.makedirs(log_dir, exist_ok=True)
-
-    # 3. Get the 'discord' logger (which your bot components use)
+    # 2. Get the 'discord' logger (which your bot components use)
     logger = logging.getLogger('discord')
     logger.setLevel(logging.DEBUG) # Catch everything during tests!
-
-    # 4. Create a file handler for errors and debug info
-    file_handler = logging.FileHandler(log_path, encoding='utf-8')
     formatter = logging.Formatter('[%(asctime)s] [%(levelname)-8s] %(name)s - %(funcName)s:%(lineno)d: %(message)s')
-    file_handler.setFormatter(formatter)
-    
-    # 5. Clear existing handlers to avoid duplicate log lines
+
+    # 3. Clear existing handlers to avoid duplicate log lines
     # This prevents the issue where each test file adds an additional handler to the same logger
     if logger.hasHandlers():
         logger.handlers.clear()
 
-    logger.addHandler(file_handler)
+    # 4. Create a file handler for errors and debug info (gracefully fallback if sandboxed)
+    try:
+        os.makedirs(log_dir, exist_ok=True)
+        file_handler = logging.FileHandler(log_path, encoding='utf-8')
+        file_handler.setFormatter(formatter)
+        logger.addHandler(file_handler)
+    except OSError:
+        pass
 
     # Also add a stream handler so you still see output in the VS Code terminal
     console_handler = logging.StreamHandler()

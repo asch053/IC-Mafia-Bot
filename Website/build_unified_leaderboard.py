@@ -426,20 +426,26 @@ def sync_new_production_games():
                             existing_game
                             and any(not tl.get("scene") for tl in existing_game.get("box_score", {}).get("timeline", []))
                         )
+                        tl_list = existing_game.get("box_score", {}).get("timeline", []) if existing_game else []
+                        missing_scenes = bool(tl_list and all(not tl.get("scene") for tl in tl_list))
                         if raw_story_txt and (len(existing_story_txt) < 100 or existing_story_txt.startswith("Automated game ") or missing_scenes):
                             full_raw_story, story_scenes, narrative_chapters = _parse_story_content(raw_story_txt)
                             story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else raw_story_txt)
+                            repaired_this_game = False
                             if len(existing_story_txt) < 100 or existing_story_txt.startswith("Automated game "):
                                 os.makedirs(STORIES_DIR, exist_ok=True)
                                 with open(dest_story_path, "w", encoding="utf-8") as stf:
                                     stf.write(story_as_written)
+                                repaired_this_game = True
                             if existing_game and story_scenes:
                                 for tl_item in existing_game.get("box_score", {}).get("timeline", []):
                                     ph = tl_item.get("phase")
                                     if ph in story_scenes and not tl_item.get("scene"):
                                         tl_item["scene"] = story_scenes[ph]
                                         dirty = True
-                            print(f"Repaired full story for existing production game {game_id}.")
+                                        repaired_this_game = True
+                            if repaired_this_game:
+                                print(f"Repaired full story for existing production game {game_id}.")
                         continue
                         
                     existing_ids.add(str(game_id))
@@ -451,143 +457,143 @@ def sync_new_production_games():
                     if raw_story_txt:
                         full_raw_story, story_scenes, narrative_chapters = _parse_story_content(raw_story_txt)
                 
-                story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else f"Automated game {game_id} run on Discord.")
-                winning_faction = summary.get("winning_faction", "Unknown")
-                winning_players_str = ", ".join(summary.get("winning_players", [])) if summary.get("winning_players") else "None"
-                if str(winning_faction).strip().lower() == "draw":
-                    tactical_summary = "Automated match hosted on Discord. The game proceeded across strategic phases, concluding with all sides eliminated in a hard-fought **Draw**."
-                    winning_faction_label = "**Draw** (No winning faction)"
-                else:
-                    tactical_summary = f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winning_faction}** victory."
-                    winning_faction_label = f"**{winning_faction}**"
+                    story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else f"Automated game {game_id} run on Discord.")
+                    winning_faction = summary.get("winning_faction", "Unknown")
+                    winning_players_str = ", ".join(summary.get("winning_players", [])) if summary.get("winning_players") else "None"
+                    if str(winning_faction).strip().lower() == "draw":
+                        tactical_summary = "Automated match hosted on Discord. The game proceeded across strategic phases, concluding with all sides eliminated in a hard-fought **Draw**."
+                        winning_faction_label = "**Draw** (No winning faction)"
+                    else:
+                        tactical_summary = f"Automated match hosted on Discord. The game proceeded across strategic phases, culminating in a decisive **{winning_faction}** victory."
+                        winning_faction_label = f"**{winning_faction}**"
 
-                narrative_summary = (
-                    f"### 📋 Match Overview\n"
-                    f"- **Game ID:** `{game_id}`\n"
-                    f"- **Era:** Discord Modern Bot\n"
-                    f"- **Game Type:** {summary.get('game_type', 'Classic')}\n"
-                    f"- **Winning Faction:** {winning_faction_label}\n"
-                    f"- **Victors:** {winning_players_str}\n"
-                    f"- **Total Players:** {len(player_data)} (Town: {summary.get('player_counts', {}).get('town', 0)}, Mafia: {summary.get('player_counts', {}).get('mafia', 0)}, Neutral: {summary.get('player_counts', {}).get('neutral', 0)})\n"
-                    f"- **Total Duration:** {summary.get('total_days', 0)} phases\n\n"
-                    f"### ⚔️ Tactical Summary\n"
-                    f"{tactical_summary}"
-                )
+                    narrative_summary = (
+                        f"### 📋 Match Overview\n"
+                        f"- **Game ID:** `{game_id}`\n"
+                        f"- **Era:** Discord Modern Bot\n"
+                        f"- **Game Type:** {summary.get('game_type', 'Classic')}\n"
+                        f"- **Winning Faction:** {winning_faction_label}\n"
+                        f"- **Victors:** {winning_players_str}\n"
+                        f"- **Total Players:** {len(player_data)} (Town: {summary.get('player_counts', {}).get('town', 0)}, Mafia: {summary.get('player_counts', {}).get('mafia', 0)}, Neutral: {summary.get('player_counts', {}).get('neutral', 0)})\n"
+                        f"- **Total Duration:** {summary.get('total_days', 0)} phases\n\n"
+                        f"### ⚔️ Tactical Summary\n"
+                        f"{tactical_summary}"
+                    )
 
-                os.makedirs(STORIES_DIR, exist_ok=True)
-                with open(os.path.join(STORIES_DIR, f"{game_id}_summary.md"), "w", encoding="utf-8") as sf:
-                    sf.write(narrative_summary)
-                with open(os.path.join(STORIES_DIR, f"{game_id}_story.md"), "w", encoding="utf-8") as stf:
-                    stf.write(story_as_written)
+                    os.makedirs(STORIES_DIR, exist_ok=True)
+                    with open(os.path.join(STORIES_DIR, f"{game_id}_summary.md"), "w", encoding="utf-8") as sf:
+                        sf.write(narrative_summary)
+                    with open(os.path.join(STORIES_DIR, f"{game_id}_story.md"), "w", encoding="utf-8") as stf:
+                        stf.write(story_as_written)
 
-                all_phases = []
-                for p in player_data:
-                    dp = p.get("death_phase")
-                    if dp and dp not in all_phases:
-                        all_phases.append(dp)
-                for v in vote_history:
-                    vp = v.get("phase")
-                    if vp and vp not in all_phases:
-                        all_phases.append(vp)
-                for sp in story_scenes.keys():
-                    if sp not in all_phases:
-                        all_phases.append(sp)
+                    all_phases = []
+                    for p in player_data:
+                        dp = p.get("death_phase")
+                        if dp and dp not in all_phases:
+                            all_phases.append(dp)
+                    for v in vote_history:
+                        vp = v.get("phase")
+                        if vp and vp not in all_phases:
+                            all_phases.append(vp)
+                    for sp in story_scenes.keys():
+                        if sp not in all_phases:
+                            all_phases.append(sp)
 
-                def phase_sort_key(p):
-                    nums = re.findall(r'\d+', p)
-                    n = int(nums[0]) if nums else 0
-                    is_day = 1 if 'day' in p.lower() else 0
-                    return (n, is_day)
+                    def phase_sort_key(p):
+                        nums = re.findall(r'\d+', p)
+                        n = int(nums[0]) if nums else 0
+                        is_day = 1 if 'day' in p.lower() else 0
+                        return (n, is_day)
 
-                all_phases = sorted(all_phases, key=phase_sort_key)
-                
-                timeline = []
-                for ph in all_phases:
-                    ph_deaths = [
-                        {
-                            "player": p.get("player_name"),
-                            "role": p.get("role"),
-                            "alignment": p.get("alignment"),
-                            "cause": p.get("death_cause"),
-                            "lynched_by": p.get("lynched_by_voters")
-                        }
-                        for p in player_data if p.get("death_phase") == ph
-                    ]
-                    ph_votes = [v for v in vote_history if v.get("phase") == ph]
-                    final_votes = {}
-                    for v in ph_votes:
-                        final_votes[v["voter_name"]] = v["target_name"]
-                    tally = dict(Counter(final_votes.values()))
+                    all_phases = sorted(all_phases, key=phase_sort_key)
                     
-                    events = []
-                    for d in ph_deaths:
-                        ev_type = "Lynch" if "lynch" in (d.get("cause") or "").lower() else "Kill"
-                        events.append({
+                    timeline = []
+                    for ph in all_phases:
+                        ph_deaths = [
+                            {
+                                "player": p.get("player_name"),
+                                "role": p.get("role"),
+                                "alignment": p.get("alignment"),
+                                "cause": p.get("death_cause"),
+                                "lynched_by": p.get("lynched_by_voters")
+                            }
+                            for p in player_data if p.get("death_phase") == ph
+                        ]
+                        ph_votes = [v for v in vote_history if v.get("phase") == ph]
+                        final_votes = {}
+                        for v in ph_votes:
+                            final_votes[v["voter_name"]] = v["target_name"]
+                        tally = dict(Counter(final_votes.values()))
+                        
+                        events = []
+                        for d in ph_deaths:
+                            ev_type = "Lynch" if "lynch" in (d.get("cause") or "").lower() else "Kill"
+                            events.append({
+                                "phase": ph,
+                                "event": ev_type,
+                                "target": d.get("player"),
+                                "role": d.get("role"),
+                                "alignment": d.get("alignment"),
+                                "details": d.get("cause") or f"Eliminated in {ph}"
+                            })
+                            
+                        timeline.append({
                             "phase": ph,
-                            "event": ev_type,
-                            "target": d.get("player"),
-                            "role": d.get("role"),
-                            "alignment": d.get("alignment"),
-                            "details": d.get("cause") or f"Eliminated in {ph}"
+                            "type": "day" if "day" in ph.lower() else ("night" if "night" in ph.lower() else "other"),
+                            "scene": story_scenes.get(ph, ""),
+                            "events": events,
+                            "eliminated": ph_deaths,
+                            "vote_tally": tally,
+                            "votes_cast": len(ph_votes)
                         })
                         
-                    timeline.append({
-                        "phase": ph,
-                        "type": "day" if "day" in ph.lower() else ("night" if "night" in ph.lower() else "other"),
-                        "scene": story_scenes.get(ph, ""),
-                        "events": events,
-                        "eliminated": ph_deaths,
-                        "vote_tally": tally,
-                        "votes_cast": len(ph_votes)
-                    })
+                    roster = []
+                    winning_players_lower = [w.lower() for w in summary.get("winning_players", [])]
+                    for p in player_data:
+                        p_name = p.get("player_name", "Unknown")
+                        is_win = (p.get("is_winner") is True) or (p_name.lower() in winning_players_lower) or (p.get("alignment", "").lower() == winning_faction.lower())
+                        roster.append({
+                            "player": p_name,
+                            "player_id": p.get("player_id"),
+                            "role": p.get("role"),
+                            "alignment": p.get("alignment"),
+                            "survived": (p.get("status", "").lower() == "alive"),
+                            "is_winner": is_win,
+                            "death_phase": p.get("death_phase"),
+                            "death_cause": p.get("death_cause")
+                        })
                     
-                roster = []
-                winning_players_lower = [w.lower() for w in summary.get("winning_players", [])]
-                for p in player_data:
-                    p_name = p.get("player_name", "Unknown")
-                    is_win = (p.get("is_winner") is True) or (p_name.lower() in winning_players_lower) or (p.get("alignment", "").lower() == winning_faction.lower())
-                    roster.append({
-                        "player": p_name,
-                        "player_id": p.get("player_id"),
-                        "role": p.get("role"),
-                        "alignment": p.get("alignment"),
-                        "survived": (p.get("status", "").lower() == "alive"),
-                        "is_winner": is_win,
-                        "death_phase": p.get("death_phase"),
-                        "death_cause": p.get("death_cause")
-                    })
-                
-                winning_players = summary.get("winning_players", [])
-                mvp = None
-                if winning_players and str(winning_faction).strip().lower() != "draw":
-                    mvp = {
-                        "player": winning_players[0],
-                        "rationale": f"Secured the victory for {winning_faction}."
-                    }
-                    
-                bot_games.append({
-                    "thread_id": str(game_id),
-                    "era": "Discord",
-                    "title": f"Discord Game - {game_id}",
-                    "moderator": "IC Mafia Bot",
-                    "game_type": summary.get("game_type", "classic"),
-                    "total_posts": 0,
-                    "winning_faction": winning_faction,
-                    "summary_file": f"stories/{game_id}_summary.md",
-                    "story_file": f"stories/{game_id}_story.md",
-                    "box_score": {
-                        "winning_faction": winning_faction,
+                    winning_players = summary.get("winning_players", [])
+                    mvp = None
+                    if winning_players and str(winning_faction).strip().lower() != "draw":
+                        mvp = {
+                            "player": winning_players[0],
+                            "rationale": f"Secured the victory for {winning_faction}."
+                        }
+                        
+                    bot_games.append({
+                        "thread_id": str(game_id),
+                        "era": "Discord",
+                        "title": f"Discord Game - {game_id}",
+                        "moderator": "IC Mafia Bot",
                         "game_type": summary.get("game_type", "classic"),
-                        "mvp": mvp,
-                        "roster": roster,
-                        "timeline": timeline,
-                        "notable_moments": [
-                            f"Game completed in {summary.get('total_days', len(all_phases))} phases.",
-                            f"Winning faction: {winning_faction}."
-                        ]
-                    },
-                    "lynch_vote_history": vote_history
-                })
+                        "total_posts": 0,
+                        "winning_faction": winning_faction,
+                        "summary_file": f"stories/{game_id}_summary.md",
+                        "story_file": f"stories/{game_id}_story.md",
+                        "box_score": {
+                            "winning_faction": winning_faction,
+                            "game_type": summary.get("game_type", "classic"),
+                            "mvp": mvp,
+                            "roster": roster,
+                            "timeline": timeline,
+                            "notable_moments": [
+                                f"Game completed in {summary.get('total_days', len(all_phases))} phases.",
+                                f"Winning faction: {winning_faction}."
+                            ]
+                        },
+                        "lynch_vote_history": vote_history
+                    })
 
     if added > 0 or dirty:
         with open(bot_db_path, "w", encoding="utf-8") as f:

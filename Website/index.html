@@ -217,18 +217,138 @@
         .earners-container::-webkit-scrollbar-thumb:hover {
             background: #666;
         }
+
+        /* Codex Sub-Navigation & Interactive Portal Styling */
+        .codex-subnav {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 22px;
+            background: #1a1a22;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #333;
+        }
+        .codex-subbtn {
+            background: #252530;
+            border: 1px solid #3d3d4d;
+            color: #ccc;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .codex-subbtn:hover {
+            background: #30303e;
+            color: #fff;
+            border-color: #666;
+        }
+        .codex-subbtn.active {
+            background: rgba(207, 56, 56, 0.2);
+            color: #fff;
+            border-color: var(--red);
+            box-shadow: 0 0 12px rgba(207, 56, 56, 0.3);
+        }
+        .formula-box {
+            background: #16161d;
+            border: 1px solid #383848;
+            border-left: 4px solid var(--gold);
+            padding: 14px 18px;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.92rem;
+            color: #ffe082;
+            margin: 10px 0;
+            overflow-x: auto;
+        }
+        .calc-slider-group {
+            margin-bottom: 14px;
+            background: #23232b;
+            padding: 12px 15px;
+            border-radius: 6px;
+            border: 1px solid #343442;
+        }
+        .calc-slider-group label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.88rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #ddd;
+        }
+        .calc-slider {
+            width: 100%;
+            accent-color: var(--gold);
+            cursor: pointer;
+        }
+        .cmd-copy-btn {
+            background: rgba(56, 138, 207, 0.15);
+            color: var(--blue);
+            border: 1px solid var(--blue);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+        .cmd-copy-btn:hover {
+            background: var(--blue);
+            color: #fff;
+        }
+        .arch-layer-card {
+            background: #23232c;
+            border: 1px solid #3a3a48;
+            border-left: 4px solid var(--blue);
+            border-radius: 6px;
+            padding: 14px 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .arch-layer-card:hover, .arch-layer-card.active {
+            background: #2c2c38;
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.45);
+        }
+        .lifecycle-step {
+            flex: 1;
+            min-width: 150px;
+            background: #23232b;
+            border: 1px solid #3a3a46;
+            border-top: 3px solid var(--muted);
+            border-radius: 6px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+        }
+        .lifecycle-step:hover, .lifecycle-step.active {
+            background: #2b2b36;
+            border-top-color: var(--gold);
+            box-shadow: 0 4px 12px rgba(255,215,0,0.15);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <nav class="nav-bar">
+    <nav class="nav-bar" style="flex-wrap: wrap;">
         <button id="nav-records" class="nav-btn special-link active" onclick="switchMode('records')">🏆 Hall of Records</button>
         <button id="nav-classic" class="nav-btn" onclick="switchMode('classic')">Mafia Classic</button>
         <button id="nav-br" class="nav-btn" onclick="switchMode('battle_royale')">Battle Royale</button>
-        <button id="nav-codex" class="nav-btn" onclick="switchMode('codex')">📖 Game Codex</button>
         <button id="nav-archives" class="nav-btn" onclick="switchMode('archives')">📜 Game Archives</button>
         <button id="nav-badges" class="nav-btn" onclick="switchMode('badges')">🎖️ Badges</button>
+        <button id="nav-codex" class="nav-btn" onclick="switchMode('codex', 'roles')">📖 Game Codex & Roles</button>
+        <button id="nav-scoring" class="nav-btn" onclick="switchMode('codex', 'scoring')">🧮 Scoring & Calculator</button>
+        <button id="nav-commands" class="nav-btn" onclick="switchMode('codex', 'commands')">⌨️ Bot Commands</button>
+        <button id="nav-architecture" class="nav-btn" onclick="switchMode('codex', 'mechanics')">⚙️ How It Works & Architecture</button>
     </nav>
 
     <div id="loader"><div class="spinner"></div><p>Accessing Archives...</p></div>
@@ -338,7 +458,7 @@
         <div class="card">
             <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:12px;">
                 <div>
-                    <h2 style="margin:0;" id="classic-chart-title">📈 Meta History: All Classic Games (140 Games)</h2>
+                    <h2 style="margin:0;" id="classic-chart-title">📈 Meta History: All Classic Games (143 Games)</h2>
                     <div id="classic-chart-subtitle" style="font-size:12px; color:var(--muted); margin-top:3px;">
                         Cumulative faction win rates across all eras (2008 – Present)
                     </div>
@@ -349,11 +469,11 @@
                         <button id="btn-chart-stack" class="chart-mode-btn" onclick="setClassicChartMode('stacked')">📊 100% Share</button>
                     </div>
                     <div class="era-filter-group" id="classicEraFilters">
-                        <button class="era-filter-btn active" data-era="all" onclick="setClassicEra('all')" style="--btn-accent:var(--gold);">🌟 All Eras (140)</button>
+                        <button class="era-filter-btn active" data-era="all" onclick="setClassicEra('all')" style="--btn-accent:var(--gold);">🌟 All Eras (143)</button>
                         <button class="era-filter-btn" data-era="Forum" onclick="setClassicEra('Forum')" style="--btn-accent:#ffb74d;">🏛️ Forum (45)</button>
                         <button class="era-filter-btn" data-era="Discourse" onclick="setClassicEra('Discourse')" style="--btn-accent:#64b5f6;">📜 Discourse (31)</button>
                         <button class="era-filter-btn" data-era="Discord_Manual" onclick="setClassicEra('Discord_Manual')" style="--btn-accent:#81c784;">✍️ Manual (29)</button>
-                        <button class="era-filter-btn" data-era="Discord" onclick="setClassicEra('Discord')" style="--btn-accent:#ba68c8;">🤖 Bot (35)</button>
+                        <button class="era-filter-btn" data-era="Discord" onclick="setClassicEra('Discord')" style="--btn-accent:#ba68c8;">🤖 Bot (38)</button>
                     </div>
                 </div>
             </div>
@@ -447,11 +567,11 @@
             <!-- Quick Filter Pills -->
             <div style="display: flex; gap: 10px; margin: 15px 0 20px 0; flex-wrap: wrap; align-items: center;">
                 <span style="color: var(--muted); font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Filter Era:</span>
-                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (159)</button>
+                <button id="pill-all" class="nav-btn active" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid #555; border-radius: 20px; background: #333;" onclick="setArchiveEra('')">🌟 All Eras (158)</button>
                 <button id="pill-forum" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--blue); border-radius: 20px; background: rgba(56, 138, 207, 0.15); color: var(--blue);" onclick="setArchiveEra('Forum')">🏛️ Forum Era (45)</button>
                 <button id="pill-discourse" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--orange); border-radius: 20px; background: rgba(255, 152, 0, 0.15); color: var(--orange);" onclick="setArchiveEra('Discourse')">📜 Discourse Era (31)</button>
                 <button id="pill-manual" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--green); border-radius: 20px; background: rgba(76, 175, 80, 0.15); color: var(--green);" onclick="setArchiveEra('Discord_Manual')">✍️ Discord Manual (29)</button>
-                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Bot (54)</button>
+                <button id="pill-discord" class="nav-btn" style="font-size: 0.9em; padding: 6px 14px; border: 1px solid var(--purp); border-radius: 20px; background: rgba(156, 39, 176, 0.15); color: var(--purp);" onclick="setArchiveEra('Discord')">🤖 Discord Bot (53)</button>
             </div>
 
             <div class="table-wrap">
@@ -632,51 +752,717 @@
         </div>
     </div>
 
-    <!-- GAME CODEX VIEW -->
+    <!-- GAME CODEX, SCORING, COMMANDS, MECHANICS & ARCHITECTURE HUB -->
     <div id="view-codex" class="hidden">
-        <div class="card">
-            <h2>📖 Imperial Conflict Mafia Codex</h2>
-            <p style="color: var(--muted);">Welcome to the comprehensive rulebook and game guide.</p>
-            
-            <h3>Game Modes</h3>
+        <!-- Hero & Sub-Navigation Banner -->
+        <div class="card" style="background: linear-gradient(135deg, #1b1b24 0%, #24191c 100%); border: 1px solid #3a3a48;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; margin-bottom: 16px;">
+                <div>
+                    <h2 style="margin: 0; font-size: 1.9rem; color: #fff;">📖 Imperial Conflict Mafia — Interactive Codex & Engineering Hub</h2>
+                    <p style="color: #bbb; margin: 6px 0 0 0; font-size: 0.96rem;">
+                        Explore interactive role cards with live 9-theme reskins, the P.E.U. "Moneyball" scoring calculator, all 21 Discord slash commands, live game engine simulators, and the bot's 6-layer architecture.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+                    <span style="background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.35); padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: bold;">⚡ 10 Roles • 9 Themes • 21 Slash Commands</span>
+                </div>
+            </div>
+
+            <!-- Interactive Sub-Navigation Bar -->
+            <div class="codex-subnav" style="margin-bottom: 0;">
+                <button id="codex-btn-roles" class="codex-subbtn active" onclick="switchCodexTab('roles')">🎭 Game Roles, Commands & Themes</button>
+                <button id="codex-btn-scoring" class="codex-subbtn" onclick="switchCodexTab('scoring')">🧮 P.E.U. Scoring & Calculator</button>
+                <button id="codex-btn-commands" class="codex-subbtn" onclick="switchCodexTab('commands')">⌨️ All 21 Bot Commands & Builder</button>
+                <button id="codex-btn-mechanics" class="codex-subbtn" onclick="switchCodexTab('mechanics')">🎮 How the Bot Works & Simulators</button>
+                <button id="codex-btn-architecture" class="codex-subbtn" onclick="switchCodexTab('architecture')">🏗️ System Architecture & Pipeline</button>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUB-PAGE 1: GAME ROLES, COMMANDS, WIN CONDITIONS & 9-THEME RESKIN EXPLORER -->
+        <!-- ========================================================================= -->
+        <div id="codex-section-roles">
+            <!-- Game Modes Comparison -->
+            <div class="split-grid" style="margin-bottom: 20px;">
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--blue); background: #1e1e26;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; color: var(--blue);">🏛️ Classic Mafia Mode (5–19 Players)</h3>
+                        <span style="background: rgba(56,138,207,0.15); color: var(--blue); border: 1px solid var(--blue); padding: 3px 9px; border-radius: 12px; font-size: 0.78rem; font-weight: bold;">Asymmetric Social Deduction</span>
+                    </div>
+                    <p style="color: #ccc; font-size: 0.92rem; line-height: 1.55; margin: 10px 0;">
+                        An uninformed majority (<strong>Town</strong>) battles an informed syndicate (<strong>Mafia</strong>) and solitary third-party killers (<strong>Serial Killer / Jester</strong>). Alternates between <strong>Night Phases</strong> (secret DM abilities resolved in strict priority order) and <strong>Day Phases</strong> (public deliberation and `/vote` lynches).
+                    </p>
+                    <div style="background: #16161c; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #bbb; border: 1px solid #2e2e3a;">
+                        <strong style="color: var(--gold);">Win Condition Evaluation Order:</strong><br>
+                        1️⃣ <strong style="color: var(--gold);">Serial Killer Solo Win:</strong> SK is the last player alive (or in an unbreakable 1v1 stalemate).<br>
+                        2️⃣ <strong style="color: var(--blue);">Town Victory:</strong> All Mafia and hostile Neutrals (SK) are eliminated.<br>
+                        3️⃣ <strong style="color: var(--red);">Mafia Victory:</strong> Mafia count ≥ Living Town count (and no living Serial Killer remains).
+                    </div>
+                </div>
+
+                <div class="card" style="margin-bottom: 0; border-left: 4px solid var(--red); background: #1e1e26;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <h3 style="margin: 0; color: var(--red);">⚔️ Battle Royale Mode (Free-For-All)</h3>
+                        <span style="background: rgba(207,56,56,0.15); color: var(--red); border: 1px solid var(--red); padding: 3px 9px; border-radius: 12px; font-size: 0.78rem; font-weight: bold;">Every Player For Themselves</span>
+                    </div>
+                    <p style="color: #ccc; font-size: 0.92rem; line-height: 1.55; margin: 10px 0;">
+                        A high-octane nocturnal bloodbath where <strong>100% of players spawn as lone-wolf Vigilantes</strong>. Daytime voting phases are bypassed completely—the game cycles continuously through Night combat phases until only one survivor remains.
+                    </p>
+                    <div style="background: #16161c; padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #bbb; border: 1px solid #2e2e3a;">
+                        <strong style="color: var(--red);">Vigilante Tactical Choice Each Night:</strong><br>
+                        • Submit <code>/kill &lt;player&gt;</code> (Priority 3) to eliminate a rival, <strong>OR</strong><br>
+                        • Submit <code>/block &lt;player&gt;</code> (Priority 1) to disrupt a rival's attack.<br>
+                        <em>Only your last submitted DM command before the timer expires is executed!</em>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Interactive Role Explorer Controls: Theme Switcher, Faction Filter & Search -->
+            <div class="card" style="margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 16px;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.35rem; color: #fff;">🎭 Interactive Role Cards, Commands & Win Conditions</h3>
+                        <div style="color: var(--muted); font-size: 0.88rem; margin-top: 3px;">
+                            Switch narrative themes below to preview how the bot dynamically reskins role titles and flavor text while keeping canonical mechanics intact.
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <label style="font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--gold);">🎨 Narrative Theme Reskin:</label>
+                        <select id="roleThemeSelector" onchange="setRoleTheme(this.value)" style="background: #252532; color: #fff; border: 1px solid var(--gold); padding: 8px 14px; border-radius: 6px; font-weight: bold; cursor: pointer;">
+                            <option value="Canonical">⚙️ Canonical Mechanics (Default)</option>
+                            <option value="Classic Mafia">🎩 Classic Mafia (Noir Syndicate)</option>
+                            <option value="Horror">🔪 Horror (Camp Slasher)</option>
+                            <option value="Cyberpunk">🦾 Cyberpunk (Neon Megacorp)</option>
+                            <option value="High Fantasy">🐉 High Fantasy (Kingdom & Cult)</option>
+                            <option value="Office Restructuring">💼 Office Restructuring (Corporate Layoffs)</option>
+                            <option value="Rom Com">💘 Rom Com (Big City Dating)</option>
+                            <option value="Comedy">😂 Comedy (Suburban HOA Chaos)</option>
+                            <option value="Lovecraftian Horror">🐙 Lovecraftian Horror (Eldritch Madness)</option>
+                            <option value="Explicit Kinky NSFW">🔞 Explicit Kinky NSFW (Dungeon Club)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Faction Filter Pills & Search -->
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid #333; padding-top: 14px;">
+                    <div class="era-filter-group" id="roleFactionFilters">
+                        <button class="era-filter-btn active" data-role-faction="all" onclick="filterRolesByFaction('all')" style="--btn-accent:var(--gold);">🌟 All Roles (10)</button>
+                        <button class="era-filter-btn" data-role-faction="Town" onclick="filterRolesByFaction('Town')" style="--btn-accent:var(--blue);">🏛️ Town (4)</button>
+                        <button class="era-filter-btn" data-role-faction="Mafia" onclick="filterRolesByFaction('Mafia')" style="--btn-accent:var(--red);">🕴️ Mafia (3)</button>
+                        <button class="era-filter-btn" data-role-faction="Neutral" onclick="filterRolesByFaction('Neutral')" style="--btn-accent:var(--gold);">🔪 Neutral (2)</button>
+                        <button class="era-filter-btn" data-role-faction="Battle Royale" onclick="filterRolesByFaction('Battle Royale')" style="--btn-accent:var(--purp);">⚔️ Battle Royale (1)</button>
+                    </div>
+                    <input id="roleSearchInput" type="text" placeholder="🔍 Search role, command (/kill, /heal), or immunity..." onkeyup="renderRoleCards(rolesData)" style="background: #23232c; border: 1px solid #444; color: white; padding: 8px 14px; border-radius: 6px; width: 310px; max-width: 100%; font-size: 0.88rem;">
+                </div>
+            </div>
+
+            <!-- Interactive Role Inspector & Scenario Tester Panel -->
+            <div id="role-inspector-panel" class="card" style="border: 1px solid var(--gold); background: #1d1d26; margin-bottom: 20px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
+                    <div>
+                        <span style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--gold); font-weight: bold;">🔬 Interactive Role Interaction & Command Simulator</span>
+                        <h3 id="inspector-role-title" style="margin: 3px 0 0 0; color: #fff; font-size: 1.4rem;">Select any Role Card below or test an interaction scenario</h3>
+                    </div>
+                    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+                        <label style="font-size: 0.82rem; color: #bbb;">Active Role:</label>
+                        <select id="simActiveRole" onchange="runRoleInteractionSim()" style="background: #282834; color: white; border: 1px solid #555; padding: 6px 10px; border-radius: 4px; font-weight: bold;">
+                            <option value="Town Cop">🕵️ Town Cop (/investigate)</option>
+                            <option value="Town Doctor">💉 Town Doctor (/heal)</option>
+                            <option value="Town Role Blocker">🛑 Town Role Blocker (/block)</option>
+                            <option value="Godfather">🎩 Godfather (/kill)</option>
+                            <option value="Mob Role Blocker">⛓️ Mob Role Blocker (/block)</option>
+                            <option value="Mob Goon">🕴️ Mob Goon (Succession)</option>
+                            <option value="Serial Killer">🔪 Serial Killer (/kill)</option>
+                            <option value="Plain Townie">🗳️ Plain Townie (/vote)</option>
+                            <option value="Jester">🃏 Jester (Lynch Bait)</option>
+                            <option value="Vigilante">⚔️ Vigilante (BR /kill or /block)</option>
+                        </select>
+                        <label style="font-size: 0.82rem; color: #bbb;">Scenario / Target:</label>
+                        <select id="simTargetScenario" onchange="runRoleInteractionSim()" style="background: #282834; color: white; border: 1px solid #555; padding: 6px 10px; border-radius: 4px;">
+                            <option value="normal">🎯 Standard Target (Plain Townie / Mob Goon)</option>
+                            <option value="immune_boss">🛡️ Target is Godfather or Serial Killer (Immune)</option>
+                            <option value="actor_blocked">🛑 Active Role is Roleblocked (Priority 1)</option>
+                            <option value="target_healed">💉 Target is Protected by Town Doctor (Priority 2)</option>
+                            <option value="mutual_block">🔄 Target is another Role Blocker targeting you back</option>
+                            <option value="gf_dies">👑 Reigning Godfather is Eliminated</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="role-sim-output" style="background: #14141a; border-left: 4px solid var(--gold); padding: 14px 18px; border-radius: 6px; font-size: 0.92rem; line-height: 1.6;">
+                    <!-- Populated dynamically by runRoleInteractionSim() -->
+                </div>
+            </div>
+
+            <!-- Role Cards Grid -->
+            <div id="role-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px;">
+                <!-- Role cards injected dynamically -->
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUB-PAGE 2: P.E.U. SCORING SYSTEM & INTERACTIVE "MONEYBALL" CALCULATOR   -->
+        <!-- ========================================================================= -->
+        <div id="codex-section-scoring" class="hidden">
+            <div class="card">
+                <h3 style="margin-top: 0; font-size: 1.5rem; color: var(--gold);">🧮 The P.E.U. "Moneyball" Skill Score System (0.00 – 5.00 Scale)</h3>
+                <p style="color: #ccc; line-height: 1.6; font-size: 0.95rem;">
+                    Inspired by sabermetric "Moneyball" analytics, the Imperial Conflict Mafia <strong>Skill Score</strong> evaluates individual player quality independent of raw faction luck. Every player receives three normalized pillar ratings from <strong>0.00 to 5.00</strong>—<strong>Persuasion (P)</strong>, <strong>Elusiveness (E)</strong>, and <strong>Understanding (U)</strong>—which combine into a composite rating out of <strong>5.00</strong>.
+                </p>
+
+                <div class="formula-box">
+                    Composite Skill Score = (W_P × Persuasion) + (W_E × Elusiveness) + (W_U × Understanding) &nbsp;&nbsp;|&nbsp;&nbsp; Default Weights: W_P = 0.33, W_E = 0.33, W_U = 0.34
+                </div>
+
+                <!-- 3 Pillars Detailed Mathematical Breakdown -->
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 18px; margin-top: 18px;">
+                    <!-- Pillar 1: Persuasion -->
+                    <div style="background: #23232c; border-top: 4px solid var(--purp); padding: 16px; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; color: #d180ff; font-size: 1.15rem;">🗣️ (P) Persuasion</h4>
+                            <span style="background: rgba(156,39,176,0.2); color: #d180ff; padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold;">Weight: 33.3%</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: #ccc; line-height: 1.55; margin: 10px 0;">
+                            Measures your ability to drive town consensus and land on the successful daytime lynch wagon without indecisive flip-flopping.
+                        </p>
+                        <div class="formula-box" style="border-left-color: var(--purp); font-size: 0.82rem;">
+                            Phase Weight: p_num = 2 × Day#<br>
+                            Decisiveness = 1 - (VoteSwitches / TotalVotesInPhase)<br>
+                            P_game = [ Σ (p_num × OnWinningLynch × Decisiveness) / Σ p_num ] × 5.0
+                        </div>
+                        <ul style="font-size: 0.84rem; color: #bbb; padding-left: 18px; margin: 8px 0 0 0; line-height: 1.5;">
+                            <li><strong>Late-Game Amplification:</strong> Day 3 lynches (weight 6) matter 3× as much as Day 1 lynches (weight 2).</li>
+                            <li><strong>Decisiveness Penalty:</strong> Switching votes repeatedly during the same Day reduces your Persuasion credit for that phase.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 2: Elusiveness -->
+                    <div style="background: #23232c; border-top: 4px solid var(--green); padding: 16px; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; color: var(--green); font-size: 1.15rem;">🛡️ (E) Elusiveness</h4>
+                            <span style="background: rgba(76,175,80,0.2); color: var(--green); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold;">Weight: 33.3%</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: #ccc; line-height: 1.55; margin: 10px 0;">
+                            Measures survival longevity using <strong>Triangular Phase Weighting</strong>. Surviving deep into a 10-phase marathon earns exponentially more credit than surviving Night 1.
+                        </p>
+                        <div class="formula-box" style="border-left-color: var(--green); font-size: 0.82rem;">
+                            Survived Weight = L × (L + 1) / 2<br>
+                            Total Game Weight = T × (T + 1) / 2<br>
+                            E_game = [ L(L + 1) / T(T + 1) ] × 5.0
+                        </div>
+                        <ul style="font-size: 0.84rem; color: #bbb; padding-left: 18px; margin: 8px 0 0 0; line-height: 1.5;">
+                            <li><strong>Full Survival (L = T):</strong> Always awards a perfect <strong>5.00</strong> for that match.</li>
+                            <li><strong>Deep Run Credit:</strong> Dying on Phase 7 of an 8-phase game still yields <strong>3.89 / 5.00</strong> (`28 / 36 × 5`), whereas dying Night 1 yields <strong>0.14</strong>.</li>
+                        </ul>
+                    </div>
+
+                    <!-- Pillar 3: Understanding -->
+                    <div style="background: #23232c; border-top: 4px solid var(--orange); padding: 16px; border-radius: 6px;">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <h4 style="margin: 0; color: var(--orange); font-size: 1.15rem;">🧠 (U) Understanding</h4>
+                            <span style="background: rgba(255,152,0,0.2); color: var(--orange); padding: 2px 8px; border-radius: 4px; font-size: 0.78rem; font-weight: bold;">Weight: 33.4%</span>
+                        </div>
+                        <p style="font-size: 0.88rem; color: #ccc; line-height: 1.55; margin: 10px 0;">
+                            Measures faction-balanced win conversion and strategic game sense, protected by an <strong>Early-Death Cutoff</strong> so Night 1 victims aren't punished.
+                        </p>
+                        <div class="formula-box" style="border-left-color: var(--orange); font-size: 0.82rem;">
+                            Early-Death Cutoff = floor(0.25 × TotalPhases)<br>
+                            U = (0.33×Win%_Town + 0.33×Win%_Mafia + 0.34×Win%_Neutral) × 5.0
+                        </div>
+                        <ul style="font-size: 0.84rem; color: #bbb; padding-left: 18px; margin: 8px 0 0 0; line-height: 1.5;">
+                            <li><strong>25% Early-Death Protection:</strong> In Discord Bot telemetry (`skillscore_calc.py`), if you die within the first 25% of phases (`L ≤ floor(0.25 × T)`), that match is excluded from your Understanding denominator.</li>
+                            <li><strong>Scumhunting Vote Accuracy %:</strong> Tracks the % of a Town player's end-of-day lynch votes cast against actual Mafia members (`≥ 60%` unlocks 🎯 <em>Deadshot Scumhunter</em>).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE P.E.U. CALCULATOR & REAL PLAYER INSPECTOR -->
             <div class="split-grid">
-                <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--blue);">
-                    <h4 style="margin-top: 0; color: var(--blue);">Classic Mafia</h4>
-                    <p>The traditional game of social deduction. The Town must root out the informed minority (Mafia) and any Neutral killers before they lose their voting majority.</p>
+                <!-- Left Column: Controls & Sliders -->
+                <div class="card" style="border-top: 4px solid var(--gold);">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; margin-bottom: 14px;">
+                        <h3 style="margin: 0; color: var(--gold);">🎛️ Interactive P.E.U. Sandbox & Player Loader</h3>
+                        <button onclick="resetPeuCalculator()" style="background: #333; color: #ddd; border: 1px solid #555; padding: 5px 12px; border-radius: 4px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">↺ Reset Defaults</button>
+                    </div>
+
+                    <!-- Load Real Player from Leaderboard -->
+                    <div style="background: rgba(255,215,0,0.08); border: 1px solid rgba(255,215,0,0.3); padding: 12px 14px; border-radius: 6px; margin-bottom: 16px;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; color: var(--gold); margin-bottom: 6px;">
+                            👤 Load Real Player from IC Mafia Leaderboard:
+                        </label>
+                        <select id="peuPlayerLoader" onchange="loadPlayerIntoCalculator(this.value)" style="width: 100%; background: #1c1c24; color: white; border: 1px solid #555; padding: 8px 12px; border-radius: 5px; font-size: 0.92rem; cursor: pointer;">
+                            <option value="">-- Custom Sandbox Simulation (Or pick a player to inspect) --</option>
+                        </select>
+                        <div id="peuLoadedPlayerBanner" style="font-size: 0.82rem; color: #bbb; margin-top: 6px;">
+                            Adjust the sliders below to simulate a match or tweak a loaded player's P, E, U ratings and formula weights.
+                        </div>
+                    </div>
+
+                    <!-- Slider 1: Persuasion Inputs -->
+                    <div class="calc-slider-group" style="border-left: 3px solid var(--purp);">
+                        <label>
+                            <span>🗣️ Persuasion (P) — Correct Weighted Lynches %</span>
+                            <span id="val-calc-lynch" style="color: #d180ff; font-weight: bold;">65%</span>
+                        </label>
+                        <input id="slider-calc-lynch" class="calc-slider" type="range" min="0" max="100" value="65" oninput="updatePeuCalculator()">
+                        <label style="margin-top: 8px;">
+                            <span>🔄 Vote Indecision Penalty (Switches / Total Votes)</span>
+                            <span id="val-calc-switch" style="color: #d180ff; font-weight: bold;">10%</span>
+                        </label>
+                        <input id="slider-calc-switch" class="calc-slider" type="range" min="0" max="80" value="10" oninput="updatePeuCalculator()">
+                    </div>
+
+                    <!-- Slider 2: Elusiveness Inputs (Triangular Phase Math) -->
+                    <div class="calc-slider-group" style="border-left: 3px solid var(--green);">
+                        <label>
+                            <span>🛡️ Total Game Phases (T)</span>
+                            <span id="val-calc-total-phases" style="color: var(--green); font-weight: bold;">8 Phases</span>
+                        </label>
+                        <input id="slider-calc-total-phases" class="calc-slider" type="range" min="2" max="16" value="8" oninput="updatePeuCalculator()">
+                        <label style="margin-top: 8px;">
+                            <span>⏱️ Phases Survived by Player (L)</span>
+                            <span id="val-calc-surv-phases" style="color: var(--green); font-weight: bold;">6 Phases</span>
+                        </label>
+                        <input id="slider-calc-surv-phases" class="calc-slider" type="range" min="1" max="16" value="6" oninput="updatePeuCalculator()">
+                    </div>
+
+                    <!-- Slider 3: Understanding Inputs -->
+                    <div class="calc-slider-group" style="border-left: 3px solid var(--orange);">
+                        <label>
+                            <span>🏛️ Town Win Conversion Rate</span>
+                            <span id="val-calc-town-win" style="color: var(--blue); font-weight: bold;">58%</span>
+                        </label>
+                        <input id="slider-calc-town-win" class="calc-slider" type="range" min="0" max="100" value="58" oninput="updatePeuCalculator()">
+                        <label style="margin-top: 8px;">
+                            <span>🕴️ Mafia Win Conversion Rate</span>
+                            <span id="val-calc-mafia-win" style="color: var(--red); font-weight: bold;">50%</span>
+                        </label>
+                        <input id="slider-calc-mafia-win" class="calc-slider" type="range" min="0" max="100" value="50" oninput="updatePeuCalculator()">
+                        <label style="margin-top: 8px;">
+                            <span>🔪 Neutral / SK Win Conversion Rate</span>
+                            <span id="val-calc-sk-win" style="color: var(--gold); font-weight: bold;">25%</span>
+                        </label>
+                        <input id="slider-calc-sk-win" class="calc-slider" type="range" min="0" max="100" value="25" oninput="updatePeuCalculator()">
+                    </div>
+
+                    <!-- Custom Formula Weights -->
+                    <div class="calc-slider-group" style="border-left: 3px solid var(--gold); margin-bottom: 0;">
+                        <div style="font-size: 0.8rem; color: var(--gold); font-weight: bold; text-transform: uppercase; margin-bottom: 8px;">⚖️ Custom Formula Weights (Auto-Normalized to 100%)</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px;">
+                            <div>
+                                <label style="font-size: 0.78rem;"><span>W_P</span><span id="val-w-p">33%</span></label>
+                                <input id="slider-w-p" class="calc-slider" type="range" min="0" max="100" value="33" oninput="updatePeuCalculator()">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem;"><span>W_E</span><span id="val-w-e">33%</span></label>
+                                <input id="slider-w-e" class="calc-slider" type="range" min="0" max="100" value="33" oninput="updatePeuCalculator()">
+                            </div>
+                            <div>
+                                <label style="font-size: 0.78rem;"><span>W_U</span><span id="val-w-u">34%</span></label>
+                                <input id="slider-w-u" class="calc-slider" type="range" min="0" max="100" value="34" oninput="updatePeuCalculator()">
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--red);">
-                    <h4 style="margin-top: 0; color: var(--red);">Battle Royale</h4>
-                    <p>A fast-paced bloodbath where everyone is a Vigilante. There are no daytime lynches—only night kills. Last person standing wins.</p>
+
+                <!-- Right Column: Live Calculated Readout, Gauges & Rank Projection -->
+                <div class="card" style="border-top: 4px solid var(--blue); display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <h3 style="margin-top: 0; color: #fff;">📊 Live P.E.U. Calculation & Leaderboard Projection</h3>
+                        
+                        <!-- Big Score Banner -->
+                        <div style="background: linear-gradient(135deg, #1b1b26 0%, #2a2115 100%); border: 1px solid var(--gold); border-radius: 8px; padding: 20px; text-align: center; margin-bottom: 18px;">
+                            <div style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 1px; color: var(--muted);">Composite P.E.U. Skill Score</div>
+                            <div id="calc-out-total" style="font-size: 3.2rem; font-weight: 800; color: var(--gold); margin: 4px 0;">2.98</div>
+                            <div id="calc-out-rank" style="font-size: 0.95rem; color: #ddd; font-weight: 600;">Projected Rank: #8 of eligible veterans (10+ games)</div>
+                        </div>
+
+                        <!-- Individual Pillar Progress Bars -->
+                        <div style="background: #22222b; padding: 14px 16px; border-radius: 6px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: #d180ff;">🗣️ Persuasion (P)</strong>
+                                <span id="calc-out-p" style="font-weight: bold; color: #fff;">2.93 / 5.00</span>
+                            </div>
+                            <div style="background: #14141a; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div id="bar-out-p" style="background: var(--purp); width: 58.5%; height: 100%; transition: width 0.2s;"></div>
+                            </div>
+                            <div id="desc-out-p" style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">Decisiveness factor: 90% × 65% weighted lynch participation</div>
+                        </div>
+
+                        <div style="background: #22222b; padding: 14px 16px; border-radius: 6px; margin-bottom: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: var(--green);">🛡️ Elusiveness (E)</strong>
+                                <span id="calc-out-e" style="font-weight: bold; color: #fff;">2.92 / 5.00</span>
+                            </div>
+                            <div style="background: #14141a; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div id="bar-out-e" style="background: var(--green); width: 58.3%; height: 100%; transition: width 0.2s;"></div>
+                            </div>
+                            <div id="desc-out-e" style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">Triangular survival weight: 21 / 36 phase points (Survived 6 of 8 phases)</div>
+                        </div>
+
+                        <div style="background: #22222b; padding: 14px 16px; border-radius: 6px; margin-bottom: 16px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <strong style="color: var(--orange);">🧠 Understanding (U)</strong>
+                                <span id="calc-out-u" style="font-weight: bold; color: #fff;">2.21 / 5.00</span>
+                            </div>
+                            <div style="background: #14141a; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div id="bar-out-u" style="background: var(--orange); width: 44.2%; height: 100%; transition: width 0.2s;"></div>
+                            </div>
+                            <div id="desc-out-u" style="font-size: 0.8rem; color: #aaa; margin-top: 5px;">Early-Death Cutoff: Phase 2 (25% of 8). Player survived past cutoff → Game counts!</div>
+                        </div>
+                    </div>
+
+                    <!-- Step-by-Step Math Audit Box -->
+                    <div id="calc-math-audit" style="background: #15151c; border: 1px dashed #444; padding: 12px 15px; border-radius: 6px; font-size: 0.83rem; color: #ccc; line-height: 1.55;">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUB-PAGE 3: ALL 21 BOT COMMANDS EXPLORER & /MAFIASTART BUILDER            -->
+        <!-- ========================================================================= -->
+        <div id="codex-section-commands" class="hidden">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 14px;">
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.45rem; color: #fff;">⌨️ Complete Discord Bot Slash Commands Reference (All 21 Commands)</h3>
+                        <p style="color: var(--muted); margin: 4px 0 0 0; font-size: 0.9rem;">
+                            Filter by Cog category, required channel (Public vs Bot DM), or search by command name. Click any command pill to copy its syntax to your clipboard.
+                        </p>
+                    </div>
+                    <input id="cmdSearchInput" type="text" placeholder="🔍 Search command (e.g. /vote, /kill, /skillscore)..." onkeyup="renderBotCommands()" style="background: #23232c; border: 1px solid #444; color: white; padding: 8px 14px; border-radius: 6px; width: 320px; max-width: 100%;">
+                </div>
+
+                <!-- Category & Channel Filter Pills -->
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; border-top: 1px solid #333; padding-top: 14px; margin-bottom: 18px;">
+                    <div class="era-filter-group" id="cmdCategoryFilters">
+                        <button class="era-filter-btn active" data-cmd-cat="all" onclick="setCmdCategory('all')" style="--btn-accent:var(--gold);">🌟 All (21)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Day & Lobby" onclick="setCmdCategory('Day & Lobby')" style="--btn-accent:var(--blue);">🗳️ Day & Lobby (6)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Night Actions" onclick="setCmdCategory('Night Actions')" style="--btn-accent:var(--purp);">🌙 Night Actions DM (4)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Rules & Info" onclick="setCmdCategory('Rules & Info')" style="--btn-accent:var(--green);">📘 Rules & Info (3)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Stats & Records" onclick="setCmdCategory('Stats & Records')" style="--btn-accent:var(--gold);">📊 Stats & Leaderboards (5)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Community Quirks" onclick="setCmdCategory('Community Quirks')" style="--btn-accent:var(--orange);">🎭 Story Quirks (3)</button>
+                        <button class="era-filter-btn" data-cmd-cat="Admin & Host" onclick="setCmdCategory('Admin & Host')" style="--btn-accent:var(--red);">🛠️ Admin & Export (6)</button>
+                    </div>
+                </div>
+
+                <div id="bot-commands-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 14px;">
+                    <!-- Populated dynamically by renderBotCommands() -->
                 </div>
             </div>
 
-            <h3 style="margin-top: 30px;">The P.E.U. Skill Score Formula</h3>
-            <div style="background: #2a2a2a; padding: 15px; border-radius: 5px; border-left: 4px solid var(--gold);">
-                <p>The <strong>Skill Score</strong> is a "Moneyball"-style advanced metric to determine a player's overall value, combining three core stats:</p>
-                <ul style="color: var(--text); line-height: 1.6;">
-                    <li><strong>(P) Persuasion:</strong> Voting with the majority to successfully lynch a target.</li>
-                    <li><strong>(E) Elusiveness:</strong> Avoiding getting killed at night or lynched during the day.</li>
-                    <li><strong>(U) Understanding:</strong> Voting against opposing factions and avoiding voting for your own team.</li>
-                </ul>
+            <!-- Interactive /mafiastart 15-Parameter Command Builder -->
+            <div class="card" style="border-top: 4px solid var(--red);">
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 14px;">
+                    <div>
+                        <h3 style="margin: 0; color: #fff;">🛠️ Interactive <code>/mafiastart</code> 15-Parameter Host Configurator</h3>
+                        <div style="color: var(--muted); font-size: 0.88rem; margin-top: 3px;">
+                            Customize game mode, theme, phase durations, tie-breaker laws, and role spawn thresholds to generate a ready-to-paste Discord host command.
+                        </div>
+                    </div>
+                    <button class="cmd-copy-btn" onclick="copyMafiaStartCommand()" id="copyMafiaStartBtn" style="padding: 8px 16px; font-size: 0.9rem;">📋 Copy /mafiastart Command</button>
+                </div>
+
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; margin-bottom: 16px;">
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Game Mode (`game_type`)</label>
+                        <select id="cfg-game-type" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="Classic">Classic</option>
+                            <option value="Battle Royale">Battle Royale</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Theme (`theme`)</label>
+                        <select id="cfg-theme" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="Classic Mafia">Classic Mafia</option>
+                            <option value="Horror">Horror</option>
+                            <option value="Cyberpunk">Cyberpunk</option>
+                            <option value="High Fantasy">High Fantasy</option>
+                            <option value="Office Restructuring">Office Restructuring</option>
+                            <option value="Rom Com">Rom Com</option>
+                            <option value="Comedy">Comedy</option>
+                            <option value="Lovecraftian Horror">Lovecraftian Horror</option>
+                            <option value="Explicit Kinky NSFW">Explicit Kinky NSFW</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Storyteller (`narration_mode`)</label>
+                        <select id="cfg-narration" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="AI">AI (Gemini 2.5 Flash)</option>
+                            <option value="Static">Static (Deterministic)</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Opening Phase (`first_phase`)</label>
+                        <select id="cfg-first-phase" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="Night">Night (Standard)</option>
+                            <option value="Day">Day</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Day Length (Hours)</label>
+                        <input id="cfg-day-len" type="number" min="0.1" max="72" step="0.5" value="24" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Night Length (Hours)</label>
+                        <input id="cfg-night-len" type="number" min="0.1" max="72" step="0.5" value="24" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Vote Method (`vote_method`)</label>
+                        <select id="cfg-vote-method" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="Plurality">Plurality (Most Votes)</option>
+                            <option value="Majority">Majority (>50% Required)</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Tie Outcome (`tie_vote_outcome`)</label>
+                        <select id="cfg-tie" onchange="updateMafiaStartBuilder()" style="width:100%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                            <option value="No Lynch">No Lynch</option>
+                            <option value="Random">Random Tied Target</option>
+                            <option value="Lynch All">Lynch All Tied</option>
+                        </select>
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Mafia Ratio (`mafia_ratio`)</label>
+                        <input id="cfg-mafia-ratio" type="number" min="0.1" max="0.45" step="0.05" value="0.25" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">SK Spawn (`sk_threshold`)</label>
+                        <input id="cfg-sk-thresh" type="number" min="5" max="25" value="8" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Town RB (`town_rb_threshold`)</label>
+                        <input id="cfg-trb-thresh" type="number" min="5" max="25" value="7" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                    <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                        <label style="font-size: 0.75rem; color: var(--muted); text-transform: uppercase; font-weight: bold;">Mafia RB (`mafia_rb_threshold`)</label>
+                        <input id="cfg-mrb-thresh" type="number" min="5" max="25" value="6" onchange="updateMafiaStartBuilder()" style="width:92%; margin-top:5px; background:#181820; color:#fff; border:1px solid #444; padding:6px; border-radius:4px;">
+                    </div>
+                </div>
+
+                <div class="formula-box" id="mafiastart-command-preview" style="border-left-color: var(--red); color: #fff; font-size: 0.95rem; margin-bottom: 0;">
+                    /mafiastart game_type:Classic theme:Classic Mafia narration_mode:AI first_phase:Night day_length:24 night_length:24 vote_method:Plurality tie_vote_outcome:No Lynch mafia_ratio:0.25 sk_threshold:8 town_rb_threshold:7 mafia_rb_threshold:6
+                </div>
             </div>
-            
-            <h3 style="margin-top: 30px;">Interactive Role Cards</h3>
-            <div id="role-cards-container" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px;">
-                <!-- Role cards will be injected here -->
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUB-PAGE 4: HOW THE BOT WORKS & INTERACTIVE ENGINE SIMULATORS             -->
+        <!-- ========================================================================= -->
+        <div id="codex-section-mechanics" class="hidden">
+            <!-- 1. Interactive 6-Stage Game Lifecycle Stepper -->
+            <div class="card">
+                <h3 style="margin-top: 0; color: #fff;">🔄 Interactive Game Lifecycle & State Machine Walkthrough</h3>
+                <p style="color: var(--muted); font-size: 0.9rem; margin-bottom: 14px;">
+                    Click any stage in the bot's automated game loop below to inspect the Discord channel permissions, timers, DM dispatches, and state transitions executed by the engine.
+                </p>
+
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px;">
+                    <div class="lifecycle-step active" id="lc-step-1" onclick="selectLifecycleStep(1)">
+                        <div style="font-size: 1.5rem;">📝</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">1. Sign-Up Lobby</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">24h Join Window</div>
+                    </div>
+                    <div class="lifecycle-step" id="lc-step-2" onclick="selectLifecycleStep(2)">
+                        <div style="font-size: 1.5rem;">🎲</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">2. Role Balancing</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">Setup & Secret DMs</div>
+                    </div>
+                    <div class="lifecycle-step" id="lc-step-3" onclick="selectLifecycleStep(3)">
+                        <div style="font-size: 1.5rem;">🌙</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">3. Night Phase</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">DM Actions & Pre-Reminders</div>
+                    </div>
+                    <div class="lifecycle-step" id="lc-step-4" onclick="selectLifecycleStep(4)">
+                        <div style="font-size: 1.5rem;">⚡</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">4. Priority Resolution</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">Tier 1→4 & AI Story</div>
+                    </div>
+                    <div class="lifecycle-step" id="lc-step-5" onclick="selectLifecycleStep(5)">
+                        <div style="font-size: 1.5rem;">☀️</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">5. Day & Voting</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">Deliberation & Lynch</div>
+                    </div>
+                    <div class="lifecycle-step" id="lc-step-6" onclick="selectLifecycleStep(6)">
+                        <div style="font-size: 1.5rem;">🏆</div>
+                        <div style="font-weight: bold; color: #fff; font-size: 0.9rem; margin-top: 4px;">6. Win Check & Sync</div>
+                        <div style="font-size: 0.75rem; color: var(--muted);">Promotion / Archive</div>
+                    </div>
+                </div>
+
+                <div id="lifecycle-detail-box" style="background: #181820; border-left: 4px solid var(--gold); padding: 16px 20px; border-radius: 6px; line-height: 1.6;">
+                    <!-- Populated dynamically by selectLifecycleStep() -->
+                </div>
             </div>
 
-            <h3 style="margin-top: 30px;">Bot Commands Reference</h3>
-            <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
-                <tr style="background: #333; color: white;">
-                    <th style="padding: 10px; border: 1px solid #444;">Command</th>
-                    <th style="padding: 10px; border: 1px solid #444;">Channel</th>
-                    <th style="padding: 10px; border: 1px solid #444;">Description</th>
-                </tr>
-                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/vote &lt;player&gt;</code></td><td style="padding: 8px; border: 1px solid #444;">Public</td><td style="padding: 8px; border: 1px solid #444;">Vote to lynch a player during the Day phase.</td></tr>
-                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/myrole</code></td><td style="padding: 8px; border: 1px solid #444;">DM</td><td style="padding: 8px; border: 1px solid #444;">Check your alignment, role, and abilities.</td></tr>
-                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/kill &lt;target&gt;</code></td><td style="padding: 8px; border: 1px solid #444;">DM</td><td style="padding: 8px; border: 1px solid #444;">Use your night kill action (Mafia, SK, Vigilante).</td></tr>
-                <tr><td style="padding: 8px; border: 1px solid #444;"><code>/mafiastatus</code></td><td style="padding: 8px; border: 1px solid #444;">Public</td><td style="padding: 8px; border: 1px solid #444;">View current phase, alive players, and time remaining.</td></tr>
-            </table>
+            <!-- 2. Two Interactive Simulators Side-by-Side -->
+            <div class="split-grid">
+                <!-- Simulator A: Dynamic Setup & Role Balance Simulator -->
+                <div class="card" style="border-top: 4px solid var(--blue);">
+                    <h3 style="margin-top: 0; color: var(--blue);">⚖️ Interactive Role Setup & Balance Simulator (`setup_generator.py`)</h3>
+                    <p style="color: #bbb; font-size: 0.88rem; line-height: 1.5;">
+                        Drag the player count slider to see the exact role composition dynamically generated by the bot's setup engine.
+                    </p>
+
+                    <div class="calc-slider-group">
+                        <label>
+                            <span>👥 Total Signed-Up Players</span>
+                            <span id="val-sim-players" style="color: var(--gold); font-weight: bold; font-size: 1.05rem;">10 Players</span>
+                        </label>
+                        <input id="slider-sim-players" class="calc-slider" type="range" min="5" max="19" value="10" oninput="runSetupSimulator()">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                            <label style="font-size: 0.78rem; color: #bbb;">Mafia Ratio (`ceil(N × ratio)`)</label>
+                            <select id="sim-setup-ratio" onchange="runSetupSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:5px; border-radius:4px;">
+                                <option value="0.20">0.20 (20% Mafia)</option>
+                                <option value="0.25" selected>0.25 (25% Standard)</option>
+                                <option value="0.30">0.30 (30% High Mafia)</option>
+                            </select>
+                        </div>
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px;">
+                            <label style="font-size: 0.78rem; color: #bbb;">Serial Killer Threshold</label>
+                            <select id="sim-setup-sk" onchange="runSetupSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:5px; border-radius:4px;">
+                                <option value="8" selected>8+ Players (Standard)</option>
+                                <option value="6">6+ Players (Early SK)</option>
+                                <option value="99">Disabled (No SK)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="setup-sim-output" style="background: #16161d; padding: 14px; border-radius: 6px; border: 1px solid #333;">
+                        <!-- Populated dynamically by runSetupSimulator() -->
+                    </div>
+                </div>
+
+                <!-- Simulator B: Night Action Priority & Selective Narration Simulator -->
+                <div class="card" style="border-top: 4px solid var(--purp);">
+                    <h3 style="margin-top: 0; color: #d180ff;">🌙 Night Priority Stack & Fog-of-War Story Simulator</h3>
+                    <p style="color: #bbb; font-size: 0.88rem; line-height: 1.5;">
+                        Configure a Night Phase below to see how <strong>Tier 1→4 Priority Resolution</strong> and <strong>Selective Narration</strong> prevent information leaks!
+                    </p>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px; border-left: 3px solid var(--orange);">
+                            <label style="font-size: 0.76rem; color: var(--orange); font-weight: bold;">TIER 1: Role Blocker Action</label>
+                            <select id="sim-night-block" onchange="runNightStackSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:6px; border-radius:4px;">
+                                <option value="none">No Block Submitted</option>
+                                <option value="block_gf">Town RB blocks Godfather</option>
+                                <option value="block_doc">Mob RB blocks Town Doctor</option>
+                                <option value="block_cop">Mob RB blocks Town Cop</option>
+                                <option value="block_townie">Mob RB blocks Plain Townie (No-Op)</option>
+                                <option value="mutual_block">Town RB & Mob RB block EACH OTHER!</option>
+                            </select>
+                        </div>
+
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px; border-left: 3px solid var(--green);">
+                            <label style="font-size: 0.76rem; color: var(--green); font-weight: bold;">TIER 2: Town Doctor Heal</label>
+                            <select id="sim-night-heal" onchange="runNightStackSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:6px; border-radius:4px;">
+                                <option value="heal_attacked" selected>Doctor heals Mafia's Target</option>
+                                <option value="heal_unattacked">Doctor heals Unattacked Player</option>
+                                <option value="none">No Heal Submitted</option>
+                            </select>
+                        </div>
+
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px; border-left: 3px solid var(--red);">
+                            <label style="font-size: 0.76rem; color: var(--red); font-weight: bold;">TIER 3: Mafia & SK Attacks</label>
+                            <select id="sim-night-kill" onchange="runNightStackSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:6px; border-radius:4px;">
+                                <option value="gf_kills_town" selected>Godfather attacks Townie</option>
+                                <option value="gf_kills_sk">Godfather attacks Serial Killer (Night Immune!)</option>
+                                <option value="sk_kills_gf">Serial Killer attacks Godfather (Night Immune!)</option>
+                                <option value="double_kill">Godfather & SK attack same Townie</option>
+                            </select>
+                        </div>
+
+                        <div style="background: #23232c; padding: 10px; border-radius: 6px; border-left: 3px solid var(--blue);">
+                            <label style="font-size: 0.76rem; color: var(--blue); font-weight: bold;">TIER 4: Town Cop Investigation</label>
+                            <select id="sim-night-cop" onchange="runNightStackSimulator()" style="width:100%; margin-top:4px; background:#16161d; color:white; border:1px solid #444; padding:6px; border-radius:4px;">
+                                <option value="cop_checks_goon" selected>Cop investigates Mob Goon</option>
+                                <option value="cop_checks_gf">Cop investigates Godfather (Investigate Immune!)</option>
+                                <option value="cop_checks_sk">Cop investigates Serial Killer (Investigate Immune!)</option>
+                                <option value="cop_attacked">Cop is killed by Mafia tonight</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="night-stack-sim-output" style="background: #16161d; padding: 14px; border-radius: 6px; border: 1px solid #333; font-size: 0.86rem; line-height: 1.55;">
+                        <!-- Populated dynamically by runNightStackSimulator() -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================================================= -->
+        <!-- SUB-PAGE 5: SYSTEM ARCHITECTURE & MULTI-ERA DATA PIPELINE                 -->
+        <!-- ========================================================================= -->
+        <div id="codex-section-architecture" class="hidden">
+            <div class="card">
+                <h3 style="margin-top: 0; font-size: 1.5rem; color: #fff;">🏗️ Interactive Bot Architecture & Multi-Era Telemetry Pipeline</h3>
+                <p style="color: #ccc; font-size: 0.92rem; line-height: 1.55;">
+                    The IC Mafia Bot is engineered around a strict <strong>6-Layer Modular Architecture</strong> separating Discord UI interactions from deterministic game state, AI storytelling, atomic crash persistence, and the multi-era web/Google Sheets analytics pipeline. <strong>Click any architectural layer below</strong> to inspect its modules, files, and engineering invariants.
+                </p>
+
+                <div class="split-grid" style="margin-top: 18px;">
+                    <!-- Left: Clickable 6-Layer Stack -->
+                    <div style="display: flex; flex-direction: column; gap: 10px;">
+                        <div class="arch-layer-card active" id="arch-card-1" onclick="selectArchLayer(1)" style="border-left-color: var(--blue);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">1️⃣ Layer 1: Discord Slash-Command Facade (`/cogs/`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(56,138,207,0.2); color: var(--blue); padding: 2px 8px; border-radius: 4px;">6 Cogs • 21 Commands</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`game.py`, `admin.py`, `info.py`, `stats.py`, `community.py`, `export.py`</div>
+                        </div>
+
+                        <div class="arch-layer-card" id="arch-card-2" onclick="selectArchLayer(2)" style="border-left-color: var(--gold);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">2️⃣ Layer 2: Async Game Engine & State Machine (`/game/engine/`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(255,215,0,0.2); color: var(--gold); padding: 2px 8px; border-radius: 4px;">Core State & Phases</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`Game`, `PhaseManager`, `VoteManager`, `RoleManager`, `setup_generator.py`</div>
+                        </div>
+
+                        <div class="arch-layer-card" id="arch-card-3" onclick="selectArchLayer(3)" style="border-left-color: var(--red);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">3️⃣ Layer 3: Deterministic Priority Action Resolver (`/game/actions/`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(207,56,56,0.2); color: var(--red); padding: 2px 8px; border-radius: 4px;">Tier 1 → Tier 4</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`ActionManager`, `handle_block.py`, `handle_heal.py`, `handle_kill.py`, `handle_investigate.py`</div>
+                        </div>
+
+                        <div class="arch-layer-card" id="arch-card-4" onclick="selectArchLayer(4)" style="border-left-color: var(--purp);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">4️⃣ Layer 4: Hybrid Gemini AI & Fog-of-War Storyteller (`/game/narration*.py`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(156,39,176,0.2); color: #d180ff; padding: 2px 8px; border-radius: 4px;">Zero-Leak Narration</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`narration.py`, `narration_ai.py` (Gemini 2.5 Flash), `narration_static.py`, Random Decoys</div>
+                        </div>
+
+                        <div class="arch-layer-card" id="arch-card-5" onclick="selectArchLayer(5)" style="border-left-color: var(--green);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">5️⃣ Layer 5: Atomic Crash Recovery & Lowercase I/O (`/utils/` & `persistence.py`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(76,175,80,0.2); color: var(--green); padding: 2px 8px; border-radius: 4px;"> `./data` `./stats` `./logs`</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`active_game.pkl`, `archivephasedata.py`, `savejsondata.py`, `logprompttojson.py`</div>
+                        </div>
+
+                        <div class="arch-layer-card" id="arch-card-6" onclick="selectArchLayer(6)" style="border-left-color: var(--orange);">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <strong style="color: #fff; font-size: 1.02rem;">6️⃣ Layer 6: Multi-Era Web Portal & Google Sheets Pipeline (`/Website/` & `/scripts/`)</strong>
+                                <span style="font-size: 0.75rem; background: rgba(255,152,0,0.2); color: var(--orange); padding: 2px 8px; border-radius: 4px;">159+ Games • 4 Eras</span>
+                            </div>
+                            <div style="font-size: 0.83rem; color: #aaa; margin-top: 4px;">`build_unified_leaderboard.py`, `sync_google_sheets.py`, `MafiaAPICode.js`, `api.js`</div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Deep-Dive Inspector for Selected Layer -->
+                    <div id="arch-layer-detail" class="card" style="margin: 0; background: #181820; border: 1px solid #3a3a48; display: flex; flex-direction: column; justify-content: space-between;">
+                        <!-- Populated dynamically by selectArchLayer() -->
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -885,20 +1671,30 @@
         if (hash === 'archives') switchMode('archives');
         else if (hash === 'classic') switchMode('classic');
         else if (hash === 'battle_royale' || hash === 'br') switchMode('battle_royale');
-        else if (hash === 'codex') switchMode('codex');
+        else if (hash === 'codex' || hash === 'roles') switchMode('codex', 'roles');
+        else if (hash === 'scoring') switchMode('codex', 'scoring');
+        else if (hash === 'commands') switchMode('codex', 'commands');
+        else if (hash === 'mechanics') switchMode('codex', 'mechanics');
+        else if (hash === 'architecture') switchMode('codex', 'architecture');
         else if (hash === 'badges') switchMode('badges');
         else switchMode('records');
     };
 
-    async function switchMode(mode) {
-        window.location.hash = mode;
+    async function switchMode(mode, subTab = null) {
+        window.location.hash = subTab ? subTab : mode;
         // 1. Manage Active Tabs
         document.getElementById('nav-records').className = mode === 'records' ? 'nav-btn special-link active' : 'nav-btn special-link';
         document.getElementById('nav-badges').className = mode === 'badges' ? 'nav-btn special-link active' : 'nav-btn special-link';
         document.getElementById('nav-classic').className = mode === 'classic' ? 'nav-btn active' : 'nav-btn';
         document.getElementById('nav-br').className = mode === 'battle_royale' ? 'nav-btn active' : 'nav-btn';
-        document.getElementById('nav-codex').className = mode === 'codex' ? 'nav-btn active' : 'nav-btn';
         document.getElementById('nav-archives').className = mode === 'archives' ? 'nav-btn active' : 'nav-btn';
+        document.getElementById('nav-codex').className = (mode === 'codex' && (!subTab || subTab === 'roles')) ? 'nav-btn active' : 'nav-btn';
+        const navScoring = document.getElementById('nav-scoring');
+        if (navScoring) navScoring.className = (mode === 'codex' && subTab === 'scoring') ? 'nav-btn active' : 'nav-btn';
+        const navCommands = document.getElementById('nav-commands');
+        if (navCommands) navCommands.className = (mode === 'codex' && subTab === 'commands') ? 'nav-btn active' : 'nav-btn';
+        const navArch = document.getElementById('nav-architecture');
+        if (navArch) navArch.className = (mode === 'codex' && (subTab === 'mechanics' || subTab === 'architecture')) ? 'nav-btn active' : 'nav-btn';
         
         // 2. Hide all views and show loader
         document.getElementById('view-records').classList.add('hidden');
@@ -910,15 +1706,29 @@
         
         if (mode !== 'codex') {
             document.getElementById('loader').classList.remove('hidden');
+        } else {
+            document.getElementById('loader').classList.add('hidden');
         }
         
         // 3. Fetch Data dynamically based on the requested tab
         try {
             if (mode === 'codex') {
                 document.getElementById('view-codex').classList.remove('hidden');
+                switchCodexTab(subTab || currentCodexSubTab || 'roles', false);
                 if (!rolesData) {
                     rolesData = await fetchPortalData('roles');
-                    renderRoleCards(rolesData);
+                }
+                renderRoleCards(rolesData);
+                initCodexInteractiveWidgets();
+                if (recordsData.length === 0) {
+                    fetchPortalData('leaderboard').then(d => {
+                        recordsData = d;
+                        populatePeuPlayerDropdown();
+                        updatePeuCalculator();
+                    }).catch(() => {});
+                } else {
+                    populatePeuPlayerDropdown();
+                    updatePeuCalculator();
                 }
             } else if (mode === 'archives') {
                 historyData = await fetchPortalData('history');
@@ -1596,44 +2406,1191 @@
         }
     }
 
+    let currentCodexSubTab = 'roles';
+    let currentRoleFactionFilter = 'all';
+    let currentRoleTheme = 'Canonical';
+    let currentCmdCategory = 'all';
+    let codexWidgetsInitialized = false;
+
+    const THEME_RESKINS = {
+        "Classic Mafia": {
+            "Town Cop": { display_name: "Detective", short_description: "Investigates one player each night to uncover syndicate ties." },
+            "Town Doctor": { display_name: "Doctor", short_description: "Protects one citizen each night from Mafia hitmen." },
+            "Plain Townie": { display_name: "Plain Townie", short_description: "Upstanding citizen whose power lies in the public town hall vote." },
+            "Town Role Blocker": { display_name: "Escort", short_description: "Distracts one suspect at night, preventing their night action." },
+            "Godfather": { display_name: "Godfather", short_description: "Don of the crime family who orders the nightly hit." },
+            "Mob Goon": { display_name: "Mob Goon", short_description: "Made man who steps up to become Godfather if the Don falls." },
+            "Mob Role Blocker": { display_name: "Consigliere", short_description: "Syndicate fixer who stalls a town member's night action." },
+            "Serial Killer": { display_name: "Serial Killer", short_description: "Solitary psychopath hunting both Town and Mafia." },
+            "Jester": { display_name: "Jester", short_description: "Unhinged trickster aiming to get publicly executed." },
+            "Vigilante": { display_name: "Vigilante", short_description: "Lone gunman in Battle Royale who can shoot or block." }
+        },
+        "Horror": {
+            "Town Cop": { display_name: "Sheriff", short_description: "Local lawman investigating gruesome camp disappearances." },
+            "Town Doctor": { display_name: "Camp Medic", short_description: "Armed with a trauma kit and adrenaline to rescue ambushed campers." },
+            "Plain Townie": { display_name: "Camp Counselor", short_description: "Terrified counselor trying to survive the night in the woods." },
+            "Town Role Blocker": { display_name: "Spooky Harbinger", short_description: "Wanders the grounds warning of doom, halting someone in their tracks." },
+            "Godfather": { display_name: "Slasher Mastermind", short_description: "Terrifying mastermind orchestrating the cabin massacre." },
+            "Mob Goon": { display_name: "Masked Cultist", short_description: "Deranged follower who takes over the killings if the Mastermind falls." },
+            "Mob Role Blocker": { display_name: "Wailing Banshee", short_description: "Piercing shriek paralyzes a victim in terror for the night." },
+            "Serial Killer": { display_name: "The Butcher", short_description: "Relentless solitary maniac stalking the camp." },
+            "Jester": { display_name: "First Victim", short_description: "Investigated the basement alone and wants the panicking group to lynch them!" },
+            "Vigilante": { display_name: "Final Girl", short_description: "Armed with a fire axe and pure survival instinct." }
+        },
+        "Cyberpunk": {
+            "Town Cop": { display_name: "Netwatch Agent", short_description: "Runs deep neural ICE scans to expose rogue corporate operatives." },
+            "Town Doctor": { display_name: "Ripperdoc", short_description: "Patches flatlining cyberware with nanite injectors and trauma med-gel." },
+            "Plain Townie": { display_name: "Street Chooh", short_description: "Everyday neon-sprawl resident surviving beneath the megacorps." },
+            "Town Role Blocker": { display_name: "Signal Jammer", short_description: "Broadcasts localized EMP bursts that jam a runner's cyber-actions." },
+            "Godfather": { display_name: "Syndicate Boss", short_description: "Cold-blooded corporate director ordering nightly flatlines from the penthouse." },
+            "Mob Goon": { display_name: "Cyber-Thug", short_description: "Augmented street enforcer who takes command if the Boss is flatlined." },
+            "Mob Role Blocker": { display_name: "Black ICE Netrunner", short_description: "Fries neural links with military-grade intrusion countermeasures." },
+            "Serial Killer": { display_name: "Cyberpsycho", short_description: "Overclocked on illegal chrome, rampaging indiscriminately through the sprawl." },
+            "Jester": { display_name: "Glitched Troll", short_description: "Holonet prankster seeking ultimate virality through public deletion." },
+            "Vigilante": { display_name: "Solo Mercenary", short_description: "Freelance street samurai deploying smart-guns or flashbang jammers." }
+        },
+        "High Fantasy": {
+            "Town Cop": { display_name: "Inquisitor", short_description: "Seeks out heresy and dark demonic pacts across the realm." },
+            "Town Doctor": { display_name: "Cleric", short_description: "Channels divine healing radiance to ward off mortal blows." },
+            "Plain Townie": { display_name: "Villager", short_description: "Humble citizen of the kingdom gathering at the town square." },
+            "Town Role Blocker": { display_name: "Tavern Bard", short_description: "Captivates adventurers with enchanting songs and intoxicating ale." },
+            "Godfather": { display_name: "Dark Lord", short_description: "Terrifying commander of the shadow cult striking down defenders." },
+            "Mob Goon": { display_name: "Shadow Cultist", short_description: "Fanatical servant who ascends to lead if the Dark Lord falls." },
+            "Mob Role Blocker": { display_name: "Dark Sorceress", short_description: "Weaves binding hexes and shadow wards to stifle abilities." },
+            "Serial Killer": { display_name: "Blood Assassin", short_description: "Merciless rogue claiming dark bounties on all who breathe." },
+            "Jester": { display_name: "Cursed Madman", short_description: "Afflicted by ancient madness; freed only if executed by public decree." },
+            "Vigilante": { display_name: "Wandering Ranger", short_description: "Solitary hunter loosing deadly arrows or laying snaring traps." }
+        },
+        "Office Restructuring": {
+            "Town Cop": { display_name: "Compliance Auditor", short_description: "Audits expense reports and communications to expose downsizing execs." },
+            "Town Doctor": { display_name: "HR Retention Partner", short_description: "Renews contracts and shields coworkers from corporate pink slips." },
+            "Plain Townie": { display_name: "Desk Worker", short_description: "Hardworking salaried employee trying to survive quarterly layoffs." },
+            "Town Role Blocker": { display_name: "IT Systems Admin", short_description: "Triggers mandatory password resets to lock someone out for the night." },
+            "Godfather": { display_name: "Restructuring Partner", short_description: "Ruthless consultant brought in to aggressively slash headcount." },
+            "Mob Goon": { display_name: "Hatchet Associate", short_description: "Ambitious associate who takes over issuing pink slips if the Partner leaves." },
+            "Mob Role Blocker": { display_name: "Bureaucratic Gatekeeper", short_description: "Buries coworkers in endless requisition forms and red-tape delays." },
+            "Serial Killer": { display_name: "The Poacher", short_description: "Rogue executive headhunter poaching staff until nobody else remains." },
+            "Jester": { display_name: "Severance Hunter", short_description: "Dreams of getting voted out to collect a golden parachute package!" },
+            "Vigilante": { display_name: "Freelance Contractor", short_description: "Mercenary gig-worker answering only to their own invoice." }
+        },
+        "Rom Com": {
+            "Town Cop": { display_name: "Relationship Detective", short_description: "Background-checks dating profiles to spot toxic red flags." },
+            "Town Doctor": { display_name: "Wingman", short_description: "Emotional support bestie armed with ice cream to prevent heartbreak." },
+            "Plain Townie": { display_name: "Hopeless Romantic", short_description: "Sweet single searching for genuine love in the big city." },
+            "Town Role Blocker": { display_name: "Cockblocker", short_description: "Crashes awkward late-night dates to interrupt someone's plans." },
+            "Godfather": { display_name: "Serial Heartbreaker", short_description: "Charismatic smooth-talker leading the toxic dating circle." },
+            "Mob Goon": { display_name: "Serial Ghoster", short_description: "Leaves people on read and steps up if the Heartbreaker gets exposed." },
+            "Mob Role Blocker": { display_name: "Meddling Parent", short_description: "Shows up uninvited with awkward questions that ruin the vibe." },
+            "Serial Killer": { display_name: "Commitment-Phobe", short_description: "Runs screaming from feelings, dumping everyone to stay single." },
+            "Jester": { display_name: "Clingy Ex", short_description: "Lives for messy public breakup drama in front of the whole group." },
+            "Vigilante": { display_name: "Cynical Bachelor", short_description: "Navigates the dating scene on their own terms: dump or interrupt." }
+        },
+        "Comedy": {
+            "Town Cop": { display_name: "Neighborhood Karen", short_description: "Snoops through recycling bins and demands to speak to the manager." },
+            "Town Doctor": { display_name: "Essential Oils Guru", short_description: "Cures mortal wounds with lavender oil, kale smoothies, and crystals." },
+            "Plain Townie": { display_name: "Suburban Dad", short_description: "Rocking white New Balances and grilling tongs, defending lawn peace." },
+            "Town Role Blocker": { display_name: "Door-to-Door Salesperson", short_description: "Traps neighbors in 45-minute solar panel pitches all night." },
+            "Godfather": { display_name: "HOA Overlord", short_description: "Ruthless ruler of the Homeowners Association evicting residents." },
+            "Mob Goon": { display_name: "Bake Sale Enforcer", short_description: "Enforces HOA decrees with dry brownies and inherits the presidency." },
+            "Mob Role Blocker": { display_name: "WiFi Disconnector", short_description: "Stealthily unplugs the neighborhood router at the worst moment." },
+            "Serial Killer": { display_name: "Florida Man", short_description: "Rides into the night on a stolen lawnmower with pet alligators." },
+            "Jester": { display_name: "Drama Queen", short_description: "Thrives on neighborhood feuds and getting kicked out of the group chat." },
+            "Vigilante": { display_name: "Mall Ninja", short_description: "Equipped with mall katanas, smoke pellets, and tactical sunglasses." }
+        },
+        "Lovecraftian Horror": {
+            "Town Cop": { display_name: "Occult Alienist", short_description: "Deciphers eldritch ciphers to divine who serves the cosmic horrors." },
+            "Town Doctor": { display_name: "Asylum Physician", short_description: "Administers laudanum draughts to preserve fragile minds from shattering." },
+            "Plain Townie": { display_name: "Sane Resident", short_description: "Terrified citizen clinging to human reason in a coastal town." },
+            "Town Role Blocker": { display_name: "Mesmerist", short_description: "Swings hypnotic pendulums to trance someone into inaction." },
+            "Godfather": { display_name: "High Priest of Dagon", short_description: "Blasphemous voice of the deep trench offering nightly sacrifices." },
+            "Mob Goon": { display_name: "Deep One Hybrid", short_description: "Grotesque coastal mutant who leads the rites if the High Priest falls." },
+            "Mob Role Blocker": { display_name: "Arkham Witch", short_description: "Whispers maddening incantations that shatter focus and resolve." },
+            "Serial Killer": { display_name: "Eldritch Abomination", short_description: "Writhing star-spawn entity hungering for all mortal minds." },
+            "Jester": { display_name: "Doomsday Prophet", short_description: "Must be sacrificed in the town square to awaken the sleeper!" },
+            "Vigilante": { display_name: "Paranoid Veteran", short_description: "Armed with cold iron, warding salt, and a trench shotgun." }
+        },
+        "Explicit Kinky NSFW": {
+            "Town Cop": { display_name: "Purity Inspector", short_description: "Inspects the deepest secrets and alignments of club guests." },
+            "Town Doctor": { display_name: "Aftercare Specialist", short_description: "Provides warm blankets and emotional safety to protect players." },
+            "Plain Townie": { display_name: "Submissive Bystander", short_description: "Curious club guest voting on who gets sent to the timeout dungeon." },
+            "Town Role Blocker": { display_name: "Dominatrix", short_description: "Takes complete control and locks a player down for the night." },
+            "Godfather": { display_name: "Supreme Dominant", short_description: "Commanding master of the VIP dungeon directing nightly eliminations." },
+            "Mob Goon": { display_name: "Leather Enforcer", short_description: "Loyal syndicate enforcer who steps up if the Supreme Dominant leaves." },
+            "Mob Role Blocker": { display_name: "Bondage Rigger", short_description: "Master of shibari ropes who binds a player to stop their night action." },
+            "Serial Killer": { display_name: "Sadistic Edge-Lord", short_description: "Rogue player aiming to eliminate everyone in the club." },
+            "Jester": { display_name: "Exhibitionist Masochist", short_description: "Craves being publicly voted out and tied up by the crowd." },
+            "Vigilante": { display_name: "Rogue Switch", short_description: "Versatile free agent shifting between dominant strikes and restraints." }
+        }
+    };
+
+    const BOT_COMMANDS_CATALOG = [
+        // Day & Lobby (6)
+        { cmd: "/mafiajoin", syntax: "/mafiajoin", cat: "Day & Lobby", channel: "Public Channel", phase: "Sign-Up Phase", cog: "game.py", desc: "Register to play in the currently recruiting Mafia or Battle Royale match. Grants the Dead/Alive Discord role." },
+        { cmd: "/mafialeave", syntax: "/mafialeave", cat: "Day & Lobby", channel: "Public Channel", phase: "Sign-Up Phase", cog: "game.py", desc: "Withdraw from the player roster before the sign-up window closes and roles are assigned." },
+        { cmd: "/mafiastatus", syntax: "/mafiastatus", cat: "Day & Lobby", channel: "Public Channel", phase: "Any Active Phase", cog: "game.py", desc: "Display the live game embed: current Day/Night phase, countdown timer, living players, and casualty log." },
+        { cmd: "/vote", syntax: "/vote player_name:<target or 'no lynch'>", cat: "Day & Lobby", channel: "Public Voting Channel", phase: "Day Phase", cog: "game.py", desc: "Cast or change your official daytime lynch vote. Supports voting for a living player or 'no lynch'." },
+        { cmd: "/mafiacount", syntax: "/mafiacount", cat: "Day & Lobby", channel: "Public Channel", phase: "Day Phase", cog: "game.py", desc: "Display the live daytime vote tally board, who is voting for whom, and the threshold required to lynch." },
+        { cmd: "/myrole", syntax: "/myrole", cat: "Day & Lobby", channel: "Bot DM (or Ephemeral)", phase: "Any Active Phase", cog: "game.py", desc: "Privately review your assigned Role, Faction Alignment, Theme Alias, Night Abilities, and Win Condition." },
+
+        // Night Actions DM (4)
+        { cmd: "/kill", syntax: "/kill player_name:<target>", cat: "Night Actions", channel: "Bot DM Only", phase: "Night Phase", cog: "game.py", desc: "Submit a Priority 3 lethal night attack. Available to Godfather, Serial Killer, promoted Mob Goons, and BR Vigilantes." },
+        { cmd: "/heal", syntax: "/heal player_name:<target>", cat: "Night Actions", channel: "Bot DM Only", phase: "Night Phase", cog: "game.py", desc: "Submit a Priority 2 protection action (Town Doctor). Shields target from Priority 3 kills. Cannot heal the same target twice in a row." },
+        { cmd: "/investigate", syntax: "/investigate player_name:<target>", cat: "Night Actions", channel: "Bot DM Only", phase: "Night Phase", cog: "game.py", desc: "Submit a Priority 4 alignment check (Town Cop). Reveals target's alignment at Dawn unless blocked, killed, or target is investigate-immune." },
+        { cmd: "/block", syntax: "/block player_name:<target>", cat: "Night Actions", channel: "Bot DM Only", phase: "Night Phase", cog: "game.py", desc: "Submit a Priority 1 roleblock (Town RB, Mob RB, BR Vigilante). Cancels target's night action. Cannot block the same player consecutively." },
+
+        // Rules & Info (3)
+        { cmd: "/mafiarules", syntax: "/mafiarules", cat: "Rules & Info", channel: "Public / DM", phase: "Anytime", cog: "info.py", desc: "Post the comprehensive game rules embed covering phases, voting methods, priority order, and win conditions." },
+        { cmd: "/mafiaroles", syntax: "/mafiaroles", cat: "Rules & Info", channel: "Public / DM", phase: "Anytime", cog: "info.py", desc: "List all canonical roles, faction alignments, night priority tiers, immunities, and spawn rules." },
+        { cmd: "/mafiainfo", syntax: "/mafiainfo", cat: "Rules & Info", channel: "Public / DM", phase: "Anytime", cog: "info.py", desc: "Display quick-start guide, bot version, active configuration summary, and portal links." },
+
+        // Stats & Leaderboards (5)
+        { cmd: "/gamestats", syntax: "/gamestats [game_type]", cat: "Stats & Records", channel: "Public Channel", phase: "Anytime", cog: "stats.py", desc: "Display aggregate faction win rates (Town, Mafia, Neutral/SK, Draw), average game duration, and phase survival metrics." },
+        { cmd: "/playerstats", syntax: "/playerstats [user]", cat: "Stats & Records", channel: "Public Channel", phase: "Anytime", cog: "stats.py", desc: "Generate a player's career dossier: Games Played, Win %, Survival %, N1 Deaths, D1 Lynches, and Faction breakdown." },
+        { cmd: "/skillscore", syntax: "/skillscore [user] [game_type]", cat: "Stats & Records", channel: "Public Channel", phase: "Anytime", cog: "stats.py", desc: "Compute and explain a player's P.E.U. Skill Score (Persuasion, Elusiveness, Understanding) on the 0.00–5.00 scale." },
+        { cmd: "/leaderboard", syntax: "/leaderboard [metric] [min_games]", cat: "Stats & Records", channel: "Public Channel", phase: "Anytime", cog: "stats.py", desc: "Render the server's top players ranked by Skill Score, Win Rate, Survival Rate, or total victories." },
+        { cmd: "/hall_of_records", syntax: "/hall_of_records", cat: "Stats & Records", channel: "Public Channel", phase: "Anytime", cog: "stats.py", desc: "Showcase all-time server records: Best Scumhunter, Greatest Survivor, Red Shirt (Most N1 Deaths), and Faction Champions." },
+
+        // Community Quirks (3)
+        { cmd: "/set_quirk", syntax: "/set_quirk quirk:<text>", cat: "Community Quirks", channel: "Public / DM", phase: "Anytime", cog: "community.py", desc: "Submit a custom character trait or narrative quirk to be woven into AI-generated morning/evening stories when you play." },
+        { cmd: "/review_quirks", syntax: "/review_quirks", cat: "Community Quirks", channel: "Admin Channel", phase: "Anytime", cog: "community.py", desc: "Interactive admin approval queue to Approve or Reject pending player-submitted story quirks." },
+        { cmd: "/display_all_quirks", syntax: "/display_all_quirks", cat: "Community Quirks", channel: "Admin Channel", phase: "Anytime", cog: "community.py", desc: "Audit all active and pending player narrative quirks stored in data/story_quirks.json." },
+
+        // Admin & Host (6)
+        { cmd: "/mafiastart", syntax: "/mafiastart [15 optional parameters]", cat: "Admin & Host", channel: "Admin / Host", phase: "Idle", cog: "admin.py", desc: "Initialize a new Classic or Battle Royale game with customizable theme, timers, vote rules, and role thresholds." },
+        { cmd: "/mafiastop", syntax: "/mafiastop", cat: "Admin & Host", channel: "Admin / Host", phase: "Active Game", cog: "admin.py", desc: "Gracefully abort the running game, clean up temporary Discord roles, and clear active_game.pkl." },
+        { cmd: "/forcephaseend", syntax: "/forcephaseend", cat: "Admin & Host", channel: "Admin / Host", phase: "Day or Night", cog: "admin.py", desc: "Immediately conclude the current Day or Night phase and trigger action resolution / story generation." },
+        { cmd: "/forcestart", syntax: "/forcestart", cat: "Admin & Host", channel: "Admin / Host", phase: "Sign-Up Phase", cog: "admin.py", desc: "End the 24h sign-up countdown early and immediately balance roles and launch Phase 1." },
+        { cmd: "/mafiareinit", syntax: "/mafiareinit", cat: "Admin & Host", channel: "Admin / Host", phase: "Recovery", cog: "admin.py", desc: "Reload game state from data/active_game.pkl and re-synchronize Discord channel permissions and background timers." },
+        { cmd: "/exportstats", syntax: "/exportstats", cat: "Admin & Host", channel: "Admin / Host", phase: "Anytime", cog: "export.py", desc: "Export raw game logs, phase archives, and player telemetry as downloadable CSV/JSON bundles and trigger Google Sheets sync." }
+    ];
+
+    function switchCodexTab(tabKey, updateHash = true) {
+        currentCodexSubTab = tabKey || 'roles';
+        if (updateHash) {
+            window.location.hash = (tabKey === 'roles') ? 'codex' : tabKey;
+        }
+        ['roles', 'scoring', 'commands', 'mechanics', 'architecture'].forEach(k => {
+            const btn = document.getElementById('codex-btn-' + k);
+            const sec = document.getElementById('codex-section-' + k);
+            if (btn) btn.className = (k === currentCodexSubTab) ? 'codex-subbtn active' : 'codex-subbtn';
+            if (sec) {
+                if (k === currentCodexSubTab) sec.classList.remove('hidden');
+                else sec.classList.add('hidden');
+            }
+        });
+        // Sync top nav active highlight
+        const navCodex = document.getElementById('nav-codex');
+        const navScoring = document.getElementById('nav-scoring');
+        const navCommands = document.getElementById('nav-commands');
+        const navArch = document.getElementById('nav-architecture');
+        if (navCodex) navCodex.className = (currentCodexSubTab === 'roles') ? 'nav-btn active' : 'nav-btn';
+        if (navScoring) navScoring.className = (currentCodexSubTab === 'scoring') ? 'nav-btn active' : 'nav-btn';
+        if (navCommands) navCommands.className = (currentCodexSubTab === 'commands') ? 'nav-btn active' : 'nav-btn';
+        if (navArch) navArch.className = (currentCodexSubTab === 'mechanics' || currentCodexSubTab === 'architecture') ? 'nav-btn active' : 'nav-btn';
+    }
+
+    function setRoleTheme(themeName) {
+        currentRoleTheme = themeName || 'Canonical';
+        if (rolesData) renderRoleCards(rolesData);
+        runRoleInteractionSim();
+    }
+
+    function filterRolesByFaction(faction) {
+        currentRoleFactionFilter = faction || 'all';
+        document.querySelectorAll('#roleFactionFilters .era-filter-btn').forEach(btn => {
+            if (btn.getAttribute('data-role-faction') === currentRoleFactionFilter) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        if (rolesData) renderRoleCards(rolesData);
+    }
+
+    const FALLBACK_ROLE_META = {
+        "Town Cop": {
+            alignment: "Town",
+            win_condition: "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
+            commands: [
+                { syntax: "/investigate <player-name>", channel: "Bot DM", phase: "Night", description: "Investigate a living player's alignment (results sent at Dawn)." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Vote to lynch a suspect during the Day phase." }
+            ],
+            special_mechanics: [
+                "Resolves at Night Priority Tier 4 (after blocks, heals, and kills).",
+                "Godfather and Serial Killer are Investigation Immune and return 'Plain Townie'."
+            ],
+            spawn_rules: "Guaranteed 1x in all Classic setups (5+ players); 2nd Cop at 17+ players."
+        },
+        "Town Doctor": {
+            alignment: "Town",
+            win_condition: "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
+            commands: [
+                { syntax: "/heal <player-name>", channel: "Bot DM", phase: "Night", description: "Protect one player from lethal Night Priority 3 attacks." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Vote to lynch a suspect during the Day phase." }
+            ],
+            special_mechanics: [
+                "Resolves at Night Priority Tier 2 (before kills).",
+                "Cannot heal the same target two nights in a row.",
+                "Selective Narration: Doctor heals only appear in the morning story if the protected target was actually attacked!"
+            ],
+            spawn_rules: "Guaranteed 1x in all Classic setups (5+ players); 2nd Doctor at 14+ players."
+        },
+        "Plain Townie": {
+            alignment: "Town",
+            win_condition: "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
+            commands: [
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Cast or switch your daytime lynch vote." },
+                { syntax: "/myrole", channel: "Bot DM", phase: "Any", description: "Verify your role and win condition." }
+            ],
+            special_mechanics: [
+                "No night action—immune to roleblock disruption.",
+                "Forms the backbone of the Town's daytime voting majority."
+            ],
+            spawn_rules: "Fills all remaining Town slots dynamically."
+        },
+        "Town Role Blocker": {
+            alignment: "Town",
+            win_condition: "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
+            commands: [
+                { syntax: "/block <player-name>", channel: "Bot DM", phase: "Night", description: "Prevent a target player from performing their night action." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Vote to lynch a suspect during the Day phase." }
+            ],
+            special_mechanics: [
+                "Resolves at Night Priority Tier 1 (highest priority).",
+                "Cannot block the same target on consecutive nights.",
+                "Mutual Block Rule: If two Role Blockers target each other, both blocks cancel out."
+            ],
+            spawn_rules: "Spawns in Classic games with 7+ players."
+        },
+        "Godfather": {
+            alignment: "Mafia",
+            win_condition: "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+            commands: [
+                { syntax: "/kill <player-name>", channel: "Bot DM", phase: "Night", description: "Order the Mafia's nightly hit against a non-Mafia target." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Vote publicly to manipulate daytime lynches." }
+            ],
+            special_mechanics: [
+                "Night Immune: Survives Night Priority 3 attacks (such as Serial Killer hits).",
+                "Investigation Immune: Reads as 'Plain Townie' when checked by the Town Cop.",
+                "Succession: If eliminated, a living Mob Goon is promoted to Godfather."
+            ],
+            spawn_rules: "Guaranteed 1x in every Classic game."
+        },
+        "Mob Goon": {
+            alignment: "Mafia",
+            win_condition: "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+            commands: [
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Coordinate with Mafia teammates to control daytime lynches." },
+                { syntax: "/kill <player-name>", channel: "Bot DM (When Promoted)", phase: "Night", description: "Unlocked automatically if promoted to Godfather." }
+            ],
+            special_mechanics: [
+                "Knows all Mafia teammates from Night 1.",
+                "Field Promotion: Automatically promoted to Godfather if the reigning Godfather dies."
+            ],
+            spawn_rules: "Spawns as part of the Mafia team (`ceil(N × 0.25)`)."
+        },
+        "Mob Role Blocker": {
+            alignment: "Mafia",
+            win_condition: "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+            commands: [
+                { syntax: "/block <player-name>", channel: "Bot DM", phase: "Night", description: "Sabotage a non-Mafia player's night action." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Cast or switch your daytime lynch vote." }
+            ],
+            special_mechanics: [
+                "Resolves at Night Priority Tier 1.",
+                "Cannot target fellow Mafia members or the same player two nights in a row.",
+                "Promoted to Godfather if all regular Goons and the original Godfather are dead."
+            ],
+            spawn_rules: "Spawns in Classic games with 6+ players."
+        },
+        "Serial Killer": {
+            alignment: "Neutral",
+            win_condition: "Be the last player alive (eliminate both Town and Mafia).",
+            commands: [
+                { syntax: "/kill <player-name>", channel: "Bot DM", phase: "Night", description: "Eliminate one target player each night." },
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Blend in and manipulate daytime votes." }
+            ],
+            special_mechanics: [
+                "Night Immune: Survives Mafia night attacks.",
+                "Investigation Immune: Reads as 'Plain Townie' to the Town Cop.",
+                "Anonymity Guarantee: If attacked while Night Immune, the story names the role ('Serial Killer'), NEVER the player!"
+            ],
+            spawn_rules: "Spawns in Classic games with 8+ players."
+        },
+        "Jester": {
+            alignment: "Neutral",
+            win_condition: "Get yourself lynched by public daytime vote.",
+            commands: [
+                { syntax: "/vote <player-name>", channel: "Public Voting Channel", phase: "Day", description: "Draw suspicion and bait the Town into lynching you." }
+            ],
+            special_mechanics: [
+                "Has no night action and is vulnerable to night kills.",
+                "Wins immediately if lynched during any Day phase."
+            ],
+            spawn_rules: "Special / custom Neutral role."
+        },
+        "Vigilante": {
+            alignment: "Battle Royale",
+            win_condition: "Be the last player alive in Battle Royale mode.",
+            commands: [
+                { syntax: "/kill <player-name>", channel: "Bot DM", phase: "Night", description: "Strike a rival combatant (Priority 3). Overwrites `/block` if sent last." },
+                { syntax: "/block <player-name>", channel: "Bot DM", phase: "Night", description: "Block a rival combatant (Priority 1). Overwrites `/kill` if sent last." }
+            ],
+            special_mechanics: [
+                "Assigned to all players in Battle Royale mode (no Day phases).",
+                "Only your last submitted command (`/kill` or `/block`) before phase end is executed."
+            ],
+            spawn_rules: "100% of players in Battle Royale mode."
+        }
+    };
+
     function renderRoleCards(data) {
         const container = document.getElementById('role-cards-container');
+        if (!container || !data) return;
         container.innerHTML = '';
-        
-        for (const [roleName, details] of Object.entries(data)) {
+
+        const searchQ = ((document.getElementById('roleSearchInput') || {}).value || '').toLowerCase().trim();
+        const themeMap = (currentRoleTheme && currentRoleTheme !== 'Canonical' && THEME_RESKINS[currentRoleTheme])
+            ? THEME_RESKINS[currentRoleTheme]
+            : null;
+
+        for (const [roleName, rawDetails] of Object.entries(data)) {
+            const fallback = FALLBACK_ROLE_META[roleName] || {};
+            const details = { ...fallback, ...rawDetails };
+            const alignment = details.alignment || (details.base.includes("Town") ? "Town" : (details.base.includes("Mafia") ? "Mafia" : (details.base.includes("Royale") ? "Battle Royale" : "Neutral")));
+
+            if (currentRoleFactionFilter !== 'all' && alignment !== currentRoleFactionFilter) continue;
+
+            const themedObj = (themeMap && themeMap[roleName]) ? themeMap[roleName] : null;
+            const displayTitle = themedObj ? themedObj.display_name : roleName;
+            const displayShortDesc = themedObj ? themedObj.short_description : details.short_description;
+
+            const searchableBlob = `${roleName} ${displayTitle} ${alignment} ${details.base} ${displayShortDesc} ${details.win_condition || ''} ${JSON.stringify(details.commands || details.abilities || '')}`.toLowerCase();
+            if (searchQ && !searchableBlob.includes(searchQ)) continue;
+
             let borderColor = "var(--muted)";
-            if (details.base.includes("Town")) borderColor = "var(--blue)";
-            else if (details.base.includes("Mafia")) borderColor = "var(--red)";
-            else if (details.base.includes("Neutral")) borderColor = "var(--gold)";
+            let badgeBg = "rgba(255,255,255,0.08)";
+            if (alignment === "Town") { borderColor = "var(--blue)"; badgeBg = "rgba(56,138,207,0.16)"; }
+            else if (alignment === "Mafia") { borderColor = "var(--red)"; badgeBg = "rgba(207,56,56,0.16)"; }
+            else if (alignment === "Battle Royale") { borderColor = "var(--purp)"; badgeBg = "rgba(156,39,176,0.16)"; }
+            else { borderColor = "var(--gold)"; badgeBg = "rgba(255,215,0,0.16)"; }
 
-            const abilitiesHtml = details.abilities ? 
-                Object.entries(details.abilities).map(([cmd, desc]) => `<li><code>/${cmd}</code>: ${desc}</li>`).join('') 
-                : "<em>No active abilities</em>";
+            const priorityHtml = details.night_priority
+                ? `<span style="background: rgba(255,255,255,0.1); border: 1px solid #555; padding: 2px 8px; border-radius: 4px; font-size: 0.76rem; font-weight: bold; color: #fff;">⚡ Priority Tier ${details.night_priority}</span>`
+                : `<span style="background: rgba(255,255,255,0.05); border: 1px solid #444; padding: 2px 8px; border-radius: 4px; font-size: 0.76rem; color: #aaa;">☀️ Day Phase Only</span>`;
 
-            const priorityHtml = details.night_priority ? 
-                `<span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; font-size: 0.8em; margin-left: auto;">Priority: ${details.night_priority}</span>` 
-                : '';
+            // Immunity & Special Badges
+            let traitBadges = [];
+            if (details.is_night_immune) traitBadges.push(`<span style="background: rgba(76,175,80,0.18); color: var(--green); border: 1px solid var(--green); padding: 2px 7px; border-radius: 4px; font-size: 0.74rem; font-weight: bold;">🛡️ Night Immune</span>`);
+            if (details.investigate_immune) traitBadges.push(`<span style="background: rgba(255,152,0,0.18); color: var(--orange); border: 1px solid var(--orange); padding: 2px 7px; border-radius: 4px; font-size: 0.74rem; font-weight: bold;">🕵️ Investigate Immune (Reads Town)</span>`);
+            if (roleName === "Mob Goon") traitBadges.push(`<span style="background: rgba(207,56,56,0.18); color: #ff8a80; border: 1px solid var(--red); padding: 2px 7px; border-radius: 4px; font-size: 0.74rem; font-weight: bold;">👑 Promotes to Godfather</span>`);
+            if (roleName === "Vigilante") traitBadges.push(`<span style="background: rgba(156,39,176,0.18); color: #e1bee7; border: 1px solid var(--purp); padding: 2px 7px; border-radius: 4px; font-size: 0.74rem; font-weight: bold;">⚔️ Dual Action (/kill or /block)</span>`);
+
+            // Commands HTML
+            const cmds = details.commands || fallback.commands || [];
+            const commandsHtml = cmds.map(c => `
+                <div style="background: #17171f; border: 1px solid #323240; border-radius: 5px; padding: 8px 10px; margin-top: 6px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap;">
+                        <code style="color: var(--gold); font-weight: bold; font-size: 0.85rem;">${c.syntax}</code>
+                        <div style="display: flex; gap: 5px; align-items: center;">
+                            <span style="font-size: 0.7rem; background: rgba(255,255,255,0.08); padding: 1px 6px; border-radius: 3px; color: #ccc;">${c.channel} • ${c.phase}</span>
+                            <button class="cmd-copy-btn" style="padding: 2px 6px; font-size: 0.7rem;" onclick="copyCmdText('${c.syntax.split(' ')[0]}', this)">Copy</button>
+                        </div>
+                    </div>
+                    <div style="font-size: 0.8rem; color: #bbb; margin-top: 4px;">${c.description}</div>
+                </div>
+            `).join('');
+
+            // Special Mechanics HTML
+            const mechs = details.special_mechanics || fallback.special_mechanics || [];
+            const mechsHtml = mechs.map(m => `<li style="margin-bottom: 4px;">${m}</li>`).join('');
+
+            const themeSubHeader = themedObj
+                ? `<div style="font-size: 0.8rem; color: var(--gold); margin-top: 2px;">🎨 <strong>${currentRoleTheme} Theme</strong> • Canonical Role: <code>${roleName}</code></div>`
+                : `<div style="font-size: 0.78rem; color: var(--muted); text-transform: uppercase; margin-top: 2px;">${alignment} • ${details.base}</div>`;
 
             const card = document.createElement('div');
-            card.style.cssText = `background: #2a2a2a; border-top: 4px solid ${borderColor}; padding: 15px; border-radius: 6px; display: flex; flex-direction: column;`;
+            card.style.cssText = `background: #23232c; border: 1px solid #383846; border-top: 4px solid ${borderColor}; padding: 18px; border-radius: 8px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.15s ease;`;
             card.innerHTML = `
-                <div style="display: flex; align-items: center; margin-bottom: 10px;">
-                    <h4 style="margin: 0; font-size: 1.1em; color: white;">${roleName}</h4>
-                    ${priorityHtml}
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px;">
+                        <div>
+                            <h4 style="margin: 0; font-size: 1.22rem; color: #fff;">${displayTitle}</h4>
+                            ${themeSubHeader}
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 4px;">
+                            <span style="background: ${badgeBg}; color: ${borderColor}; border: 1px solid ${borderColor}; padding: 2px 8px; border-radius: 12px; font-size: 0.75rem; font-weight: bold;">${alignment}</span>
+                            ${priorityHtml}
+                        </div>
+                    </div>
+
+                    ${traitBadges.length > 0 ? `<div style="display: flex; gap: 6px; flex-wrap: wrap; margin: 8px 0;">${traitBadges.join('')}</div>` : ''}
+
+                    <p style="font-size: 0.9rem; color: #ddd; line-height: 1.5; margin: 10px 0 12px 0;">${displayShortDesc}</p>
+
+                    <!-- Win Condition Box -->
+                    <div style="background: rgba(255,215,0,0.07); border-left: 3px solid var(--gold); padding: 8px 12px; border-radius: 4px; margin-bottom: 12px; font-size: 0.84rem;">
+                        <strong style="color: var(--gold); text-transform: uppercase; font-size: 0.74rem; letter-spacing: 0.5px;">🏆 Win Condition:</strong>
+                        <div style="color: #eee; margin-top: 2px;">${details.win_condition || fallback.win_condition || 'Eliminate all opposing factions.'}</div>
+                    </div>
+
+                    <!-- Slash Commands Box -->
+                    <div style="margin-bottom: 12px;">
+                        <strong style="color: var(--blue); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.5px;">⌨️ Role Slash Commands:</strong>
+                        ${commandsHtml}
+                    </div>
+
+                    <!-- Special Mechanics & Spawn Rules -->
+                    <div style="background: #1a1a22; padding: 10px 12px; border-radius: 5px; font-size: 0.82rem; color: #bbb; margin-bottom: 12px;">
+                        <strong style="color: #ddd; font-size: 0.76rem; text-transform: uppercase;">⚙️ Engine Mechanics & Immunities:</strong>
+                        <ul style="margin: 6px 0 6px 0; padding-left: 18px; line-height: 1.45;">
+                            ${mechsHtml}
+                        </ul>
+                        <div style="border-top: 1px dashed #333; padding-top: 6px; margin-top: 6px; font-size: 0.78rem; color: var(--muted);">
+                            <strong>Spawn Rule:</strong> ${details.spawn_rules || fallback.spawn_rules || 'Standard Classic setup.'}
+                        </div>
+                    </div>
                 </div>
-                <div style="font-size: 0.8em; color: var(--muted); margin-bottom: 10px; text-transform: uppercase;">
-                    ${details.base}
-                </div>
-                <p style="font-size: 0.9em; margin: 0 0 10px 0; flex-grow: 1;">${details.short_description}</p>
-                <div style="background: #1e1e1e; padding: 10px; border-radius: 4px; font-size: 0.85em;">
-                    <strong style="color: var(--muted);">Abilities:</strong>
-                    <ul style="margin: 5px 0 0; padding-left: 20px;">
-                        ${abilitiesHtml}
-                    </ul>
-                </div>
+
+                <button onclick="inspectRoleInSim('${roleName}')" style="width: 100%; background: rgba(255,215,0,0.12); color: var(--gold); border: 1px solid rgba(255,215,0,0.4); padding: 8px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.84rem; transition: 0.2s;">
+                    🔬 Test ${displayTitle} in Interaction Simulator ↑
+                </button>
             `;
             container.appendChild(card);
         }
+    }
+
+    function inspectRoleInSim(roleName) {
+        const sel = document.getElementById('simActiveRole');
+        if (sel) {
+            sel.value = roleName;
+            runRoleInteractionSim();
+            const panel = document.getElementById('role-inspector-panel');
+            if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    }
+
+    function runRoleInteractionSim() {
+        const role = (document.getElementById('simActiveRole') || {}).value || 'Town Cop';
+        const scenario = (document.getElementById('simTargetScenario') || {}).value || 'normal';
+        const outEl = document.getElementById('role-sim-output');
+        const titleEl = document.getElementById('inspector-role-title');
+        if (!outEl) return;
+
+        const themeMap = (currentRoleTheme !== 'Canonical' && THEME_RESKINS[currentRoleTheme]) ? THEME_RESKINS[currentRoleTheme] : null;
+        const displayRole = (themeMap && themeMap[role]) ? `${themeMap[role].display_name} (${role})` : role;
+        if (titleEl) titleEl.innerText = `Simulating: ${displayRole}`;
+
+        let dmResult = '';
+        let engineResolution = '';
+        let storyRule = '';
+
+        if (scenario === 'actor_blocked') {
+            if (role === 'Plain Townie' || role === 'Jester' || role === 'Mob Goon') {
+                engineResolution = `<strong>Priority 1 Check:</strong> A Role Blocker targets <strong>${displayRole}</strong>, but ${role} has no active night ability to cancel.`;
+                dmResult = `No DM failure notice is sent because no night command was submitted.`;
+                storyRule = `<strong>Fog-of-War Selective Narration:</strong> Because ${role} did not submit an active night action, the Roleblock is <strong>completely suppressed</strong> from the morning story so no information is leaked.`;
+            } else {
+                engineResolution = `<strong>Priority 1 Interception:</strong> <strong>${displayRole}</strong>'s submitted command is intercepted at Priority Tier 1 and marked <code>blocked = true</code>.`;
+                dmResult = `Bot sends DM at Dawn: <em>"Your night action failed or was blocked."</em>`;
+                storyRule = `<strong>Fog-of-War Selective Narration:</strong> The morning story narrates that a mysterious figure disrupted an action in the shadows, without revealing the blocked player's alignment.`;
+            }
+        } else if (scenario === 'mutual_block') {
+            engineResolution = `<strong>Priority 1 Cycle Detection (<code>ActionManager</code>):</strong> When two Role Blockers target each other on the same night, the engine detects a 2-cycle and cancels both blocks (` + "`mutual_block_cleared`" + `).`;
+            dmResult = `Both Role Blockers are notified that the mutual entanglement neutralized their blocks.`;
+            storyRule = `Neither blocker locks the other down; no false block events pollute the narrative.`;
+        } else if (scenario === 'gf_dies') {
+            if (role === 'Mob Goon' || role === 'Mob Role Blocker') {
+                engineResolution = `<strong>Automatic Mafia Succession (<code>RoleManager</code>):</strong> As soon as the reigning Godfather dies (by Day Lynch or lethal event), the engine promotes a living <strong>Mob Goon</strong> (or Mob Role Blocker if no Goons remain) to <strong>Godfather</strong>.`;
+                dmResult = `Bot immediately DMs the promoted player: <em>"The Godfather has fallen! You have been promoted to Godfather and now command the nightly /kill action."</em>`;
+                storyRule = `Public status shows only the dead Godfather; the identity of the newly promoted Godfather remains strictly secret.`;
+            } else {
+                engineResolution = `When the Godfather is eliminated, the Mafia does not lose its kill power as long as at least one Mafia member survives—field promotion transfers the <code>Godfather</code> role automatically.`;
+                dmResult = `Living Mafia members receive an updated syndicate roster DM.`;
+                storyRule = `The casualty log reveals the dead Godfather's role while the new boss operates in secret.`;
+            }
+        } else if (role === 'Town Cop') {
+            if (scenario === 'immune_boss') {
+                engineResolution = `<strong>Priority 4 Investigation vs Immunity:</strong> Town Cop runs <code>/investigate</code> on the <strong>Godfather</strong> or <strong>Serial Killer</strong>. Both roles have <code>investigate_immune: true</code>.`;
+                dmResult = `Dawn DM Report: <em>"Your investigation reveals that [Target] is a <strong>Plain Townie (Normal Member of town)</strong>."</em>`;
+                storyRule = `Investigations are silent intelligence actions and are never announced in the public morning story.`;
+            } else {
+                engineResolution = `<strong>Priority 4 Investigation:</strong> Town Cop runs <code>/investigate</code> on a standard target (e.g., Mob Goon, Mob Role Blocker, or Town Doctor).`;
+                dmResult = `Dawn DM Report: Accurately reveals the target's true role & alignment (e.g., <strong>Mob Goon — Mafia</strong>).`;
+                storyRule = `The Cop can now use this intelligence during the Day phase to guide the Town's <code>/vote</code> wagon without outing themselves prematurely.`;
+            }
+        } else if (role === 'Town Doctor') {
+            if (scenario === 'target_healed' || scenario === 'normal') {
+                engineResolution = `<strong>Priority 2 Protection:</strong> Town Doctor submits <code>/heal</code> before Priority 3 kills resolve, setting <code>healed_by</code> on the target.`;
+                dmResult = `Target survives all Priority 3 attacks from the Godfather and/or Serial Killer tonight!`;
+                storyRule = `<strong>Selective Narration Invariant:</strong> If the healed player WAS attacked, the story narrates a dramatic life-saving intervention. If the healed player was NOT attacked (or the killer was blocked), the heal is <strong>completely omitted</strong> from the story!`;
+            } else if (scenario === 'immune_boss') {
+                engineResolution = `Town Doctor heals a Night-Immune player (Godfather/SK). If they are attacked, their innate <code>is_night_immune</code> already prevents the kill before a medical save is needed.`;
+                dmResult = `No casualties occur.`;
+                storyRule = `<strong>Bug-Fix Invariant:</strong> Because an immune target cannot die to a standard night attack, the engine does NOT emit a fake Doctor heal story event!`;
+            }
+        } else if (role === 'Godfather' || role === 'Serial Killer') {
+            if (scenario === 'immune_boss') {
+                engineResolution = `<strong>Priority 3 Kill vs Night Immunity:</strong> ${role} submits <code>/kill</code> against an opposing Night-Immune boss (e.g., Godfather attacks Serial Killer, or SK attacks Godfather).`;
+                dmResult = `The target survives unscathed due to <code>is_night_immune: true</code>.`;
+                storyRule = `<strong>Zero-Leak Anonymity Rule:</strong> The morning story describes an attack deflected by the <strong>role title</strong> (<em>"The Serial Killer shrugged off the ambush"</em>) and <strong>NEVER names the player</strong>!`;
+            } else if (scenario === 'target_healed') {
+                engineResolution = `<strong>Priority 3 Kill vs Priority 2 Heal:</strong> ${role}'s attack lands on a player protected by the Town Doctor.`;
+                dmResult = `The lethal strike is neutralized by the Doctor's Priority 2 protection; 0 casualties.`;
+                storyRule = `The morning story depicts a violent assassination attempt thwarted at the last second by medical intervention.`;
+            } else {
+                engineResolution = `<strong>Priority 3 Lethal Strike:</strong> ${role} executes <code>/kill</code> in Bot DM against a vulnerable target.`;
+                dmResult = `Target is eliminated at Dawn; their Discord role switches from <code>Alive</code> to <code>Dead</code> (revoking public chat write permissions).`;
+                storyRule = `Morning story narrates the demise of the victim and publicly reveals their canonical Role and Alignment.`;
+            }
+        } else {
+            engineResolution = `<strong>${displayRole}</strong> executes their canonical phase action (${(FALLBACK_ROLE_META[role]?.commands?.[0]?.syntax) || '/vote'}).`;
+            dmResult = `Action validated by <code>ActionManager</code> / <code>VoteManager</code> and persisted to <code>data/active_game.pkl</code>.`;
+            storyRule = `At phase end, the Storyteller weaves 2–3 randomly chosen living decoys alongside real action outcomes so being mentioned in flavor text never leaks a player's role.`;
+        }
+
+        outEl.innerHTML = `
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px;">
+                <div style="background: #1c1c24; padding: 10px 14px; border-radius: 5px; border-top: 3px solid var(--blue);">
+                    <div style="font-size: 0.75rem; color: var(--blue); font-weight: bold; text-transform: uppercase;">⚙️ Engine Resolution</div>
+                    <div style="margin-top: 4px; color: #ddd;">${engineResolution}</div>
+                </div>
+                <div style="background: #1c1c24; padding: 10px 14px; border-radius: 5px; border-top: 3px solid var(--green);">
+                    <div style="font-size: 0.75rem; color: var(--green); font-weight: bold; text-transform: uppercase;">📩 Private Bot DM Feedback</div>
+                    <div style="margin-top: 4px; color: #ddd;">${dmResult}</div>
+                </div>
+                <div style="background: #1c1c24; padding: 10px 14px; border-radius: 5px; border-top: 3px solid var(--gold);">
+                    <div style="font-size: 0.75rem; color: var(--gold); font-weight: bold; text-transform: uppercase;">📖 Public Story & Fog-of-War Rule</div>
+                    <div style="margin-top: 4px; color: #ddd;">${storyRule}</div>
+                </div>
+            </div>
+        `;
+    }
+
+    // =========================================================================
+    // P.E.U. SCORING CALCULATOR & REAL PLAYER LOADER
+    // =========================================================================
+    let loadedCalcPlayer = null;
+
+    function populatePeuPlayerDropdown() {
+        const sel = document.getElementById('peuPlayerLoader');
+        if (!sel || !recordsData || recordsData.length === 0) return;
+        const currentVal = sel.value;
+        const sorted = [...recordsData]
+            .filter(p => (p["Games Played"] || 0) >= 1)
+            .sort((a, b) => (parseFloat(b["Skill Score"]) || 0) - (parseFloat(a["Skill Score"]) || 0));
+
+        sel.innerHTML = `<option value="">-- Custom Sandbox Simulation (Or pick any of ${sorted.length} players to inspect) --</option>` +
+            sorted.map(p => `<option value="${p["Player Name"]}">${p["Player Name"]} — PEU: ${parseFloat(p["Skill Score"] || 0).toFixed(2)} (P:${p.p_score || 0} | E:${p.e_score || 0} | U:${p.u_score || 0}) • ${p["Games Played"]} games</option>`).join('');
+        if (currentVal) sel.value = currentVal;
+    }
+
+    function loadPlayerIntoCalculator(playerName) {
+        const banner = document.getElementById('peuLoadedPlayerBanner');
+        if (!playerName) {
+            loadedCalcPlayer = null;
+            if (banner) banner.innerHTML = `Adjust the sliders below to simulate a match or tweak a loaded player's P, E, U ratings and formula weights.`;
+            updatePeuCalculator();
+            return;
+        }
+        const p = (recordsData || []).find(x => x["Player Name"] === playerName);
+        if (!p) return;
+        loadedCalcPlayer = p;
+
+        // Map player's real P, E, U (0..5) onto the calculator sliders
+        const pScore = parseFloat(p.p_score) || 0;
+        const eScore = parseFloat(p.e_score) || 0;
+        const uScore = parseFloat(p.u_score) || 0;
+
+        // Set persuasion sliders so (lynch% * (1 - switch%)) * 5 == pScore
+        const targetLynchPct = Math.min(100, Math.round((pScore / 5.0) * 100));
+        document.getElementById('slider-calc-lynch').value = targetLynchPct;
+        document.getElementById('slider-calc-switch').value = 0;
+
+        // Set elusiveness sliders (T = 10 phases)
+        document.getElementById('slider-calc-total-phases').value = 10;
+        // Find L such that L(L+1)/110 * 5 is closest to eScore
+        let bestL = 1, bestDiff = 999;
+        for (let l = 1; l <= 10; l++) {
+            const eTry = ((l * (l + 1)) / 110) * 5.0;
+            if (Math.abs(eTry - eScore) < bestDiff) {
+                bestDiff = Math.abs(eTry - eScore);
+                bestL = l;
+            }
+        }
+        document.getElementById('slider-calc-surv-phases').value = bestL;
+
+        // Set faction win rates from player's real career stats
+        const tWinPct = (p["Town Games"] || 0) > 0 ? Math.round(((p["Town Wins"] || 0) / p["Town Games"]) * 100) : Math.round((uScore / 5.0) * 100);
+        const mWinPct = (p["Mafia Games"] || 0) > 0 ? Math.round(((p["Mafia Wins"] || 0) / p["Mafia Games"]) * 100) : Math.round((uScore / 5.0) * 100);
+        const sWinPct = (p["Neutral/SK Games"] || 0) > 0 ? Math.round(((p["Neutral/SK Wins"] || 0) / p["Neutral/SK Games"]) * 100) : 0;
+
+        document.getElementById('slider-calc-town-win').value = tWinPct;
+        document.getElementById('slider-calc-mafia-win').value = mWinPct;
+        document.getElementById('slider-calc-sk-win').value = sWinPct;
+
+        if (banner) {
+            banner.innerHTML = `Loaded <strong>${p["Player Name"]}</strong> (${p["Games Played"]} games, ${p["Wins"]} wins, ${parseFloat(p["Survival %"] || 0).toFixed(1)}% survival, ${parseFloat(p["Vote Accuracy %"] || 0).toFixed(1)}% scumhunting accuracy). Official Career Pillars: <strong style="color:#d180ff;">P: ${pScore.toFixed(2)}</strong> | <strong style="color:var(--green);">E: ${eScore.toFixed(2)}</strong> | <strong style="color:var(--orange);">U: ${uScore.toFixed(2)}</strong> → <strong style="color:var(--gold);">Skill: ${parseFloat(p["Skill Score"] || 0).toFixed(2)}</strong>. Move any slider to test "what-if" scenarios!`;
+        }
+        updatePeuCalculator(true);
+    }
+
+    function resetPeuCalculator() {
+        loadedCalcPlayer = null;
+        const sel = document.getElementById('peuPlayerLoader');
+        if (sel) sel.value = '';
+        document.getElementById('slider-calc-lynch').value = 65;
+        document.getElementById('slider-calc-switch').value = 10;
+        document.getElementById('slider-calc-total-phases').value = 8;
+        document.getElementById('slider-calc-surv-phases').value = 6;
+        document.getElementById('slider-calc-town-win').value = 58;
+        document.getElementById('slider-calc-mafia-win').value = 50;
+        document.getElementById('slider-calc-sk-win').value = 25;
+        document.getElementById('slider-w-p').value = 33;
+        document.getElementById('slider-w-e').value = 33;
+        document.getElementById('slider-w-u').value = 34;
+        const banner = document.getElementById('peuLoadedPlayerBanner');
+        if (banner) banner.innerHTML = `Adjust the sliders below to simulate a match or tweak a loaded player's P, E, U ratings and formula weights.`;
+        updatePeuCalculator();
+    }
+
+    function updatePeuCalculator(useExactLoadedPillars = false) {
+        const lynchPct = parseFloat((document.getElementById('slider-calc-lynch') || {}).value || 65);
+        const switchPct = parseFloat((document.getElementById('slider-calc-switch') || {}).value || 10);
+        let totalPhases = parseInt((document.getElementById('slider-calc-total-phases') || {}).value || 8);
+        let survPhases = parseInt((document.getElementById('slider-calc-surv-phases') || {}).value || 6);
+        if (survPhases > totalPhases) {
+            survPhases = totalPhases;
+            document.getElementById('slider-calc-surv-phases').value = survPhases;
+        }
+        const townWin = parseFloat((document.getElementById('slider-calc-town-win') || {}).value || 58);
+        const mafiaWin = parseFloat((document.getElementById('slider-calc-mafia-win') || {}).value || 50);
+        const skWin = parseFloat((document.getElementById('slider-calc-sk-win') || {}).value || 25);
+
+        const rawWp = parseFloat((document.getElementById('slider-w-p') || {}).value || 33);
+        const rawWe = parseFloat((document.getElementById('slider-w-e') || {}).value || 33);
+        const rawWu = parseFloat((document.getElementById('slider-w-u') || {}).value || 34);
+        const wSum = (rawWp + rawWe + rawWu) || 1;
+        const wp = rawWp / wSum;
+        const we = rawWe / wSum;
+        const wu = rawWu / wSum;
+
+        // Update labels
+        document.getElementById('val-calc-lynch').innerText = `${lynchPct}%`;
+        document.getElementById('val-calc-switch').innerText = `${switchPct}%`;
+        document.getElementById('val-calc-total-phases').innerText = `${totalPhases} Phases`;
+        document.getElementById('val-calc-surv-phases').innerText = `${survPhases} Phases`;
+        document.getElementById('val-calc-town-win').innerText = `${townWin}%`;
+        document.getElementById('val-calc-mafia-win').innerText = `${mafiaWin}%`;
+        document.getElementById('val-calc-sk-win').innerText = `${skWin}%`;
+        document.getElementById('val-w-p').innerText = `${Math.round(wp * 100)}%`;
+        document.getElementById('val-w-e').innerText = `${Math.round(we * 100)}%`;
+        document.getElementById('val-w-u').innerText = `${Math.round(wu * 100)}%`;
+
+        // Calculate P, E, U
+        const decisiveness = Math.max(0, 1 - (switchPct / 100));
+        let P = (lynchPct / 100) * decisiveness * 5.0;
+
+        const triSurv = (survPhases * (survPhases + 1)) / 2;
+        const triTotal = (totalPhases * (totalPhases + 1)) / 2;
+        let E = (triSurv / triTotal) * 5.0;
+
+        const cutoffPhase = Math.floor(0.25 * totalPhases);
+        const earlyDeathProtected = survPhases <= cutoffPhase;
+        let U = ((0.33 * (townWin / 100)) + (0.33 * (mafiaWin / 100)) + (0.34 * (skWin / 100))) * 5.0;
+
+        if (useExactLoadedPillars === true && loadedCalcPlayer) {
+            P = parseFloat(loadedCalcPlayer.p_score) || P;
+            E = parseFloat(loadedCalcPlayer.e_score) || E;
+            U = parseFloat(loadedCalcPlayer.u_score) || U;
+        }
+
+        const totalSkill = (wp * P) + (we * E) + (wu * U);
+
+        document.getElementById('calc-out-total').innerText = totalSkill.toFixed(2);
+        document.getElementById('calc-out-p').innerText = `${P.toFixed(2)} / 5.00`;
+        document.getElementById('calc-out-e').innerText = `${E.toFixed(2)} / 5.00`;
+        document.getElementById('calc-out-u').innerText = `${U.toFixed(2)} / 5.00`;
+
+        document.getElementById('bar-out-p').style.width = `${Math.min(100, (P / 5) * 100)}%`;
+        document.getElementById('bar-out-e').style.width = `${Math.min(100, (E / 5) * 100)}%`;
+        document.getElementById('bar-out-u').style.width = `${Math.min(100, (U / 5) * 100)}%`;
+
+        document.getElementById('desc-out-p').innerText = `Decisiveness: ${(decisiveness * 100).toFixed(0)}% × ${lynchPct}% weighted lynch accuracy → ${P.toFixed(2)}`;
+        document.getElementById('desc-out-e').innerText = `Triangular Phase Math: L(L+1)/2 = ${triSurv} of T(T+1)/2 = ${triTotal} points (${((triSurv / triTotal) * 100).toFixed(1)}%) → ${E.toFixed(2)}`;
+        document.getElementById('desc-out-u').innerHTML = earlyDeathProtected
+            ? `<span style="color:var(--gold);">🛡️ Early-Death Protection Active (L=${survPhases} ≤ Cutoff Phase ${cutoffPhase}):</span> Dying in the first 25% of phases excludes this match from penalizing your Bot Understanding denominator!`
+            : `Early-Death Cutoff: Phase ${cutoffPhase} (25% of ${totalPhases}). Player survived to Phase ${survPhases} → Match counts toward Understanding (${U.toFixed(2)}).`;
+
+        // Projected Rank against real leaderboard (10+ games)
+        const vetPool = (recordsData || []).filter(p => (p["Games Played"] || 0) >= 10);
+        if (vetPool.length > 0) {
+            const betterCount = vetPool.filter(p => (parseFloat(p["Skill Score"]) || 0) > totalSkill).length;
+            const rank = betterCount + 1;
+            const badgeNote = totalSkill >= 3.20 ? ` • 🌟 Unlocks <strong>Elite Tactician</strong> Badge (≥ 3.20)!` : '';
+            document.getElementById('calc-out-rank').innerHTML = `Projected Veteran Rank: <strong style="color:var(--gold);">#${rank}</strong> of ${vetPool.length + 1} (10+ games)${badgeNote}`;
+        }
+
+        const auditEl = document.getElementById('calc-math-audit');
+        if (auditEl) {
+            auditEl.innerHTML = `
+                <strong style="color: var(--gold);">📐 Live Formula Audit:</strong><br>
+                • <code>P = (${(lynchPct/100).toFixed(2)} × ${decisiveness.toFixed(2)}) × 5.0 = ${P.toFixed(2)}</code> (Weighted by ${Math.round(wp*100)}% = ${(wp*P).toFixed(2)})<br>
+                • <code>E = (${triSurv} / ${triTotal}) × 5.0 = ${E.toFixed(2)}</code> (Weighted by ${Math.round(we*100)}% = ${(we*E).toFixed(2)})<br>
+                • <code>U = (0.33×${(townWin/100).toFixed(2)} + 0.33×${(mafiaWin/100).toFixed(2)} + 0.34×${(skWin/100).toFixed(2)}) × 5.0 = ${U.toFixed(2)}</code> (Weighted by ${Math.round(wu*100)}% = ${(wu*U).toFixed(2)})<br>
+                • <strong>Composite Score:</strong> <code>${(wp*P).toFixed(2)} + ${(we*E).toFixed(2)} + ${(wu*U).toFixed(2)} = <strong>${totalSkill.toFixed(2)} / 5.00</strong></code>
+            `;
+        }
+    }
+
+    // =========================================================================
+    // BOT COMMANDS EXPLORER & /MAFIASTART BUILDER
+    // =========================================================================
+    function setCmdCategory(cat) {
+        currentCmdCategory = cat || 'all';
+        document.querySelectorAll('#cmdCategoryFilters .era-filter-btn').forEach(btn => {
+            if (btn.getAttribute('data-cmd-cat') === currentCmdCategory) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        renderBotCommands();
+    }
+
+    function renderBotCommands() {
+        const grid = document.getElementById('bot-commands-grid');
+        if (!grid) return;
+        const q = ((document.getElementById('cmdSearchInput') || {}).value || '').toLowerCase().trim();
+
+        const filtered = BOT_COMMANDS_CATALOG.filter(item => {
+            if (currentCmdCategory !== 'all' && item.cat !== currentCmdCategory) return false;
+            if (!q) return true;
+            return `${item.cmd} ${item.syntax} ${item.cat} ${item.channel} ${item.phase} ${item.desc} ${item.cog}`.toLowerCase().includes(q);
+        });
+
+        grid.innerHTML = filtered.map(item => {
+            let borderCol = 'var(--blue)';
+            if (item.cat === 'Night Actions') borderCol = 'var(--purp)';
+            else if (item.cat === 'Rules & Info') borderCol = 'var(--green)';
+            else if (item.cat === 'Stats & Records') borderCol = 'var(--gold)';
+            else if (item.cat === 'Community Quirks') borderCol = 'var(--orange)';
+            else if (item.cat === 'Admin & Host') borderCol = 'var(--red)';
+
+            return `
+                <div style="background: #23232c; border: 1px solid #383846; border-left: 4px solid ${borderCol}; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <div style="display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px;">
+                            <code style="font-size: 1.05rem; font-weight: bold; color: var(--gold);">${item.cmd}</code>
+                            <button class="cmd-copy-btn" onclick="copyCmdText('${item.syntax}', this)">📋 Copy</button>
+                        </div>
+                        <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px;">
+                            <span style="font-size: 0.72rem; background: rgba(255,255,255,0.08); color: #ddd; padding: 2px 7px; border-radius: 4px;">📍 ${item.channel}</span>
+                            <span style="font-size: 0.72rem; background: rgba(255,255,255,0.06); color: #bbb; padding: 2px 7px; border-radius: 4px;">⏱️ ${item.phase}</span>
+                            <span style="font-size: 0.72rem; background: rgba(56,138,207,0.12); color: var(--blue); padding: 2px 7px; border-radius: 4px;">⚙️ cogs/${item.cog}</span>
+                        </div>
+                        <p style="font-size: 0.86rem; color: #ccc; line-height: 1.45; margin: 0 0 8px 0;">${item.desc}</p>
+                    </div>
+                    <div style="background: #17171f; padding: 6px 10px; border-radius: 4px; font-family: monospace; font-size: 0.8rem; color: #aaa;">
+                        Syntax: <span style="color: #fff;">${item.syntax}</span>
+                    </div>
+                </div>
+            `;
+        }).join('');
+    }
+
+    function copyCmdText(text, btnEl) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text);
+        }
+        if (btnEl) {
+            const orig = btnEl.innerText;
+            btnEl.innerText = '✅ Copied!';
+            setTimeout(() => { btnEl.innerText = orig; }, 1400);
+        }
+    }
+
+    function updateMafiaStartBuilder() {
+        const gt = (document.getElementById('cfg-game-type') || {}).value || 'Classic';
+        const th = (document.getElementById('cfg-theme') || {}).value || 'Classic Mafia';
+        const nm = (document.getElementById('cfg-narration') || {}).value || 'AI';
+        const fp = (document.getElementById('cfg-first-phase') || {}).value || 'Night';
+        const dl = (document.getElementById('cfg-day-len') || {}).value || '24';
+        const nl = (document.getElementById('cfg-night-len') || {}).value || '24';
+        const vm = (document.getElementById('cfg-vote-method') || {}).value || 'Plurality';
+        const tie = (document.getElementById('cfg-tie') || {}).value || 'No Lynch';
+        const mr = (document.getElementById('cfg-mafia-ratio') || {}).value || '0.25';
+        const sk = (document.getElementById('cfg-sk-thresh') || {}).value || '8';
+        const trb = (document.getElementById('cfg-trb-thresh') || {}).value || '7';
+        const mrb = (document.getElementById('cfg-mrb-thresh') || {}).value || '6';
+
+        const cmdStr = `/mafiastart game_type:${gt} theme:${th} narration_mode:${nm} first_phase:${fp} day_length:${dl} night_length:${nl} vote_method:${vm} tie_vote_outcome:${tie} mafia_ratio:${mr} sk_threshold:${sk} town_rb_threshold:${trb} mafia_rb_threshold:${mrb}`;
+        const prev = document.getElementById('mafiastart-command-preview');
+        if (prev) prev.innerText = cmdStr;
+    }
+
+    function copyMafiaStartCommand() {
+        const prev = document.getElementById('mafiastart-command-preview');
+        const btn = document.getElementById('copyMafiaStartBtn');
+        if (prev) copyCmdText(prev.innerText, btn);
+    }
+
+    // =========================================================================
+    // HOW THE BOT WORKS & ENGINE SIMULATORS
+    // =========================================================================
+    const LIFECYCLE_STEPS = {
+        1: {
+            title: "Stage 1: Initialization & 24-Hour Sign-Up Lobby (`cogs/admin.py` → `Game.start_signup()`)",
+            body: `
+                • An Administrator invokes <code>/mafiastart</code> with custom or default game parameters.<br>
+                • The bot verifies all required Discord channels (<code>#mafia-chat</code>, <code>#mafia-voting</code>) and roles (<code>Alive</code>, <code>Dead</code>), clearing any residual tags from previous matches.<br>
+                • Players join via <code>/mafiajoin</code> (or leave via <code>/mafialeave</code>) during the 24-hour recruitment window. Automatic reminders fire at 12h, 6h, and 1h remaining.
+            `
+        },
+        2: {
+            title: "Stage 2: Dynamic Role Balancing & Secret DM Dispatch (`game/engine/setup_generator.py`)",
+            body: `
+                • Once the sign-up timer expires (or <code>/forcestart</code> is run with ≥ 5 players), <code>generate_dynamic_setup()</code> computes the exact role pool.<br>
+                • Roles are shuffled cryptographically and assigned. Every player receives a private Discord DM detailing their themed Role Title, canonical abilities, and Win Condition.<br>
+                • Mafia members receive a confidential Syndicate Roster DM listing their fellow Mafia teammates (Godfather, Mob Role Blocker, Mob Goons).
+            `
+        },
+        3: {
+            title: "Stage 3: Night Phase & DM Command Collection (`PhaseManager` & `ActionManager`)",
+            body: `
+                • During Night phases, public voting closes and power roles submit secret slash commands (<code>/block</code>, <code>/heal</code>, <code>/kill</code>, <code>/investigate</code>) directly in their DM channel with the bot.<br>
+                • The engine enforces target constraints immediately (e.g., Doctor and Role Blockers cannot target the same player on consecutive nights; Mafia cannot target teammates).<br>
+                • 1 hour before phase end, the bot DMs automated reminders to any power role that hasn't submitted an action yet.
+            `
+        },
+        4: {
+            title: "Stage 4: Priority Stack Resolution & Fog-of-War AI Narration (`game/actions/` & `narration.py`)",
+            body: `
+                • At Night end, queued actions resolve in strict deterministic priority order: <strong>Tier 1 (Roleblocks) → Tier 2 (Doctor Heals) → Tier 3 (Mafia & SK Kills) → Tier 4 (Cop Investigations)</strong>.<br>
+                • <strong>Selective Narration Sanitizer:</strong> Uncontested heals and blocks against inactive players are stripped so the morning story never leaks hidden actions. Immune targets are referred to strictly by role title (never player name), and 2–3 random living players are injected as flavor decoys.<br>
+                • Google Gemini 2.5 Flash weaves the sanitized events and player quirks into an atmospheric story posted to the public channel.
+            `
+        },
+        5: {
+            title: "Stage 5: Day Phase Deliberation & Public Lynch Voting (`VoteManager`)",
+            body: `
+                • Surviving players debate the morning story and cast public votes in the voting channel using <code>/vote &lt;player&gt;</code> or <code>/vote no lynch</code>.<br>
+                • Players can inspect the live tally anytime with <code>/mafiacount</code>. Every vote and vote switch is logged with timestamps to calculate the <strong>Persuasion (P)</strong> and <strong>Decisiveness</strong> metrics.<br>
+                • When the Day timer expires, the vote tally resolves according to <code>vote_method</code> (Plurality vs Majority) and <code>tie_vote_outcome</code> (No Lynch, Random, or Lynch All).
+            `
+        },
+        6: {
+            title: "Stage 6: Win Condition Check, Field Promotion & Multi-Era Sync (`RoleManager` & `export.py`)",
+            body: `
+                • After every Day and Night phase, the engine evaluates win conditions: <strong>Serial Killer Solo Win → Town Clean Sweep → Mafia Parity/Majority</strong>.<br>
+                • If the Godfather died but other Mafia remain, a living <strong>Mob Goon</strong> is automatically promoted to <strong>Godfather</strong>.<br>
+                • When a faction wins, full match telemetry, phase timelines, and stories are saved to lowercase <code>./stats/</code> and synced to Google Sheets and the Unified Web Leaderboard!
+            `
+        }
+    };
+
+    function selectLifecycleStep(stepNum) {
+        [1, 2, 3, 4, 5, 6].forEach(n => {
+            const el = document.getElementById('lc-step-' + n);
+            if (el) el.className = (n === stepNum) ? 'lifecycle-step active' : 'lifecycle-step';
+        });
+        const box = document.getElementById('lifecycle-detail-box');
+        const info = LIFECYCLE_STEPS[stepNum];
+        if (box && info) {
+            box.innerHTML = `<h4 style="margin: 0 0 8px 0; color: var(--gold); font-size: 1.1rem;">${info.title}</h4><div style="color: #ddd; font-size: 0.9rem;">${info.body}</div>`;
+        }
+    }
+
+    function runSetupSimulator() {
+        const n = parseInt((document.getElementById('slider-sim-players') || {}).value || 10);
+        const ratio = parseFloat((document.getElementById('sim-setup-ratio') || {}).value || 0.25);
+        const skThresh = parseInt((document.getElementById('sim-setup-sk') || {}).value || 8);
+
+        const labelEl = document.getElementById('val-sim-players');
+        if (labelEl) labelEl.innerText = `${n} Players`;
+
+        // Exact logic from game/engine/setup_generator.py
+        const numMafia = Math.max(1, Math.ceil(n * ratio));
+        let mafiaRoles = ['Godfather'];
+        if (n >= 6 && mafiaRoles.length < numMafia) {
+            mafiaRoles.push('Mob Role Blocker');
+        }
+        while (mafiaRoles.length < numMafia) {
+            mafiaRoles.push('Mob Goon');
+        }
+
+        let neutralRoles = [];
+        if (n >= skThresh) {
+            neutralRoles.push('Serial Killer');
+        }
+
+        const remainingForTown = Math.max(0, n - mafiaRoles.length - neutralRoles.length);
+        let townRoles = [];
+        if (remainingForTown > 0) townRoles.push('Town Cop');
+        if (remainingForTown > townRoles.length) townRoles.push('Town Doctor');
+        if (n >= 7 && remainingForTown > townRoles.length) townRoles.push('Town Role Blocker');
+        if (n >= 14 && remainingForTown > townRoles.length) townRoles.push('Town Doctor (2nd)');
+        if (n >= 17 && remainingForTown > townRoles.length) townRoles.push('Town Cop (2nd)');
+        const plainCount = Math.max(0, remainingForTown - townRoles.length);
+
+        const townPct = Math.round((remainingForTown / n) * 100);
+        const mafiaPct = Math.round((mafiaRoles.length / n) * 100);
+        const neutPct = Math.round((neutralRoles.length / n) * 100);
+
+        const out = document.getElementById('setup-sim-output');
+        if (out) {
+            out.innerHTML = `
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.85rem;">
+                    <span style="color: var(--blue); font-weight: bold;">🏛️ Town: ${remainingForTown} (${townPct}%)</span>
+                    <span style="color: var(--red); font-weight: bold;">🕴️ Mafia: ${mafiaRoles.length} (${mafiaPct}%)</span>
+                    <span style="color: var(--gold); font-weight: bold;">🔪 Neutral: ${neutralRoles.length} (${neutPct}%)</span>
+                </div>
+                <div style="display: flex; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 14px;">
+                    <div style="width: ${townPct}%; background: var(--blue);"></div>
+                    <div style="width: ${mafiaPct}%; background: var(--red);"></div>
+                    <div style="width: ${neutPct}%; background: var(--gold);"></div>
+                </div>
+                <div style="font-size: 0.85rem; line-height: 1.6; color: #ddd;">
+                    <div><strong style="color: var(--blue);">Town Roster (${remainingForTown}):</strong> ${townRoles.join(', ')}${plainCount > 0 ? `, <strong>${plainCount}× Plain Townie</strong>` : ''}</div>
+                    <div style="margin-top: 4px;"><strong style="color: var(--red);">Mafia Syndicate (${mafiaRoles.length}):</strong> ${mafiaRoles.join(', ')}</div>
+                    <div style="margin-top: 4px;"><strong style="color: var(--gold);">Third-Party Neutral (${neutralRoles.length}):</strong> ${neutralRoles.length > 0 ? neutralRoles.join(', ') : '<em>None (Spawns at ' + skThresh + '+ players)</em>'}</div>
+                </div>
+            `;
+        }
+    }
+
+    function runNightStackSimulator() {
+        const blockAct = (document.getElementById('sim-night-block') || {}).value || 'none';
+        const healAct = (document.getElementById('sim-night-heal') || {}).value || 'heal_attacked';
+        const killAct = (document.getElementById('sim-night-kill') || {}).value || 'gf_kills_town';
+        const copAct = (document.getElementById('sim-night-cop') || {}).value || 'cop_checks_goon';
+
+        let logSteps = [];
+        let storyEvents = [];
+        let suppressedEvents = [];
+
+        // Tier 1
+        let gfBlocked = false, docBlocked = false, copBlocked = false;
+        if (blockAct === 'mutual_block') {
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> Town RB and Mob RB target each other → <strong>Mutual Block Cycle Detected!</strong> Both blocks cancel out.`);
+            suppressedEvents.push(`Mutual Roleblock cancelled cleanly.`);
+        } else if (blockAct === 'block_gf') {
+            gfBlocked = true;
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> Town Role Blocker blocks the <strong>Godfather</strong> (` + "`blocked = true`" + `).`);
+            storyEvents.push(`A shadowy figure was intercepted and prevented from acting tonight.`);
+        } else if (blockAct === 'block_doc') {
+            docBlocked = true;
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> Mob Role Blocker blocks the <strong>Town Doctor</strong>.`);
+            if (healAct !== 'none') storyEvents.push(`The Town Doctor was delayed and prevented from reaching their patient.`);
+        } else if (blockAct === 'block_cop') {
+            copBlocked = true;
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> Mob Role Blocker blocks the <strong>Town Cop</strong>.`);
+            storyEvents.push(`An investigator's inquiries were disrupted in the night.`);
+        } else if (blockAct === 'block_townie') {
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> Mob Role Blocker targets a Plain Townie (who has no night action).`);
+            suppressedEvents.push(`<strong>Selective Narration:</strong> Block on Plain Townie is suppressed from the story because the target had no night action!`);
+        } else {
+            logSteps.push(`<strong>Tier 1 (Blocks):</strong> No roleblocks active tonight.`);
+        }
+
+        // Tier 2
+        let targetProtected = false;
+        if (healAct === 'none') {
+            logSteps.push(`<strong>Tier 2 (Heals):</strong> No Doctor heal submitted.`);
+        } else if (docBlocked) {
+            logSteps.push(`<strong>Tier 2 (Heals):</strong> Doctor's <code>/heal</code> fails because the Doctor was roleblocked in Tier 1!`);
+        } else if (healAct === 'heal_attacked') {
+            targetProtected = true;
+            logSteps.push(`<strong>Tier 2 (Heals):</strong> Town Doctor places protection on the targeted player.`);
+        } else if (healAct === 'heal_unattacked') {
+            logSteps.push(`<strong>Tier 2 (Heals):</strong> Town Doctor protects an unattacked player.`);
+            suppressedEvents.push(`<strong>Selective Narration:</strong> Doctor heal on unattacked player is suppressed from the story so the Doctor's target is not leaked!`);
+        }
+
+        // Tier 3
+        let copKilled = false;
+        if (gfBlocked && killAct !== 'sk_kills_gf') {
+            logSteps.push(`<strong>Tier 3 (Kills):</strong> Godfather's <code>/kill</code> is aborted because the Godfather was roleblocked in Tier 1!`);
+            if (targetProtected) {
+                suppressedEvents.push(`<strong>Selective Narration:</strong> Because the Godfather was blocked and no attack landed, the Doctor's heal is NOT narrated!`);
+            }
+        } else if (killAct === 'gf_kills_sk') {
+            logSteps.push(`<strong>Tier 3 (Kills):</strong> Godfather attacks the <strong>Serial Killer</strong> → Attack fails due to <code>is_night_immune: true</code>!`);
+            storyEvents.push(`An ambush was launched in the dark, but the <strong>Serial Killer</strong> shrugged off the attack! <em>(Player name hidden by Anonymity Rule)</em>`);
+            if (targetProtected) suppressedEvents.push(`<strong>Bug-Fix Invariant:</strong> Doctor heal is suppressed because the immune target never took lethal damage.`);
+        } else if (killAct === 'sk_kills_gf') {
+            logSteps.push(`<strong>Tier 3 (Kills):</strong> Serial Killer attacks the <strong>Godfather</strong> → Attack fails due to <code>is_night_immune: true</code>!`);
+            storyEvents.push(`A blade flashed in the shadows, but the <strong>Godfather</strong> survived unscathed! <em>(Player name hidden by Anonymity Rule)</em>`);
+        } else if (targetProtected) {
+            logSteps.push(`<strong>Tier 3 (Kills):</strong> Lethal attack strikes the protected target → <strong>Saved by Town Doctor!</strong>`);
+            storyEvents.push(`<strong>Doctor Save Narrated:</strong> Assailants struck in the night, but the Doctor intervened just in time to save the victim's life!`);
+        } else {
+            logSteps.push(`<strong>Tier 3 (Kills):</strong> Lethal attack succeeds! Target is eliminated at Dawn.`);
+            storyEvents.push(`<strong>Casualty Announced:</strong> The victim is found dead at Dawn, and their canonical Role is revealed.`);
+            if (copAct === 'cop_attacked') copKilled = true;
+        }
+
+        // Tier 4
+        if (copBlocked) {
+            logSteps.push(`<strong>Tier 4 (Investigate):</strong> Town Cop receives DM: <em>"Your investigation was blocked."</em>`);
+        } else if (copKilled) {
+            logSteps.push(`<strong>Tier 4 (Investigate):</strong> Town Cop was killed in Tier 3 before Dawn → Investigation report is discarded.`);
+        } else if (copAct === 'cop_checks_gf' || copAct === 'cop_checks_sk') {
+            logSteps.push(`<strong>Tier 4 (Investigate):</strong> Cop checks an <code>investigate_immune</code> boss → Dawn DM reports: <strong>"Plain Townie (Normal Member of town)"</strong>.`);
+        } else {
+            logSteps.push(`<strong>Tier 4 (Investigate):</strong> Cop checks Mob Goon → Dawn DM reports: <strong>"Mob Goon (Mafia)"</strong>.`);
+        }
+
+        const out = document.getElementById('night-stack-sim-output');
+        if (out) {
+            out.innerHTML = `
+                <div style="margin-bottom: 10px;">
+                    <strong style="color: #d180ff;">⚡ Priority Execution Trace (Tier 1 → Tier 4):</strong>
+                    <ol style="margin: 5px 0 0 0; padding-left: 20px; color: #ddd;">
+                        ${logSteps.map(s => `<li style="margin-bottom: 4px;">${s}</li>`).join('')}
+                    </ol>
+                </div>
+                <div style="background: rgba(76,175,80,0.08); border-left: 3px solid var(--green); padding: 8px 12px; border-radius: 4px; margin-bottom: 8px;">
+                    <strong style="color: var(--green);">📖 Emitted to Public Morning Story + Random Decoys:</strong>
+                    <ul style="margin: 4px 0 0 0; padding-left: 18px; color: #ddd;">
+                        ${storyEvents.length > 0 ? storyEvents.map(e => `<li>${e}</li>`).join('') : `<li>Quiet night with no public casualties.</li>`}
+                        <li><em>+ 2 to 3 randomly selected living players woven into innocent background scenes so inclusion in the story never leaks roles!</em></li>
+                    </ul>
+                </div>
+                ${suppressedEvents.length > 0 ? `
+                <div style="background: rgba(255,152,0,0.08); border-left: 3px solid var(--orange); padding: 8px 12px; border-radius: 4px;">
+                    <strong style="color: var(--orange);">🛡️ Suppressed by Fog-of-War Sanitizer:</strong>
+                    <ul style="margin: 4px 0 0 0; padding-left: 18px; color: #ddd;">
+                        ${suppressedEvents.map(e => `<li>${e}</li>`).join('')}
+                    </ul>
+                </div>` : ''}
+            `;
+        }
+    }
+
+    // =========================================================================
+    // SYSTEM ARCHITECTURE LAYER EXPLORER
+    // =========================================================================
+    const ARCH_LAYERS_INFO = {
+        1: {
+            title: "Layer 1: Discord Slash-Command Facade (`/cogs/`)",
+            badge: "Presentation & Access Control Layer",
+            color: "var(--blue)",
+            files: ["cogs/game.py", "cogs/admin.py", "cogs/info.py", "cogs/stats.py", "cogs/community.py", "cogs/export.py"],
+            summary: "Acts as a thin, non-blocking facade between Discord's interaction API (`discord.app_commands`) and the internal game engine. Validates channel contexts (Public vs Bot DM), role permissions, and player status before delegating to the state machine.",
+            invariants: [
+                "Strict Channel Isolation: Night abilities (/kill, /heal, /block, /investigate) are rejected if invoked outside a private Bot DM.",
+                "Immediate Interaction Deferral: Long-running tasks (AI storytelling, stats aggregation, Google Sheets sync) use async deferral so Discord's 3-second interaction token never times out.",
+                "Modular Separation: 21 slash commands are cleanly partitioned across 6 specialized Cogs."
+            ]
+        },
+        2: {
+            title: "Layer 2: Async Game Engine & State Machine (`/game/engine/`)",
+            badge: "Core Domain Logic",
+            color: "var(--gold)",
+            files: ["game/engine/__init__.py", "game/engine/phase_manager.py", "game/engine/vote_manager.py", "game/engine/role_manager.py", "game/engine/setup_generator.py"],
+            summary: "Manages the asynchronous game loop (`Idle → Sign-Up → Night ⇄ Day → GameOver`), dynamic role generation, daytime vote tallying, and automatic Mafia succession.",
+            invariants: [
+                "Deterministic Role Scaling: `setup_generator.py` guarantees balanced faction ratios (`ceil(N × mafia_ratio)`) for any lobby from 5 to 19+ players.",
+                "Automatic Field Promotion: `RoleManager` ensures the Mafia never loses its nightly kill while a member lives—promoting a Mob Goon (or Mob RB) to Godfather upon the Boss's death.",
+                "Timestamped Vote Audit: `VoteManager` records every vote cast and switched to power the Persuasion (P) and Scumhunting Accuracy metrics."
+            ]
+        },
+        3: {
+            title: "Layer 3: Priority Night Action Resolver (`/game/actions/`)",
+            badge: "Deterministic Resolution Stack",
+            color: "var(--red)",
+            files: ["game/actions/manager.py", "game/actions/handle_block.py", "game/actions/handle_heal.py", "game/actions/handle_kill.py", "game/actions/handle_investigate.py"],
+            summary: "Processes all queued night actions at Dawn in strict priority order: Tier 1 (Roleblocks) → Tier 2 (Doctor Heals) → Tier 3 (Mafia/SK Kills) → Tier 4 (Cop Investigations).",
+            invariants: [
+                "Mutual Block Resolution: Detects 2-cycles when two Role Blockers target each other and cancels both blocks cleanly.",
+                "Consecutive Target Lockout: Prevents Doctors and Role Blockers from locking down the same target on back-to-back nights.",
+                "Immunity Enforcement: Respects `is_night_immune` (Godfather & SK survive standard night kills) and `investigate_immune` (Godfather & SK read as Plain Townie)."
+            ]
+        },
+        4: {
+            title: "Layer 4: Hybrid Gemini AI & Fog-of-War Storyteller (`/game/narration*.py`)",
+            badge: "Zero-Leak Narrative Engine",
+            color: "var(--purp)",
+            files: ["game/narration.py", "game/narration_ai.py", "game/narration_static.py", "data/game_setup/theme_roles.json", "data/story_quirks.json"],
+            summary: "Transforms raw phase outcomes into atmospheric stories across 9 narrative themes using Google Gemini (`gemini-2.5-flash`), backed by a deterministic template fallback (`narration_static.py`) if the API is unreachable.",
+            invariants: [
+                "Selective Narration Filter: Uncontested Doctor heals and blocks against inactive players are stripped before prompting the AI so stories never leak unused abilities.",
+                "Immune Target Anonymity: When a Night-Immune role is attacked, the prompt receives ONLY the role name ('Serial Killer' / 'Godfather') and never the player's name.",
+                "Random Decoy Injection: 2–3 random living players are sampled each phase as background characters so being mentioned in flavor text carries zero alignment signal."
+            ]
+        },
+        5: {
+            title: "Layer 5: Atomic Crash Recovery & Lowercase Storage (`/utils/` & `persistence.py`)",
+            badge: "Resilience & File I/O Invariant",
+            color: "var(--green)",
+            files: ["game/engine/persistence.py", "utils/archivephasedata.py", "utils/savejsondata.py", "utils/logprompttojson.py", "config.py"],
+            summary: "Serializes live game state after every phase transition and action submission to `data/active_game.pkl`, and archives completed match telemetry and stories.",
+            invariants: [
+                "Strict Lowercase Path Invariant: All runtime writes strictly target lowercase `./data/`, `./stats/`, and `./logs/` directories for cross-platform Linux/Docker compatibility.",
+                "Seamless Reboot Recovery: On bot startup or `/mafiareinit`, the engine restores active timers, player roles, and channel permissions without losing a single vote or night action.",
+                "Environment Isolation: `config.py` stops at the first matching `.env` / `.env.prod` file so test configurations never bleed into production."
+            ]
+        },
+        6: {
+            title: "Layer 6: Multi-Era Analytics, Web Portal & Google Sheets Pipeline (`/Website/` & `/scripts/`)",
+            badge: "Unified Telemetry & Dual-Mode Portal",
+            color: "var(--orange)",
+            files: ["Website/build_unified_leaderboard.py", "scripts/sync_google_sheets.py", "Website/js/MafiaAPICode.js", "Website/js/api.js", "Website/index.html"],
+            summary: "Unifies 159+ games across 4 historical eras (Forum 2008–2018, Discourse 2019–2020, Discord Manual, and Automated Discord Bot) into static JSON bundles and synchronizes live leaderboards to Google Sheets.",
+            invariants: [
+                "Synthetic Test Filtering: `build_unified_leaderboard.py` automatically strips `TEST-*` and `BR-TEST-*` sandbox matches and repairs stubbed story archives.",
+                "Alias Resolution (`alias_map.json`): Merges historical forum handles and modern Discord usernames into unified career dossiers.",
+                "Dual-Mode Data Layer (`api.js` / `MafiaAPICode.js`): Runs identically as a standalone static web portal (`fetch('./data/*.json')`) or embedded inside Google Apps Script (`google.script.run`)."
+            ]
+        }
+    };
+
+    function selectArchLayer(layerNum) {
+        [1, 2, 3, 4, 5, 6].forEach(n => {
+            const card = document.getElementById('arch-card-' + n);
+            if (card) card.className = (n === layerNum) ? 'arch-layer-card active' : 'arch-layer-card';
+        });
+        const detailEl = document.getElementById('arch-layer-detail');
+        const info = ARCH_LAYERS_INFO[layerNum];
+        if (!detailEl || !info) return;
+
+        detailEl.innerHTML = `
+            <div>
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 10px;">
+                    <span style="background: rgba(255,255,255,0.08); color: ${info.color}; border: 1px solid ${info.color}; padding: 3px 10px; border-radius: 12px; font-size: 0.78rem; font-weight: bold;">${info.badge}</span>
+                </div>
+                <h3 style="margin: 0 0 10px 0; color: #fff; font-size: 1.35rem;">${info.title}</h3>
+                <p style="color: #ccc; font-size: 0.92rem; line-height: 1.6; margin-bottom: 16px;">${info.summary}</p>
+
+                <div style="margin-bottom: 16px;">
+                    <strong style="color: var(--gold); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px;">📂 Key Codebase Modules:</strong>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;">
+                        ${info.files.map(f => `<code style="background: #23232e; color: #80b3ff; border: 1px solid #3a3a4c; padding: 4px 9px; border-radius: 4px; font-size: 0.82rem;">${f}</code>`).join('')}
+                    </div>
+                </div>
+
+                <div style="background: #22222c; border-left: 4px solid ${info.color}; padding: 12px 16px; border-radius: 6px;">
+                    <strong style="color: #fff; font-size: 0.85rem; text-transform: uppercase;">🛡️ Gold-Standard Engineering Guarantees & Invariants:</strong>
+                    <ul style="margin: 8px 0 0 0; padding-left: 18px; color: #ddd; font-size: 0.88rem; line-height: 1.55;">
+                        ${info.invariants.map(inv => `<li style="margin-bottom: 6px;">${inv}</li>`).join('')}
+                    </ul>
+                </div>
+            </div>
+        `;
+    }
+
+    function initCodexInteractiveWidgets() {
+        if (codexWidgetsInitialized) return;
+        codexWidgetsInitialized = true;
+        runRoleInteractionSim();
+        updatePeuCalculator();
+        renderBotCommands();
+        updateMafiaStartBuilder();
+        selectLifecycleStep(1);
+        runSetupSimulator();
+        runNightStackSimulator();
+        selectArchLayer(1);
     }
     
     function renderArchives(data) {

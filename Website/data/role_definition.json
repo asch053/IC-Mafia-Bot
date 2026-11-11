@@ -1,81 +1,326 @@
 {
     "Town Cop": {
         "base": "TownInvestigative",
+        "alignment": "Town",
         "description": "You are town-aligned and can investigate one player each night to learn their alignment.\nUse `/investigate player-name` during the night phase in this DM with the bot.\nResults will be sent as soon as the day phase starts. Use them wisely.\nYou win when all Mafia and the Serial Killer are dead.",
-        "short_description": "Investigates one player each night.",
+        "short_description": "Investigates one player each night to uncover their alignment.",
+        "win_condition": "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
         "night_priority": 4,
-        "abilities": { "investigate": "Learn a player's alignment (Town/Mafia/Neutral)." }
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "abilities": {
+            "investigate": "Learn a player's alignment (Town/Mafia/Neutral)."
+        },
+        "commands": [
+            {
+                "syntax": "/investigate <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Investigate a living player's alignment. Results are delivered via DM at dawn (unless blocked or killed)."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast or change your public vote to lynch a suspect."
+            }
+        ],
+        "special_mechanics": [
+            "Resolves at Night Priority Tier 4 (last in the night stack).",
+            "If killed or roleblocked during the night, no investigation report is received.",
+            "Godfather and Serial Killer possess Investigation Immunity and return 'Plain Townie (Normal Member of town)'."
+        ],
+        "spawn_rules": "Guaranteed 1x in all Classic setups (5+ players); 2nd Cop spawns at 17+ players."
     },
     "Town Doctor": {
         "base": "TownProtective",
+        "alignment": "Town",
         "description": "You are town-aligned and can protect one player each night from being killed.\nUse `/heal player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are dead.",
-        "short_description": "Can heal one player each night.",
+        "short_description": "Can heal and protect one player each night from lethal attacks.",
+        "win_condition": "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
         "night_priority": 2,
-        "abilities": { "heal": "Prevent a player from being killed." }
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "abilities": {
+            "heal": "Prevent a player from being killed."
+        },
+        "commands": [
+            {
+                "syntax": "/heal <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Protect one player from all Night Priority 3 lethal attacks for the night."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast or change your public vote to lynch a suspect."
+            }
+        ],
+        "special_mechanics": [
+            "Resolves at Night Priority Tier 2 (after Roleblocks, before Kills).",
+            "Cannot target the same player on two consecutive nights (anti-spam protection).",
+            "Selective Narration Rule: A Doctor save is ONLY narrated in the morning story if the protected target was actually attacked by an active killer that night."
+        ],
+        "spawn_rules": "Guaranteed 1x in all Classic setups (5+ players); 2nd Doctor spawns at 14+ players."
     },
     "Plain Townie": {
         "base": "TownKilling",
+        "alignment": "Town",
         "description": "A regular member of the town.\nDuring the day, you can use `/vote player-name` in the voting channel to cast your vote on who should be lynched.\nYou win when all Mafia and the Serial Killer are dead.",
-        "short_description": "Normal member of town."
+        "short_description": "Regular member of the Town whose power lies in deduction and the daytime vote.",
+        "win_condition": "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "commands": [
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast or switch your daytime lynch vote (`player-name` or `no lynch`)."
+            },
+            {
+                "syntax": "/myrole",
+                "channel": "Bot DM",
+                "phase": "Any",
+                "description": "Verify your role, alignment, and win condition."
+            }
+        ],
+        "special_mechanics": [
+            "Has no active night action, making them immune to night roleblock disruption.",
+            "Carries the Town's voting majority and earns extra weighting in historical Plain Townie accolades."
+        ],
+        "spawn_rules": "Fills all remaining Town slots dynamically after power roles are assigned."
     },
     "Town Role Blocker": {
         "base": "TownProtective",
+        "alignment": "Town",
         "description": "You are town-aligned and can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when all Mafia and the Serial Killer are dead.",
         "short_description": "Prevents one player from performing their night action.",
+        "win_condition": "Eliminate all Mafia members and hostile Neutrals (Serial Killer).",
         "night_priority": 1,
-        "abilities": { "block": "Prevent a player from performing their night action." }
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "abilities": {
+            "block": "Prevent a player from performing their night action."
+        },
+        "commands": [
+            {
+                "syntax": "/block <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Prevent a target player from executing their night action."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast or change your public vote to lynch a suspect."
+            }
+        ],
+        "special_mechanics": [
+            "Resolves at Night Priority Tier 1 (highest priority in the game).",
+            "Cannot block the same player two nights in a row.",
+            "Mutual Block Rule: If two Role Blockers target each other on the same night, both blocks cancel out and neither block succeeds.",
+            "Selective Narration Rule: Blocks only appear in the public story if the target actually submitted an active night ability."
+        ],
+        "spawn_rules": "Spawns in Classic games with 7+ players (configurable via `town_rb_threshold`)."
     },
     "Godfather": {
         "base": "MafiaKilling",
+        "alignment": "Mafia",
         "description": "Chooses the Mafia's target each night.\nUse `/kill player-name` in this DM with the bot.\nA separate message will be sent with the identity of other Mafia members.\nYou win when the Mafia can no longer be eliminated.",
-        "short_description": "Chooses the Mafia's target each night.",
-        "abilities": { "kill": "Choose a player for the Mafia to kill." },
+        "short_description": "Leader of the Mafia who orders the syndicate's nightly kill.",
+        "win_condition": "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+        "abilities": {
+            "kill": "Choose a player for the Mafia to kill."
+        },
         "investigate_immune": true,
-        "investigate_result": { "Plain Townie": "Normal Member of town" },
+        "investigate_result": {
+            "Plain Townie": "Normal Member of town"
+        },
         "is_night_immune": true,
-        "night_priority": 3
+        "night_priority": 3,
+        "commands": [
+            {
+                "syntax": "/kill <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Execute the Mafia's nightly hit against a non-Mafia player."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Vote in the public channel to manipulate town lynches."
+            }
+        ],
+        "special_mechanics": [
+            "Night Immune (`is_night_immune: true`): Survives Night Priority 3 attacks (such as Serial Killer hits).",
+            "Investigation Immune (`investigate_immune: true`): Appears as 'Plain Townie' when investigated by the Town Cop.",
+            "Succession Rule: If the Godfather dies, a living Mob Goon (or Mob Role Blocker) is automatically promoted to Godfather."
+        ],
+        "spawn_rules": "Guaranteed 1x in every Classic game (5+ players)."
     },
     "Mob Goon": {
         "base": "MafiaSupport",
+        "alignment": "Mafia",
         "description": "A member of the Mafia.\nYou will be promoted to Godfather if the current one dies.\nYou win when the Mafia can no longer be eliminated.",
-        "short_description": "Standard Mafia member.",
-        "night_priority": 3
+        "short_description": "Standard Mafia syndicate member who inherits the Godfather mantle if the boss falls.",
+        "win_condition": "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+        "night_priority": 3,
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "commands": [
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Coordinate with fellow Mafia members to steer daytime lynch votes."
+            },
+            {
+                "syntax": "/kill <player-name>",
+                "channel": "Bot DM (When Promoted)",
+                "phase": "Night",
+                "description": "Unlocks automatically upon promotion to Godfather after the original Godfather dies."
+            }
+        ],
+        "special_mechanics": [
+            "Knows the identities of all fellow Mafia members from Night 1.",
+            "Automatic Field Promotion: Immediately promoted to Godfather (inheriting `/kill` and immunities) if the reigning Godfather is eliminated."
+        ],
+        "spawn_rules": "Spawns as part of the Mafia team (`ceil(players * mafia_ratio)`)."
     },
     "Mob Role Blocker": {
         "base": "MafiaSupport",
+        "alignment": "Mafia",
         "description": "A member of the Mafia.\nYou can prevent one player from performing their night action each night.\nUse `/block player-name` during the night phase in this DM with the bot.\nYou win when the Mafia can no longer be eliminated.",
-        "short_description": "Stops a player from acting at night.",
-        "abilities": { "block": "Prevent a player from performing their night action." },
-        "night_priority": 1
+        "short_description": "Mafia specialist who stops a player from acting at night.",
+        "win_condition": "Achieve Mafia parity/majority where the Mafia can no longer be eliminated (and all hostile Neutrals are dead).",
+        "abilities": {
+            "block": "Prevent a player from performing their night action."
+        },
+        "night_priority": 1,
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "commands": [
+            {
+                "syntax": "/block <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Sabotage a non-Mafia player's night action (e.g., Doctor heal or Cop investigation)."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast or change your daytime lynch vote."
+            }
+        ],
+        "special_mechanics": [
+            "Resolves at Night Priority Tier 1 alongside the Town Role Blocker.",
+            "Cannot block fellow Mafia teammates or the same player on consecutive nights.",
+            "Eligible for promotion to Godfather if no Mob Goons remain when the Godfather dies."
+        ],
+        "spawn_rules": "Replaces a Mob Goon in Classic games with 6+ players (configurable via `mafia_rb_threshold`)."
     },
     "Serial Killer": {
         "base": "NeutralKilling",
+        "alignment": "Neutral",
         "description": "Kills one player each night.\nUse `/kill player-name` in this DM with the bot.\nYou win when you are the last person standing.",
-        "short_description": "Kills one player each night.",
-        "abilities": { "kill": "Choose a player to kill." },
-        "win_condition": "Be the last player alive.",
-        "investigate_immune" : true,
-        "investigate_result": { "Plain Townie": "Normal Member of town" },
+        "short_description": "Solitary third-party killer who eliminates one player each night.",
+        "abilities": {
+            "kill": "Choose a player to kill."
+        },
+        "win_condition": "Be the last player alive (eliminate both Town and Mafia).",
+        "investigate_immune": true,
+        "investigate_result": {
+            "Plain Townie": "Normal Member of town"
+        },
         "is_night_immune": true,
-        "night_priority": 3
+        "night_priority": 3,
+        "commands": [
+            {
+                "syntax": "/kill <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Stalk and kill one target player during the night phase."
+            },
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Blend in with the Town and manipulate daytime lynches."
+            }
+        ],
+        "special_mechanics": [
+            "Night Immune (`is_night_immune: true`): Cannot be killed at night by the Mafia Godfather.",
+            "Investigation Immune (`investigate_immune: true`): Appears as 'Plain Townie' to the Town Cop.",
+            "Anonymity Rule: If attacked at night while Night Immune, the morning story references only the role ('Serial Killer') and NEVER leaks the player's name."
+        ],
+        "spawn_rules": "Spawns in Classic games with 8+ players (configurable via `sk_threshold`)."
     },
     "Jester": {
         "base": "NeutralEvil",
+        "alignment": "Neutral",
         "description": "Your goal is to get yourself lynched by the town. You have no night action.",
-        "short_description": "Wins the game if they are lynched.",
-        "win_condition": "Get yourself lynched by the town."
+        "short_description": "Chaotic Neutral trickster who wins immediately if lynched during the Day.",
+        "win_condition": "Get yourself lynched by public daytime vote.",
+        "is_night_immune": false,
+        "investigate_immune": false,
+        "commands": [
+            {
+                "syntax": "/vote <player-name>",
+                "channel": "Public Voting Channel",
+                "phase": "Day",
+                "description": "Cast suspicious votes and bait the Town into lynching you."
+            },
+            {
+                "syntax": "/myrole",
+                "channel": "Bot DM",
+                "phase": "Any",
+                "description": "Review your Jester objective."
+            }
+        ],
+        "special_mechanics": [
+            "Has no night action and is vulnerable to night kills (dying at night results in a Jester loss).",
+            "Successfully getting lynched during any Day phase satisfies the Jester's solo win condition."
+        ],
+        "spawn_rules": "Optional special/event Neutral role."
     },
     "Vigilante": {
         "base": "NeutralRoyale",
+        "alignment": "Battle Royale",
         "description": "You are a lone wolf out for yourself. You can kill or block one player each night (your last submitted action will be used). Your goal is to be the last person standing.",
-        "short_description": "Can kill or block. Wins by being the only survivor.",
+        "short_description": "Versatile Battle Royale combatant who can either strike (`/kill`) or defend (`/block`) each night.",
         "abilities": {
             "kill": "Choose one player to kill each night.",
-            
             "block": "Choose one player to block each night."
         },
-        "win_condition": "Be the last player alive.",
+        "win_condition": "Be the last player alive in Battle Royale mode.",
         "is_night_immune": false,
-        "noting": true
+        "investigate_immune": false,
+        "night_priority": 3,
+        "noting": true,
+        "commands": [
+            {
+                "syntax": "/kill <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Attempt a lethal strike on another combatant (Priority 3). Overwrites `/block` if submitted last."
+            },
+            {
+                "syntax": "/block <player-name>",
+                "channel": "Bot DM",
+                "phase": "Night",
+                "description": "Disrupt another combatant's night action (Priority 1). Overwrites `/kill` if submitted last."
+            }
+        ],
+        "special_mechanics": [
+            "Exclusive to Battle Royale mode (where every player spawns as a Vigilante and Day phases are skipped).",
+            "Action Override: You may submit `/kill` or `/block`, but only your most recently submitted command before phase end is executed."
+        ],
+        "spawn_rules": "Assigned to 100% of players in Battle Royale mode."
     }
 }

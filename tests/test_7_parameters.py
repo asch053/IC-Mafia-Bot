@@ -12,22 +12,10 @@ test_log = setup_test_logging()
 # Add the root directory to sys.path so we can import our modules
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-# --- 2. CONFIGURATION MOCKING ---
-# We mock the config module globally to avoid errors during imports
-mock_config = MagicMock()
-mock_config.LIVING_ROLE_ID = 111
-mock_config.DEAD_ROLE_ID = 222
-mock_config.SPECTATOR_ROLE_ID = 333
-mock_config.STORIES_CHANNEL_ID = 444
-mock_config.GEMINI_API_KEY = "mock_key"
-mock_config.game_type = "Testing"
-mock_config.data_save_path = "stats/Testing"
-mock_config.min_sk_players = 9
-mock_config.min_cop_players = 6
-mock_config.MAX_MISSED_VOTES = 2
-mock_config.AI_RETRY_DELAY = 0.1
-mock_config.AI_MAX_RETRIES = 2
-sys.modules['config'] = mock_config
+# --- 2. CONFIGURATION SETUP ---
+import config
+config.AI_RETRY_DELAY = 0.1
+config.AI_MAX_RETRIES = 2
 
 # --- 3. MODULE IMPORTS ---
 from game.player import Player
