@@ -14,12 +14,42 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 logger = logging.getLogger("SheetsSync")
 
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if ROOT_DIR not in sys.path:
+    sys.path.insert(0, ROOT_DIR)
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 WEBSITE_DIR = os.path.join(ROOT_DIR, "Website")
 DB_DIR = os.path.join(WEBSITE_DIR, "database")
 if not os.path.exists(DB_DIR):
     DB_DIR = os.path.join(DATA_DIR, "database")
 WEBSITE_DATA_DIR = os.path.join(WEBSITE_DIR, "data")
+
+# Preload environment variables from the highest-priority .env file if present.
+# IMPORTANT: break after the first existing .env file so .env.test never pollutes prod!
+for _env_file in [".env", ".env.prod", ".env.production", ".env.beta", ".env.test"]:
+    _env_path = os.path.join(ROOT_DIR, _env_file)
+    if os.path.exists(_env_path):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(_env_path, override=False)
+        except Exception:
+            try:
+                with open(_env_path, "r", encoding="utf-8") as _f:
+                    for _line in _f:
+                        _line = _line.strip()
+                        if _line and not _line.startswith("#") and "=" in _line:
+                            _k, _v = _line.split("=", 1)
+                            _v = _v.strip()
+                            if not (_v.startswith('"') or _v.startswith("'")):
+                                _v = _v.split("#", 1)[0].strip()
+                            else:
+                                _q = _v[0]
+                                _eq = _v.find(_q, 1)
+                                if _eq != -1:
+                                    _v = _v[1:_eq]
+                            os.environ.setdefault(_k.strip(), _v.strip())
+            except Exception:
+                pass
+        break
 
 try:
     from google.oauth2.service_account import Credentials as ServiceAccountCredentials
@@ -41,11 +71,20 @@ except Exception:
     CONFIG_SHEET_ID = None
     CONFIG_CREDS_FILE = None
 
-DEFAULT_CREDS_FILE = CONFIG_CREDS_FILE or os.getenv("GOOGLE_CREDENTIALS_FILE") or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
+DEFAULT_CREDS_FILE = (
+    CONFIG_CREDS_FILE
+    or os.getenv("GOOGLE_CREDENTIALS_FILE")
+    or os.getenv("GOOGLE_SERVICE_ACCOUNT_JSON")
+    or os.path.join(DATA_DIR, "ic-mafia-bot-41a41f61e757.json")
+)
 if DEFAULT_CREDS_FILE and not os.path.isabs(DEFAULT_CREDS_FILE):
     DEFAULT_CREDS_FILE = os.path.join(ROOT_DIR, DEFAULT_CREDS_FILE)
 
-DEFAULT_SHEET_ID = CONFIG_SHEET_ID or os.getenv("GOOGLE_SHEET_ID") or "1MCFL0Q0bgBdb8JUP-n1fo0EHLw3imdj_SKzjfqheslM"
+DEFAULT_SHEET_ID = (
+    CONFIG_SHEET_ID
+    or os.getenv("GOOGLE_SHEET_ID")
+    or os.getenv("GOOGLE_SHEET_KEY")
+)
 
 def get_sheets_client(creds_path=DEFAULT_CREDS_FILE):
     if gspread is None:
@@ -477,6 +516,11 @@ def sync_all_to_sheets(sheet_id=DEFAULT_SHEET_ID, creds_path=DEFAULT_CREDS_FILE)
         except Exception:
             def get_canonical_game_id(era, tid, title=""): return str(tid)
 
+    if not sheet_id:
+        raise ValueError(
+            "GOOGLE_SHEET_ID (or GOOGLE_SHEET_KEY) is not configured! "
+            "Please set GOOGLE_SHEET_ID in your .env file before syncing to Google Sheets."
+        )
     client = get_sheets_client(creds_path)
     sheet = client.open_by_key(sheet_id)
     logger.info(f"Connected to Google Spreadsheet: '{sheet.title}' (ID: {sheet_id})")

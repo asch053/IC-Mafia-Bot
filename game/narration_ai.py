@@ -272,7 +272,7 @@ def _generate_mechanical_summary(events: list, game_state: dict = None) -> str:
             victim = event.get('victim')
             logger.info(f"Generating immune kill event story part for victim: {victim}")
             if not victim:
-                return None
+                continue
             role_name = getattr(victim.role, 'display_name', None) or (victim.role.name if getattr(victim, 'role', None) else "Unknown")
             is_br = False
             if game_state:
@@ -556,16 +556,18 @@ def _construct_ai_prompt(game_state: dict, events: list, history: list) -> str:
             elif etype == 'kill_immune':
                 victim = e.get('victim')
                 if victim:
-                    if game_state.get('game_type', '').lower() in ['battle_royale', 'br']:
-                        # After: Masks the target of a failed kill in Classic mode
-                            v = e.get('victim')
-                            t_name = v.display_name if v else "a target"
-                            event_lines.append(f"PUBLIC EVENT: {t_name} survived an assassination attempt.")
+                    if str(game_state.get('game_type', '')).lower() in ['battle_royale', 'battle royale', 'br']:
+                        t_name = victim.display_name if victim else "a target"
+                        event_lines.append(f"PUBLIC EVENT: {t_name} survived an assassination attempt because they were immune.")
                     else:
-                        # Strictly anonymous for Classic Mafia
-                        event_lines.append("SECRET EVENT: An assassination attempt failed. The target survived anonymously.") 
-                        role_name = victim.role.name if victim.role else "Unknown"
-                        event_lines.append(f"SECRET EVENT: An assailant ambushed **{role_name}** in the dark, but their target was unfazed. The attack had no effect!.")    
+                        # Strictly anonymous for Classic Mafia (only role title, never player name)
+                        role_label = getattr(victim.role, 'display_name', None) or (victim.role.name if getattr(victim, 'role', None) else "Unknown")
+                        if story_type == "Rom Com":
+                            event_lines.append(f"CRITICAL EVENT: Someone tried to dump / break the heart of the **{role_label}** in the night, but they were completely unfazed and immune! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")
+                        elif story_type == "Office Restructuring":
+                            event_lines.append(f"CRITICAL EVENT: Someone tried to fire / lay off the **{role_label}** in the night, but they had ironclad tenure and were completely unfazed! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")
+                        else:
+                            event_lines.append(f"CRITICAL EVENT: An assailant ambushed the **{role_label}** in the dark, but the target was night-immune and completely unfazed! Refer to the target ONLY by their role title ({role_label}), NEVER by a player name.")    
             # Investigation event (Classic and Battle Royale) - This is a secret event that gives the AI context but is not revealed to players, so we can be more descriptive to help the AI generate better stories without worrying about meta-gaming or players using the narration as a source of information about investigations.
             elif etype in ['investigate', 'investigate_royale']:
                 #event_lines.append("SECRET EVENT: A lone figure was seen snooping around someone's house, trying to uncover secrets.")   
@@ -734,7 +736,17 @@ def _archive_phase_data(game_state: dict, phase_key: str, prompt: str, thoughts:
     game_mode_raw = str(game_state.get('game_type', 'classic')).lower()
     folder_name = "Battle Royale" if "battle_royale" in game_mode_raw else "Classic"
     
-    archive_dir = os.path.join(str(config.data_save_path).title(), folder_name, game_id)
+    raw_save_path = getattr(config, 'data_save_path', None)
+    if not isinstance(raw_save_path, str) or not raw_save_path.strip() or raw_save_path.startswith("<"):
+        gt = getattr(config, 'game_type', 'Testing')
+        raw_save_path = f"stats/{gt if isinstance(gt, str) and not gt.startswith('<') else 'Testing'}"
+    norm_save_path = raw_save_path.replace("\\", "/").lstrip("./")
+    if norm_save_path.lower().startswith("stats/"):
+        norm_save_path = "stats/" + norm_save_path[6:]
+    elif norm_save_path.lower() == "stats":
+        norm_save_path = "stats"
+
+    archive_dir = os.path.join(norm_save_path, folder_name, str(game_id))
     os.makedirs(archive_dir, exist_ok=True)
     
     archive_path = os.path.join(archive_dir, f"{game_id}_ai_prompts.json")

@@ -21,6 +21,7 @@ mock_config.SPECTATOR_ROLE_ID = 333
 mock_config.STORIES_CHANNEL_ID = 444
 mock_config.GEMINI_API_KEY = "mock_key"
 mock_config.game_type = "Testing"
+mock_config.data_save_path = "stats/Testing"
 mock_config.min_sk_players = 9
 mock_config.min_cop_players = 6
 mock_config.MAX_MISSED_VOTES = 2

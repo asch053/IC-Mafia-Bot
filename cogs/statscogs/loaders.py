@@ -25,7 +25,13 @@ def load_and_group_games() -> dict:
     Returns: {'classic': [game1, game2], 'battle_royale': [game3]}
     """
     games_by_mode = defaultdict(list)
-    stats_dir = getattr(config, 'data_save_path', 'data/stats')
+    stats_dir = getattr(config, 'data_save_path', 'stats')
+    if isinstance(stats_dir, str):
+        norm = stats_dir.replace("\\", "/").lstrip("./")
+        if norm.lower().startswith("stats/"):
+            stats_dir = "stats/" + norm[6:]
+        elif norm.lower() == "stats":
+            stats_dir = "stats"
     abs_path = os.path.abspath(stats_dir)
     logger.info(f"Searching for game logs in: {abs_path}")
 
@@ -55,4 +61,3 @@ def get_player_games(games_by_mode: dict, player_id: int) -> dict:
             if any(p.get('player_id') == player_id for p in game.get('player_data', [])):
                 player_games[mode].append(game)
     return dict(player_games)
-

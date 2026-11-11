@@ -13,7 +13,6 @@ services:
       - ./data:/app/data
       - ./logs:/app/logs
       - ./stats:/app/stats
-      - ./Stats:/app/Stats
     logging:
       driver: "json-file"
       options:

@@ -4,13 +4,46 @@ for secure deployment."""
 
 import os
 
+# Automatically load from the first available .env file if env vars are not already set.
+_ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+for _env_file in [".env", ".env.prod", ".env.production", ".env.beta", ".env.test"]:
+    _env_path = os.path.join(_ROOT_DIR, _env_file)
+    if os.path.exists(_env_path):
+        try:
+            from dotenv import load_dotenv
+            load_dotenv(_env_path, override=False)
+        except Exception:
+            try:
+                with open(_env_path, "r", encoding="utf-8") as _f:
+                    for _line in _f:
+                        _line = _line.strip()
+                        if _line and not _line.startswith("#") and "=" in _line:
+                            _k, _v = _line.split("=", 1)
+                            _v = _v.strip()
+                            if not (_v.startswith('"') or _v.startswith("'")):
+                                _v = _v.split("#", 1)[0].strip()
+                            else:
+                                _q = _v[0]
+                                _eq = _v.find(_q, 1)
+                                if _eq != -1:
+                                    _v = _v[1:_eq]
+                            os.environ.setdefault(_k.strip(), _v.strip())
+            except Exception:
+                pass
+        break
+
 # --- Helper Function for Strict Loading ---
-def get_required_env(var_name: str, default: str = None) -> str:
+def get_required_env(var_name: str, default: str = None, aliases: list = None) -> str:
     """
-    Must Fix: Fetches an environment variable and fails gracefully if missing.
-    This prevents the bot from starting with missing configuration data.
+    Fetches an environment variable and fails gracefully if missing.
+    Supports fallback aliases (e.g. GOOGLE_SHEET_KEY for GOOGLE_SHEET_ID).
     """
     value = os.getenv(var_name)
+    if not value and aliases:
+        for alias in aliases:
+            value = os.getenv(alias)
+            if value:
+                break
     if not value:
         if default is not None:
             return default
@@ -21,41 +54,60 @@ def get_required_env(var_name: str, default: str = None) -> str:
     return value
 
 # --- BOT AUTHENTICATION TOKENS ---
-BOT_TOKEN = get_required_env("BOT_TOKEN")  # Put Your Testing Bot Token Here
+BOT_TOKEN = get_required_env("BOT_TOKEN", aliases=["DISCORD_TOKEN"])  # Put Your Bot Token Here
 
 # --- DISCORD SERVER AND CHANNEL IDS ---
-SERVER_ID                   =   get_required_env("SERVER_ID", 123456789012345678)                   # Replace with your server's ID
-TALKY_TALKY_CHANNEL_ID      =   get_required_env("TALKY_TALKY_CHANNEL_ID", 123456789012345678)      # Replace with #talky-talky channel ID
-STORIES_CHANNEL_ID          =   get_required_env("STORIES_CHANNEL_ID", 123456789012345678)          # Replace with #stories channel ID
-VOTING_CHANNEL_ID           =   get_required_env("VOTING_CHANNEL_ID", 123456789012345678)           # Replace with #voting-channel channel ID
-RULES_AND_ROLES_CHANNEL_ID  =   get_required_env("RULES_AND_ROLES_CHANNEL_ID", 123456789012345678)  # Replace with #rules-and-roles channel ID
-DEADZOR_CHANNEL_ID          =   get_required_env("DEADZOR_CHANNEL_ID", 123456789012345678)          # Replace with #deadzor channel ID
-SIGN_UP_HERE_CHANNEL_ID     =   get_required_env("SIGN_UP_HERE_CHANNEL_ID", 123456789012345678)     # Replace with #sign-up-here channel ID
-MOD_CHANNEL_ID              =   get_required_env("MOD_CHANNEL_ID", 123456789012345678)              # Replace with #mod channel ID
-ANNOUNCEMENT_CHANNEL_ID     =   get_required_env("ANNOUNCEMENT_CHANNEL_ID", 123456789012345678)     # Replace with #announcement channel ID
+SERVER_ID                   =   int(get_required_env("SERVER_ID", 123456789012345678))                   # Replace with your server's ID
+TALKY_TALKY_CHANNEL_ID      =   int(get_required_env("TALKY_TALKY_CHANNEL_ID", 123456789012345678))      # Replace with #talky-talky channel ID
+STORIES_CHANNEL_ID          =   int(get_required_env("STORIES_CHANNEL_ID", 123456789012345678))          # Replace with #stories channel ID
+VOTING_CHANNEL_ID           =   int(get_required_env("VOTING_CHANNEL_ID", 123456789012345678))           # Replace with #voting-channel channel ID
+RULES_AND_ROLES_CHANNEL_ID  =   int(get_required_env("RULES_AND_ROLES_CHANNEL_ID", 123456789012345678))  # Replace with #rules-and-roles channel ID
+DEADZOR_CHANNEL_ID          =   int(get_required_env("DEADZOR_CHANNEL_ID", 123456789012345678))          # Replace with #deadzor channel ID
+SIGN_UP_HERE_CHANNEL_ID     =   int(get_required_env("SIGN_UP_HERE_CHANNEL_ID", 123456789012345678))     # Replace with #sign-up-here channel ID
+MOD_CHANNEL_ID              =   int(get_required_env("MOD_CHANNEL_ID", 123456789012345678))              # Replace with #mod channel ID
+ANNOUNCEMENT_CHANNEL_ID     =   int(get_required_env("ANNOUNCEMENT_CHANNEL_ID", 123456789012345678))     # Replace with #announcement channel ID
 
 # --- Discord Role IDs ---
 # These can be used for assigning roles to players, mods, etc. and can be referenced
 # throughout the codebase when role checks or assignments are needed.
 # -- Standard Game Roles --
-LIVING_PLAYER_ROLE_ID           = int(get_required_env("LIVING_PLAYER_ROLE_ID", 123456789012345678))        # Role ID for the "Player" role
-DEAD_PLAYER_ROLE_ID             = int(get_required_env("DEAD_PLAYER_ROLE_ID", 123456789012345678))          # Role ID for the "Dead" role
+LIVING_PLAYER_ROLE_ID           = int(get_required_env("LIVING_PLAYER_ROLE_ID", 123456789012345678, aliases=["LIVING_ROLE_ID"]))        # Role ID for the "Player" role
+DEAD_PLAYER_ROLE_ID             = int(get_required_env("DEADZOR_PLAYER_ROLE_ID", 123456789012345678, aliases=["DEAD_PLAYER_ROLE_ID", "DEAD_ROLE_ID"]))          # Role ID for the "Dead" role
+LIVING_ROLE_ID                  = LIVING_PLAYER_ROLE_ID
+DEAD_ROLE_ID                    = DEAD_PLAYER_ROLE_ID
 SPECTATOR_ROLE_ID               = int(get_required_env("SPECTATOR_ROLE_ID", 123456789012345678))            # Role ID for the "Spectator" role
-MOD_ROLE_ID                     = int(get_required_env("MOD_ROLE_ID", 123456789012345678))                  # Role ID for the "Moderator" role
+MOD_ROLE_ID                     = int(get_required_env("ADMIN_ROLE_ID", 123456789012345678, aliases=["MOD_ROLE_ID"]))                  # Role ID for the "Moderator" role
 # --- # Classic Award Roles
-CLASSIC_TOP_SKILL_ROLE_ID       = int(get_required_env("CLASSIC_TOP_SKILL_ROLE_ID", 123456789012345678))    # Role ID for the "Classic Top Skill" role
-CLASSIC_TOP_SURVIVOR_ROLE_ID    = int(get_required_env("CLASSIC_TOP_SURVIVOR_ROLE_ID", 123456789012345678)) # Role ID for the "Classic Top Survivor" role
+CLASSIC_TOP_SKILL_ROLE_ID       = int(get_required_env("CLASSIC_TOP_SKILL_ROLE_ID", 123456789012345678, aliases=["CLASSIC_MVP_ROLE_ID"]))    # Role ID for the "Classic Top Skill" role
+CLASSIC_TOP_SURVIVOR_ROLE_ID    = int(get_required_env("CLASSIC_TOP_SURVIVOR_ROLE_ID", 123456789012345678, aliases=["CLASSIC_SURVIVOR_ROLE_ID"])) # Role ID for the "Classic Top Survivor" role
 CLASSIC_RED_SHIRT_ROLE_ID       = int(get_required_env("CLASSIC_RED_SHIRT_ROLE_ID", 123456789012345678))    # Role ID for the "Classic Red Shirt" role
+CLASSIC_MVP_ROLE_ID             = CLASSIC_TOP_SKILL_ROLE_ID
+CLASSIC_SURVIVOR_ROLE_ID        = CLASSIC_TOP_SURVIVOR_ROLE_ID
 # Battle Royale Award Roles
-BR_TOP_WINS_ROLE_ID             = int(get_required_env("BR_TOP_WINS_ROLE_ID", 123456789012345678))          # Role ID for the "BR Top Wins" role
-BR_TOP_SURVIVOR_ROLE_ID         = int(get_required_env("BR_TOP_SURVIVOR_ROLE_ID", 123456789012345678))      # Role ID for the "BR Top Survivor" role
+BR_TOP_WINS_ROLE_ID             = int(get_required_env("BR_TOP_WINS_ROLE_ID", 123456789012345678, aliases=["BR_CHAMPION_ROLE_ID"]))          # Role ID for the "BR Top Wins" role
+BR_TOP_SURVIVOR_ROLE_ID         = int(get_required_env("BR_TOP_SURVIVOR_ROLE_ID", 123456789012345678, aliases=["BR_SURVIVOR_ROLE_ID"]))      # Role ID for the "BR Top Survivor" role
 BR_RED_SHIRT_ROLE_ID            = int(get_required_env("BR_RED_SHIRT_ROLE_ID", 123456789012345678))         # Role ID for the "BR Red Shirt" role
+BR_CHAMPION_ROLE_ID             = BR_TOP_WINS_ROLE_ID
+BR_SURVIVOR_ROLE_ID             = BR_TOP_SURVIVOR_ROLE_ID
 
 # --- GAME DATA PATHS AND SETTINGS ---
-game_type = get_required_env("GAME_TYPE", "Alpha Testing")  # Game type for the bot
-data_save_path = f"Stats/{game_type}"  # Path to save game data
+_raw_game_type = get_required_env("GAME_TYPE", "Alpha_Testing", aliases=["ENVIRONMENT"])
+if _raw_game_type.strip().lower() in ("production", "prod"):
+    game_type = "Production"
+elif _raw_game_type.strip().lower() in ("alpha testing", "alpha_testing", "alpha", "test", "testing"):
+    game_type = "Alpha_Testing"
+else:
+    game_type = _raw_game_type.strip()
+
+_raw_save_path = get_required_env("DATA_SAVE_PATH", f"stats/{game_type}").replace("\\", "/").lstrip("./")
+if _raw_save_path.startswith("Stats/"):
+    _raw_save_path = "stats/" + _raw_save_path[6:]
+elif _raw_save_path == "Stats":
+    _raw_save_path = "stats"
+data_save_path = _raw_save_path  # Path to save game data (always lowercase stats/)
 
 # --- EXTERNAL API KEYS ---
+MODEL_NAME = "gemini-2.5-flash-lite"
 GOOGLE_AI_API_KEY = get_required_env("GOOGLE_AI_API_KEY")  # Your API key for Google AI services here
 GOOGLE_AI_TIMEOUT = 120.0  # Timeout for Google AI API calls in seconds
 AI_MAX_RETRIES = 3  # Maximum number of retries for AI story generation
@@ -89,13 +141,14 @@ signup_loop_interval_seconds = 15  # Interval for the signup loop to check playe
 MAX_MISSED_VOTES = 1 # Player is killed after missing 1 vote
 
 # --- Statistics Tracking Settings ---
-GOOGLE_SHEET_ID = get_required_env("GOOGLE_SHEET_ID")  # Replace with your Google Sheet ID
-GOOGLE_CREDENTIALS_FILE = get_required_env("GOOGLE_CREDENTIALS_FILE") # Replace with your Google API credentials file
+GOOGLE_SHEET_ID = get_required_env("GOOGLE_SHEET_ID", aliases=["GOOGLE_SHEET_KEY"])  # Replace with your Google Sheet ID
+GOOGLE_CREDENTIALS_FILE = get_required_env("GOOGLE_CREDENTIALS_FILE", aliases=["GOOGLE_SERVICE_ACCOUNT_JSON"]) # Replace with your Google API credentials file
 GOOGLE_SHEET_GAMES_TAB = "Games"
 GOOGLE_SHEET_PLAYERS_TAB = "Players"
 GOOGLE_SHEET_VOTES_TAB = "Votes"
+GOOGLE_SHEET_RULES_TAB = get_required_env("GOOGLE_SHEET_RULES_TAB", "Rules Setup")
 
-GOOGLE_SIMULATION_SHEET_ID = get_required_env("GOOGLE_SIMULATION_SHEET_ID")  # Replace with your Simulation Sheet ID
+GOOGLE_SIMULATION_SHEET_ID = get_required_env("GOOGLE_SIMULATION_SHEET_ID", default="")  # Optional Simulation Sheet ID
 
 # --- Skill Score Parameters ---
 # Weights for the 3 sub-scores (default is 1:1:1)

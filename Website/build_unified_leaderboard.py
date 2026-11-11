@@ -323,60 +323,133 @@ def resolve_player_identity(raw_name, raw_pid, user_map, id_to_canonical=None):
     cname = CANONICAL_NAMES.get(cid, raw_name)
     return cid, cname
 
+def _parse_story_content(story_content):
+    story_scenes = {}
+    narrative_chapters = []
+    if "\n## Chat Transcript" in story_content:
+        story_content = story_content.split("\n## Chat Transcript")[0].strip()
+    full_raw_story = story_content
+    parts = story_content.split('========================================')
+    if len(parts) >= 3:
+        scene_block = parts[1]
+        phase_matches = re.split(r'\*\*---\s*([^-]+)\s*---\*\*', scene_block)
+        for i in range(1, len(phase_matches), 2):
+            ph_name = phase_matches[i].strip()
+            ph_text = phase_matches[i+1].strip()
+            story_scenes[ph_name] = ph_text
+            narrative_chapters.append(f"### {ph_name}\n\n{ph_text}")
+    return full_raw_story, story_scenes, narrative_chapters
+
+def _find_story_file_for_game(root, summary_path, game_id):
+    candidates = [
+        summary_path.replace("_summary.json", "_story.md"),
+        os.path.join(root, f"game_{game_id}_story.md"),
+        os.path.join(root, f"{game_id}_story.md"),
+        os.path.join(ROOT_DIR, "data", "stories", f"{game_id}_story.md"),
+        os.path.join(STORIES_DIR, f"{game_id}_story.md"),
+    ]
+    for cand in candidates:
+        if cand and os.path.exists(cand):
+            try:
+                with open(cand, 'r', encoding='utf-8') as f:
+                    txt = f.read().strip()
+                if len(txt) > 100 and not txt.startswith("Automated game "):
+                    return cand, txt
+            except Exception:
+                continue
+    return None, ""
+
 def sync_new_production_games():
     stats_dir = os.path.join(ROOT_DIR, "stats", "Production")
     bot_db_path = os.path.join(DB_DIR, "discord_bot.json")
+    alt_bot_db_path = os.path.join(ROOT_DIR, "data", "database", "discord_bot.json")
     bot_games = load_json(bot_db_path, [])
-    existing_ids = {str(g.get("thread_id")) for g in bot_games}
-    
-    if not os.path.exists(stats_dir):
-        return bot_games
+
+    # 1. Strip any synthetic unit-test games (TEST-*, BR-TEST-*) that may have leaked into discord_bot.json
+    orig_len = len(bot_games)
+    bot_games = [
+        g for g in bot_games
+        if not str(g.get("thread_id", "")).upper().startswith(("TEST-", "BR-TEST-"))
+    ]
+    dirty = (len(bot_games) != orig_len)
+    if dirty:
+        print(f"Removed {orig_len - len(bot_games)} synthetic test game(s) from discord_bot.json.")
+
+    existing_by_id = {str(g.get("thread_id")): g for g in bot_games}
+    existing_ids = set(existing_by_id.keys())
+
+    # Scan both stats/Production and legacy Stats/Production if present
+    scan_dirs = [stats_dir]
+    legacy_stats_dir = os.path.join(ROOT_DIR, "Stats", "Production")
+    if os.path.exists(legacy_stats_dir) and os.path.normcase(legacy_stats_dir) != os.path.normcase(stats_dir):
+        scan_dirs.append(legacy_stats_dir)
 
     added = 0
-    for root, dirs, files in os.walk(stats_dir):
-        for file in files:
-            if file.endswith("_summary.json"):
-                summary_path = os.path.join(root, file)
-                story_path = summary_path.replace("_summary.json", "_story.md")
-                
-                try:
-                    with open(summary_path, 'r', encoding='utf-8') as f:
-                        data = json.load(f)
-                except Exception:
-                    continue
+    for s_dir in scan_dirs:
+        if not os.path.exists(s_dir):
+            continue
+        for root, dirs, files in os.walk(s_dir):
+            for file in files:
+                if file.endswith("_summary.json"):
+                    summary_path = os.path.join(root, file)
+                    try:
+                        with open(summary_path, 'r', encoding='utf-8') as f:
+                            data = json.load(f)
+                    except Exception:
+                        continue
+                        
+                    summary = data.get("game_summary", {})
+                    player_data = data.get("player_data", [])
+                    vote_history = data.get("lynch_vote_history", [])
                     
-                summary = data.get("game_summary", {})
-                player_data = data.get("player_data", [])
-                vote_history = data.get("lynch_vote_history", [])
-                
-                if not summary:
-                    continue
+                    if not summary:
+                        continue
+                        
+                    game_id = summary.get("game_id")
+                    if not game_id or str(game_id).upper().startswith(("TEST-", "BR-TEST-")):
+                        continue
+
+                    story_path, raw_story_txt = _find_story_file_for_game(root, summary_path, game_id)
+
+                    # Repair existing game if its Website story file is missing/stub or timeline scenes are empty
+                    if str(game_id) in existing_ids:
+                        dest_story_path = os.path.join(STORIES_DIR, f"{game_id}_story.md")
+                        existing_story_txt = ""
+                        if os.path.exists(dest_story_path):
+                            try:
+                                with open(dest_story_path, "r", encoding="utf-8") as ef:
+                                    existing_story_txt = ef.read().strip()
+                            except Exception:
+                                pass
+                        existing_game = existing_by_id.get(str(game_id))
+                        missing_scenes = bool(
+                            existing_game
+                            and any(not tl.get("scene") for tl in existing_game.get("box_score", {}).get("timeline", []))
+                        )
+                        if raw_story_txt and (len(existing_story_txt) < 100 or existing_story_txt.startswith("Automated game ") or missing_scenes):
+                            full_raw_story, story_scenes, narrative_chapters = _parse_story_content(raw_story_txt)
+                            story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else raw_story_txt)
+                            if len(existing_story_txt) < 100 or existing_story_txt.startswith("Automated game "):
+                                os.makedirs(STORIES_DIR, exist_ok=True)
+                                with open(dest_story_path, "w", encoding="utf-8") as stf:
+                                    stf.write(story_as_written)
+                            if existing_game and story_scenes:
+                                for tl_item in existing_game.get("box_score", {}).get("timeline", []):
+                                    ph = tl_item.get("phase")
+                                    if ph in story_scenes and not tl_item.get("scene"):
+                                        tl_item["scene"] = story_scenes[ph]
+                                        dirty = True
+                            print(f"Repaired full story for existing production game {game_id}.")
+                        continue
+                        
+                    existing_ids.add(str(game_id))
+                    added += 1
                     
-                game_id = summary.get("game_id")
-                if not game_id or str(game_id) in existing_ids:
-                    continue
-                    
-                existing_ids.add(str(game_id))
-                added += 1
-                
-                story_scenes = {}
-                narrative_chapters = []
-                full_raw_story = ""
-                if os.path.exists(story_path):
-                    with open(story_path, 'r', encoding='utf-8') as f:
-                        story_content = f.read()
-                    if "\n## Chat Transcript" in story_content:
-                        story_content = story_content.split("\n## Chat Transcript")[0].strip()
-                    full_raw_story = story_content
-                    parts = story_content.split('========================================')
-                    if len(parts) >= 3:
-                        scene_block = parts[1]
-                        phase_matches = re.split(r'\*\*---\s*([^-]+)\s*---\*\*', scene_block)
-                        for i in range(1, len(phase_matches), 2):
-                            ph_name = phase_matches[i].strip()
-                            ph_text = phase_matches[i+1].strip()
-                            story_scenes[ph_name] = ph_text
-                            narrative_chapters.append(f"### {ph_name}\n\n{ph_text}")
+                    story_scenes = {}
+                    narrative_chapters = []
+                    full_raw_story = ""
+                    if raw_story_txt:
+                        full_raw_story, story_scenes, narrative_chapters = _parse_story_content(raw_story_txt)
                 
                 story_as_written = full_raw_story or ("\n\n".join(narrative_chapters) if narrative_chapters else f"Automated game {game_id} run on Discord.")
                 winning_faction = summary.get("winning_faction", "Unknown")
@@ -516,10 +589,13 @@ def sync_new_production_games():
                     "lynch_vote_history": vote_history
                 })
 
-    if added > 0:
+    if added > 0 or dirty:
         with open(bot_db_path, "w", encoding="utf-8") as f:
             json.dump(bot_games, f, indent=2, ensure_ascii=False)
-        print(f"Appended {added} new production games to discord_bot.json.")
+        if os.path.exists(os.path.dirname(alt_bot_db_path)) and os.path.normcase(alt_bot_db_path) != os.path.normcase(bot_db_path):
+            with open(alt_bot_db_path, "w", encoding="utf-8") as f:
+                json.dump(bot_games, f, indent=2, ensure_ascii=False)
+        print(f"Updated discord_bot.json (added={added}, cleaned_or_repaired={dirty}).")
         
     return bot_games
 

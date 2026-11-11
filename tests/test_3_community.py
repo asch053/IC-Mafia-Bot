@@ -1,4 +1,4 @@
-import pytest
+import unittest
 import json
 from unittest.mock import patch, mock_open
 import os
@@ -58,3 +58,18 @@ def test_quirk_truncation():
             written_data = "".join(call.args[0] for call in handle.write.call_args_list)
             data = json.loads(written_data)
             assert len(data["789"]) == 100
+
+
+class TestCommunityQuirks(unittest.TestCase):
+    """Unittest wrapper so `python -m unittest discover tests` also executes community quirk tests."""
+    def test_get_all_approved_file_missing(self):
+        test_get_all_approved_file_missing()
+
+    def test_get_all_approved_success(self):
+        test_get_all_approved_success()
+
+    def test_approve_quirk(self):
+        test_approve_quirk()
+
+    def test_quirk_truncation(self):
+        test_quirk_truncation()

@@ -1,5 +1,4 @@
 # --- Configuration ---
-config.py
 .env
 .env.test
 .env.beta
